@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:RORUKLNMPNR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Rahvusvaheliste õhuvedude reeglite ühtlustamise konventsiooni lisaprotokolli nr. 3 ja Montreali protokolli nr. 4 ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Rahvusvaheliste õhuvedude reeglite ühtlustamise konventsiooni lisaprotokolli nr. 3 ja Montreali protokolli nr. 4 ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Rahvusvaheliste õhuvedude reeglite ühtlustamise konventsiooni lisaprotokolli nr. 3 ja Montreali protokolli nr. 4 ratifitseerimise seadus",
       "dcterms:title": "Rahvusvaheliste õhuvedude reeglite ühtlustamise konventsiooni lisaprotokolli nr. 3 ja Montreali protokolli nr. 4 ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/78817.xml"
+        "@id": "https://www.riigiteataja.ee/akt/78817"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/78817/xml"
+      },
+      "estleg:globalId": "78817",
+      "eli:id_local": "78817",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "118734",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "f46fdff57c523ef559c1dcdf0b676288595d3434e437e8191d50cafde93e6c27",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -50,19 +62,20 @@
         {
           "@id": "http://eurovoc.europa.eu/3474"
         }
-      ]
-    },
-    {
-      "@id": "estleg:RORUKLNMPNR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Rahvusvaheliste õhuvedude reeglite ühtlustamise konventsiooni lisaprotokolli nr. 3 ja Montreali protokolli nr. 4 ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_RORUKLNMPNR_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationYear": {
+        "@value": "1998",
+        "@type": "xsd:gYear"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_RORUKLNMPNR_default",
@@ -71,12 +84,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RORUKLNMPNR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:RORUKLNMPNR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Rahvusvaheliste õhuvedude reeglite ühtlustamise konventsiooni lisaprotokolli nr. 3 ja Montreali protokolli nr. 4 ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RORUKLNMPNR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:RORUKLNMPNR_Par_1",
@@ -85,13 +119,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud rahvusvaheliste õhuvedude reeglite ühtlustamise 192...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud rahvusvaheliste õhuvedude reeglite ühtlustamise 192...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvaheliste õhuvedude reeglite ühtlustamise konventsiooni lisaprotokolli nr. 3 ja Montreali protokolli nr. 4 ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RORUKLNMPNR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi ja 1971. aasta 8. märtsi Guatemala protokolliga.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi ja 1971. aasta 8. märtsi Guatemala protokolliga.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud rahvusvaheliste õhuvedude reeglite ühtlustamise 1929. aasta 12. oktoobri Varssavi konventsiooni parandamise lisaprotokoll nr. 3 , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi ja 1971. aasta 8. märtsi Guatemala protokolliga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud rahvusvaheliste õhuvedude reeglite ühtlustamise 1929. aasta 12. oktoobri Varssavi konventsiooni parandamise lisaprotokoll nr. 3 , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi ja 1971. aasta 8. märtsi Guatemala protokolliga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RORUKLNMPNR_default"
       },
@@ -109,12 +149,6 @@
         },
         {
           "@id": "estleg:RORUKSPHPLNN_Par_4"
-        },
-        {
-          "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_3"
-        },
-        {
-          "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_4"
         }
       ],
       "estleg:hasVersion": [
@@ -129,10 +163,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi ja 1971. aasta 8. märtsi Guatemala protokolliga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud rahvusvaheliste õhuvedude reeglite ühtlustamise 1929. aasta 12. oktoobri Varssavi konventsiooni parandamise lisaprotokoll nr. 3 , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi ja 1971. aasta 8. märtsi Guatemala protokolliga.",
       "estleg:parentProvision": {
         "@id": "estleg:RORUKLNMPNR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:RORUKLNMPNR_Par_2",
@@ -141,13 +177,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ratifitseerida juurdelisatud rahvusvaheliste õhuvedude reeglite ühtlustamise 192...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ratifitseerida juurdelisatud rahvusvaheliste õhuvedude reeglite ühtlustamise 192...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvaheliste õhuvedude reeglite ühtlustamise konventsiooni lisaprotokolli nr. 3 ja Montreali protokolli nr. 4 ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RORUKLNMPNR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi protokolliga.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi protokolliga.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud rahvusvaheliste õhuvedude reeglite ühtlustamise 1929. aasta 12. oktoobri Varssavi konventsiooni parandamise Montreali protokoll nr. 4 , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi protokolliga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud rahvusvaheliste õhuvedude reeglite ühtlustamise 1929. aasta 12. oktoobri Varssavi konventsiooni parandamise Montreali protokoll nr. 4 , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi protokolliga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RORUKLNMPNR_default"
       },
@@ -179,10 +221,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi protokolliga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud rahvusvaheliste õhuvedude reeglite ühtlustamise 1929. aasta 12. oktoobri Varssavi konventsiooni parandamise Montreali protokoll nr. 4 , mis on koostatud 1975. aasta 25. septembril Montrealis ja alla kirjutatud Eesti Vabariigi poolt 1997. aasta 25. novembril Varssavis. Nimetatud protokolliga parandatakse Varssavi konventsiooni, mida varem on parandatud 1955. aasta 28. septembri Haagi protokolliga.",
       "estleg:parentProvision": {
         "@id": "estleg:RORUKLNMPNR_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

@@ -5862,10 +5862,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": {
-        "@value": "IRI of the official English Riigi Teataja consolidation (https://www.riigiteataja.ee/en/eli/{tolkeSeosId}). rdfs:subPropertyOf rdfs:seeAlso (#510).",
-        "@language": "en"
-      },
+      "rdfs:comment": "IRI of the official English Riigi Teataja consolidation (https://www.riigiteataja.ee/en/eli/{tolkeSeosId}). rdfs:subPropertyOf rdfs:seeAlso (#510). The same IRI is an eli:LegalExpression node with eli:language English that eli:realizes the act; the act root links it with eli:is_realized_by (#707).",
       "rdfs:domain": {
         "@id": "estleg:Act"
       },
@@ -5923,6 +5920,29 @@
       },
       "owl:inverseOf": {
         "@id": "estleg:hasSubsection"
+      }
+    },
+    {
+      "@id": "estleg:parseMode",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "parsimisviis",
+          "@language": "et"
+        },
+        {
+          "@value": "parse mode",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "How the generator obtained a regulation's body from Riigi Teataja: 'structured' (the XML sisu tree), 'html_fallback' (the HTML rendering) or 'no_paragraphs' (metadata-only XML with no body). Stamped on every regulation act node (#722).",
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
       }
     },
     {
@@ -6220,6 +6240,34 @@
       }
     },
     {
+      "@id": "estleg:provisionOmitted",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "tekstist välja jäetud",
+          "@language": "et"
+        },
+        {
+          "@value": "provision omitted from the consolidated text",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "True on a spent § that Riigi Teataja omits from the consolidated text: an explicit 'Välja jäetud -' note, or a number with kehtiv=\"0\" whose body is the placeholder '–' (rendered '[Käesolevast tekstist välja jäetud]'). Such a § carries no estleg:legalText by design; text-coverage gates exempt it (#703). Distinct from estleg:provisionRepealed ('Kehtetu -'). Absent otherwise.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
       "@id": "estleg:provisionRef",
       "@type": [
         "owl:DatatypeProperty"
@@ -6245,6 +6293,34 @@
       ],
       "rdfs:range": {
         "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:provisionRepealed",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "kehtetuks tunnistatud",
+          "@language": "et"
+        },
+        {
+          "@value": "provision repealed",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "True on a § that Riigi Teataja marks as repealed ('Kehtetu -', in a muutmismarge note or as the § text). Such a § carries no estleg:legalText by design; text-coverage gates exempt it (#703). Absent otherwise.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:boolean"
       }
     },
     {
@@ -7179,6 +7255,29 @@
       }
     },
     {
+      "@id": "estleg:skeemiNimi",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "skeemi nimi",
+          "@language": "et"
+        },
+        {
+          "@value": "RT XML schema name",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Riigi Teataja <skeemiNimi> of the act XML the node was generated from, e.g. tyviseadus_1_10.02.2010.xsd: the XSD the source text follows (#692).",
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
       "@id": "estleg:sourceAct",
       "@type": [
         "owl:DatatypeProperty"
@@ -7296,6 +7395,32 @@
       },
       "rdfs:range": {
         "@id": "xsd:anyURI"
+      }
+    },
+    {
+      "@id": "estleg:sourceXml",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:subPropertyOf": {
+        "@id": "prov:wasDerivedFrom"
+      },
+      "rdfs:label": [
+        {
+          "@value": "lähte-XML",
+          "@language": "et"
+        },
+        {
+          "@value": "source XML",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "The Riigi Teataja XML manifestation the act root was parsed from (public API /akt/{globaalID}/xml). dcterms:source names the human Riigi Teataja page of the same redaction; estleg:contentHash is the SHA-256 of this XML as fetched (#707).",
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:range": {
+        "@id": "rdfs:Resource"
       }
     },
     {

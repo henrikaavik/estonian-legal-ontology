@@ -39,15 +39,31 @@ pytestmark = pytest.mark.skipif(
 
 # A law that is reliably present and richly populated in the committed corpus.
 KARS = "KarS"
-# KarS's act node records NO dcterms:source -- only an owl:sameAs Wikidata IRI
-# -- so since #680 (rt_url is host-guarded to riigiteataja.ee) its rt_url is
-# "" rather than a wikidata.org URL. Restoring that source is a producer-side
-# ticket; until then, assertions that need a REAL riigiteataja citation use a
-# law that has one: PS (põhiseadus) for act/provision citations, LS
-# (liiklusseadus) where sanctions are also needed.
+# Under #680 KarS's act node carried only an owl:sameAs Wikidata IRI, so its
+# host-guarded rt_url was "". Wave 6 (#707) restored the producer-side
+# dcterms:source (the human RT page), so KarS now cites riigiteataja.ee and
+# still surfaces the Wikidata IRI under external_ids. PS (põhiseadus) and LS
+# (liiklusseadus) remain as second sourced acts for the cross-law checks.
 PS = "PS"
 LS = "LS"
 RT_PREFIX = "https://www.riigiteataja.ee/akt/"
+
+
+def _kars_rt_url() -> str:
+    """KarS's act-root dcterms:source (the human RT page, #707)."""
+    rec = data.resolve_law(KARS)
+    assert rec is not None
+    act = data.act_node(data.load_law_graph(rec))
+    sources = data._ids_of(act.get("dcterms:source"))
+    assert sources, "KarS act root must carry dcterms:source (#707)"
+    return sources[0].removesuffix(".xml")
+
+
+def _assert_kars_citation(url: str) -> None:
+    """KarS cites its own RT page (#707): riigiteataja.ee, no .xml tail."""
+    assert url.startswith(RT_PREFIX)
+    assert ".xml" not in url
+    assert url == _kars_rt_url()
 
 
 def _assert_fields(item: dict, expected: set[str]) -> None:
@@ -80,11 +96,10 @@ def test_search_laws_contract_fields_and_recall() -> None:
     # Recall: the Penal Code itself must be in the results.
     names = {h["name"] for h in hits}
     assert "karistusseadustik" in names
-    # #680: KarS has no riigiteataja source, so its citation is honestly
-    # empty -- never a foreign host -- and the Wikidata IRI it does carry is
-    # surfaced separately.
+    # KarS's dcterms:source was restored in wave 6 (#707), so its citation is
+    # the real RT page; the Wikidata IRI is still surfaced separately (#680).
     kars = next(h for h in hits if h["name"] == "karistusseadustik")
-    assert kars["rt_url"] == ""
+    _assert_kars_citation(kars["rt_url"])
     assert kars["external_ids"]["wikidata"].startswith("http://www.wikidata.org/")
 
 
@@ -141,8 +156,9 @@ def test_get_law_contract_fields() -> None:
     law = server.get_law(KARS)
     _assert_fields(law, GET_LAW_FIELDS)
     assert law["abbrev"] == "KarS"
-    # #680: no riigiteataja source on the KarS act node -> "" (not wikidata).
-    assert law["rt_url"] == ""
+    # Wave 6 (#707) restored KarS's dcterms:source: the citation is its RT
+    # page, and the Wikidata sameAs stays under external_ids (#680).
+    _assert_kars_citation(law["rt_url"])
     assert law["external_ids"] == {
         "wikidata": "http://www.wikidata.org/entity/Q2352833"
     }
@@ -222,9 +238,8 @@ def test_get_provision_contract_fields() -> None:
     _assert_fields(prov, GET_PROVISION_FIELDS)
     assert "13" in prov["paragrahv"]
     assert prov["legal_text"]
-    # #680: KarS's act node has no riigiteataja source, so the § citation is
-    # honestly empty rather than a wikidata.org URL.
-    assert prov["rt_url"] == ""
+    # The § citation is the act's RT page, restored in wave 6 (#707).
+    _assert_kars_citation(prov["rt_url"])
 
 
 def test_get_provision_citation_is_riigiteataja_for_a_sourced_act() -> None:
@@ -273,10 +288,18 @@ def test_references_of_contract_fields() -> None:
     assert items, "KarS references something"
     for it in items[:10]:
         _assert_fields(it, REFERENCE_FIELDS)
-    # #680: every KarS outgoing reference points back into KarS, whose act
-    # node records no riigiteataja source, so those citations are honestly
-    # empty -- never a foreign host.
-    assert all(it["rt_url"] == "" for it in items)
+    # Nearly every KarS outgoing reference points back into KarS, whose
+    # dcterms:source was restored in wave 6 (#707): those rows cite KarS's RT
+    # page. No row ever carries a foreign host (#680).
+    kars_url = _kars_rt_url()
+    internal = [it for it in items if it["source_law"] == "Karistusseadustik"]
+    assert internal, "KarS references its own provisions"
+    for it in internal:
+        _assert_kars_citation(it["rt_url"])
+    assert all(
+        it["rt_url"] == "" or it["rt_url"].startswith(RT_PREFIX) for it in items
+    )
+    assert any(it["rt_url"] == kars_url for it in items)
     # A law whose references DO cross into sourced acts still carries real
     # riigiteataja URLs, and nothing else.
     cross = server.references_of(LS)
@@ -362,15 +385,15 @@ def test_sanctions_for_law_contract_fields_and_citation() -> None:
     assert any(it["penalty"] for it in items)
 
 
-def test_sanctions_for_law_citation_empty_without_rt_source() -> None:
-    # #680: KarS's act node records no riigiteataja source, so its sanctions
-    # carry "" rather than the wikidata.org URL the old fallback leaked. The
-    # sanctions themselves are unaffected.
+def test_sanctions_for_law_kars_cites_restored_rt_source() -> None:
+    # Under #680 KarS's sanctions carried "" (no riigiteataja source); wave 6
+    # (#707) restored the act's dcterms:source, so every sanction now cites
+    # KarS's RT page -- never the wikidata.org URL the old fallback leaked.
     items = server.sanctions_for_law(KARS)
     assert items, "KarS defines sanctions in the corpus"
     for it in items[:20]:
         _assert_fields(it, SANCTION_FIELDS)
-        assert it["rt_url"] == ""
+        _assert_kars_citation(it["rt_url"])
 
 
 def test_sanctions_for_law_unknown_returns_note() -> None:

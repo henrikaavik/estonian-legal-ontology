@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:POKKPOSP1979_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga ühinemise seadus",
       "dcterms:title": "Piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/871826.xml"
+        "@id": "https://www.riigiteataja.ee/akt/871826"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/871826/xml"
+      },
+      "estleg:globalId": "871826",
+      "eli:id_local": "871826",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "158595",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "297aac4f681ef26c881d3bb2a50bad2680bb8beeb718e045a6172f9dd61dc369",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2005-04-17",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -63,23 +75,24 @@
           "@id": "http://eurovoc.europa.eu/695"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2005-04-17",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2005-04-07",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
-      ]
-    },
-    {
-      "@id": "estleg:POKKPOSP1979_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_POKKPOSP1979_default"
-        }
-      ]
+      "estleg:lastAmendmentDate": {
+        "@value": "2005-04-17",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_POKKPOSP1979_default",
@@ -88,12 +101,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Lepingu sätted",
-      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:POKKPOSP1979_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:POKKPOSP1979_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_POKKPOSP1979_default"
+        }
+      ]
     },
     {
       "@id": "estleg:POKKPOSP1979_Par_1",
@@ -102,13 +136,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Protokolliga ühinemine",
+      "rdfs:label": {
+        "@value": "§ 1. Protokolliga ühinemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POKKPOSP1979_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud (edaspidiprotokoll), mis on koostatud 1998. aasta 24. juunil Århusis.",
-      "estleg:legalText": "Ühineda juurdelisatud (edaspidiprotokoll), mis on koostatud 1998. aasta 24. juunil Århusis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga (edaspidiprotokoll), mis on koostatud 1998. aasta 24. juunil Århusis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga (edaspidiprotokoll), mis on koostatud 1998. aasta 24. juunil Århusis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POKKPOSP1979_default"
       },
@@ -146,10 +186,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud (edaspidiprotokoll), mis on koostatud 1998. aasta 24. juunil Århusis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga (edaspidiprotokoll), mis on koostatud 1998. aasta 24. juunil Århusis.",
       "estleg:parentProvision": {
         "@id": "estleg:POKKPOSP1979_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:POKKPOSP1979_Par_2",
@@ -158,24 +200,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Baasaasta valimine",
+      "rdfs:label": {
+        "@value": "§ 2. Baasaasta valimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POKKPOSP1979_Map"
       },
-      "estleg:summary": "Ühinemisel teatada, et vastavalt protokolli artikli 3 lõike 5 punktile a valis Eesti Vabariik baasaastad järgmiselt: polütsüklilised aromaatsed süsivesinikud (PAH) – 1995. aasta; polükloriidsed dibensoparadioksiinid (PCDD) ja polükloriidsed dibensofuraanid (PCDF) – 1990. aasta; heksaklorobenseen (HCB) – 1995. aasta.",
-      "estleg:legalText": "Ühinemisel teatada, et vastavalt protokolli artikli 3 lõike 5 punktile a valis Eesti Vabariik baasaastad järgmiselt: polütsüklilised aromaatsed süsivesinikud (PAH) – 1995. aasta; polükloriidsed dibensoparadioksiinid (PCDD) ja polükloriidsed dibensofuraanid (PCDF) – 1990. aasta; heksaklorobenseen (HCB) – 1995. aasta.",
+      "estleg:summary": {
+        "@value": "Ühinemisel teatada, et vastavalt protokolli artikli 3 lõike 5 punktile a valis Eesti Vabariik baasaastad järgmiselt: 1) polütsüklilised aromaatsed süsivesinikud (PAH) – 1995. aasta; 2) polükloriidsed dibensoparadioksiinid (PCDD) ja polükloriidsed dibensofuraanid (PCDF) – 1990. aasta; 3) heksaklorobenseen (HCB) – 1995. aasta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühinemisel teatada, et vastavalt protokolli artikli 3 lõike 5 punktile a valis Eesti Vabariik baasaastad järgmiselt: 1) polütsüklilised aromaatsed süsivesinikud (PAH) – 1995. aasta; 2) polükloriidsed dibensoparadioksiinid (PCDD) ja polükloriidsed dibensofuraanid (PCDF) – 1990. aasta; 3) heksaklorobenseen (HCB) – 1995. aasta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POKKPOSP1979_default"
       },
       "estleg:hasSubsection": [
         {
           "@id": "estleg:POKKPOSP1979_Par_2_Lg_1"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:POKKRPU1979_Par_2"
         }
       ],
       "estleg:hasVersion": [
@@ -190,10 +233,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühinemisel teatada, et vastavalt protokolli artikli 3 lõike 5 punktile a valis Eesti Vabariik baasaastad järgmiselt: polütsüklilised aromaatsed süsivesinikud (PAH) – 1995. aasta; polükloriidsed dibensoparadioksiinid (PCDD) ja polükloriidsed dibensofuraanid (PCDF) – 1990. aasta; heksaklorobenseen (HCB) – 1995. aasta.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühinemisel teatada, et vastavalt protokolli artikli 3 lõike 5 punktile a valis Eesti Vabariik baasaastad järgmiselt: 1) polütsüklilised aromaatsed süsivesinikud (PAH) – 1995. aasta; 2) polükloriidsed dibensoparadioksiinid (PCDD) ja polükloriidsed dibensofuraanid (PCDF) – 1990. aasta; 3) heksaklorobenseen (HCB) – 1995. aasta.",
       "estleg:parentProvision": {
         "@id": "estleg:POKKPOSP1979_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:POKKPOSP1979_Par_3",
@@ -202,12 +252,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Protokolli muutmine",
+      "rdfs:label": {
+        "@value": "§ 3. Protokolli muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piiriülese õhusaaste kauglevi 1979. aasta konventsiooni püsivate orgaaniliste saasteainete protokolliga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POKKPOSP1979_Map"
       },
-      "estleg:summary": "Protokolli lisade I–VIII muudatuste vastuvõtmise vastavalt protokolli artiklile 14 otsustab Vabariigi Valitsus.",
+      "estleg:summary": {
+        "@value": "Protokolli lisade I–VIII muudatuste vastuvõtmise vastavalt protokolli artiklile 14 otsustab Vabariigi Valitsus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Protokolli lisade I–VIII muudatuste vastuvõtmise vastavalt protokolli artiklile 14 otsustab Vabariigi Valitsus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POKKPOSP1979_default"
@@ -222,38 +278,32 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:EVVLVVENLTTK_Par_2"
-        },
-        {
-          "@id": "estleg:EVVLVVLNLKAR_Par_2"
-        },
-        {
-          "@id": "estleg:FMAKLTAETEOL_Par_2"
-        },
-        {
-          "@id": "estleg:POKKRPU1979_Par_3"
-        },
-        {
-          "@id": "estleg:POKKVHEV1979_Par_3"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:POKKPOSP1979_Par_3_v871826"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:POKKRPU1979_Par_3"
+        },
+        {
+          "@id": "estleg:POKKVHEV1979_Par_3"
+        },
+        {
+          "@id": "estleg:piiriulese_ohusaaste_kauglevi_1979_aasta_Par_4"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:POKKPOSP1979_Par_3_v871826"
+        }
+      ]
     },
     {
       "@id": "estleg:POKKPOSP1979_Par_3_Lg_1",
@@ -261,10 +311,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Protokolli lisade I–VIII muudatuste vastuvõtmise vastavalt protokolli artiklile 14 otsustab Vabariigi Valitsus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Protokolli lisade I–VIII muudatuste vastuvõtmise vastavalt protokolli artiklile 14 otsustab Vabariigi Valitsus.",
       "estleg:parentProvision": {
         "@id": "estleg:POKKPOSP1979_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"

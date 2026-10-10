@@ -5,69 +5,58 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:OkupS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
-      "dcterms:title": [
-        {
-          "@value": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Procedure for Registration and Disclosure of Persons who Have Served in or Co-operated with Security Organisations or Intelligence or Counterintelligence Organisations of Armed Forces of States which Have Occupied Estonia Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13315029.xml"
+        "@id": "https://www.riigiteataja.ee/akt/13315029"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/13315029/xml"
+      },
+      "estleg:globalId": "13315029",
+      "eli:id_local": "13315029",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "159272",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "2ceec69c44a1216ac7456c42bdaab49b0873c6ec1501aab4cf9d79ca02f64eeb",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2011-01-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/524042014001"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/524042014001"
       },
       "estleg:references": [
         {
           "@id": "estleg:OkupS_Par_5"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:OkupS_Par_7"
-        },
-        {
-          "@id": "estleg:OkupS_Par_7_Lg_2"
-        },
-        {
-          "@id": "estleg:OkupS_Par_8"
-        },
-        {
-          "@id": "estleg:OkupS_Par_8_Lg_1"
-        },
-        {
-          "@id": "estleg:OkupS_Par_5_Lg_5"
         }
       ],
       "dcterms:subject": [
@@ -92,6 +81,19 @@
           "@id": "http://eurovoc.europa.eu/517"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "1995-03-28",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2011-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationYear": {
+        "@value": "1995",
+        "@type": "xsd:gYear"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kaitsepolitseiamet"
@@ -99,17 +101,42 @@
         {
           "@id": "estleg:Institution_riigikogu"
         }
-      ]
-    },
-    {
-      "@id": "estleg:OkupS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_OkupS_default"
+          "@id": "estleg:Amendment_OkupS_f7fda5a68a"
+        },
+        {
+          "@id": "estleg:Amendment_OkupS_60ff9ef8fe"
+        },
+        {
+          "@id": "estleg:Amendment_OkupS_2223fec6d3"
+        },
+        {
+          "@id": "estleg:Amendment_OkupS_85765d783d"
+        },
+        {
+          "@id": "estleg:Amendment_OkupS_bb26e052ec"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:OkupS_Map"
+        },
+        {
+          "@id": "estleg:OkupS_Par_7"
+        },
+        {
+          "@id": "estleg:OkupS_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:OkupS_Par_8"
+        },
+        {
+          "@id": "estleg:OkupS_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:OkupS_Par_5_Lg_5"
         }
       ]
     },
@@ -120,12 +147,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–12 Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
-      "skos:prefLabel": "§1–12 Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
+      "rdfs:label": {
+        "@value": "§1–12 Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–12 Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:OkupS_TopicScheme"
       },
-      "estleg:provisionCount": 12
+      "estleg:provisionCount": 13
+    },
+    {
+      "@id": "estleg:OkupS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_OkupS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:OkupS_Par_1",
@@ -134,12 +182,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seadusega reguleeritakse Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite (edaspidi julgeoleku- või luureorganid) teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korda. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seadusega reguleeritakse Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite (edaspidi julgeoleku- või luureorganid) teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korda. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seadusega reguleeritakse Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite (edaspidi julgeoleku- või luureorganid) teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korda. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
@@ -212,13 +266,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Julgeoleku- ja luureorganid",
+      "rdfs:label": {
+        "@value": "§ 2. Julgeoleku- ja luureorganid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "(1) Julgeoleku- ja luureorganid käesoleva seaduse mõistes on Saksa Riigi julgeolekuorganid ning relvajõudude luure- ja vastuluureorganid ning nendele alluvad struktuurid: Saksa Riigi Julgeolekupolitsei – Sicherheitspolizei (SiPo) ja Saksa Riigi Julgeolekuteenistus – Sicherheitsdienst (SD), mis alates 1939. aastast tegutses SS-i Riigi Julgeoleku Peaameti – Reichs Sicherheits Hauptamt (RSHA) III ja VI osakonnana; Saksa Riigi Salapolitsei – Geheime Staatspolitzei (Gestapo), mis alates 1939.",
-      "estleg:legalText": "(1) Julgeoleku- ja luureorganid käesoleva seaduse mõistes on Saksa Riigi julgeolekuorganid ning relvajõudude luure- ja vastuluureorganid ning nendele alluvad struktuurid: Saksa Riigi Julgeolekupolitsei – Sicherheitspolizei (SiPo) ja Saksa Riigi Julgeolekuteenistus – Sicherheitsdienst (SD), mis alates 1939. aastast tegutses SS-i Riigi Julgeoleku Peaameti – Reichs Sicherheits Hauptamt (RSHA) III ja VI osakonnana; Saksa Riigi Salapolitsei – Geheime Staatspolitzei (Gestapo), mis alates 1939. aastast tegutses SS-i Riigi Julgeoleku Peaameti (RSHA) IV osakonnana; Saksa Riigi relvajõudude ülemjuhatuse staabi juures asuv luureamet (Abwehr), mis 1944. aasta juulist tegutses SS-i Riigi Julgeoleku Peaameti (RSHA) IV ja VI osakonna ning Sõjaväeameti (Militärisches Amt) alluvuses. (2) Julgeoleku- ja luureorganid käesoleva seaduse mõistes on NSV Liidu julgeolekuorganid ning relvajõudude luure- ja vastuluureorganid ning nendele alluvad struktuurid: NSV Liidu Siseasjade Rahvakomissariaadi (Narodnõi Komissariat Vnutrennihh Del) koosseisu kuulunud Riikliku Julgeoleku Peavalitsus – GUGB (Glavnoje Upravlenije Gossudarstvennoi Bezopasnosti), mis eksisteeris 1934. aasta 10. juulist kuni 1941. aasta 3. veebruarini ja 1941. aasta 20. juulist kuni 1943. aasta 14. aprillini; NSV Liidu Riikliku Julgeoleku Rahvakomissariaat – NKGB (Narodnõi Komissariat Gossudarstvennoi Bezopasnosti), mis eksisteeris 1941. aasta 3. veebruarist kuni 20. juulini ja 1943. aasta 14. aprillist kuni 1946. aasta 15. märtsini; NSV Liidu Kaitse Rahvakomissariaadi Vastuluure Peavalitsus (Glavnoje Kontrrazvedõvatelnoje Upravlenije Narodnogo Komissariata Oboronõ – «Smerš»), mis eksisteeris 1943. aasta 14. aprillist kuni 1946. aasta maini; NSV Liidu Julgeoleku Ministeerium – MGB (Ministerstvo Gosudarstvennoi Bezopasnosti), mis eksisteeris 1946. aasta 15. märtsist kuni 1953. aasta 15. märtsini; NSV Liidu Siseasjade Ministeeriumi (Ministerstvo Vnutrennihh Del) koosseisu kuulunud Riikliku Julgeoleku Peavalitsus – GUGB, mis eksisteeris 1953. aasta 15. märtsist kuni 1954. aasta 13. märtsini; NSV Liidu Riikliku Julgeoleku Komitee – KGB (Komitet Gossudarstvennoi Bezopasnosti), mis moodustati 1954. aasta 13. märtsil; NSV Liidu Kindralstaabi Luure Peavalitsus – GRU (Glavnoje Razvedõvatelnoje Upravlenije); NSV Liidu armee, sõjalaevastiku ja piirivalvevägede eriosakonnad.",
+      "estleg:summary": {
+        "@value": "(1) Julgeoleku- ja luureorganid käesoleva seaduse mõistes on Saksa Riigi julgeolekuorganid ning relvajõudude luure- ja vastuluureorganid ning nendele alluvad struktuurid: 1) Saksa Riigi Julgeolekupolitsei – Sicherheitspolizei (SiPo) ja Saksa Riigi Julgeolekuteenistus – Sicherheitsdienst (SD), mis alates 1939. aastast tegutses SS-i Riigi Julgeoleku Peaameti – Reichs Sicherheits Hauptamt (RSHA) III ja VI osakonnana; 2) Saksa Riigi Salapolitsei – Geheime Staatspolitzei (Gestapo), mis alates 1939.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Julgeoleku- ja luureorganid käesoleva seaduse mõistes on Saksa Riigi julgeolekuorganid ning relvajõudude luure- ja vastuluureorganid ning nendele alluvad struktuurid: 1) Saksa Riigi Julgeolekupolitsei – Sicherheitspolizei (SiPo) ja Saksa Riigi Julgeolekuteenistus – Sicherheitsdienst (SD), mis alates 1939. aastast tegutses SS-i Riigi Julgeoleku Peaameti – Reichs Sicherheits Hauptamt (RSHA) III ja VI osakonnana; 2) Saksa Riigi Salapolitsei – Geheime Staatspolitzei (Gestapo), mis alates 1939. aastast tegutses SS-i Riigi Julgeoleku Peaameti (RSHA) IV osakonnana; 3) Saksa Riigi relvajõudude ülemjuhatuse staabi juures asuv luureamet (Abwehr), mis 1944. aasta juulist tegutses SS-i Riigi Julgeoleku Peaameti (RSHA) IV ja VI osakonna ning Sõjaväeameti (Militärisches Amt) alluvuses. (2) Julgeoleku- ja luureorganid käesoleva seaduse mõistes on NSV Liidu julgeolekuorganid ning relvajõudude luure- ja vastuluureorganid ning nendele alluvad struktuurid: 1) NSV Liidu Siseasjade Rahvakomissariaadi (Narodnõi Komissariat Vnutrennihh Del) koosseisu kuulunud Riikliku Julgeoleku Peavalitsus – GUGB (Glavnoje Upravlenije Gossudarstvennoi Bezopasnosti), mis eksisteeris 1934. aasta 10. juulist kuni 1941. aasta 3. veebruarini ja 1941. aasta 20. juulist kuni 1943. aasta 14. aprillini; 2) NSV Liidu Riikliku Julgeoleku Rahvakomissariaat – NKGB (Narodnõi Komissariat Gossudarstvennoi Bezopasnosti), mis eksisteeris 1941. aasta 3. veebruarist kuni 20. juulini ja 1943. aasta 14. aprillist kuni 1946. aasta 15. märtsini; 3) NSV Liidu Kaitse Rahvakomissariaadi Vastuluure Peavalitsus (Glavnoje Kontrrazvedõvatelnoje Upravlenije Narodnogo Komissariata Oboronõ – «Smerš»), mis eksisteeris 1943. aasta 14. aprillist kuni 1946. aasta maini; 4) NSV Liidu Julgeoleku Ministeerium – MGB (Ministerstvo Gosudarstvennoi Bezopasnosti), mis eksisteeris 1946. aasta 15. märtsist kuni 1953. aasta 15. märtsini; 5) NSV Liidu Siseasjade Ministeeriumi (Ministerstvo Vnutrennihh Del) koosseisu kuulunud Riikliku Julgeoleku Peavalitsus – GUGB, mis eksisteeris 1953. aasta 15. märtsist kuni 1954. aasta 13. märtsini; 6) NSV Liidu Riikliku Julgeoleku Komitee – KGB (Komitet Gossudarstvennoi Bezopasnosti), mis moodustati 1954. aasta 13. märtsil; 7) NSV Liidu Kindralstaabi Luure Peavalitsus – GRU (Glavnoje Razvedõvatelnoje Upravlenije); 8) NSV Liidu armee, sõjalaevastiku ja piirivalvevägede eriosakonnad.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
       },
@@ -261,11 +321,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Julgeoleku- ja luureorganid käesoleva seaduse mõistes on Saksa Riigi julgeolekuorganid ning relvajõudude luure- ja vastuluureorganid ning nendele alluvad struktuurid: Saksa Riigi Julgeolekupolitsei – Sicherheitspolizei (SiPo) ja Saksa Riigi Julgeolekuteenistus – Sicherheitsdienst (SD), mis alates 1939. aastast tegutses SS-i Riigi Julgeoleku Peaameti – Reichs Sicherheits Hauptamt (RSHA) III ja VI osakonnana; Saksa Riigi Salapolitsei – Geheime Staatspolitzei (Gestapo), mis alates 1939. aastast tegutses SS-i Riigi Julgeoleku Peaameti (RSHA) IV osakonnana; Saksa Riigi relvajõudude ülemjuhatuse staabi juures asuv luureamet (Abwehr), mis 1944. aasta juulist tegutses SS-i Riigi Julgeoleku Peaameti (RSHA) IV ja VI osakonna ning Sõjaväeameti (Militärisches Amt) alluvuses.",
+      "estleg:legalText": "(1) Julgeoleku- ja luureorganid käesoleva seaduse mõistes on Saksa Riigi julgeolekuorganid ning relvajõudude luure- ja vastuluureorganid ning nendele alluvad struktuurid: 1) Saksa Riigi Julgeolekupolitsei – Sicherheitspolizei (SiPo) ja Saksa Riigi Julgeolekuteenistus – Sicherheitsdienst (SD), mis alates 1939. aastast tegutses SS-i Riigi Julgeoleku Peaameti – Reichs Sicherheits Hauptamt (RSHA) III ja VI osakonnana; 2) Saksa Riigi Salapolitsei – Geheime Staatspolitzei (Gestapo), mis alates 1939. aastast tegutses SS-i Riigi Julgeoleku Peaameti (RSHA) IV osakonnana; 3) Saksa Riigi relvajõudude ülemjuhatuse staabi juures asuv luureamet (Abwehr), mis 1944. aasta juulist tegutses SS-i Riigi Julgeoleku Peaameti (RSHA) IV ja VI osakonna ning Sõjaväeameti (Militärisches Amt) alluvuses.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_2"
       },
       "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -283,11 +348,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Julgeoleku- ja luureorganid käesoleva seaduse mõistes on NSV Liidu julgeolekuorganid ning relvajõudude luure- ja vastuluureorganid ning nendele alluvad struktuurid: NSV Liidu Siseasjade Rahvakomissariaadi (Narodnõi Komissariat Vnutrennihh Del) koosseisu kuulunud Riikliku Julgeoleku Peavalitsus – GUGB (Glavnoje Upravlenije Gossudarstvennoi Bezopasnosti), mis eksisteeris 1934. aasta 10. juulist kuni 1941. aasta 3. veebruarini ja 1941. aasta 20. juulist kuni 1943. aasta 14. aprillini; NSV Liidu Riikliku Julgeoleku Rahvakomissariaat – NKGB (Narodnõi Komissariat Gossudarstvennoi Bezopasnosti), mis eksisteeris 1941. aasta 3. veebruarist kuni 20. juulini ja 1943. aasta 14. aprillist kuni 1946. aasta 15. märtsini; NSV Liidu Kaitse Rahvakomissariaadi Vastuluure Peavalitsus (Glavnoje Kontrrazvedõvatelnoje Upravlenije Narodnogo Komissariata Oboronõ – «Smerš»), mis eksisteeris 1943. aasta 14. aprillist kuni 1946. aasta maini; NSV Liidu Julgeoleku Ministeerium – MGB (Ministerstvo Gosudarstvennoi Bezopasnosti), mis eksisteeris 1946. aasta 15. märtsist kuni 1953. aasta 15. märtsini; NSV Liidu Siseasjade Ministeeriumi (Ministerstvo Vnutrennihh Del) koosseisu kuulunud Riikliku Julgeoleku Peavalitsus – GUGB, mis eksisteeris 1953. aasta 15. märtsist kuni 1954. aasta 13. märtsini; NSV Liidu Riikliku Julgeoleku Komitee – KGB (Komitet Gossudarstvennoi Bezopasnosti), mis moodustati 1954. aasta 13. märtsil; NSV Liidu Kindralstaabi Luure Peavalitsus – GRU (Glavnoje Razvedõvatelnoje Upravlenije); NSV Liidu armee, sõjalaevastiku ja piirivalvevägede eriosakonnad.",
+      "estleg:legalText": "(2) Julgeoleku- ja luureorganid käesoleva seaduse mõistes on NSV Liidu julgeolekuorganid ning relvajõudude luure- ja vastuluureorganid ning nendele alluvad struktuurid: 1) NSV Liidu Siseasjade Rahvakomissariaadi (Narodnõi Komissariat Vnutrennihh Del) koosseisu kuulunud Riikliku Julgeoleku Peavalitsus – GUGB (Glavnoje Upravlenije Gossudarstvennoi Bezopasnosti), mis eksisteeris 1934. aasta 10. juulist kuni 1941. aasta 3. veebruarini ja 1941. aasta 20. juulist kuni 1943. aasta 14. aprillini; 2) NSV Liidu Riikliku Julgeoleku Rahvakomissariaat – NKGB (Narodnõi Komissariat Gossudarstvennoi Bezopasnosti), mis eksisteeris 1941. aasta 3. veebruarist kuni 20. juulini ja 1943. aasta 14. aprillist kuni 1946. aasta 15. märtsini; 3) NSV Liidu Kaitse Rahvakomissariaadi Vastuluure Peavalitsus (Glavnoje Kontrrazvedõvatelnoje Upravlenije Narodnogo Komissariata Oboronõ – «Smerš»), mis eksisteeris 1943. aasta 14. aprillist kuni 1946. aasta maini; 4) NSV Liidu Julgeoleku Ministeerium – MGB (Ministerstvo Gosudarstvennoi Bezopasnosti), mis eksisteeris 1946. aasta 15. märtsist kuni 1953. aasta 15. märtsini; 5) NSV Liidu Siseasjade Ministeeriumi (Ministerstvo Vnutrennihh Del) koosseisu kuulunud Riikliku Julgeoleku Peavalitsus – GUGB, mis eksisteeris 1953. aasta 15. märtsist kuni 1954. aasta 13. märtsini; 6) NSV Liidu Riikliku Julgeoleku Komitee – KGB (Komitet Gossudarstvennoi Bezopasnosti), mis moodustati 1954. aasta 13. märtsil; 7) NSV Liidu Kindralstaabi Luure Peavalitsus – GRU (Glavnoje Razvedõvatelnoje Upravlenije); 8) NSV Liidu armee, sõjalaevastiku ja piirivalvevägede eriosakonnad.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_2"
       },
       "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -308,13 +383,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik",
+      "rdfs:label": {
+        "@value": "§ 3. Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik on käesoleva seaduse mõistes: Eesti Vabariigi kodanik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17. juunist kuni 1991. aasta 31. detsembrini ja elab Eesti Vabariigi jurisdiktsioonile alluval territooriumil; välismaalane või kodakondsuseta isik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17.",
-      "estleg:legalText": "Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik on käesoleva seaduse mõistes: Eesti Vabariigi kodanik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17. juunist kuni 1991. aasta 31. detsembrini ja elab Eesti Vabariigi jurisdiktsioonile alluval territooriumil; välismaalane või kodakondsuseta isik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17. juunist kuni 1991. aasta 31. detsembrini ja elab Eesti Vabariigi jurisdiktsioonile alluval territooriumil.",
+      "estleg:summary": {
+        "@value": "Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik on käesoleva seaduse mõistes: 1) Eesti Vabariigi kodanik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17. juunist kuni 1991. aasta 31. detsembrini ja elab Eesti Vabariigi jurisdiktsioonile alluval territooriumil; 2) välismaalane või kodakondsuseta isik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik on käesoleva seaduse mõistes: 1) Eesti Vabariigi kodanik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17. juunist kuni 1991. aasta 31. detsembrini ja elab Eesti Vabariigi jurisdiktsioonile alluval territooriumil; 2) välismaalane või kodakondsuseta isik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17. juunist kuni 1991. aasta 31. detsembrini ja elab Eesti Vabariigi jurisdiktsioonile alluval territooriumil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
       },
@@ -344,10 +425,16 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik on käesoleva seaduse mõistes: Eesti Vabariigi kodanik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17. juunist kuni 1991. aasta 31. detsembrini ja elab Eesti Vabariigi jurisdiktsioonile alluval territooriumil; välismaalane või kodakondsuseta isik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17. juunist kuni 1991. aasta 31. detsembrini ja elab Eesti Vabariigi jurisdiktsioonile alluval territooriumil.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik on käesoleva seaduse mõistes: 1) Eesti Vabariigi kodanik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17. juunist kuni 1991. aasta 31. detsembrini ja elab Eesti Vabariigi jurisdiktsioonile alluval territooriumil; 2) välismaalane või kodakondsuseta isik, kes oli julgeoleku- või luureorgani teenistuses või tegi sellega koostööd ajavahemikus 1940. aasta 17. juunist kuni 1991. aasta 31. detsembrini ja elab Eesti Vabariigi jurisdiktsioonile alluval territooriumil.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -365,12 +452,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Julgeoleku- või luureorgani teenistuses olemine või sellega koostöö tegemine",
+      "rdfs:label": {
+        "@value": "§ 4. Julgeoleku- või luureorgani teenistuses olemine või sellega koostöö tegemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "(1) Julgeoleku- või luureorgani teenistuses olemine käesoleva seaduse mõistes on töötamine julgeoleku- või luureorgani koosseisulise töötajana. (2) Julgeoleku- või luureorganiga koostöö tegemine käesoleva seaduse mõistes on julgeoleku- või luureorgani agendiks, residendiks, kohtumis- või konspiratiivkorteri pidajaks või usaldusisikuks olemine või muul moel teadlikult ja vabatahtlikult selle organiga koostöö tegemine. Agendiks, residendiks, kohtumis- või konspiratiivkorteri pidajaks või",
+      "estleg:summary": {
+        "@value": "(1) Julgeoleku- või luureorgani teenistuses olemine käesoleva seaduse mõistes on töötamine julgeoleku- või luureorgani koosseisulise töötajana. (2) Julgeoleku- või luureorganiga koostöö tegemine käesoleva seaduse mõistes on julgeoleku- või luureorgani agendiks, residendiks, kohtumis- või konspiratiivkorteri pidajaks või usaldusisikuks olemine või muul moel teadlikult ja vabatahtlikult selle organiga koostöö tegemine. Agendiks, residendiks, kohtumis- või konspiratiivkorteri pidajaks või",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Julgeoleku- või luureorgani teenistuses olemine käesoleva seaduse mõistes on töötamine julgeoleku- või luureorgani koosseisulise töötajana. (2) Julgeoleku- või luureorganiga koostöö tegemine käesoleva seaduse mõistes on julgeoleku- või luureorgani agendiks, residendiks, kohtumis- või konspiratiivkorteri pidajaks või usaldusisikuks olemine või muul moel teadlikult ja vabatahtlikult selle organiga koostöö tegemine. Agendiks, residendiks, kohtumis- või konspiratiivkorteri pidajaks või usaldusisikuks loetakse isik, kes tegi koostööd või andis nõusoleku koostööks julgeoleku- või luureorganiga, ilma et ta oleks olnud viimasega tööõiguslikes suhetes. Isiku koostöö julgeoleku- või luureorganiga loetakse tõendatuks vastavale kohustusele (nõusolekule) või tema poolt sellele organile adresseeritud koostööd väljendavale ettekandele allkirja andmisega või koostöö eest rahalise või muu hüvituse saamisega, samuti muude seaduses ettenähtud korras hinnatud tõenditega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
@@ -449,13 +542,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Arvelevõtmine",
+      "rdfs:label": {
+        "@value": "§ 5. Arvelevõtmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "(1) Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik võetakse arvele Riigi Kaitsepolitseiameti (edaspidi Kaitsepolitseiamet) poolt. (2) Arvelevõtmise aluseks on: ühe aasta jooksul pärast käesoleva seaduse jõustumist Kaitsepolitseiametile esitatud isiklik ülestunnistus julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta; isikute kirjalikud avaldused koos tõenditega teiste isikute kohta, kes olid julgeoleku- või luureorgani teenistuses",
-      "estleg:legalText": "(1) Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik võetakse arvele Riigi Kaitsepolitseiameti (edaspidi Kaitsepolitseiamet) poolt. (2) Arvelevõtmise aluseks on: ühe aasta jooksul pärast käesoleva seaduse jõustumist Kaitsepolitseiametile esitatud isiklik ülestunnistus julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta; isikute kirjalikud avaldused koos tõenditega teiste isikute kohta, kes olid julgeoleku- või luureorgani teenistuses või tegid sellega koostööd; materjalid, mis tõendavad isiku julgeoleku- või luureorgani teenistuses olemist või sellega koostöö tegemist. (3) Käesoleva paragrahvi 2. lõike punktis 2 nimetatud tõendite tõesuse ja piisavuse üle isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta isiku arvelevõtmiseks otsustab Kaitsepolitseiamet. (4) Käesoleva paragrahvi 2. lõike punktis 1 nimetatud ülestunnistuse protseduuri korra töötab välja ja avalikustab ühe kuu jooksul pärast käesoleva seaduse avaldamist Riigi Teatajas. (5) Kaitsepolitseiamet on kohustatud edastama andmed, mis vaidlustavad isiku poolt antud süümevande, kui isik pole vaidlustanud käesoleva seaduse § 8 2. lõikes nimetatud Kaitsepolitsei teadet § 8 4. lõikes sätestatud tähtaja jooksul või pärast seda, kui jõustunud kohtulahendiga on tuvastatud isiku julgeoleku- või luureorgani teenistuses olemine või sellega koostöö tegemine, Riigiprokuratuurile, kellel lasub vastavalt Prokuratuuri seadusele ja Eesti Vabariigi seadusele «Süümevande andmise korra kohta» kohustus vaidlustada süümevanne kohtus.",
+      "estleg:summary": {
+        "@value": "(1) Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik võetakse arvele Riigi Kaitsepolitseiameti (edaspidi Kaitsepolitseiamet) poolt. (2) Arvelevõtmise aluseks on: 1) ühe aasta jooksul pärast käesoleva seaduse jõustumist Kaitsepolitseiametile esitatud isiklik ülestunnistus julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta; 2) isikute kirjalikud avaldused koos tõenditega teiste isikute kohta, kes olid julgeoleku- või luureorgani",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik võetakse arvele Riigi Kaitsepolitseiameti (edaspidi Kaitsepolitseiamet) poolt. (2) Arvelevõtmise aluseks on: 1) ühe aasta jooksul pärast käesoleva seaduse jõustumist Kaitsepolitseiametile esitatud isiklik ülestunnistus julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta; 2) isikute kirjalikud avaldused koos tõenditega teiste isikute kohta, kes olid julgeoleku- või luureorgani teenistuses või tegid sellega koostööd; 3) materjalid, mis tõendavad isiku julgeoleku- või luureorgani teenistuses olemist või sellega koostöö tegemist. (3) Käesoleva paragrahvi 2. lõike punktis 2 nimetatud tõendite tõesuse ja piisavuse üle isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta isiku arvelevõtmiseks otsustab Kaitsepolitseiamet. (4) Käesoleva paragrahvi 2. lõike punktis 1 nimetatud ülestunnistuse protseduuri korra töötab välja ja avalikustab Vabariigi Valitsus ühe kuu jooksul pärast käesoleva seaduse avaldamist Riigi Teatajas. (5) Kaitsepolitseiamet on kohustatud edastama andmed, mis vaidlustavad isiku poolt antud süümevande, kui isik pole vaidlustanud käesoleva seaduse § 8 2. lõikes nimetatud Kaitsepolitsei teadet § 8 4. lõikes sätestatud tähtaja jooksul või pärast seda, kui jõustunud kohtulahendiga on tuvastatud isiku julgeoleku- või luureorgani teenistuses olemine või sellega koostöö tegemine, Riigiprokuratuurile, kellel lasub vastavalt Prokuratuuri seadusele ja Eesti Vabariigi seadusele «Süümevande andmise korra kohta» kohustus vaidlustada süümevanne kohtus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
       },
@@ -478,9 +577,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -488,7 +584,24 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kaitsepolitseiamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:OkupS_Map"
+        },
         {
           "@id": "estleg:OkupS_Par_7"
         },
@@ -509,13 +622,7 @@
         {
           "@id": "estleg:OkupS_Par_5_v13311741"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kaitsepolitseiamet"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:OkupS_Par_5_Lg_1",
@@ -551,11 +658,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Arvelevõtmise aluseks on: ühe aasta jooksul pärast käesoleva seaduse jõustumist Kaitsepolitseiametile esitatud isiklik ülestunnistus julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta; isikute kirjalikud avaldused koos tõenditega teiste isikute kohta, kes olid julgeoleku- või luureorgani teenistuses või tegid sellega koostööd; materjalid, mis tõendavad isiku julgeoleku- või luureorgani teenistuses olemist või sellega koostöö tegemist.",
+      "estleg:legalText": "(2) Arvelevõtmise aluseks on: 1) ühe aasta jooksul pärast käesoleva seaduse jõustumist Kaitsepolitseiametile esitatud isiklik ülestunnistus julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta; 2) isikute kirjalikud avaldused koos tõenditega teiste isikute kohta, kes olid julgeoleku- või luureorgani teenistuses või tegid sellega koostööd; 3) materjalid, mis tõendavad isiku julgeoleku- või luureorgani teenistuses olemist või sellega koostöö tegemist.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_5"
       },
       "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -607,12 +719,26 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Käesoleva paragrahvi 2. lõike punktis 1 nimetatud ülestunnistuse protseduuri korra töötab välja ja avalikustab ühe kuu jooksul pärast käesoleva seaduse avaldamist Riigi Teatajas.",
+      "estleg:legalText": "(4) Käesoleva paragrahvi 2. lõike punktis 1 nimetatud ülestunnistuse protseduuri korra töötab välja ja avalikustab Vabariigi Valitsus ühe kuu jooksul pärast käesoleva seaduse avaldamist Riigi Teatajas.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_5"
       },
       "rdfs:label": "§ 5 lg 4",
-      "estleg:itemNumber": "1"
+      "estleg:itemNumber": "1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:OkupS_Par_5_Lg_5",
@@ -626,9 +752,6 @@
         "@id": "estleg:OkupS_Par_5"
       },
       "rdfs:label": "§ 5 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -643,6 +766,9 @@
           "@id": "estleg:OkupS_Par_8"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kaitsepolitseiamet"
@@ -656,13 +782,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Ülestunnistus",
+      "rdfs:label": {
+        "@value": "§ 6. Ülestunnistus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "(1) Ülestunnistuses Kaitsepolitseiametile julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta annab selle esitaja enda kohta järgmised andmed: isiku nimi, ees- ja isanimi ning teised isiku poolt kasutatud nimed; sünniaeg; sünnikoht; elukoht julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise ajal ja ülestunnistuse esitamise ajal; julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega ta koostööd tegi; kellena isik",
-      "estleg:legalText": "(1) Ülestunnistuses Kaitsepolitseiametile julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta annab selle esitaja enda kohta järgmised andmed: isiku nimi, ees- ja isanimi ning teised isiku poolt kasutatud nimed; sünniaeg; sünnikoht; elukoht julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise ajal ja ülestunnistuse esitamise ajal; julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega ta koostööd tegi; kellena isik julgeoleku- või luureorgani teenistuses oli või selle organiga koostööd tegi; julgeoleku- või luureorgani teenistuses olemise või selle organiga koostöö tegemise aeg; isiku tegevus ülestunnistuse tegemise ajal; muu informatsioon oma tegevuse kohta julgeoleku- või luureorganis, välja arvatud teave, mida võidakse kasutada tema enda või tema lähedaste vastu. (2) Kui isik keeldub andmast käesoleva paragrahvi 1. lõikes sätestatud teavet või annab teadlikult vale teavet, avalikustatakse tema isik käesolevas seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "(1) Ülestunnistuses Kaitsepolitseiametile julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta annab selle esitaja enda kohta järgmised andmed: 1) isiku nimi, ees- ja isanimi ning teised isiku poolt kasutatud nimed; 2) sünniaeg; 3) sünnikoht; 4) elukoht julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise ajal ja ülestunnistuse esitamise ajal; 5) julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega ta koostööd tegi; 6)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ülestunnistuses Kaitsepolitseiametile julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta annab selle esitaja enda kohta järgmised andmed: 1) isiku nimi, ees- ja isanimi ning teised isiku poolt kasutatud nimed; 2) sünniaeg; 3) sünnikoht; 4) elukoht julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise ajal ja ülestunnistuse esitamise ajal; 5) julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega ta koostööd tegi; 6) kellena isik julgeoleku- või luureorgani teenistuses oli või selle organiga koostööd tegi; 7) julgeoleku- või luureorgani teenistuses olemise või selle organiga koostöö tegemise aeg; 8) isiku tegevus ülestunnistuse tegemise ajal; 9) muu informatsioon oma tegevuse kohta julgeoleku- või luureorganis, välja arvatud teave, mida võidakse kasutada tema enda või tema lähedaste vastu. (2) Kui isik keeldub andmast käesoleva paragrahvi 1. lõikes sätestatud teavet või annab teadlikult vale teavet, avalikustatakse tema isik käesolevas seaduses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
       },
@@ -683,6 +815,11 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kaitsepolitseiamet"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:OkupS_Par_7_Lg_2"
@@ -691,11 +828,6 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:OkupS_Par_6_v184536"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kaitsepolitseiamet"
         }
       ]
     },
@@ -706,11 +838,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Ülestunnistuses Kaitsepolitseiametile julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta annab selle esitaja enda kohta järgmised andmed: isiku nimi, ees- ja isanimi ning teised isiku poolt kasutatud nimed; sünniaeg; sünnikoht; elukoht julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise ajal ja ülestunnistuse esitamise ajal; julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega ta koostööd tegi; kellena isik julgeoleku- või luureorgani teenistuses oli või selle organiga koostööd tegi; julgeoleku- või luureorgani teenistuses olemise või selle organiga koostöö tegemise aeg; isiku tegevus ülestunnistuse tegemise ajal; muu informatsioon oma tegevuse kohta julgeoleku- või luureorganis, välja arvatud teave, mida võidakse kasutada tema enda või tema lähedaste vastu.",
+      "estleg:legalText": "(1) Ülestunnistuses Kaitsepolitseiametile julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta annab selle esitaja enda kohta järgmised andmed: 1) isiku nimi, ees- ja isanimi ning teised isiku poolt kasutatud nimed; 2) sünniaeg; 3) sünnikoht; 4) elukoht julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise ajal ja ülestunnistuse esitamise ajal; 5) julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega ta koostööd tegi; 6) kellena isik julgeoleku- või luureorgani teenistuses oli või selle organiga koostööd tegi; 7) julgeoleku- või luureorgani teenistuses olemise või selle organiga koostöö tegemise aeg; 8) isiku tegevus ülestunnistuse tegemise ajal; 9) muu informatsioon oma tegevuse kohta julgeoleku- või luureorganis, välja arvatud teave, mida võidakse kasutada tema enda või tema lähedaste vastu.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_6"
       },
       "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -755,12 +898,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Avalikustamise alus",
+      "rdfs:label": {
+        "@value": "§ 7. Avalikustamise alus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "(1) Isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise avalikustamise aluseks on dokumendid (arhiivitoimikud, kartoteegid, agentuurkaardid või nende koopiad, ettekanded, käskkirjad, finants- või asjaajamisdokumendid, kirjavahetus, helilindid, filmid, fotod või muud teabekandjad) selle teenistuse või koostöö kohta. (2) Käesoleva seaduse § 5 2. lõike punkti 1 alusel arvelevõetud isiku avalikustamine võib toimuda ainult tema kirjaliku nõusoleku alusel, välja arvatud",
+      "estleg:summary": {
+        "@value": "(1) Isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise avalikustamise aluseks on dokumendid (arhiivitoimikud, kartoteegid, agentuurkaardid või nende koopiad, ettekanded, käskkirjad, finants- või asjaajamisdokumendid, kirjavahetus, helilindid, filmid, fotod või muud teabekandjad) selle teenistuse või koostöö kohta. (2) Käesoleva seaduse § 5 2. lõike punkti 1 alusel arvelevõetud isiku avalikustamine võib toimuda ainult tema kirjaliku nõusoleku alusel, välja arvatud",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise avalikustamise aluseks on dokumendid (arhiivitoimikud, kartoteegid, agentuurkaardid või nende koopiad, ettekanded, käskkirjad, finants- või asjaajamisdokumendid, kirjavahetus, helilindid, filmid, fotod või muud teabekandjad) selle teenistuse või koostöö kohta. (2) Käesoleva seaduse § 5 2. lõike punkti 1 alusel arvelevõetud isiku avalikustamine võib toimuda ainult tema kirjaliku nõusoleku alusel, välja arvatud käesoleva seaduse § 6 2. lõikes ja § 8 1. lõikes sätestatud juhtudel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
@@ -778,9 +927,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -790,6 +936,9 @@
           "@id": "estleg:OkupS_Par_5"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:OkupS_Par_7_v184536"
@@ -834,9 +983,6 @@
       },
       "rdfs:label": "§ 7 lg 2",
       "estleg:itemNumber": "1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -846,11 +992,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:OkupS_Par_6"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:OkupS_Par_5"
@@ -858,7 +999,15 @@
         {
           "@id": "estleg:OkupS_Par_6"
         }
-      ]
+      ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:OkupS_Par_6"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:OkupS_Par_8",
@@ -867,13 +1016,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Avalikustamine",
+      "rdfs:label": {
+        "@value": "§ 8. Avalikustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "(1) Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik, välja arvatud käesoleva seaduse § 5 2. lõike punktis 1 märgitud tähtajaks ja korras ülestunnistuse esitanud isik, avalikustatakse pärast ühe aasta möödumist käesoleva seaduse jõustumisest Kaitsepolitseiameti teadaandena Riigi Teatajas. Avalikustatakse ka isik, kes on teinud käesoleva seaduse § 5 2. lõike punktis 1 märgitud tähtajaks ja korras isikliku ülestunnistuse, kui tema kohta käivad andmed ei ole",
-      "estleg:legalText": "(1) Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik, välja arvatud käesoleva seaduse § 5 2. lõike punktis 1 märgitud tähtajaks ja korras ülestunnistuse esitanud isik, avalikustatakse pärast ühe aasta möödumist käesoleva seaduse jõustumisest Kaitsepolitseiameti teadaandena Riigi Teatajas. Avalikustatakse ka isik, kes on teinud käesoleva seaduse § 5 2. lõike punktis 1 märgitud tähtajaks ja korras isikliku ülestunnistuse, kui tema kohta käivad andmed ei ole riigisaladus. (2) Enne teadaande avaldamiseks esitamist tehakse selle tekst isikule teatavaks Kaitsepolitseiameti teatega, milles antakse teada ka isiku õigused vastavalt käesoleva paragrahvi 4. lõikele. (3) Teade tehakse isikule teatavaks kättetoimetamisega Kaitsepolitseiameti poolt. (4) Teate saanud isikul on õigus ühe kuu jooksul pärast teate saamist: tutvuda Kaitsepolitseiametis dokumentidega, mis tõendavad tema julgeoleku- või luureorgani teenistuses olemist või sellega koostöö tegemist, kusjuures talle ei tutvustata dokumentides esinevate teiste isikute nimesid; vaidlustada saadud teates sisalduv informatsioon isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta Kaitsepolitseiametile esitatud kirjalikus avalduses või kohtus, kusjuures isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise tõendamise kohustus kohtus lasub Kaitsepolitseiametil. (5) Isikut, kelle puhul on jõustunud kohtulahendiga tunnistatud alusetuks Kaitsepolitseiameti teade tema julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta, ei avalikustata käesoleva paragrahvi 1. lõikes sätestatud korras ning ta kustutatakse Kaitsepolitseiametis arvelt ja tema arvelevõtmise aluseks olnud dokumendid tagastatakse nende arhiivilise kuuluvuse järgi.",
+      "estleg:summary": {
+        "@value": "(1) Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik, välja arvatud käesoleva seaduse § 5 2. lõike punktis 1 märgitud tähtajaks ja korras ülestunnistuse esitanud isik, avalikustatakse pärast ühe aasta möödumist käesoleva seaduse jõustumisest Kaitsepolitseiameti teadaandena Riigi Teatajas. Avalikustatakse ka isik, kes on teinud käesoleva seaduse § 5 2. lõike punktis 1 märgitud tähtajaks ja korras isikliku ülestunnistuse, kui tema kohta käivad andmed ei ole",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isik, välja arvatud käesoleva seaduse § 5 2. lõike punktis 1 märgitud tähtajaks ja korras ülestunnistuse esitanud isik, avalikustatakse pärast ühe aasta möödumist käesoleva seaduse jõustumisest Kaitsepolitseiameti teadaandena Riigi Teatajas. Avalikustatakse ka isik, kes on teinud käesoleva seaduse § 5 2. lõike punktis 1 märgitud tähtajaks ja korras isikliku ülestunnistuse, kui tema kohta käivad andmed ei ole riigisaladus. (2) Enne teadaande avaldamiseks esitamist tehakse selle tekst isikule teatavaks Kaitsepolitseiameti teatega, milles antakse teada ka isiku õigused vastavalt käesoleva paragrahvi 4. lõikele. (3) Teade tehakse isikule teatavaks kättetoimetamisega Kaitsepolitseiameti poolt. (4) Teate saanud isikul on õigus ühe kuu jooksul pärast teate saamist: 1) tutvuda Kaitsepolitseiametis dokumentidega, mis tõendavad tema julgeoleku- või luureorgani teenistuses olemist või sellega koostöö tegemist, kusjuures talle ei tutvustata dokumentides esinevate teiste isikute nimesid; 2) vaidlustada saadud teates sisalduv informatsioon isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta Kaitsepolitseiametile esitatud kirjalikus avalduses või kohtus, kusjuures isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise tõendamise kohustus kohtus lasub Kaitsepolitseiametil. (5) Isikut, kelle puhul on jõustunud kohtulahendiga tunnistatud alusetuks Kaitsepolitseiameti teade tema julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta, ei avalikustata käesoleva paragrahvi 1. lõikes sätestatud korras ning ta kustutatakse Kaitsepolitseiametis arvelt ja tema arvelevõtmise aluseks olnud dokumendid tagastatakse nende arhiivilise kuuluvuse järgi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
       },
@@ -896,9 +1051,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -911,6 +1063,15 @@
           "@id": "estleg:OkupS_Par_5"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kaitsepolitseiamet"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:referencedBy": [
         {
           "@id": "estleg:OkupS_Par_5_Lg_5"
@@ -923,13 +1084,7 @@
         {
           "@id": "estleg:OkupS_Par_8_v13311741"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kaitsepolitseiamet"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:OkupS_Par_8_Lg_1",
@@ -1026,14 +1181,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Teate saanud isikul on õigus ühe kuu jooksul pärast teate saamist: tutvuda Kaitsepolitseiametis dokumentidega, mis tõendavad tema julgeoleku- või luureorgani teenistuses olemist või sellega koostöö tegemist, kusjuures talle ei tutvustata dokumentides esinevate teiste isikute nimesid; vaidlustada saadud teates sisalduv informatsioon isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta Kaitsepolitseiametile esitatud kirjalikus avalduses või kohtus, kusjuures isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise tõendamise kohustus kohtus lasub Kaitsepolitseiametil.",
+      "estleg:legalText": "(4) Teate saanud isikul on õigus ühe kuu jooksul pärast teate saamist: 1) tutvuda Kaitsepolitseiametis dokumentidega, mis tõendavad tema julgeoleku- või luureorgani teenistuses olemist või sellega koostöö tegemist, kusjuures talle ei tutvustata dokumentides esinevate teiste isikute nimesid; 2) vaidlustada saadud teates sisalduv informatsioon isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise kohta Kaitsepolitseiametile esitatud kirjalikus avalduses või kohtus, kusjuures isiku julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise tõendamise kohustus kohtus lasub Kaitsepolitseiametil.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_8"
       },
       "rdfs:label": "§ 8 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1042,6 +1198,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1083,13 +1242,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8¹.",
-      "rdfs:label": "§ 8¹. Isikute väljakutsumine",
+      "rdfs:label": {
+        "@value": "§ 8¹. Isikute väljakutsumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "(1) Kaitsepolitseiametil on õigus välja kutsuda ja küsitleda isikuid julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku väljaselgitamiseks, arvelevõtmiseks ning julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise asjaolude väljaselgitamiseks, kui on põhjendatud alus arvata, et: väljakutsutav isik on olnud julgeoleku- või luureorgani teenistuses või sellega koostööd teinud või väljakutsutavale isikule on ametikohast tulenevalt või muudel",
-      "estleg:legalText": "(1) Kaitsepolitseiametil on õigus välja kutsuda ja küsitleda isikuid julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku väljaselgitamiseks, arvelevõtmiseks ning julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise asjaolude väljaselgitamiseks, kui on põhjendatud alus arvata, et: väljakutsutav isik on olnud julgeoleku- või luureorgani teenistuses või sellega koostööd teinud või väljakutsutavale isikule on ametikohast tulenevalt või muudel asjaoludel teatavaks saanud teise isiku seotus julgeoleku- või luureorganiga. (2) Väljakutsutud isikul on haldusmenetluse seaduses sätestatud tunnistaja õigused. (3) Kaitsepolitseiametniku kutse peale mõjuva põhjuseta mitteilmumise eest rakendatakse sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras. (4) Käesoleva paragrahvi lõikes 3 nimetatud sunniraha ülemmäär on 640 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Kaitsepolitseiametil on õigus välja kutsuda ja küsitleda isikuid julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku väljaselgitamiseks, arvelevõtmiseks ning julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise asjaolude väljaselgitamiseks, kui on põhjendatud alus arvata, et: 1) väljakutsutav isik on olnud julgeoleku- või luureorgani teenistuses või sellega koostööd teinud või 2) väljakutsutavale isikule on ametikohast tulenevalt või",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kaitsepolitseiametil on õigus välja kutsuda ja küsitleda isikuid julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku väljaselgitamiseks, arvelevõtmiseks ning julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise asjaolude väljaselgitamiseks, kui on põhjendatud alus arvata, et: 1) väljakutsutav isik on olnud julgeoleku- või luureorgani teenistuses või sellega koostööd teinud või 2) väljakutsutavale isikule on ametikohast tulenevalt või muudel asjaoludel teatavaks saanud teise isiku seotus julgeoleku- või luureorganiga. (2) Väljakutsutud isikul on haldusmenetluse seaduses sätestatud tunnistaja õigused. (3) Kaitsepolitseiametniku kutse peale mõjuva põhjuseta mitteilmumise eest rakendatakse sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras. (4) Käesoleva paragrahvi lõikes 3 nimetatud sunniraha ülemmäär on 640 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
       },
@@ -1115,13 +1280,19 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kaitsepolitseiamet"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:hasSanction": [
         {
           "@id": "estleg:Sanction_OkupS_Par_8_1_coercive_payment"
@@ -1138,13 +1309,7 @@
         {
           "@id": "estleg:OkupS_Par_8_1_v13315029"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kaitsepolitseiamet"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:OkupS_Par_8_1_Lg_1",
@@ -1153,14 +1318,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kaitsepolitseiametil on õigus välja kutsuda ja küsitleda isikuid julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku väljaselgitamiseks, arvelevõtmiseks ning julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise asjaolude väljaselgitamiseks, kui on põhjendatud alus arvata, et: väljakutsutav isik on olnud julgeoleku- või luureorgani teenistuses või sellega koostööd teinud või väljakutsutavale isikule on ametikohast tulenevalt või muudel asjaoludel teatavaks saanud teise isiku seotus julgeoleku- või luureorganiga.",
+      "estleg:legalText": "(1) Kaitsepolitseiametil on õigus välja kutsuda ja küsitleda isikuid julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku väljaselgitamiseks, arvelevõtmiseks ning julgeoleku- või luureorgani teenistuses olemise või sellega koostöö tegemise asjaolude väljaselgitamiseks, kui on põhjendatud alus arvata, et: 1) väljakutsutav isik on olnud julgeoleku- või luureorgani teenistuses või sellega koostööd teinud või 2) väljakutsutavale isikule on ametikohast tulenevalt või muudel asjaoludel teatavaks saanud teise isiku seotus julgeoleku- või luureorganiga.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_8_1"
       },
       "rdfs:label": "§ 8¹ lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1169,6 +1335,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       },
       "estleg:competentAuthority": [
         {
@@ -1253,13 +1422,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Kaitsepolitseiameti teadaanne",
+      "rdfs:label": {
+        "@value": "§ 9. Kaitsepolitseiameti teadaanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "(1) Kaitsepolitseiameti teadaandes Riigi Teatajas avalikustatakse julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku: nimi ja eesnimi; sünniaeg; sünnikoht; tegevus või töökoht avalikustamise hetkel; julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega isik koostööd tegi; kellena isik julgeoleku- või luureorgani teenistuses oli või koostööd tegi. (2) Käesoleva paragrahvi 1. lõikes nimetatud teadaande vormi töötab välja ja avalikustab ühe kuu",
-      "estleg:legalText": "(1) Kaitsepolitseiameti teadaandes Riigi Teatajas avalikustatakse julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku: nimi ja eesnimi; sünniaeg; sünnikoht; tegevus või töökoht avalikustamise hetkel; julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega isik koostööd tegi; kellena isik julgeoleku- või luureorgani teenistuses oli või koostööd tegi. (2) Käesoleva paragrahvi 1. lõikes nimetatud teadaande vormi töötab välja ja avalikustab ühe kuu jooksul pärast käesoleva seaduse avaldamist Riigi Teatajas.",
+      "estleg:summary": {
+        "@value": "(1) Kaitsepolitseiameti teadaandes Riigi Teatajas avalikustatakse julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku: 1) nimi ja eesnimi; 2) sünniaeg; 3) sünnikoht; 4) tegevus või töökoht avalikustamise hetkel; 5) julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega isik koostööd tegi; 6) kellena isik julgeoleku- või luureorgani teenistuses oli või koostööd tegi. (2) Käesoleva paragrahvi 1.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kaitsepolitseiameti teadaandes Riigi Teatajas avalikustatakse julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku: 1) nimi ja eesnimi; 2) sünniaeg; 3) sünnikoht; 4) tegevus või töökoht avalikustamise hetkel; 5) julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega isik koostööd tegi; 6) kellena isik julgeoleku- või luureorgani teenistuses oli või koostööd tegi. (2) Käesoleva paragrahvi 1. lõikes nimetatud teadaande vormi töötab välja ja avalikustab Vabariigi Valitsus ühe kuu jooksul pärast käesoleva seaduse avaldamist Riigi Teatajas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
       },
@@ -1273,24 +1448,27 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kaitsepolitseiamet"
+        },
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:OkupS_Par_9_v184536"
         },
         {
           "@id": "estleg:OkupS_Par_9_v13311741"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kaitsepolitseiamet"
         }
       ]
     },
@@ -1301,11 +1479,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kaitsepolitseiameti teadaandes Riigi Teatajas avalikustatakse julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku: nimi ja eesnimi; sünniaeg; sünnikoht; tegevus või töökoht avalikustamise hetkel; julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega isik koostööd tegi; kellena isik julgeoleku- või luureorgani teenistuses oli või koostööd tegi.",
+      "estleg:legalText": "(1) Kaitsepolitseiameti teadaandes Riigi Teatajas avalikustatakse julgeoleku- või luureorgani teenistuses olnud või sellega koostööd teinud isiku: 1) nimi ja eesnimi; 2) sünniaeg; 3) sünnikoht; 4) tegevus või töökoht avalikustamise hetkel; 5) julgeoleku- või luureorgani nimetus, mille teenistuses isik oli või millega isik koostööd tegi; 6) kellena isik julgeoleku- või luureorgani teenistuses oli või koostööd tegi.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_9"
       },
       "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1328,11 +1514,25 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva paragrahvi 1. lõikes nimetatud teadaande vormi töötab välja ja avalikustab ühe kuu jooksul pärast käesoleva seaduse avaldamist Riigi Teatajas.",
+      "estleg:legalText": "(2) Käesoleva paragrahvi 1. lõikes nimetatud teadaande vormi töötab välja ja avalikustab Vabariigi Valitsus ühe kuu jooksul pärast käesoleva seaduse avaldamist Riigi Teatajas.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 2"
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:OkupS_Par_10",
@@ -1341,12 +1541,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. [[Kehtetu]]",
+      "rdfs:label": {
+        "@value": "§ 10. [[Kehtetu]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "[Kehtetu]",
+      "estleg:summary": {
+        "@value": "[Kehtetu]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Kehtetu]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
@@ -1364,12 +1570,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Kontrolli teostamine",
+      "rdfs:label": {
+        "@value": "§ 11. Kontrolli teostamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "Kontrolli Kaitsepolitseiameti tegevuse seaduslikkuse üle Eestit okupeerinud riikide julgeoleku- või luureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra täitmisel teostab Riigikogu poolt moodustatud komisjon.",
+      "estleg:summary": {
+        "@value": "Kontrolli Kaitsepolitseiameti tegevuse seaduslikkuse üle Eestit okupeerinud riikide julgeoleku- või luureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra täitmisel teostab Riigikogu poolt moodustatud komisjon.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kontrolli Kaitsepolitseiameti tegevuse seaduslikkuse üle Eestit okupeerinud riikide julgeoleku- või luureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra täitmisel teostab Riigikogu poolt moodustatud komisjon.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
@@ -1381,9 +1593,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -1391,11 +1600,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:OkupS_Par_11_v184536"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_riigikogu"
@@ -1406,6 +1610,11 @@
         {
           "@id": "estleg:Institution_kaitsepolitseiamet"
         }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:OkupS_Par_11_v184536"
+        }
       ]
     },
     {
@@ -1414,10 +1623,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kontrolli Kaitsepolitseiameti tegevuse seaduslikkuse üle Eestit okupeerinud riikide julgeoleku- või luureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra täitmisel teostab Riigikogu poolt moodustatud komisjon.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kontrolli Kaitsepolitseiameti tegevuse seaduslikkuse üle Eestit okupeerinud riikide julgeoleku- või luureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra täitmisel teostab Riigikogu poolt moodustatud komisjon.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_11"
       },
+      "rdfs:label": "§ 11 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1446,12 +1657,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 12. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OkupS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub üks kuu pärast Riigi Teatajas avaldamist.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub üks kuu pärast Riigi Teatajas avaldamist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub üks kuu pärast Riigi Teatajas avaldamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OkupS_default"
@@ -1473,9 +1690,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub üks kuu pärast Riigi Teatajas avaldamist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub üks kuu pärast Riigi Teatajas avaldamist.",
       "estleg:parentProvision": {
         "@id": "estleg:OkupS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/524042014001",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:OkupS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Procedure for Registration and Disclosure of Persons who Have Served in or Co-operated with Security Organisations or Intelligence or Counterintelligence Organisations of Armed Forces of States which Have Occupied Estonia Act",
+        "@language": "en"
       }
     }
   ]

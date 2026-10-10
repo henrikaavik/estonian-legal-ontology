@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded (määrus)",
+      "rdfs:label": {
+        "@value": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,6 +39,41 @@
       "estleg:globalId": "116122023004",
       "estleg:terviktekstId": "303660",
       "estleg:preambleText": "Määrus kehtestatakse « Taimekaitseseaduse » § 84 lõike 2 alusel.",
+      "dcterms:title": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:transposesDirectiveAsserted": [
+        {
+          "@id": "estleg:EU_32009L0128"
+        }
+      ],
+      "estleg:issuedUnder": [
+        {
+          "@id": "estleg:TaimKS_Map"
+        }
+      ],
+      "estleg:implementsCitation": [
+        {
+          "@id": "estleg:Citation_Reg_303660_Map_1"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2825"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2825"
+        }
+      ],
       "estleg:entryIntoForce": {
         "@value": "2006-05-15",
         "@type": "xsd:date"
@@ -55,26 +97,6 @@
         {
           "@id": "estleg:Amendment_Reg_303660_15b8ab162e"
         }
-      ],
-      "estleg:issuedUnder": [
-        {
-          "@id": "estleg:TaimKS_Map"
-        }
-      ],
-      "estleg:implementsCitation": [
-        {
-          "@id": "estleg:Citation_Reg_303660_Map_1"
-        }
-      ],
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2825"
-        }
-      ],
-      "eli:is_about": [
-        {
-          "@id": "http://eurovoc.europa.eu/2825"
-        }
       ]
     },
     {
@@ -84,18 +106,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_303660_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded.",
-      "estleg:legalText": "Määrusega kehtestatakse taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded. Määrusega kehtestatakse taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_303660_Par_1_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_303660_Par_1_v303660"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_303660_Par_2",
@@ -104,19 +150,33 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise üldnõuded",
+      "rdfs:label": {
+        "@value": "§ 2. Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise üldnõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_303660_Map"
       },
-      "estleg:summary": "1 (1) Taimekaitseseadme (edaspidi seade) kasutamisel, puhastamisel, hooldamisel ning hoidmisel peab järgima taimekaitsevahendi pakendi märgistusel toodud juhiseid ja seadme kasutusjuhendit. RT I 2023-12-16 2 116122023002 2023-12-19 Taimekaitseseadme (edaspidi seade) kasutamisel, puhastamisel, hooldamisel ning hoidmisel peab järgima taimekaitsevahendi pakendi märgistusel toodud juhiseid ja seadme kasutusjuhendit. 2 (2) Seadme kasutamisel, puhastamisel ning hooldamisel kasutatakse kaitseriietust j",
-      "estleg:legalText": "1 (1) Taimekaitseseadme (edaspidi seade) kasutamisel, puhastamisel, hooldamisel ning hoidmisel peab järgima taimekaitsevahendi pakendi märgistusel toodud juhiseid ja seadme kasutusjuhendit. RT I 2023-12-16 2 116122023002 2023-12-19 Taimekaitseseadme (edaspidi seade) kasutamisel, puhastamisel, hooldamisel ning hoidmisel peab järgima taimekaitsevahendi pakendi märgistusel toodud juhiseid ja seadme kasutusjuhendit. 2 (2) Seadme kasutamisel, puhastamisel ning hooldamisel kasutatakse kaitseriietust ja teisi isikukaitsevahendeid. Isikukaitsevahendeid ei pea kasutama traktori või liikurpritsi kabiinis, mis on varustatud asjakohaste kaitsevahenditega. Seadme kasutamisel, puhastamisel ning hooldamisel kasutatakse kaitseriietust ja teisi isikukaitsevahendeid. Isikukaitsevahendeid ei pea kasutama traktori või liikurpritsi kabiinis, mis on varustatud asjakohaste kaitsevahenditega.",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:summary": {
+        "@value": "1 (1) Taimekaitseseadme (edaspidi seade) kasutamisel, puhastamisel, hooldamisel ning hoidmisel peab järgima taimekaitsevahendi pakendi märgistusel toodud juhiseid ja seadme kasutusjuhendit. RT I 2023-12-16 2 116122023002 2023-12-19 2 (2) Seadme kasutamisel, puhastamisel ning hooldamisel kasutatakse kaitseriietust ja teisi isikukaitsevahendeid. Isikukaitsevahendeid ei pea kasutama traktori või liikurpritsi kabiinis, mis on varustatud asjakohaste kaitsevahenditega.",
+        "@language": "et"
       },
+      "estleg:legalText": "1 (1) Taimekaitseseadme (edaspidi seade) kasutamisel, puhastamisel, hooldamisel ning hoidmisel peab järgima taimekaitsevahendi pakendi märgistusel toodud juhiseid ja seadme kasutusjuhendit. RT I 2023-12-16 2 116122023002 2023-12-19 2 (2) Seadme kasutamisel, puhastamisel ning hooldamisel kasutatakse kaitseriietust ja teisi isikukaitsevahendeid. Isikukaitsevahendeid ei pea kasutama traktori või liikurpritsi kabiinis, mis on varustatud asjakohaste kaitsevahenditega.",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_303660_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_2_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -125,33 +185,92 @@
       ]
     },
     {
+      "@id": "estleg:Reg_303660_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Taimekaitseseadme (edaspidi seade) kasutamisel, puhastamisel, hooldamisel ning hoidmisel peab järgima taimekaitsevahendi pakendi märgistusel toodud juhiseid ja seadme kasutusjuhendit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Seadme kasutamisel, puhastamisel ning hooldamisel kasutatakse kaitseriietust ja teisi isikukaitsevahendeid. Isikukaitsevahendeid ei pea kasutama traktori või liikurpritsi kabiinis, mis on varustatud asjakohaste kaitsevahenditega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
       "@id": "estleg:Reg_303660_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Seadme kasutamise ohutusnõuded",
+      "rdfs:label": {
+        "@value": "§ 3. Seadme kasutamise ohutusnõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_303660_Map"
       },
-      "estleg:summary": "1 (1) Enne seadme kasutuselevõttu pannakse see kokku kasutusjuhendi kohaselt ning kontrollitakse puhta veega osaliselt täidetud paagi abil seadme kõikide sõlmede toimimist ja lekete puudumist tootja lubatud maksimumrõhul. Enne seadme kasutuselevõttu pannakse see kokku kasutusjuhendi kohaselt ning kontrollitakse puhta veega osaliselt täidetud paagi abil seadme kõikide sõlmede toimimist ja lekete puudumist tootja lubatud maksimumrõhul. 2 (2) Seadet võib kasutada ainult eesmärgipäraselt. Seadet või",
-      "estleg:legalText": "1 (1) Enne seadme kasutuselevõttu pannakse see kokku kasutusjuhendi kohaselt ning kontrollitakse puhta veega osaliselt täidetud paagi abil seadme kõikide sõlmede toimimist ja lekete puudumist tootja lubatud maksimumrõhul. Enne seadme kasutuselevõttu pannakse see kokku kasutusjuhendi kohaselt ning kontrollitakse puhta veega osaliselt täidetud paagi abil seadme kõikide sõlmede toimimist ja lekete puudumist tootja lubatud maksimumrõhul. 2 (2) Seadet võib kasutada ainult eesmärgipäraselt. Seadet võib kasutada ainult eesmärgipäraselt. 3 (3) Töötava seadme läheduses on keelatud viibida kõrvalisel isikul. Töötava seadme läheduses on keelatud viibida kõrvalisel isikul. 4 (4) Seadmega töötamise ajal ilmnenud rikke või ummistuse kõrvaldamiseks peatatakse pritsimine ja sõidetakse taimekaitsevahendiga töötlemata alale. Seadmega töötamise ajal ilmnenud rikke või ummistuse kõrvaldamiseks peatatakse pritsimine ja sõidetakse taimekaitsevahendiga töötlemata alale. 5 (5) Kõik seadme osad peavad olema töökorras ning peavad vastama tootja esitatud nõuetele. Kõik seadme osad peavad olema töökorras ning peavad vastama tootja esitatud nõuetele. 6 (6) Taimekaitseseadme kasutamisel peavad ettenähtud kaitseseadmed võimaliku ohu vältimiseks olema korralikult kinnitatud ning töökorras. Taimekaitseseadme kasutamisel peavad ettenähtud kaitseseadmed võimaliku ohu vältimiseks olema korralikult kinnitatud ning töökorras. 7 (7) Ripp-taimekaitsepritsi kasutamise korral paigaldatakse traktori esiosale piisav lisaraskus, et tagada traktori juhitavus täidetud paagiga sõitmise ajal. Ripp-taimekaitsepritsi kasutamise korral paigaldatakse traktori esiosale piisav lisaraskus, et tagada traktori juhitavus täidetud paagiga sõitmise ajal.",
+      "estleg:summary": {
+        "@value": "1 (1) Enne seadme kasutuselevõttu pannakse see kokku kasutusjuhendi kohaselt ning kontrollitakse puhta veega osaliselt täidetud paagi abil seadme kõikide sõlmede toimimist ja lekete puudumist tootja lubatud maksimumrõhul. 2 (2) Seadet võib kasutada ainult eesmärgipäraselt. 3 (3) Töötava seadme läheduses on keelatud viibida kõrvalisel isikul. 4 (4) Seadmega töötamise ajal ilmnenud rikke või ummistuse kõrvaldamiseks peatatakse pritsimine ja sõidetakse taimekaitsevahendiga töötlemata alale.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Enne seadme kasutuselevõttu pannakse see kokku kasutusjuhendi kohaselt ning kontrollitakse puhta veega osaliselt täidetud paagi abil seadme kõikide sõlmede toimimist ja lekete puudumist tootja lubatud maksimumrõhul. 2 (2) Seadet võib kasutada ainult eesmärgipäraselt. 3 (3) Töötava seadme läheduses on keelatud viibida kõrvalisel isikul. 4 (4) Seadmega töötamise ajal ilmnenud rikke või ummistuse kõrvaldamiseks peatatakse pritsimine ja sõidetakse taimekaitsevahendiga töötlemata alale. 5 (5) Kõik seadme osad peavad olema töökorras ning peavad vastama tootja esitatud nõuetele. 6 (6) Taimekaitseseadme kasutamisel peavad ettenähtud kaitseseadmed võimaliku ohu vältimiseks olema korralikult kinnitatud ning töökorras. 7 (7) Ripp-taimekaitsepritsi kasutamise korral paigaldatakse traktori esiosale piisav lisaraskus, et tagada traktori juhitavus täidetud paagiga sõitmise ajal.",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_303660_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_3_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_3_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_3_Lg_7"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasVersion": [
         {
@@ -160,30 +279,188 @@
       ]
     },
     {
-      "@id": "estleg:Reg_303660_Par_4",
+      "@id": "estleg:Reg_303660_Par_3_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Seadme puhastamise ja hooldamise ohutusnõuded",
-      "estleg:sourceAct": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded",
-      "estleg:partOfAct": {
-        "@id": "estleg:Reg_303660_Map"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne seadme kasutuselevõttu pannakse see kokku kasutusjuhendi kohaselt ning kontrollitakse puhta veega osaliselt täidetud paagi abil seadme kõikide sõlmede toimimist ja lekete puudumist tootja lubatud maksimumrõhul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_3"
       },
-      "estleg:summary": "1 (1) Seade puhastatakse kohe pärast selle kasutamist, vältides seadme paaki sisenemist. Seade puhastatakse kohe pärast selle kasutamist, vältides seadme paaki sisenemist. 2 (2) Seadet võib pesta ja puhastada ainult selleks ettenähtud kohas. Seadet võib pesta ja puhastada ainult selleks ettenähtud kohas. 3 (3) Seadme pesuvesi pritsitakse lõikes 2 nimetatud koha puudumise korral hajutatult taimekaitsevahendiga töödeldud alale nii, et oleks välditud selle sattumine kaevu ja lahtisesse veekogusse. ",
-      "estleg:legalText": "1 (1) Seade puhastatakse kohe pärast selle kasutamist, vältides seadme paaki sisenemist. Seade puhastatakse kohe pärast selle kasutamist, vältides seadme paaki sisenemist. 2 (2) Seadet võib pesta ja puhastada ainult selleks ettenähtud kohas. Seadet võib pesta ja puhastada ainult selleks ettenähtud kohas. 3 (3) Seadme pesuvesi pritsitakse lõikes 2 nimetatud koha puudumise korral hajutatult taimekaitsevahendiga töödeldud alale nii, et oleks välditud selle sattumine kaevu ja lahtisesse veekogusse. Seadme pesuvesi pritsitakse lõikes 2 nimetatud koha puudumise korral hajutatult taimekaitsevahendiga töödeldud alale nii, et oleks välditud selle sattumine kaevu ja lahtisesse veekogusse. 4 (4) Vajaduse korral kogutakse pritsimislahuse jäägid kokku ning antakse üle ohtlike jäätmete käitlejale. Vajaduse korral kogutakse pritsimislahuse jäägid kokku ning antakse üle ohtlike jäätmete käitlejale.",
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Seadet võib kasutada ainult eesmärgipäraselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Töötava seadme läheduses on keelatud viibida kõrvalisel isikul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Seadmega töötamise ajal ilmnenud rikke või ummistuse kõrvaldamiseks peatatakse pritsimine ja sõidetakse taimekaitsevahendiga töötlemata alale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kõik seadme osad peavad olema töökorras ning peavad vastama tootja esitatud nõuetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_3_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Taimekaitseseadme kasutamisel peavad ettenähtud kaitseseadmed võimaliku ohu vältimiseks olema korralikult kinnitatud ning töökorras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_3"
       },
+      "rdfs:label": "§ 3 lg 6",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_3_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Ripp-taimekaitsepritsi kasutamise korral paigaldatakse traktori esiosale piisav lisaraskus, et tagada traktori juhitavus täidetud paagiga sõitmise ajal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 7"
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
+      ],
+      "estleg:paragrahv": "§ 4.",
+      "rdfs:label": {
+        "@value": "§ 4. Seadme puhastamise ja hooldamise ohutusnõuded",
+        "@language": "et"
+      },
+      "estleg:sourceAct": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded",
+      "estleg:partOfAct": {
+        "@id": "estleg:Reg_303660_Map"
+      },
+      "estleg:summary": {
+        "@value": "1 (1) Seade puhastatakse kohe pärast selle kasutamist, vältides seadme paaki sisenemist. 2 (2) Seadet võib pesta ja puhastada ainult selleks ettenähtud kohas. 3 (3) Seadme pesuvesi pritsitakse lõikes 2 nimetatud koha puudumise korral hajutatult taimekaitsevahendiga töödeldud alale nii, et oleks välditud selle sattumine kaevu ja lahtisesse veekogusse. 4 (4) Vajaduse korral kogutakse pritsimislahuse jäägid kokku ning antakse üle ohtlike jäätmete käitlejale.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Seade puhastatakse kohe pärast selle kasutamist, vältides seadme paaki sisenemist. 2 (2) Seadet võib pesta ja puhastada ainult selleks ettenähtud kohas. 3 (3) Seadme pesuvesi pritsitakse lõikes 2 nimetatud koha puudumise korral hajutatult taimekaitsevahendiga töödeldud alale nii, et oleks välditud selle sattumine kaevu ja lahtisesse veekogusse. 4 (4) Vajaduse korral kogutakse pritsimislahuse jäägid kokku ning antakse üle ohtlike jäätmete käitlejale.",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_303660_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_4_Lg_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -192,30 +469,112 @@
       ]
     },
     {
+      "@id": "estleg:Reg_303660_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Seade puhastatakse kohe pärast selle kasutamist, vältides seadme paaki sisenemist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Seadet võib pesta ja puhastada ainult selleks ettenähtud kohas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Seadme pesuvesi pritsitakse lõikes 2 nimetatud koha puudumise korral hajutatult taimekaitsevahendiga töödeldud alale nii, et oleks välditud selle sattumine kaevu ja lahtisesse veekogusse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Vajaduse korral kogutakse pritsimislahuse jäägid kokku ning antakse üle ohtlike jäätmete käitlejale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
       "@id": "estleg:Reg_303660_Par_5",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Seadme hoidmise ohutusnõuded",
+      "rdfs:label": {
+        "@value": "§ 5. Seadme hoidmise ohutusnõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_303660_Map"
       },
-      "estleg:summary": "1 (1) Hoiule võib paigutada ainult täielikult puhastatud seadme, et vältida ohtu ümbritsevale keskkonnale ning inimese ja looma tervisele. Hoiule võib paigutada ainult täielikult puhastatud seadme, et vältida ohtu ümbritsevale keskkonnale ning inimese ja looma tervisele. 2 (2) Ilmastikust või muust põhjusest tingitud vältimatu töökatkestuse korral võib seadet hoida koos pritsimislahusega. Sellisel juhul tuleb välistada kõrvalise isiku ligipääs seadmele. Ilmastikust või muust põhjusest tingitud v",
-      "estleg:legalText": "1 (1) Hoiule võib paigutada ainult täielikult puhastatud seadme, et vältida ohtu ümbritsevale keskkonnale ning inimese ja looma tervisele. Hoiule võib paigutada ainult täielikult puhastatud seadme, et vältida ohtu ümbritsevale keskkonnale ning inimese ja looma tervisele. 2 (2) Ilmastikust või muust põhjusest tingitud vältimatu töökatkestuse korral võib seadet hoida koos pritsimislahusega. Sellisel juhul tuleb välistada kõrvalise isiku ligipääs seadmele. Ilmastikust või muust põhjusest tingitud vältimatu töökatkestuse korral võib seadet hoida koos pritsimislahusega. Sellisel juhul tuleb välistada kõrvalise isiku ligipääs seadmele.",
+      "estleg:summary": {
+        "@value": "1 (1) Hoiule võib paigutada ainult täielikult puhastatud seadme, et vältida ohtu ümbritsevale keskkonnale ning inimese ja looma tervisele. 2 (2) Ilmastikust või muust põhjusest tingitud vältimatu töökatkestuse korral võib seadet hoida koos pritsimislahusega. Sellisel juhul tuleb välistada kõrvalise isiku ligipääs seadmele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Hoiule võib paigutada ainult täielikult puhastatud seadme, et vältida ohtu ümbritsevale keskkonnale ning inimese ja looma tervisele. 2 (2) Ilmastikust või muust põhjusest tingitud vältimatu töökatkestuse korral võib seadet hoida koos pritsimislahusega. Sellisel juhul tuleb välistada kõrvalise isiku ligipääs seadmele.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_303660_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_303660_Par_5_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -224,24 +583,93 @@
       ]
     },
     {
+      "@id": "estleg:Reg_303660_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hoiule võib paigutada ainult täielikult puhastatud seadme, et vältida ohtu ümbritsevale keskkonnale ning inimese ja looma tervisele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ilmastikust või muust põhjusest tingitud vältimatu töökatkestuse korral võib seadet hoida koos pritsimislahusega. Sellisel juhul tuleb välistada kõrvalise isiku ligipääs seadmele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
       "@id": "estleg:Reg_303660_Par_6",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 6. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Taimekaitseseadme kasutamise, puhastamise, hooldamise ning hoidmise ohutusnõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_303660_Map"
       },
-      "estleg:summary": "Määrus jõustub 15. mail 2006. a.",
-      "estleg:legalText": "Määrus jõustub 15. mail 2006. a. Määrus jõustub 15. mail 2006. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 15. mail 2006. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 15. mail 2006. a.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_303660_Par_6_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_303660_Par_6_v303660"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_303660_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 15. mail 2006. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_303660_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_303660_Map_1",

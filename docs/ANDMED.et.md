@@ -31,9 +31,9 @@ Arvud on mõõdetud 8. oktoobril 2026 hoidla indeksfailidest
 
 | Korpus | Kirjeid | Seisuga | Märkus |
 |---|---:|---|---|
-| Seadused (Riigi Teataja) | 1 122 | 2026-06-01 | 1 195 seadusefaili; mitmeosalised seadused on jagatud osadeks. 365 välislepingu ratifitseerimise või ühinemise seadust ja 1 muu kirje on ilma sätete tekstita. |
-| Riigi määrused | 3 812 | 2026-05-01 | Neist 3 786 kehtivad; 26 olid seisukuupäevaks kehtetud. |
-| KOV määrused | 11 059 | 2026-05-01 | Neist 10 998 kehtivad; 357 väljaandjat. Laaditakse eraldi. |
+| Seadused (Riigi Teataja) | 1 127 | 2026-10-09 | 1 200 seadusefaili; mitmeosalised seadused on jagatud osadeks. 365 välislepingu ratifitseerimise või ühinemise seadust ja 1 muu kirje on ilma sätete tekstita. |
+| Riigi määrused | 3 893 | 2026-10-09 | Neist 3 890 kehtivad; 3 olid seisukuupäevaks kehtetud. |
+| KOV määrused | 11 845 | 2026-10-09 | Neist 11 789 kehtivad; 357 väljaandjat. Laaditakse eraldi. |
 | Riigikogu otsused | 253 | 2026-06-01 | Pealkirjaindeks; sisuga kirjeid on 12. |
 | Presidendi seadlused | 123 | 2026-06-01 | Pealkirjaindeks; sisuga kirjeid on 12. |
 | Eelnõud (EIS) | 22 832 | 2026-03-07 | Avalik konsultatsioon 122, kooskõlastamine 13 670, valitsusele esitatud 9 040. |
@@ -42,8 +42,8 @@ Arvud on mõõdetud 8. oktoobril 2026 hoidla indeksfailidest
 | EL õigusaktid (EUR-Lex) | 33 242 | 2026-03-03 | Neist 12 131 kehtivad; 206 on seotud Eesti ülevõtuga. |
 | EL kohtulahendid (CURIA) | 22 290 | 2026-03-03 | Euroopa Kohus, Üldkohus, Avaliku Teenistuse Kohus. |
 
-Kataloogis on kokku 27 029 JSON/JSON-LD faili; valideerija valib neist
-kontrolliks 26 978. Ühte kuupäeva kogu andmestikule ei ole: iga korpus
+Kataloogis on kokku 28 624 JSON/JSON-LD faili; valideerija valib neist
+kontrolliks 28 572. Ühte kuupäeva kogu andmestikule ei ole: iga korpus
 uueneb eraldi.
 
 Allolev plokk kannab samu arve masinloetaval kujul. Test
@@ -52,15 +52,15 @@ Allolev plokk kannab samu arve masinloetaval kujul. Test
 <!-- estleg:andmed-counts -->
 ```json
 {
-  "measuredOn": "2026-10-08",
+  "measuredOn": "2026-10-09",
   "ontologyVersion": "1.0.0",
   "versionIRI": "https://w3id.org/estleg/1.0.0",
-  "snapshotDate": "2026-06-01",
-  "lawFileCount": 1195,
+  "snapshotDate": "2026-10-09",
+  "lawFileCount": 1200,
   "corpora": [
-    {"key": "laws", "index": "krr_outputs/INDEX.json", "countField": "total_laws", "count": 1122, "stampField": "generated", "stamp": "2026-06-01"},
-    {"key": "regulations-riik", "index": "krr_outputs/regulations/riik/REGULATIONS_RIIK_INDEX.json", "countField": "totalRegulations", "count": 3812, "stampField": "kehtiv", "stamp": "2026-05-01"},
-    {"key": "regulations-kov", "index": "krr_outputs/regulations/kov/REGULATIONS_KOV_INDEX.json", "countField": "totalRegulations", "count": 11059, "stampField": "kehtiv", "stamp": "2026-05-01"},
+    {"key": "laws", "index": "krr_outputs/INDEX.json", "countField": "total_laws", "count": 1127, "stampField": "generated", "stamp": "2026-10-09"},
+    {"key": "regulations-riik", "index": "krr_outputs/regulations/riik/REGULATIONS_RIIK_INDEX.json", "countField": "totalRegulations", "count": 3893, "stampField": "kehtiv", "stamp": "2026-10-09"},
+    {"key": "regulations-kov", "index": "krr_outputs/regulations/kov/REGULATIONS_KOV_INDEX.json", "countField": "totalRegulations", "count": 11845, "stampField": "kehtiv", "stamp": "2026-10-09"},
     {"key": "resolutions-otsus", "index": "krr_outputs/resolutions/RESOLUTIONS_INDEX.json", "countField": "kinds.otsus.rt_total", "count": 253, "stampField": "generated", "stamp": "2026-06-01"},
     {"key": "resolutions-seadlus", "index": "krr_outputs/resolutions/RESOLUTIONS_INDEX.json", "countField": "kinds.seadlus.rt_total", "count": 123, "stampField": "generated", "stamp": "2026-06-01"},
     {"key": "eelnoud", "index": "krr_outputs/eelnoud/EELNOUD_INDEX.json", "countField": "total_drafts", "count": 22832, "stampField": "generated", "stamp": "2026-03-07"},

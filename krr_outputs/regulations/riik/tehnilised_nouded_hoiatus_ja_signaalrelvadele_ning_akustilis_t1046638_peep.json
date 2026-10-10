@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Tehnilised nõuded hoiatus- ja signaalrelvadele ning akustilistele relvadele (määrus)",
+      "rdfs:label": {
+        "@value": "Tehnilised nõuded hoiatus- ja signaalrelvadele ning akustilistele relvadele (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Tehnilised nõuded hoiatus- ja signaalrelvadele ning akustilistele relvadele",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,15 +39,17 @@
       "estleg:globalId": "126032019020",
       "estleg:terviktekstId": "1046638",
       "estleg:preambleText": "Määrus kehtestatakse relvaseaduse § 87",
-      "estleg:entryIntoForce": {
-        "@value": "2019-03-29",
+      "dcterms:title": "Tehnilised nõuded hoiatus- ja signaalrelvadele ning akustilistele relvadele",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2019-03-26",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
+      "estleg:transposesDirectiveAsserted": [
+        {
+          "@id": "estleg:EU_31991L0477"
+        }
+      ],
       "estleg:issuedUnder": [
         {
           "@id": "estleg:RelvS_Map"
@@ -51,6 +60,10 @@
           "@id": "estleg:Citation_Reg_1046638_Map_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2924"
@@ -60,7 +73,16 @@
         {
           "@id": "http://eurovoc.europa.eu/2924"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2019-03-29",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2019-03-26",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1046638_Par_1",
@@ -69,16 +91,30 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tehnilised nõuded hoiatus- ja signaalrelvadele ning akustilistele relvadele",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1046638_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse hoiatus- ja signaalrelvadele ning akustilistele relvadele esitatavad tehnilised nõuded.",
-      "estleg:legalText": "Määrusega kehtestatakse hoiatus- ja signaalrelvadele ning akustilistele relvadele esitatavad tehnilised nõuded. Määrusega kehtestatakse hoiatus- ja signaalrelvadele ning akustilistele relvadele esitatavad tehnilised nõuded.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse hoiatus- ja signaalrelvadele ning akustilistele relvadele esitatavad tehnilised nõuded.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse hoiatus- ja signaalrelvadele ning akustilistele relvadele esitatavad tehnilised nõuded.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1046638_Par_1_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1046234_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_305338_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -88,25 +124,73 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1046638_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse hoiatus- ja signaalrelvadele ning akustilistele relvadele esitatavad tehnilised nõuded.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1046638_Par_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Tehnilised nõuded hoiatus- ja signaalrelvadele",
+      "rdfs:label": {
+        "@value": "§ 2. Tehnilised nõuded hoiatus- ja signaalrelvadele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tehnilised nõuded hoiatus- ja signaalrelvadele ning akustilistele relvadele",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1046638_Map"
       },
-      "estleg:summary": "1 (1) Hoiatus- ja signaalrelv peab olema valmistatud selliselt, et selles saab kasutada vaid lendkehata paukpadrunit, mis vastab väikerelvade märgistamise alalise rahvusvahelise komisjoni (C.I.P.) koostatud padrunite ja padrunipesade mõõtmete tabelite VIII tabelis osutatud mõõtmetele. Hoiatus- ja signaalrelv peab olema valmistatud selliselt, et selles saab kasutada vaid lendkehata paukpadrunit, mis vastab väikerelvade märgistamise alalise rahvusvahelise komisjoni (C.I.P.) koostatud padrunite ja ",
-      "estleg:legalText": "1 (1) Hoiatus- ja signaalrelv peab olema valmistatud selliselt, et selles saab kasutada vaid lendkehata paukpadrunit, mis vastab väikerelvade märgistamise alalise rahvusvahelise komisjoni (C.I.P.) koostatud padrunite ja padrunipesade mõõtmete tabelite VIII tabelis osutatud mõõtmetele. Hoiatus- ja signaalrelv peab olema valmistatud selliselt, et selles saab kasutada vaid lendkehata paukpadrunit, mis vastab väikerelvade märgistamise alalise rahvusvahelise komisjoni (C.I.P.) koostatud padrunite ja padrunipesade mõõtmete tabelite VIII tabelis osutatud mõõtmetele. 2 (2) Hoiatus- ja signaalrelva relvaraud ei tohi olla relvaraamist eemaldatav ning relvarauda on püsivalt paigaldatud takistus, mis välistab püssirohu toimel haavli, kuuli või gaasilaengu välja laskmist ning sulgeb relvaraua täielikult. Hoiatus- ja signaalrelva relvaraud ei tohi olla relvaraamist eemaldatav ning relvarauda on püsivalt paigaldatud takistus, mis välistab püssirohu toimel haavli, kuuli või gaasilaengu välja laskmist ning sulgeb relvaraua täielikult. 3 (3) Hoiatus- ja signaalrelva relvarauda paigaldatud takistus peab olema valmistatud materjalist, mis on vastupidav lõikamise, puurimise, viilimise või freesimise suhtes ja mille kõvadus on Vickersi kõvaduse testi järgi vähemalt 700HV30. Hoiatus- ja signaalrelva relvarauda paigaldatud takistus peab olema valmistatud materjalist, mis on vastupidav lõikamise, puurimise, viilimise või freesimise suhtes ja mille kõvadus on Vickersi kõvaduse testi järgi vähemalt 700HV30. 4 (4) Kõik relvarauda paigaldatud takistused peavad olema püsivad, nii et neid ei ole võimalik eemaldada ilma hoiatus- ja signaalrelva padrunipesa või relvarauda hävitamata. Kõik relvarauda paigaldatud takistused peavad olema püsivad, nii et neid ei ole võimalik eemaldada ilma hoiatus- ja signaalrelva padrunipesa või relvarauda hävitamata. 5 (5) Hoiatus- ja signaalrelva padrunipessa või relvarauda peab olema puuritud vähemalt üks ava, mis võimaldab padrunipesast välja lasta püssirohu gaase. Hoiatus- ja signaalrelva padrunipessa või relvarauda peab olema puuritud vähemalt üks ava, mis võimaldab padrunipesast välja lasta püssirohu gaase. 6 (6) Lisaks käesoleva paragrahvi lõigetes 1–5 sätestatule peavad revolvri tüüpi hoiatus- ja signaalrelva trumli padrunipesa eesmised avaused olema kitsendatud, et lendkeha padrunipesas blokeerida. Lisaks käesoleva paragrahvi lõigetes 1–5 sätestatule peavad revolvri tüüpi hoiatus- ja signaalrelva trumli padrunipesa eesmised avaused olema kitsendatud, et lendkeha padrunipesas blokeerida. 7 (7) Lisaks käesoleva paragrahvi lõigetes 1–6 sätestatule ei tohi revolvri tüüpi hoiatus- ja signaalrelva trumli padrunipesa ja relvaraua suue asetseda kohakuti. Lisaks käesoleva paragrahvi lõigetes 1–6 sätestatule ei tohi revolvri tüüpi hoiatus- ja signaalrelva trumli padrunipesa ja relvaraua suue asetseda kohakuti. 8 (8) Hoiatus- ja signaalrelva osi ei tohi olla võimalik paigaldada tulirelva või kasutada tulirelva olulise osana. Hoiatus- ja signaalrelva osi ei tohi olla võimalik paigaldada tulirelva või kasutada tulirelva olulise osana. 9 (9) Käesoleva paragrahvi lõigetes 1–7 sätestatud nõuded ei laiene hoiatus- ja signaalrelvale, mille kaliiber on 26,5 mm või suurem. Käesoleva paragrahvi lõigetes 1–7 sätestatud nõuded ei laiene hoiatus- ja signaalrelvale, mille kaliiber on 26,5 mm või suurem.",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:summary": {
+        "@value": "1 (1) Hoiatus- ja signaalrelv peab olema valmistatud selliselt, et selles saab kasutada vaid lendkehata paukpadrunit, mis vastab väikerelvade märgistamise alalise rahvusvahelise komisjoni (C.I.P.) koostatud padrunite ja padrunipesade mõõtmete tabelite VIII tabelis osutatud mõõtmetele. 2 (2) Hoiatus- ja signaalrelva relvaraud ei tohi olla relvaraamist eemaldatav ning relvarauda on püsivalt paigaldatud takistus, mis välistab püssirohu toimel haavli, kuuli või gaasilaengu välja laskmist ning…",
+        "@language": "et"
       },
+      "estleg:legalText": "1 (1) Hoiatus- ja signaalrelv peab olema valmistatud selliselt, et selles saab kasutada vaid lendkehata paukpadrunit, mis vastab väikerelvade märgistamise alalise rahvusvahelise komisjoni (C.I.P.) koostatud padrunite ja padrunipesade mõõtmete tabelite VIII tabelis osutatud mõõtmetele. 2 (2) Hoiatus- ja signaalrelva relvaraud ei tohi olla relvaraamist eemaldatav ning relvarauda on püsivalt paigaldatud takistus, mis välistab püssirohu toimel haavli, kuuli või gaasilaengu välja laskmist ning sulgeb relvaraua täielikult. 3 (3) Hoiatus- ja signaalrelva relvarauda paigaldatud takistus peab olema valmistatud materjalist, mis on vastupidav lõikamise, puurimise, viilimise või freesimise suhtes ja mille kõvadus on Vickersi kõvaduse testi järgi vähemalt 700HV30. 4 (4) Kõik relvarauda paigaldatud takistused peavad olema püsivad, nii et neid ei ole võimalik eemaldada ilma hoiatus- ja signaalrelva padrunipesa või relvarauda hävitamata. 5 (5) Hoiatus- ja signaalrelva padrunipessa või relvarauda peab olema puuritud vähemalt üks ava, mis võimaldab padrunipesast välja lasta püssirohu gaase. 6 (6) Lisaks käesoleva paragrahvi lõigetes 1–5 sätestatule peavad revolvri tüüpi hoiatus- ja signaalrelva trumli padrunipesa eesmised avaused olema kitsendatud, et lendkeha padrunipesas blokeerida. 7 (7) Lisaks käesoleva paragrahvi lõigetes 1–6 sätestatule ei tohi revolvri tüüpi hoiatus- ja signaalrelva trumli padrunipesa ja relvaraua suue asetseda kohakuti. 8 (8) Hoiatus- ja signaalrelva osi ei tohi olla võimalik paigaldada tulirelva või kasutada tulirelva olulise osana. 9 (9) Käesoleva paragrahvi lõigetes 1–7 sätestatud nõuded ei laiene hoiatus- ja signaalrelvale, mille kaliiber on 26,5 mm või suurem.",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1046638_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_2_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_2_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_2_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_2_Lg_8"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_2_Lg_9"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasVersion": [
         {
@@ -115,25 +199,221 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1046638_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hoiatus- ja signaalrelv peab olema valmistatud selliselt, et selles saab kasutada vaid lendkehata paukpadrunit, mis vastab väikerelvade märgistamise alalise rahvusvahelise komisjoni (C.I.P.) koostatud padrunite ja padrunipesade mõõtmete tabelite VIII tabelis osutatud mõõtmetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Hoiatus- ja signaalrelva relvaraud ei tohi olla relvaraamist eemaldatav ning relvarauda on püsivalt paigaldatud takistus, mis välistab püssirohu toimel haavli, kuuli või gaasilaengu välja laskmist ning sulgeb relvaraua täielikult.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Hoiatus- ja signaalrelva relvarauda paigaldatud takistus peab olema valmistatud materjalist, mis on vastupidav lõikamise, puurimise, viilimise või freesimise suhtes ja mille kõvadus on Vickersi kõvaduse testi järgi vähemalt 700HV30.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kõik relvarauda paigaldatud takistused peavad olema püsivad, nii et neid ei ole võimalik eemaldada ilma hoiatus- ja signaalrelva padrunipesa või relvarauda hävitamata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Hoiatus- ja signaalrelva padrunipessa või relvarauda peab olema puuritud vähemalt üks ava, mis võimaldab padrunipesast välja lasta püssirohu gaase.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Lisaks käesoleva paragrahvi lõigetes 1–5 sätestatule peavad revolvri tüüpi hoiatus- ja signaalrelva trumli padrunipesa eesmised avaused olema kitsendatud, et lendkeha padrunipesas blokeerida.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 6",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_2_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Lisaks käesoleva paragrahvi lõigetes 1–6 sätestatule ei tohi revolvri tüüpi hoiatus- ja signaalrelva trumli padrunipesa ja relvaraua suue asetseda kohakuti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 7",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_2_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Hoiatus- ja signaalrelva osi ei tohi olla võimalik paigaldada tulirelva või kasutada tulirelva olulise osana.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 8",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_2_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Käesoleva paragrahvi lõigetes 1–7 sätestatud nõuded ei laiene hoiatus- ja signaalrelvale, mille kaliiber on 26,5 mm või suurem.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 9"
+    },
+    {
       "@id": "estleg:Reg_1046638_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Tehnilised nõuded akustilistele relvadele",
+      "rdfs:label": {
+        "@value": "§ 3. Tehnilised nõuded akustilistele relvadele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tehnilised nõuded hoiatus- ja signaalrelvadele ning akustilistele relvadele",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1046638_Map"
       },
-      "estleg:summary": "1 (1) Akustilise püssi relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab asuma 80–110 mm kaugusel padrunipesa luku poolsest servast arvates. Akustilise püssi relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab asuma 80–110 mm kaugusel padrunipesa luku poolsest servast arvates. 2 (2) Akustilise püstoli või revolvri relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab relvarauas asuma järgmiselt: 1 ",
-      "estleg:legalText": "1 (1) Akustilise püssi relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab asuma 80–110 mm kaugusel padrunipesa luku poolsest servast arvates. Akustilise püssi relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab asuma 80–110 mm kaugusel padrunipesa luku poolsest servast arvates. 2 (2) Akustilise püstoli või revolvri relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab relvarauas asuma järgmiselt: 1 1) püstolil 30–40 mm kaugusel padrunipesa lukupoolsest servast arvates; 2 2) revolvril 5–20 mm kaugusel trumlipoolsest servast arvates. Akustilise püstoli või revolvri relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab relvarauas asuma järgmiselt: püstolil 30–40 mm kaugusel padrunipesa lukupoolsest servast arvates; revolvril 5–20 mm kaugusel trumlipoolsest servast arvates. 3 (3) Akustilise relva, mis on automaattulirelvast ümberehitatud tulirelv, relvarauda keevitatud takistus võib relva ehitusliku eripära tõttu asetseda käesoleva paragrahvi lõigetes 1 ja 2 nimetatud kaugusest kaugemal juhul, kui see on vajalik relva automaatseks ümberlaadimiseks. Vahetatav relvaraud peab olema jäädavalt kinnitatud relvaraami külge. Nõue ei ole kohustuslik juhul, kui see muudab relvast laskude sooritamise tehniliselt võimatuks. Akustilise relva, mis on automaattulirelvast ümberehitatud tulirelv, relvarauda keevitatud takistus võib relva ehitusliku eripära tõttu asetseda käesoleva paragrahvi lõigetes 1 ja 2 nimetatud kaugusest kaugemal juhul, kui see on vajalik relva automaatseks ümberlaadimiseks. Vahetatav relvaraud peab olema jäädavalt kinnitatud relvaraami külge. Nõue ei ole kohustuslik juhul, kui see muudab relvast laskude sooritamise tehniliselt võimatuks. 4 (4) Käesoleva paragrahvi lõikes 1 ja 2 nimetatud takistus peab olema: 1 1) valmistatud materjalist, mis on vastupidav lõikamise, puurimise, viilimise või freesimise suhtes ja mille kõvadus on Vickersi kõvaduse testi järgi vähemalt 700HV30; 2 2) poolkuukujuline või sirge. Käesoleva paragrahvi lõikes 1 ja 2 nimetatud takistus peab olema: valmistatud materjalist, mis on vastupidav lõikamise, puurimise, viilimise või freesimise suhtes ja mille kõvadus on Vickersi kõvaduse testi järgi vähemalt 700HV30; poolkuukujuline või sirge. 5 (5) Akustilisel relval on lubatud kasutada kompensaatorit, või muud tehnilist täiendust, mis tagab relva automaatse ümberlaadimise. Akustilisel relval on lubatud kasutada kompensaatorit, või muud tehnilist täiendust, mis tagab relva automaatse ümberlaadimise.",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:summary": {
+        "@value": "1 (1) Akustilise püssi relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab asuma 80–110 mm kaugusel padrunipesa luku poolsest servast arvates. 2 (2) Akustilise püstoli või revolvri relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab relvarauas asuma järgmiselt: 1 1) püstolil 30–40 mm kaugusel padrunipesa lukupoolsest servast arvates; 2 2) revolvril 5–20 mm kaugusel trumlipoolsest servast arvates.",
+        "@language": "et"
       },
+      "estleg:legalText": "1 (1) Akustilise püssi relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab asuma 80–110 mm kaugusel padrunipesa luku poolsest servast arvates. 2 (2) Akustilise püstoli või revolvri relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab relvarauas asuma järgmiselt: 1 1) püstolil 30–40 mm kaugusel padrunipesa lukupoolsest servast arvates; 2 2) revolvril 5–20 mm kaugusel trumlipoolsest servast arvates. 3 (3) Akustilise relva, mis on automaattulirelvast ümberehitatud tulirelv, relvarauda keevitatud takistus võib relva ehitusliku eripära tõttu asetseda käesoleva paragrahvi lõigetes 1 ja 2 nimetatud kaugusest kaugemal juhul, kui see on vajalik relva automaatseks ümberlaadimiseks. Vahetatav relvaraud peab olema jäädavalt kinnitatud relvaraami külge. Nõue ei ole kohustuslik juhul, kui see muudab relvast laskude sooritamise tehniliselt võimatuks. 4 (4) Käesoleva paragrahvi lõikes 1 ja 2 nimetatud takistus peab olema: 1 1) valmistatud materjalist, mis on vastupidav lõikamise, puurimise, viilimise või freesimise suhtes ja mille kõvadus on Vickersi kõvaduse testi järgi vähemalt 700HV30; 2 2) poolkuukujuline või sirge. 5 (5) Akustilisel relval on lubatud kasutada kompensaatorit, või muud tehnilist täiendust, mis tagab relva automaatse ümberlaadimise.",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1046638_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1046638_Par_3_Lg_5"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -142,24 +422,157 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1046638_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akustilise püssi relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab asuma 80–110 mm kaugusel padrunipesa luku poolsest servast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Akustilise püstoli või revolvri relvarauda peab olema keevitatud takistus läbimõõduga pool kaliibrist. Takistus peab relvarauas asuma järgmiselt: 1) püstolil 30–40 mm kaugusel padrunipesa lukupoolsest servast arvates; 2) revolvril 5–20 mm kaugusel trumlipoolsest servast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Akustilise relva, mis on automaattulirelvast ümberehitatud tulirelv, relvarauda keevitatud takistus võib relva ehitusliku eripära tõttu asetseda käesoleva paragrahvi lõigetes 1 ja 2 nimetatud kaugusest kaugemal juhul, kui see on vajalik relva automaatseks ümberlaadimiseks. Vahetatav relvaraud peab olema jäädavalt kinnitatud relvaraami külge. Nõue ei ole kohustuslik juhul, kui see muudab relvast laskude sooritamise tehniliselt võimatuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 1 ja 2 nimetatud takistus peab olema: 1) valmistatud materjalist, mis on vastupidav lõikamise, puurimise, viilimise või freesimise suhtes ja mille kõvadus on Vickersi kõvaduse testi järgi vähemalt 700HV30; 2) poolkuukujuline või sirge.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Akustilisel relval on lubatud kasutada kompensaatorit, või muud tehnilist täiendust, mis tagab relva automaatse ümberlaadimise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
       "@id": "estleg:Reg_1046638_Par_4",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Määruse rakendamine",
+      "rdfs:label": {
+        "@value": "§ 4. Määruse rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tehnilised nõuded hoiatus- ja signaalrelvadele ning akustilistele relvadele",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1046638_Map"
       },
-      "estleg:summary": "Relvale, mis on Eestisse imporditud enne 17. jaanuari 2020. aastal, ei laiene käesoleva määruse § 2 lõikes 3 ja lõikes 7 ning § 3 lõike 4 punktis 1 sätestatud nõuded.",
-      "estleg:legalText": "Relvale, mis on Eestisse imporditud enne 17. jaanuari 2020. aastal, ei laiene käesoleva määruse § 2 lõikes 3 ja lõikes 7 ning § 3 lõike 4 punktis 1 sätestatud nõuded. Relvale, mis on Eestisse imporditud enne 17. jaanuari 2020. aastal, ei laiene käesoleva määruse § 2 lõikes 3 ja lõikes 7 ning § 3 lõike 4 punktis 1 sätestatud nõuded.",
+      "estleg:summary": {
+        "@value": "Relvale, mis on Eestisse imporditud enne 17. jaanuari 2020. aastal, ei laiene käesoleva määruse § 2 lõikes 3 ja lõikes 7 ning § 3 lõike 4 punktis 1 sätestatud nõuded.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Relvale, mis on Eestisse imporditud enne 17. jaanuari 2020. aastal, ei laiene käesoleva määruse § 2 lõikes 3 ja lõikes 7 ning § 3 lõike 4 punktis 1 sätestatud nõuded.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1046638_Par_4_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1046638_Par_4_v1046638"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1046638_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Relvale, mis on Eestisse imporditud enne 17. jaanuari 2020. aastal, ei laiene käesoleva määruse § 2 lõikes 3 ja lõikes 7 ning § 3 lõike 4 punktis 1 sätestatud nõuded.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1046638_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": "1"
     },
     {
       "@id": "estleg:Citation_Reg_1046638_Map_1",

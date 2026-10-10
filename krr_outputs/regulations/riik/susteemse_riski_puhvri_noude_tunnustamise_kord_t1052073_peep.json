@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -16,7 +20,10 @@
         "estleg:Act",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Süsteemse riski puhvri nõude tunnustamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Süsteemse riski puhvri nõude tunnustamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Süsteemse riski puhvri nõude tunnustamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -31,15 +38,12 @@
       "estleg:globalId": "109062021003",
       "estleg:terviktekstId": "1052073",
       "estleg:preambleText": "Määrus kehtestatakse krediidiasutuste seaduse § 86",
-      "estleg:entryIntoForce": {
-        "@value": "2021-06-12",
+      "dcterms:title": "Süsteemse riski puhvri nõude tunnustamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2021-06-09",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:issuedUnder": [
         {
           "@id": "estleg:KREDII_2_Map"
@@ -50,6 +54,10 @@
           "@id": "estleg:Citation_Reg_1052073_Map_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/523"
@@ -65,7 +73,16 @@
         {
           "@id": "http://eurovoc.europa.eu/525"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2021-06-12",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2021-06-09",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1052073_Par_1",
@@ -74,18 +91,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süsteemse riski puhvri nõude tunnustamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052073_Map"
       },
-      "estleg:summary": "Määrusega sätestatakse teises Euroopa Majanduspiirkonna lepinguriigis (edaspidi lepinguriik) või kolmandas riigis kehtestatud süsteemse riski puhvri nõude tunnustamise kord.",
-      "estleg:legalText": "Määrusega sätestatakse teises Euroopa Majanduspiirkonna lepinguriigis (edaspidi lepinguriik) või kolmandas riigis kehtestatud süsteemse riski puhvri nõude tunnustamise kord. Määrusega sätestatakse teises Euroopa Majanduspiirkonna lepinguriigis (edaspidi lepinguriik) või kolmandas riigis kehtestatud süsteemse riski puhvri nõude tunnustamise kord.",
+      "estleg:summary": {
+        "@value": "Määrusega sätestatakse teises Euroopa Majanduspiirkonna lepinguriigis (edaspidi lepinguriik) või kolmandas riigis kehtestatud süsteemse riski puhvri nõude tunnustamise kord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega sätestatakse teises Euroopa Majanduspiirkonna lepinguriigis (edaspidi lepinguriik) või kolmandas riigis kehtestatud süsteemse riski puhvri nõude tunnustamise kord.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052073_Par_1_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1052073_Par_1_v1052073"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052073_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega sätestatakse teises Euroopa Majanduspiirkonna lepinguriigis (edaspidi lepinguriik) või kolmandas riigis kehtestatud süsteemse riski puhvri nõude tunnustamise kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052073_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1052073_Par_2",
@@ -94,16 +135,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Määruse kohaldamine",
+      "rdfs:label": {
+        "@value": "§ 2. Määruse kohaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süsteemse riski puhvri nõude tunnustamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052073_Map"
       },
-      "estleg:summary": "Määrus kohaldub kõikidele Eestis tegevusloa saanud krediidiasutustele individuaalsel, allkonsolideeritud ja konsolideeritud alusel.",
-      "estleg:legalText": "Määrus kohaldub kõikidele Eestis tegevusloa saanud krediidiasutustele individuaalsel, allkonsolideeritud ja konsolideeritud alusel. Määrus kohaldub kõikidele Eestis tegevusloa saanud krediidiasutustele individuaalsel, allkonsolideeritud ja konsolideeritud alusel.",
+      "estleg:summary": {
+        "@value": "Määrus kohaldub kõikidele Eestis tegevusloa saanud krediidiasutustele individuaalsel, allkonsolideeritud ja konsolideeritud alusel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus kohaldub kõikidele Eestis tegevusloa saanud krediidiasutustele individuaalsel, allkonsolideeritud ja konsolideeritud alusel.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052073_Par_2_Lg_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -117,15 +173,33 @@
           "@id": "estleg:Reg_1052071_Par_2"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1052073_Par_2_v1052073"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052073_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus kohaldub kõikidele Eestis tegevusloa saanud krediidiasutustele individuaalsel, allkonsolideeritud ja konsolideeritud alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052073_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1052073_Par_3",
@@ -134,13 +208,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Süsteemse riski puhvri nõude tunnustamise tingimused",
+      "rdfs:label": {
+        "@value": "§ 3. Süsteemse riski puhvri nõude tunnustamise tingimused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süsteemse riski puhvri nõude tunnustamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052073_Map"
       },
-      "estleg:summary": "1 (1) Eesti Pank kaalub lepinguriigis või kolmandas riigis süsteemse riski puhvri määra kehtestajaks määratud asutuse või organi (edaspidi määratud asutus) kehtestatud süsteemse riski puhvri nõude tunnustamist, kui määratud asutus on sellist tunnustamist soovinud. Eesti Pank kaalub lepinguriigis või kolmandas riigis süsteemse riski puhvri määra kehtestajaks määratud asutuse või organi (edaspidi määratud asutus) kehtestatud süsteemse riski puhvri nõude tunnustamist, kui määratud asutus on sellist",
-      "estleg:legalText": "1 (1) Eesti Pank kaalub lepinguriigis või kolmandas riigis süsteemse riski puhvri määra kehtestajaks määratud asutuse või organi (edaspidi määratud asutus) kehtestatud süsteemse riski puhvri nõude tunnustamist, kui määratud asutus on sellist tunnustamist soovinud. Eesti Pank kaalub lepinguriigis või kolmandas riigis süsteemse riski puhvri määra kehtestajaks määratud asutuse või organi (edaspidi määratud asutus) kehtestatud süsteemse riski puhvri nõude tunnustamist, kui määratud asutus on sellist tunnustamist soovinud. 2 (2) Teise lepinguriigi või kolmanda riigi süsteemse riski puhvri nõude tunnustamise või mittetunnustamise otsuse ette valmistamisel ja oluliste asjaolude hindamisel võtab Eesti Pank muu hulgas arvesse teavet, mille määratud asutus on esitanud kooskõlas direktiivi nr 2013/36/EL artikli 133 lõigetega 9 ja 13. Teise lepinguriigi või kolmanda riigi süsteemse riski puhvri nõude tunnustamise või mittetunnustamise otsuse ette valmistamisel ja oluliste asjaolude hindamisel võtab Eesti Pank muu hulgas arvesse teavet, mille määratud asutus on esitanud kooskõlas direktiivi nr 2013/36/EL artikli 133 lõigetega 9 ja 13. 3 (3) Eesti Panga tunnustatav teise lepinguriigi või kolmanda riigi kehtestatud süsteemse riski puhvri nõue võib kumuleeruda muude Eestis kehtivate süsteemse riski puhvri nõuetega, tingimusel et need nõuded käsitlevad erinevaid riske. Eesti Panga tunnustatav teise lepinguriigi või kolmanda riigi kehtestatud süsteemse riski puhvri nõue võib kumuleeruda muude Eestis kehtivate süsteemse riski puhvri nõuetega, tingimusel et need nõuded käsitlevad erinevaid riske. 4 (4) Teise lepinguriigi või kolmanda riigi süsteemse riski puhvri nõude tunnustamine toimub Eesti Panga presidendi määruse alusel ja tingimustel. Määruses sätestatakse vähemalt järgmised asjaolud: 1 1) krediidiasutused, kellele süsteemse riski puhvri nõuet kohaldatakse; 2 2) riskipositsioonid, mille suhtes süsteemse riski puhvri nõuet kohaldatakse; 3 3) süsteemse riski puhvri nõude määr; 4 4) kuupäev, millest alates peavad krediidiasutused süsteemse riski puhvri nõuet kohaldama. Teise lepinguriigi või kolmanda riigi süsteemse riski puhvri nõude tunnustamine toimub Eesti Panga presidendi määruse alusel ja tingimustel. Määruses sätestatakse vähemalt järgmised asjaolud: krediidiasutused, kellele süsteemse riski puhvri nõuet kohaldatakse; riskipositsioonid, mille suhtes süsteemse riski puhvri nõuet kohaldatakse; süsteemse riski puhvri nõude määr; kuupäev, millest alates peavad krediidiasutused süsteemse riski puhvri nõuet kohaldama.",
+      "estleg:summary": {
+        "@value": "1 (1) Eesti Pank kaalub lepinguriigis või kolmandas riigis süsteemse riski puhvri määra kehtestajaks määratud asutuse või organi (edaspidi määratud asutus) kehtestatud süsteemse riski puhvri nõude tunnustamist, kui määratud asutus on sellist tunnustamist soovinud. 2 (2) Teise lepinguriigi või kolmanda riigi süsteemse riski puhvri nõude tunnustamise või mittetunnustamise otsuse ette valmistamisel ja oluliste asjaolude hindamisel võtab Eesti Pank muu hulgas arvesse teavet, mille määratud asutus…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Eesti Pank kaalub lepinguriigis või kolmandas riigis süsteemse riski puhvri määra kehtestajaks määratud asutuse või organi (edaspidi määratud asutus) kehtestatud süsteemse riski puhvri nõude tunnustamist, kui määratud asutus on sellist tunnustamist soovinud. 2 (2) Teise lepinguriigi või kolmanda riigi süsteemse riski puhvri nõude tunnustamise või mittetunnustamise otsuse ette valmistamisel ja oluliste asjaolude hindamisel võtab Eesti Pank muu hulgas arvesse teavet, mille määratud asutus on esitanud kooskõlas direktiivi nr 2013/36/EL artikli 133 lõigetega 9 ja 13. 3 (3) Eesti Panga tunnustatav teise lepinguriigi või kolmanda riigi kehtestatud süsteemse riski puhvri nõue võib kumuleeruda muude Eestis kehtivate süsteemse riski puhvri nõuetega, tingimusel et need nõuded käsitlevad erinevaid riske. 4 (4) Teise lepinguriigi või kolmanda riigi süsteemse riski puhvri nõude tunnustamine toimub Eesti Panga presidendi määruse alusel ja tingimustel. Määruses sätestatakse vähemalt järgmised asjaolud: 1 1) krediidiasutused, kellele süsteemse riski puhvri nõuet kohaldatakse; 2 2) riskipositsioonid, mille suhtes süsteemse riski puhvri nõuet kohaldatakse; 3 3) süsteemse riski puhvri nõude määr; 4 4) kuupäev, millest alates peavad krediidiasutused süsteemse riski puhvri nõuet kohaldama.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -153,11 +233,123 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052073_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1052073_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1052073_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1052073_Par_3_Lg_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1052073_Par_3_v1052073"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052073_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Pank kaalub lepinguriigis või kolmandas riigis süsteemse riski puhvri määra kehtestajaks määratud asutuse või organi (edaspidi määratud asutus) kehtestatud süsteemse riski puhvri nõude tunnustamist, kui määratud asutus on sellist tunnustamist soovinud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052073_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1052073_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Teise lepinguriigi või kolmanda riigi süsteemse riski puhvri nõude tunnustamise või mittetunnustamise otsuse ette valmistamisel ja oluliste asjaolude hindamisel võtab Eesti Pank muu hulgas arvesse teavet, mille määratud asutus on esitanud kooskõlas direktiivi nr 2013/36/EL artikli 133 lõigetega 9 ja 13.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052073_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1052073_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eesti Panga tunnustatav teise lepinguriigi või kolmanda riigi kehtestatud süsteemse riski puhvri nõue võib kumuleeruda muude Eestis kehtivate süsteemse riski puhvri nõuetega, tingimusel et need nõuded käsitlevad erinevaid riske.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052073_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1052073_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Teise lepinguriigi või kolmanda riigi süsteemse riski puhvri nõude tunnustamine toimub Eesti Panga presidendi määruse alusel ja tingimustel. Määruses sätestatakse vähemalt järgmised asjaolud: 1) krediidiasutused, kellele süsteemse riski puhvri nõuet kohaldatakse; 2) riskipositsioonid, mille suhtes süsteemse riski puhvri nõuet kohaldatakse; 3) süsteemse riski puhvri nõude määr; 4) kuupäev, millest alates peavad krediidiasutused süsteemse riski puhvri nõuet kohaldama.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052073_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:Reg_1052073_Par_4",
@@ -166,18 +358,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Süsteemse riski puhvri nõude tunnustamisest teavitamine",
+      "rdfs:label": {
+        "@value": "§ 4. Süsteemse riski puhvri nõude tunnustamisest teavitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süsteemse riski puhvri nõude tunnustamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052073_Map"
       },
-      "estleg:summary": "Eesti Pank teavitab süsteemse riski puhvri nõude tunnustamisest Euroopa Süsteemsete Riskide Nõukogu.",
-      "estleg:legalText": "Eesti Pank teavitab süsteemse riski puhvri nõude tunnustamisest Euroopa Süsteemsete Riskide Nõukogu. Eesti Pank teavitab süsteemse riski puhvri nõude tunnustamisest Euroopa Süsteemsete Riskide Nõukogu.",
+      "estleg:summary": {
+        "@value": "Eesti Pank teavitab süsteemse riski puhvri nõude tunnustamisest Euroopa Süsteemsete Riskide Nõukogu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Eesti Pank teavitab süsteemse riski puhvri nõude tunnustamisest Euroopa Süsteemsete Riskide Nõukogu.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052073_Par_4_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1052073_Par_4_v1052073"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052073_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Pank teavitab süsteemse riski puhvri nõude tunnustamisest Euroopa Süsteemsete Riskide Nõukogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052073_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1052073_Map_1",

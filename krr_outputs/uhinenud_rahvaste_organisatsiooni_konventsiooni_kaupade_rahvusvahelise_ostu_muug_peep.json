@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:UROKKROMLR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Ühinenud Rahvaste Organisatsiooni konventsiooni kaupade rahvusvahelise ostu-müügi lepingute kohta ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Ühinenud Rahvaste Organisatsiooni konventsiooni kaupade rahvusvahelise ostu-müügi lepingute kohta ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Ühinenud Rahvaste Organisatsiooni konventsiooni kaupade rahvusvahelise ostu-müügi lepingute kohta ratifitseerimise seadus",
       "dcterms:title": "Ühinenud Rahvaste Organisatsiooni konventsiooni kaupade rahvusvahelise ostu-müügi lepingute kohta ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/180022.xml"
+        "@id": "https://www.riigiteataja.ee/akt/180022"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/180022/xml"
+      },
+      "estleg:globalId": "180022",
+      "eli:id_local": "180022",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "151500",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "9136c542cd50254525123063641feff022f6391fea9ff950a91e6b458fa31b36",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-07-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -50,17 +62,23 @@
         {
           "@id": "http://eurovoc.europa.eu/3474"
         }
-      ]
-    },
-    {
-      "@id": "estleg:UROKKROMLR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Ühinenud Rahvaste Organisatsiooni konventsiooni kaupade rahvusvahelise ostu-müügi lepingute kohta ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:entryIntoForce": {
+        "@value": "1993-07-18",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationYear": {
+        "@value": "1993",
+        "@type": "xsd:gYear"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_UROKKROMLR_default"
+          "@id": "estleg:Amendment_UROKKROMLR_865785752d"
         }
       ]
     },
@@ -71,12 +89,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:UROKKROMLR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:UROKKROMLR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Ühinenud Rahvaste Organisatsiooni konventsiooni kaupade rahvusvahelise ostu-müügi lepingute kohta ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_UROKKROMLR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:UROKKROMLR_Par_1",
@@ -85,13 +124,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud Ühinenud Rahvaste Organisatsiooni konventsioon kaup...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud Ühinenud Rahvaste Organisatsiooni konventsioon kaup...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ühinenud Rahvaste Organisatsiooni konventsiooni kaupade rahvusvahelise ostu-müügi lepingute kohta ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UROKKROMLR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 1980. aasta 11. aprillil Viinis.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 1980. aasta 11. aprillil Viinis.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud Ühinenud Rahvaste Organisatsiooni konventsioon kaupade rahvusvahelise ostu-müügi lepingute kohta , mis on alla kirjutatud 1980. aasta 11. aprillil Viinis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud Ühinenud Rahvaste Organisatsiooni konventsioon kaupade rahvusvahelise ostu-müügi lepingute kohta , mis on alla kirjutatud 1980. aasta 11. aprillil Viinis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UROKKROMLR_default"
       },
@@ -102,16 +147,7 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:EVVAUVRMPFKR_Par_1"
-        },
-        {
           "@id": "estleg:KRKEKR_Par_1"
-        },
-        {
-          "@id": "estleg:UIOOWAKR_Par_1"
-        },
-        {
-          "@id": "estleg:rahvusvahelise_organiseeritud_kuritegevu_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -129,10 +165,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 1980. aasta 11. aprillil Viinis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud Ühinenud Rahvaste Organisatsiooni konventsioon kaupade rahvusvahelise ostu-müügi lepingute kohta , mis on alla kirjutatud 1980. aasta 11. aprillil Viinis.",
       "estleg:parentProvision": {
         "@id": "estleg:UROKKROMLR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:UROKKROMLR_Par_2",
@@ -141,16 +179,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 2.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ühinenud Rahvaste Organisatsiooni konventsiooni kaupade rahvusvahelise ostu-müügi lepingute kohta ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UROKKROMLR_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 2.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UROKKROMLR_default"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:UROKKROMLR_Par_2_v24472"

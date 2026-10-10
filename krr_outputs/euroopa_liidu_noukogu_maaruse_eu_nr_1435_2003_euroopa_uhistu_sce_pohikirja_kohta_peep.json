@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:SCEPS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Council Regulation (EC) No 1435/2003 on the Statute for a European Cooperative Society (SCE) Implementation Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/105052022010.xml"
+        "@id": "https://www.riigiteataja.ee/akt/105052022010"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/105052022010/xml"
+      },
+      "estleg:globalId": "105052022010",
+      "eli:id_local": "105052022010",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "300172",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "381c4907125c6a1d27bf9979faa4ec67db9a3bbacf5bcb1526dd53f61fec7885",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-02-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/524012023006"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/524012023006"
       },
       "estleg:references": [
@@ -69,18 +75,65 @@
           "@id": "http://eurovoc.europa.eu/525"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2006-08-18",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-02-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2022-05-05",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
         }
+      ],
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_SCEPS_6c71c0a7fd"
+        },
+        {
+          "@id": "estleg:Amendment_SCEPS_3d4e7ce3a8"
+        },
+        {
+          "@id": "estleg:Amendment_SCEPS_9e85d0420f"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Cluster_SCEPS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–3 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:SCEPS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:SCEPS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_SCEPS_1"
@@ -103,26 +156,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_SCEPS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–3 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–3 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:SCEPS_TopicScheme"
-      },
-      "estleg:provisionCount": 3
-    },
-    {
       "@id": "estleg:Chapter_SCEPS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
@@ -142,8 +184,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§4–6 SCE ASUKOHA MUUTMINE",
-      "skos:prefLabel": "§4–6 SCE ASUKOHA MUUTMINE",
+      "rdfs:label": {
+        "@value": "§4–6 SCE ASUKOHA MUUTMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§4–6 SCE ASUKOHA MUUTMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SCEPS_TopicScheme"
       },
@@ -155,7 +203,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – SCE ASUKOHA MUUTMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – SCE ASUKOHA MUUTMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
@@ -175,12 +226,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "SCE ASUTAMINE",
-      "skos:prefLabel": "SCE ASUTAMINE",
+      "rdfs:label": {
+        "@value": "SCE ASUTAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "SCE ASUTAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SCEPS_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:Division_SCEPS_3_1",
@@ -188,7 +245,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – SCE asutamine ühinemise teel",
+      "rdfs:label": {
+        "@value": "1. jagu – SCE asutamine ühinemise teel",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SCEPS_3"
       }
@@ -199,7 +259,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Tulundusühistu ümberkujundamine SCE-ks",
+      "rdfs:label": {
+        "@value": "2. jagu – Tulundusühistu ümberkujundamine SCE-ks",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SCEPS_3"
       }
@@ -210,7 +273,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – SCE ASUTAMINE",
+      "rdfs:label": {
+        "@value": "3. peatükk – SCE ASUTAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
@@ -238,12 +304,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "SCE ORGANID",
-      "skos:prefLabel": "SCE ORGANID",
+      "rdfs:label": {
+        "@value": "SCE ORGANID",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "SCE ORGANID",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SCEPS_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:Division_SCEPS_4_1",
@@ -251,7 +323,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – Kaheastmeline juhtimissüsteem",
+      "rdfs:label": {
+        "@value": "1. jagu – Kaheastmeline juhtimissüsteem",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SCEPS_4"
       }
@@ -262,7 +337,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Üheastmeline juhtimissüsteem",
+      "rdfs:label": {
+        "@value": "2. jagu – Üheastmeline juhtimissüsteem",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SCEPS_4"
       }
@@ -273,7 +351,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "3. jagu – SCE esindamine",
+      "rdfs:label": {
+        "@value": "3. jagu – SCE esindamine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SCEPS_4"
       }
@@ -284,7 +365,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – SCE ORGANID",
+      "rdfs:label": {
+        "@value": "4. peatükk – SCE ORGANID",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
@@ -315,8 +399,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§14–14 LÕPETAMINE",
-      "skos:prefLabel": "§14–14 LÕPETAMINE",
+      "rdfs:label": {
+        "@value": "§14–14 LÕPETAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§14–14 LÕPETAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SCEPS_TopicScheme"
       },
@@ -328,7 +418,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – LÕPETAMINE",
+      "rdfs:label": {
+        "@value": "5. peatükk – LÕPETAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
@@ -348,8 +441,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§15–16 RAKENDUSSÄTTED",
-      "skos:prefLabel": "§15–16 RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "§15–16 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§15–16 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SCEPS_TopicScheme"
       },
@@ -361,7 +460,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "6. peatükk – RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
@@ -381,12 +483,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Euroopa ühistule kohaldatavad sätted",
+      "rdfs:label": {
+        "@value": "§ 1. Euroopa ühistule kohaldatavad sätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus reguleerib Eestis asuva Euroopa ühistu (Societas Cooperativa Europaea, edaspidi SCE) õiguslikku seisundit niivõrd, kuivõrd seda ei ole reguleeritud nõukogu määrusega (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» (ELT L 207, 18.08.2003, lk 1–24) (edaspidi määrus). (2) SCE suhtes kohaldatakse käesolevat seadust ja muid riigisiseseid õigusakte, kui määruse järgi tuleb lähtuda riigisisesest õigusest või kui määrus annab võimaluse reguleerida teatavaid valdkondi",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus reguleerib Eestis asuva Euroopa ühistu (Societas Cooperativa Europaea, edaspidi SCE) õiguslikku seisundit niivõrd, kuivõrd seda ei ole reguleeritud nõukogu määrusega (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» (ELT L 207, 18.08.2003, lk 1–24) (edaspidi määrus). (2) SCE suhtes kohaldatakse käesolevat seadust ja muid riigisiseseid õigusakte, kui määruse järgi tuleb lähtuda riigisisesest õigusest või kui määrus annab võimaluse reguleerida teatavaid valdkondi",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus reguleerib Eestis asuva Euroopa ühistu (Societas Cooperativa Europaea, edaspidi SCE) õiguslikku seisundit niivõrd, kuivõrd seda ei ole reguleeritud nõukogu määrusega (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» (ELT L 207, 18.08.2003, lk 1–24) (edaspidi määrus). (2) SCE suhtes kohaldatakse käesolevat seadust ja muid riigisiseseid õigusakte, kui määruse järgi tuleb lähtuda riigisisesest õigusest või kui määrus annab võimaluse reguleerida teatavaid valdkondi riigisisese õiguse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SCEPS_1"
@@ -402,6 +510,13 @@
           "@id": "estleg:SCEPS_Par_1_Lg_2"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:EMHUS_Par_1"
@@ -410,13 +525,6 @@
           "@id": "estleg:SEPS_Par_1"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_1_v972385"
@@ -448,12 +556,12 @@
         "@id": "estleg:SCEPS_Par_1"
       },
       "rdfs:label": "§ 1 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -463,12 +571,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. SCE äriregistrisse kandmine",
+      "rdfs:label": {
+        "@value": "§ 2. SCE äriregistrisse kandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "SCE kantakse äriregistrisse vastavalt äriregistri seaduses ja tulundusühistu seaduses tulundusühistu äriregistrisse kandmise kohta sätestatule.",
+      "estleg:summary": {
+        "@value": "SCE kantakse äriregistrisse vastavalt äriregistri seaduses ja tulundusühistu seaduses tulundusühistu äriregistrisse kandmise kohta sätestatule.",
+        "@language": "et"
+      },
       "estleg:legalText": "SCE kantakse äriregistrisse vastavalt äriregistri seaduses ja tulundusühistu seaduses tulundusühistu äriregistrisse kandmise kohta sätestatule.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SCEPS_1"
@@ -484,6 +598,9 @@
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:SEPS_Par_2"
+        },
+        {
+          "@id": "estleg:ariseadustik_Par_127"
         }
       ],
       "estleg:hasVersion": [
@@ -501,10 +618,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "SCE kantakse äriregistrisse vastavalt äriregistri seaduses ja tulundusühistu seaduses tulundusühistu äriregistrisse kandmise kohta sätestatule.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) SCE kantakse äriregistrisse vastavalt äriregistri seaduses ja tulundusühistu seaduses tulundusühistu äriregistrisse kandmise kohta sätestatule.",
       "estleg:parentProvision": {
         "@id": "estleg:SCEPS_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:SCEPS_Par_3",
@@ -513,12 +632,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Pädevus",
+      "rdfs:label": {
+        "@value": "§ 3. Pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "(1) Määruse artikli 7 lõikes 8 nimetatud kohustus on registripidajal. (2) Määruse artikli 29 lõikes 2 nimetatud kohustus on registripidajal. (3) Määruse artiklis 30 nimetatud kohustused on registripidajal. (4) Määruse artikli 73 lõikes 5 nimetatud kohustus on kohtul, kes tuvastas määruse artikli 6 rikkumise.",
+      "estleg:summary": {
+        "@value": "(1) Määruse artikli 7 lõikes 8 nimetatud kohustus on registripidajal. (2) Määruse artikli 29 lõikes 2 nimetatud kohustus on registripidajal. (3) Määruse artiklis 30 nimetatud kohustused on registripidajal. (4) Määruse artikli 73 lõikes 5 nimetatud kohustus on kohtul, kes tuvastas määruse artikli 6 rikkumise.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Määruse artikli 7 lõikes 8 nimetatud kohustus on registripidajal. (2) Määruse artikli 29 lõikes 2 nimetatud kohustus on registripidajal. (3) Määruse artiklis 30 nimetatud kohustused on registripidajal. (4) Määruse artikli 73 lõikes 5 nimetatud kohustus on kohtul, kes tuvastas määruse artikli 6 rikkumise.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SCEPS_1"
@@ -543,11 +668,6 @@
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:SEPS_Par_4"
         }
       ],
       "estleg:assertionConfidence": {
@@ -658,12 +778,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Asukoha muutmise kava avaldamine",
+      "rdfs:label": {
+        "@value": "§ 4. Asukoha muutmise kava avaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "Juhatus esitab asukoha muutmise kava, mida käsitletakse määruse artikli 7 lõikes 2, äriregistri pidajale ning avaldab väljaandes Ametlikud Teadaanded teate asukoha muutmise kava koostamise kohta. Teates tuleb märkida, et asukoha muutmise kavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:summary": {
+        "@value": "Juhatus esitab asukoha muutmise kava, mida käsitletakse määruse artikli 7 lõikes 2, äriregistri pidajale ning avaldab väljaandes Ametlikud Teadaanded teate asukoha muutmise kava koostamise kohta. Teates tuleb märkida, et asukoha muutmise kavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+        "@language": "et"
+      },
       "estleg:legalText": "Juhatus esitab asukoha muutmise kava, mida käsitletakse määruse artikli 7 lõikes 2, äriregistri pidajale ning avaldab väljaandes Ametlikud Teadaanded teate asukoha muutmise kava koostamise kohta. Teates tuleb märkida, et asukoha muutmise kavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SCEPS_2"
@@ -676,6 +802,13 @@
           "@id": "estleg:SCEPS_Par_4_Lg_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:SEPS_Par_14"
@@ -687,13 +820,6 @@
           "@id": "estleg:SEPS_Par_5"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_4_v972385"
@@ -706,16 +832,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Juhatus esitab asukoha muutmise kava, mida käsitletakse määruse artikli 7 lõikes 2, äriregistri pidajale ning avaldab väljaandes Ametlikud Teadaanded teate asukoha muutmise kava koostamise kohta. Teates tuleb märkida, et asukoha muutmise kavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juhatus esitab asukoha muutmise kava, mida käsitletakse määruse artikli 7 lõikes 2, äriregistri pidajale ning avaldab väljaandes Ametlikud Teadaanded teate asukoha muutmise kava koostamise kohta. Teates tuleb märkida, et asukoha muutmise kavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
       "estleg:parentProvision": {
         "@id": "estleg:SCEPS_Par_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "rdfs:label": "§ 4 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -725,12 +853,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Võlausaldajate kaitse asukoha muutmise korral",
+      "rdfs:label": {
+        "@value": "§ 5. Võlausaldajate kaitse asukoha muutmise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "(1) Asukoha muutmist kavandava SCE võlausaldajad võivad asukoha muutmise kava avaldamisest arvates kahe kuu jooksul esitada SCE-le oma nõuded tagatise saamiseks. (2) SCE peab tagama asukoha muutmise kava avaldamisest arvates kahe kuu jooksul esitatud võlausaldajate nõuded, kui võlausaldajad ei saa nõuda nõuete rahuldamist ja nad põhistavad, et asukoha muutmine võib ohustada nende nõuete täitmist.",
+      "estleg:summary": {
+        "@value": "(1) Asukoha muutmist kavandava SCE võlausaldajad võivad asukoha muutmise kava avaldamisest arvates kahe kuu jooksul esitada SCE-le oma nõuded tagatise saamiseks. (2) SCE peab tagama asukoha muutmise kava avaldamisest arvates kahe kuu jooksul esitatud võlausaldajate nõuded, kui võlausaldajad ei saa nõuda nõuete rahuldamist ja nad põhistavad, et asukoha muutmine võib ohustada nende nõuete täitmist.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Asukoha muutmist kavandava SCE võlausaldajad võivad asukoha muutmise kava avaldamisest arvates kahe kuu jooksul esitada SCE-le oma nõuded tagatise saamiseks. (2) SCE peab tagama asukoha muutmise kava avaldamisest arvates kahe kuu jooksul esitatud võlausaldajate nõuded, kui võlausaldajad ei saa nõuda nõuete rahuldamist ja nad põhistavad, et asukoha muutmine võib ohustada nende nõuete täitmist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SCEPS_2"
@@ -751,18 +885,18 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:SEPS_Par_7"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_5_v972385"
@@ -803,9 +937,6 @@
         "@id": "estleg:SCEPS_Par_5"
       },
       "rdfs:label": "§ 5 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -814,6 +945,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -823,12 +957,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Maksu- ja Tolliameti nõusolek SCE asukoha muutmise korral",
+      "rdfs:label": {
+        "@value": "§ 6. Maksu- ja Tolliameti nõusolek SCE asukoha muutmise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "(1) Kui SCE asukoht viiakse Eestist üle teise Euroopa Liidu liikmesriiki, ei anna registripidaja määruse artikli 7 lõikes 8 nimetatud tõendit ilma Maksu- ja Tolliameti nõusolekuta. (2) Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. (3) Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SCE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus",
+      "estleg:summary": {
+        "@value": "(1) Kui SCE asukoht viiakse Eestist üle teise Euroopa Liidu liikmesriiki, ei anna registripidaja määruse artikli 7 lõikes 8 nimetatud tõendit ilma Maksu- ja Tolliameti nõusolekuta. (2) Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. (3) Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SCE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui SCE asukoht viiakse Eestist üle teise Euroopa Liidu liikmesriiki, ei anna registripidaja määruse artikli 7 lõikes 8 nimetatud tõendit ilma Maksu- ja Tolliameti nõusolekuta. (2) Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. (3) Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SCE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus ei tuvastata maksuseaduste rikkumisi. (4) Kui nõusolekut ei ole saadud 20 päeva jooksul pärast taotluse saatmist, loetakse Maksu- ja Tolliamet asukoha muutmisega nõus olevaks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SCEPS_2"
@@ -855,11 +995,10 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:SEPS_Par_8"
-        }
-      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -868,10 +1007,20 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:SEPS_Par_8"
+        },
+        {
+          "@id": "estleg:SEPS_Par_9"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_6_v972385"
@@ -879,13 +1028,7 @@
         {
           "@id": "estleg:SCEPS_Par_6_v125102012007"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_maksu_ja_tolliamet"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:SCEPS_Par_6_Lg_1",
@@ -953,9 +1096,6 @@
         "@id": "estleg:SCEPS_Par_6"
       },
       "rdfs:label": "§ 6 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -965,6 +1105,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
@@ -1006,13 +1154,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Maksu- ja Tolliameti nõusolek SCE asutamise korral ühinemise teel",
+      "rdfs:label": {
+        "@value": "§ 7. Maksu- ja Tolliameti nõusolek SCE asutamise korral ühinemise teel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "(1) Kui SCE asutamisel ühinemise teel osaleb Eesti äriregistrisse kantud tulundusühistu, mis lõpeb seoses SCE asutamisega välisriigis, ei anna registripidaja määruse artikli 29 lõikes 2 sätestatud tõendit ilma Maksu- ja Tolliameti nõusolekuta. (2) Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. (3) Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SCE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku",
+      "estleg:summary": {
+        "@value": "(1) Kui SCE asutamisel ühinemise teel osaleb Eesti äriregistrisse kantud tulundusühistu, mis lõpeb seoses SCE asutamisega välisriigis, ei anna registripidaja määruse artikli 29 lõikes 2 sätestatud tõendit ilma Maksu- ja Tolliameti nõusolekuta. (2) Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. (3) Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SCE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui SCE asutamisel ühinemise teel osaleb Eesti äriregistrisse kantud tulundusühistu, mis lõpeb seoses SCE asutamisega välisriigis, ei anna registripidaja määruse artikli 29 lõikes 2 sätestatud tõendit ilma Maksu- ja Tolliameti nõusolekuta. (2) Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. (3) Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SCE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus ei tuvastata maksuseaduste rikkumisi. (4) Kui nõusolekut ei ole saadud 20 päeva jooksul pärast taotluse saatmist, loetakse Maksu- ja Tolliamet SCE ühinemise teel asutamisega nõus olevaks.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SCEPS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SCEPS_3_1"
       },
@@ -1035,11 +1192,10 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:SEPS_Par_9"
-        }
-      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -1048,10 +1204,20 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:SEPS_Par_8"
+        },
+        {
+          "@id": "estleg:SEPS_Par_9"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_7_v972385"
@@ -1059,13 +1225,7 @@
         {
           "@id": "estleg:SCEPS_Par_7_v125102012007"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_maksu_ja_tolliamet"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:SCEPS_Par_7_Lg_1",
@@ -1133,9 +1293,6 @@
         "@id": "estleg:SCEPS_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1145,6 +1302,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
@@ -1186,13 +1351,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Ühinemise teatavakstegemine",
+      "rdfs:label": {
+        "@value": "§ 8. Ühinemise teatavakstegemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "Määruse artiklis 24 nimetatud andmed ühinevate äriühingute kohta avaldatakse väljaandes Ametlikud Teadaanded koos äriseadustiku § 399 kohase teatega ühinemise kohta.",
+      "estleg:summary": {
+        "@value": "Määruse artiklis 24 nimetatud andmed ühinevate äriühingute kohta avaldatakse väljaandes Ametlikud Teadaanded koos äriseadustiku § 399 kohase teatega ühinemise kohta.",
+        "@language": "et"
+      },
       "estleg:legalText": "Määruse artiklis 24 nimetatud andmed ühinevate äriühingute kohta avaldatakse väljaandes Ametlikud Teadaanded koos äriseadustiku § 399 kohase teatega ühinemise kohta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SCEPS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SCEPS_3_1"
       },
@@ -1206,11 +1380,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:SEPS_Par_10"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1218,6 +1387,11 @@
       "estleg:references": [
         {
           "@id": "estleg:ariseadustik_Par_399"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:SEPS_Par_10"
         }
       ],
       "estleg:hasVersion": [
@@ -1232,10 +1406,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Määruse artiklis 24 nimetatud andmed ühinevate äriühingute kohta avaldatakse väljaandes Ametlikud Teadaanded koos äriseadustiku § 399 kohase teatega ühinemise kohta.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruse artiklis 24 nimetatud andmed ühinevate äriühingute kohta avaldatakse väljaandes Ametlikud Teadaanded koos äriseadustiku § 399 kohase teatega ühinemise kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:SCEPS_Par_8"
       },
+      "rdfs:label": "§ 8 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1258,13 +1434,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Ümberkujundamiskava avaldamine",
+      "rdfs:label": {
+        "@value": "§ 9. Ümberkujundamiskava avaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "Vähemalt üks kuu enne tulundusühistu SCE-ks ümberkujundamist otsustavat üldkoosolekut esitab juhatus äriregistri pidajale ümberkujundamiskava ning avaldab väljaandes Ametlikud Teadaanded teate ümberkujundamiskava koostamise kohta. Teates tuleb märkida, et ümberkujundamiskavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:summary": {
+        "@value": "Vähemalt üks kuu enne tulundusühistu SCE-ks ümberkujundamist otsustavat üldkoosolekut esitab juhatus äriregistri pidajale ümberkujundamiskava ning avaldab väljaandes Ametlikud Teadaanded teate ümberkujundamiskava koostamise kohta. Teates tuleb märkida, et ümberkujundamiskavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vähemalt üks kuu enne tulundusühistu SCE-ks ümberkujundamist otsustavat üldkoosolekut esitab juhatus äriregistri pidajale ümberkujundamiskava ning avaldab väljaandes Ametlikud Teadaanded teate ümberkujundamiskava koostamise kohta. Teates tuleb märkida, et ümberkujundamiskavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SCEPS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SCEPS_3_2"
       },
@@ -1273,6 +1458,13 @@
           "@id": "estleg:SCEPS_Par_9_Lg_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:SEPS_Par_14"
@@ -1284,13 +1476,6 @@
           "@id": "estleg:SEPS_Par_5"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_9_v972385"
@@ -1303,16 +1488,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemalt üks kuu enne tulundusühistu SCE-ks ümberkujundamist otsustavat üldkoosolekut esitab juhatus äriregistri pidajale ümberkujundamiskava ning avaldab väljaandes Ametlikud Teadaanded teate ümberkujundamiskava koostamise kohta. Teates tuleb märkida, et ümberkujundamiskavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemalt üks kuu enne tulundusühistu SCE-ks ümberkujundamist otsustavat üldkoosolekut esitab juhatus äriregistri pidajale ümberkujundamiskava ning avaldab väljaandes Ametlikud Teadaanded teate ümberkujundamiskava koostamise kohta. Teates tuleb märkida, et ümberkujundamiskavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
       "estleg:parentProvision": {
         "@id": "estleg:SCEPS_Par_9"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "rdfs:label": "§ 9 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1322,13 +1509,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Juhtimisülesannete täitmine nõukogu liikmete poolt",
+      "rdfs:label": {
+        "@value": "§ 10. Juhtimisülesannete täitmine nõukogu liikmete poolt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "(1) Nõukogu võib määrata oma liikme määruse artikli 37 lõike 3 kohaselt juhtorgani liikme ülesannetesse varem kindlaksmääratud ajavahemikuks, mis ei või ületada üht aastat. (2) Korduv nimetamine või ametiaja pikendamine on lubatud, kui juhatuse liikmena tegutseva nõukogu liikme ametiaeg kokku ei ületa üht aastat.",
+      "estleg:summary": {
+        "@value": "(1) Nõukogu võib määrata oma liikme määruse artikli 37 lõike 3 kohaselt juhtorgani liikme ülesannetesse varem kindlaksmääratud ajavahemikuks, mis ei või ületada üht aastat. (2) Korduv nimetamine või ametiaja pikendamine on lubatud, kui juhatuse liikmena tegutseva nõukogu liikme ametiaeg kokku ei ületa üht aastat.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nõukogu võib määrata oma liikme määruse artikli 37 lõike 3 kohaselt juhtorgani liikme ülesannetesse varem kindlaksmääratud ajavahemikuks, mis ei või ületada üht aastat. (2) Korduv nimetamine või ametiaja pikendamine on lubatud, kui juhatuse liikmena tegutseva nõukogu liikme ametiaeg kokku ei ületa üht aastat.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SCEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SCEPS_4_1"
       },
@@ -1345,18 +1541,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:SEPS_Par_16"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_10_v972385"
@@ -1375,12 +1571,12 @@
         "@id": "estleg:SCEPS_Par_10"
       },
       "rdfs:label": "§ 10 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -1395,9 +1591,6 @@
         "@id": "estleg:SCEPS_Par_10"
       },
       "rdfs:label": "§ 10 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1406,6 +1599,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1415,13 +1611,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Tehingud, mille tegemiseks on vajalik nõukogu nõusolek",
+      "rdfs:label": {
+        "@value": "§ 11. Tehingud, mille tegemiseks on vajalik nõukogu nõusolek",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "Nõukogu võib oma otsusega määrata tehingud, mille tegemiseks on vaja tema nõusolekut.",
+      "estleg:summary": {
+        "@value": "Nõukogu võib oma otsusega määrata tehingud, mille tegemiseks on vaja tema nõusolekut.",
+        "@language": "et"
+      },
       "estleg:legalText": "Nõukogu võib oma otsusega määrata tehingud, mille tegemiseks on vaja tema nõusolekut.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SCEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SCEPS_4_1"
       },
@@ -1430,18 +1635,18 @@
           "@id": "estleg:SCEPS_Par_11_Lg_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:SEPS_Par_17"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_11_v972385"
@@ -1454,16 +1659,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Nõukogu võib oma otsusega määrata tehingud, mille tegemiseks on vaja tema nõusolekut.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu võib oma otsusega määrata tehingud, mille tegemiseks on vaja tema nõusolekut.",
       "estleg:parentProvision": {
         "@id": "estleg:SCEPS_Par_11"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 11 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1473,13 +1680,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Juhatuse liikmed",
+      "rdfs:label": {
+        "@value": "§ 12. Juhatuse liikmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "Juhatusel on kolm liiget, kui põhikiri ei näe ette suuremat liikmete arvu.",
+      "estleg:summary": {
+        "@value": "Juhatusel on kolm liiget, kui põhikiri ei näe ette suuremat liikmete arvu.",
+        "@language": "et"
+      },
       "estleg:legalText": "Juhatusel on kolm liiget, kui põhikiri ei näe ette suuremat liikmete arvu.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SCEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SCEPS_4_2"
       },
@@ -1493,24 +1709,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:HLUS_Par_34"
         },
         {
           "@id": "estleg:KREDII_2_Par_42_2"
-        },
-        {
-          "@id": "estleg:KREDII_2_Par_56"
-        },
-        {
-          "@id": "estleg:SEPS_Par_21"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_12_v972385"
@@ -1523,10 +1733,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Juhatusel on kolm liiget, kui põhikiri ei näe ette suuremat liikmete arvu.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juhatusel on kolm liiget, kui põhikiri ei näe ette suuremat liikmete arvu.",
       "estleg:parentProvision": {
         "@id": "estleg:SCEPS_Par_12"
-      }
+      },
+      "rdfs:label": "§ 12 lg 1"
     },
     {
       "@id": "estleg:SCEPS_Par_13",
@@ -1535,13 +1747,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Juhatuse esindusõigus",
+      "rdfs:label": {
+        "@value": "§ 13. Juhatuse esindusõigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "SCE võib põhikirjaga anda esindusõiguse ühele juhatuse liikmele või mitmele juhatuse liikmele selliselt, et juhatuse liikmed on õigustatud SCE-d esindama mitmekesi või ühiselt. Kolmandate isikute suhtes kehtib ühine esindus ainult siis, kui see on kantud äriregistrisse.",
+      "estleg:summary": {
+        "@value": "SCE võib põhikirjaga anda esindusõiguse ühele juhatuse liikmele või mitmele juhatuse liikmele selliselt, et juhatuse liikmed on õigustatud SCE-d esindama mitmekesi või ühiselt. Kolmandate isikute suhtes kehtib ühine esindus ainult siis, kui see on kantud äriregistrisse.",
+        "@language": "et"
+      },
       "estleg:legalText": "SCE võib põhikirjaga anda esindusõiguse ühele juhatuse liikmele või mitmele juhatuse liikmele selliselt, et juhatuse liikmed on õigustatud SCE-d esindama mitmekesi või ühiselt. Kolmandate isikute suhtes kehtib ühine esindus ainult siis, kui see on kantud äriregistrisse.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SCEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SCEPS_4_3"
       },
@@ -1552,16 +1773,17 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:SEPS_Par_20"
-        },
         {
           "@id": "estleg:TUS_Par_58"
         },
@@ -1575,13 +1797,6 @@
           "@id": "estleg:riseadustik1_Par_307"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_13_v972385"
@@ -1594,13 +1809,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "SCE võib põhikirjaga anda esindusõiguse ühele juhatuse liikmele või mitmele juhatuse liikmele selliselt, et juhatuse liikmed on õigustatud SCE-d esindama mitmekesi või ühiselt. Kolmandate isikute suhtes kehtib ühine esindus ainult siis, kui see on kantud äriregistrisse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) SCE võib põhikirjaga anda esindusõiguse ühele juhatuse liikmele või mitmele juhatuse liikmele selliselt, et juhatuse liikmed on õigustatud SCE-d esindama mitmekesi või ühiselt. Kolmandate isikute suhtes kehtib ühine esindus ainult siis, kui see on kantud äriregistrisse.",
       "estleg:parentProvision": {
         "@id": "estleg:SCEPS_Par_13"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
+      "rdfs:label": "§ 13 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1609,6 +1823,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -1618,12 +1835,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. SCE lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 14. SCE lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "(1) Kui Eesti äriregistris registreeritud SCE ei vasta enam määruse artiklis 6 sätestatud nõuetele, annab registripidaja SCE-le tähtaja, mille jooksul SCE peab oma juhatuse tooma üle Eestisse või viima oma registrijärgse asukoha vastavalt määruse artiklile 7 üle teise liikmesriiki. Tähtaeg ei tohi olla lühem kui kaks kuud. (2) Kui SCE määratud tähtaja jooksul puudusi ei kõrvalda, võib registripidaja otsustada SCE sundlõpetamise.",
+      "estleg:summary": {
+        "@value": "(1) Kui Eesti äriregistris registreeritud SCE ei vasta enam määruse artiklis 6 sätestatud nõuetele, annab registripidaja SCE-le tähtaja, mille jooksul SCE peab oma juhatuse tooma üle Eestisse või viima oma registrijärgse asukoha vastavalt määruse artiklile 7 üle teise liikmesriiki. Tähtaeg ei tohi olla lühem kui kaks kuud. (2) Kui SCE määratud tähtaja jooksul puudusi ei kõrvalda, võib registripidaja otsustada SCE sundlõpetamise.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui Eesti äriregistris registreeritud SCE ei vasta enam määruse artiklis 6 sätestatud nõuetele, annab registripidaja SCE-le tähtaja, mille jooksul SCE peab oma juhatuse tooma üle Eestisse või viima oma registrijärgse asukoha vastavalt määruse artiklile 7 üle teise liikmesriiki. Tähtaeg ei tohi olla lühem kui kaks kuud. (2) Kui SCE määratud tähtaja jooksul puudusi ei kõrvalda, võib registripidaja otsustada SCE sundlõpetamise.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SCEPS_5"
@@ -1644,18 +1867,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:SEPS_Par_29"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SCEPS_Par_14_v972385"
@@ -1674,9 +1897,6 @@
         "@id": "estleg:SCEPS_Par_14"
       },
       "rdfs:label": "§ 14 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1685,6 +1905,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -1716,12 +1939,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Riigilõivuseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 15. Riigilõivuseaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SCEPS_6"
@@ -1745,12 +1974,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 16. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 1435/2003 «Euroopa ühistu (SCE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SCEPS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 18. augustil 2006.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 18. augustil 2006.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 18. augustil 2006.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SCEPS_6"
@@ -1763,6 +1998,22 @@
           "@id": "estleg:SCEPS_Par_16_v972385"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/524012023006",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:SCEPS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Council Regulation (EC) No 1435/2003 on the Statute for a European Cooperative Society (SCE) Implementation Act",
+        "@language": "en"
+      }
     }
   ]
 }

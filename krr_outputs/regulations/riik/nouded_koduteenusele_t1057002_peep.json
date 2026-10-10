@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Nõuded koduteenusele (määrus)",
+      "rdfs:label": {
+        "@value": "Nõuded koduteenusele (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Nõuded koduteenusele",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,15 +39,12 @@
       "estleg:globalId": "104072023056",
       "estleg:terviktekstId": "1057002",
       "estleg:preambleText": "Määrus kehtestatakse sotsiaalhoolekande seaduse § 17 lõike 3 alusel.",
-      "estleg:entryIntoForce": {
-        "@value": "2025-01-01",
+      "dcterms:title": "Nõuded koduteenusele",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2023-07-04",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:issuedUnder": [
         {
           "@id": "estleg:SOTSIA_Map"
@@ -51,6 +55,10 @@
           "@id": "estleg:Citation_Reg_1057002_Map_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/5899"
@@ -72,7 +80,16 @@
         {
           "@id": "http://eurovoc.europa.eu/2162"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2025-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2023-07-04",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1057002_Par_1",
@@ -81,13 +98,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded koduteenusele",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1057002_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse täpsustatud nõuded koduteenuse sisule, sealhulgas tegevustele, mis on vajalikud teenuse eesmärgi saavutamiseks.",
-      "estleg:legalText": "Määrusega kehtestatakse täpsustatud nõuded koduteenuse sisule, sealhulgas tegevustele, mis on vajalikud teenuse eesmärgi saavutamiseks. Määrusega kehtestatakse täpsustatud nõuded koduteenuse sisule, sealhulgas tegevustele, mis on vajalikud teenuse eesmärgi saavutamiseks.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse täpsustatud nõuded koduteenuse sisule, sealhulgas tegevustele, mis on vajalikud teenuse eesmärgi saavutamiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse täpsustatud nõuded koduteenuse sisule, sealhulgas tegevustele, mis on vajalikud teenuse eesmärgi saavutamiseks.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1057002_Par_1_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1056860_Par_1"
@@ -100,24 +128,129 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1057002_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse täpsustatud nõuded koduteenuse sisule, sealhulgas tegevustele, mis on vajalikud teenuse eesmärgi saavutamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1057002_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1057002_Par_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Nõuded teenuse sisule",
+      "rdfs:label": {
+        "@value": "§ 2. Nõuded teenuse sisule",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded koduteenusele",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1057002_Map"
       },
-      "estleg:summary": "1 (1) Koduteenuse osutaja abistab või juhendab koduteenuse saajat kodustes tingimustes kõrvalabi vajaduse määrast tulenevalt koduabi ja isikuabiga seotud toimingutes, toetades teenuse saaja aktiivsust ja motivatsiooni iseseisvalt kodus elada. Koduteenuse osutaja abistab või juhendab koduteenuse saajat kodustes tingimustes kõrvalabi vajaduse määrast tulenevalt koduabi ja isikuabiga seotud toimingutes, toetades teenuse saaja aktiivsust ja motivatsiooni iseseisvalt kodus elada. 2 (2) Koduabi hõlmab",
-      "estleg:legalText": "1 (1) Koduteenuse osutaja abistab või juhendab koduteenuse saajat kodustes tingimustes kõrvalabi vajaduse määrast tulenevalt koduabi ja isikuabiga seotud toimingutes, toetades teenuse saaja aktiivsust ja motivatsiooni iseseisvalt kodus elada. Koduteenuse osutaja abistab või juhendab koduteenuse saajat kodustes tingimustes kõrvalabi vajaduse määrast tulenevalt koduabi ja isikuabiga seotud toimingutes, toetades teenuse saaja aktiivsust ja motivatsiooni iseseisvalt kodus elada. 2 (2) Koduabi hõlmab koduteenuse saaja abistamist ja juhendamist: 1 1) sisseostude tegemisel ja koju toomisel; 2 2) teenuste kasutamisel ja asjaajamisel; 3 3) küttematerjali tellimisel, ladustamisel ja kütmisel; 4 4) eluruumi turvalisuse jälgimisel ja ohutu elukeskkonna tagamisel; 5 5) eluruumi korrastamisel, teenuse saaja hooviala hooldamisel ja heakorraeeskirjade täitmisel; 6 6) muudes koduabi toimingutes, mis toetavad iseseisvat ja turvalist toimetulekut kodus. Koduabi hõlmab koduteenuse saaja abistamist ja juhendamist: sisseostude tegemisel ja koju toomisel; teenuste kasutamisel ja asjaajamisel; küttematerjali tellimisel, ladustamisel ja kütmisel; eluruumi turvalisuse jälgimisel ja ohutu elukeskkonna tagamisel; eluruumi korrastamisel, teenuse saaja hooviala hooldamisel ja heakorraeeskirjade täitmisel; muudes koduabi toimingutes, mis toetavad iseseisvat ja turvalist toimetulekut kodus. 3 (3) Isikuabi hõlmab abistamist ja juhendamist: 1 1) isiklikul hügieenil, tualeti ja inkontinentsivahendite kasutamisel; 2 2) toitumisel; 3 3) riietumisel ja enese korrastamisel; 4 4) voodipesu vahetamisel ja pesupesemisel; 5 5) ravimite manustamisel ja terviseseisundi jälgimisel vastavalt tervishoiutöötaja juhistele; 6 6) tegevusvõime jälgimisel teenuse osutamise ajal; 7 7) lähivõrgustikuga kontakti hoidmisel ja kogukonnaelus osalemise soodustamisel; 8 8) vaimse tervise ja hingelise toe saamisel; 9 9) abitehnoloogiate kasutamisel; 10 10) muudes isikuabi toimingutes, mis toetavad iseseisvat toimetulekut ja parandavad teenuse saaja tegevusvõimet kodus. Isikuabi hõlmab abistamist ja juhendamist: isiklikul hügieenil, tualeti ja inkontinentsivahendite kasutamisel; toitumisel; riietumisel ja enese korrastamisel; voodipesu vahetamisel ja pesupesemisel; ravimite manustamisel ja terviseseisundi jälgimisel vastavalt tervishoiutöötaja juhistele; tegevusvõime jälgimisel teenuse osutamise ajal; lähivõrgustikuga kontakti hoidmisel ja kogukonnaelus osalemise soodustamisel; vaimse tervise ja hingelise toe saamisel; abitehnoloogiate kasutamisel; muudes isikuabi toimingutes, mis toetavad iseseisvat toimetulekut ja parandavad teenuse saaja tegevusvõimet kodus. 4 (4) Teenuseosutaja arvestab teenuse saaja tahet, võimekust ning selgitab eelnevalt toimingu sisu. Teenuseosutaja arvestab teenuse saaja tahet, võimekust ning selgitab eelnevalt toimingu sisu.",
+      "estleg:summary": {
+        "@value": "1 (1) Koduteenuse osutaja abistab või juhendab koduteenuse saajat kodustes tingimustes kõrvalabi vajaduse määrast tulenevalt koduabi ja isikuabiga seotud toimingutes, toetades teenuse saaja aktiivsust ja motivatsiooni iseseisvalt kodus elada. 2 (2) Koduabi hõlmab koduteenuse saaja abistamist ja juhendamist: 1 1) sisseostude tegemisel ja koju toomisel; 2 2) teenuste kasutamisel ja asjaajamisel; 3 3) küttematerjali tellimisel, ladustamisel ja kütmisel; 4 4) eluruumi turvalisuse jälgimisel ja…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Koduteenuse osutaja abistab või juhendab koduteenuse saajat kodustes tingimustes kõrvalabi vajaduse määrast tulenevalt koduabi ja isikuabiga seotud toimingutes, toetades teenuse saaja aktiivsust ja motivatsiooni iseseisvalt kodus elada. 2 (2) Koduabi hõlmab koduteenuse saaja abistamist ja juhendamist: 1 1) sisseostude tegemisel ja koju toomisel; 2 2) teenuste kasutamisel ja asjaajamisel; 3 3) küttematerjali tellimisel, ladustamisel ja kütmisel; 4 4) eluruumi turvalisuse jälgimisel ja ohutu elukeskkonna tagamisel; 5 5) eluruumi korrastamisel, teenuse saaja hooviala hooldamisel ja heakorraeeskirjade täitmisel; 6 6) muudes koduabi toimingutes, mis toetavad iseseisvat ja turvalist toimetulekut kodus. 3 (3) Isikuabi hõlmab abistamist ja juhendamist: 1 1) isiklikul hügieenil, tualeti ja inkontinentsivahendite kasutamisel; 2 2) toitumisel; 3 3) riietumisel ja enese korrastamisel; 4 4) voodipesu vahetamisel ja pesupesemisel; 5 5) ravimite manustamisel ja terviseseisundi jälgimisel vastavalt tervishoiutöötaja juhistele; 6 6) tegevusvõime jälgimisel teenuse osutamise ajal; 7 7) lähivõrgustikuga kontakti hoidmisel ja kogukonnaelus osalemise soodustamisel; 8 8) vaimse tervise ja hingelise toe saamisel; 9 9) abitehnoloogiate kasutamisel; 10 10) muudes isikuabi toimingutes, mis toetavad iseseisvat toimetulekut ja parandavad teenuse saaja tegevusvõimet kodus. 4 (4) Teenuseosutaja arvestab teenuse saaja tahet, võimekust ning selgitab eelnevalt toimingu sisu.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1057002_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1057002_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1057002_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1057002_Par_2_Lg_4"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1057002_Par_2_v1057002"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1057002_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Koduteenuse osutaja abistab või juhendab koduteenuse saajat kodustes tingimustes kõrvalabi vajaduse määrast tulenevalt koduabi ja isikuabiga seotud toimingutes, toetades teenuse saaja aktiivsust ja motivatsiooni iseseisvalt kodus elada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1057002_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1057002_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Koduabi hõlmab koduteenuse saaja abistamist ja juhendamist: 1) sisseostude tegemisel ja koju toomisel; 2) teenuste kasutamisel ja asjaajamisel; 3) küttematerjali tellimisel, ladustamisel ja kütmisel; 4) eluruumi turvalisuse jälgimisel ja ohutu elukeskkonna tagamisel; 5) eluruumi korrastamisel, teenuse saaja hooviala hooldamisel ja heakorraeeskirjade täitmisel; 6) muudes koduabi toimingutes, mis toetavad iseseisvat ja turvalist toimetulekut kodus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1057002_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1057002_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Isikuabi hõlmab abistamist ja juhendamist: 1) isiklikul hügieenil, tualeti ja inkontinentsivahendite kasutamisel; 2) toitumisel; 3) riietumisel ja enese korrastamisel; 4) voodipesu vahetamisel ja pesupesemisel; 5) ravimite manustamisel ja terviseseisundi jälgimisel vastavalt tervishoiutöötaja juhistele; 6) tegevusvõime jälgimisel teenuse osutamise ajal; 7) lähivõrgustikuga kontakti hoidmisel ja kogukonnaelus osalemise soodustamisel; 8) vaimse tervise ja hingelise toe saamisel; 9) abitehnoloogiate kasutamisel; 10) muudes isikuabi toimingutes, mis toetavad iseseisvat toimetulekut ja parandavad teenuse saaja tegevusvõimet kodus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1057002_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1057002_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Teenuseosutaja arvestab teenuse saaja tahet, võimekust ning selgitab eelnevalt toimingu sisu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1057002_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_1057002_Par_3",
@@ -126,18 +259,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 3. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded koduteenusele",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1057002_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. jaanuaril 2025. a.",
-      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2025. a. Määrus jõustub 1. jaanuaril 2025. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. jaanuaril 2025. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2025. a.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1057002_Par_3_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1057002_Par_3_v1057002"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1057002_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. jaanuaril 2025. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1057002_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1057002_Map_1",

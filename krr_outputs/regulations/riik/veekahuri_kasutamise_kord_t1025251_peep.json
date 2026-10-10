@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Veekahuri kasutamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Veekahuri kasutamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Veekahuri kasutamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,18 +39,15 @@
       "estleg:globalId": "112072014181",
       "estleg:terviktekstId": "1025251",
       "estleg:preambleText": "Määrus kehtestatakse korrakaitseseaduse § 79",
-      "estleg:entryIntoForce": {
-        "@value": "2014-07-15",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2014-07-12",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Veekahuri kasutamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "estleg:issuedUnder": [
         {
@@ -76,7 +80,16 @@
         {
           "@id": "http://eurovoc.europa.eu/695"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2014-07-15",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2014-07-12",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1025251_Par_1",
@@ -85,25 +98,36 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veekahuri kasutamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025251_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse veekahuri erivahendina kasutamise kord.",
-      "estleg:legalText": "Määrusega kehtestatakse veekahuri erivahendina kasutamise kord. Määrusega kehtestatakse veekahuri erivahendina kasutamise kord.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse veekahuri erivahendina kasutamise kord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse veekahuri erivahendina kasutamise kord.",
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1006882_Par_1"
-        },
+          "@id": "estleg:Reg_1025251_Par_1_Lg_1"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1032218_Par_1"
         },
         {
-          "@id": "estleg:Reg_1034931_Par_1"
+          "@id": "estleg:Reg_1056416_Par_1"
         },
         {
-          "@id": "estleg:Reg_1056416_Par_1"
+          "@id": "estleg:Reg_1060791_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1062606_Par_1"
         },
         {
           "@id": "estleg:Reg_312300_Par_1"
@@ -116,24 +140,77 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1025251_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse veekahuri erivahendina kasutamise kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1025251_Par_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Veekahur ja veekahuri kasutamine",
+      "rdfs:label": {
+        "@value": "§ 2. Veekahur ja veekahuri kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veekahuri kasutamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025251_Map"
       },
-      "estleg:summary": "1 (1) Veekahur on politsei või seaduses sätestatud juhul muu korrakaitseorgani eriotstarbeline sõiduk, mis on kohandatud erinevatel režiimidel kõrgsurvega veejoa kasutamiseks. Veekahur on politsei või seaduses sätestatud juhul muu korrakaitseorgani eriotstarbeline sõiduk, mis on kohandatud erinevatel režiimidel kõrgsurvega veejoa kasutamiseks. 2 (2) Veekahuri kasutamine on rahvahulga füüsiline mõjutamine veejoaga. Veekahuri kasutamine on rahvahulga füüsiline mõjutamine veejoaga.",
-      "estleg:legalText": "1 (1) Veekahur on politsei või seaduses sätestatud juhul muu korrakaitseorgani eriotstarbeline sõiduk, mis on kohandatud erinevatel režiimidel kõrgsurvega veejoa kasutamiseks. Veekahur on politsei või seaduses sätestatud juhul muu korrakaitseorgani eriotstarbeline sõiduk, mis on kohandatud erinevatel režiimidel kõrgsurvega veejoa kasutamiseks. 2 (2) Veekahuri kasutamine on rahvahulga füüsiline mõjutamine veejoaga. Veekahuri kasutamine on rahvahulga füüsiline mõjutamine veejoaga.",
+      "estleg:summary": {
+        "@value": "1 (1) Veekahur on politsei või seaduses sätestatud juhul muu korrakaitseorgani eriotstarbeline sõiduk, mis on kohandatud erinevatel režiimidel kõrgsurvega veejoa kasutamiseks. 2 (2) Veekahuri kasutamine on rahvahulga füüsiline mõjutamine veejoaga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Veekahur on politsei või seaduses sätestatud juhul muu korrakaitseorgani eriotstarbeline sõiduk, mis on kohandatud erinevatel režiimidel kõrgsurvega veejoa kasutamiseks. 2 (2) Veekahuri kasutamine on rahvahulga füüsiline mõjutamine veejoaga.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025251_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1025251_Par_2_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025251_Par_2_v1025251"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025251_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Veekahur on politsei või seaduses sätestatud juhul muu korrakaitseorgani eriotstarbeline sõiduk, mis on kohandatud erinevatel režiimidel kõrgsurvega veejoa kasutamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1025251_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Veekahuri kasutamine on rahvahulga füüsiline mõjutamine veejoaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_1025251_Par_3",
@@ -142,24 +219,38 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Lisaainete kasutamine",
+      "rdfs:label": {
+        "@value": "§ 3. Lisaainete kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veekahuri kasutamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025251_Map"
       },
-      "estleg:summary": "1 (1) Veekahuris on lisaks veele lubatud lisaainena kasutada: 1 1) markeerivat värvainet; 2 2) lakrimaatorit (CS) või pipragaasi (kapsaitsiin) gaasi kontsentratsiooniga kuni viis protsenti. Veekahuris on lisaks veele lubatud lisaainena kasutada: markeerivat värvainet; lakrimaatorit (CS) või pipragaasi (kapsaitsiin) gaasi kontsentratsiooniga kuni viis protsenti. 2 (2) Lisaaine ja selle koguse valimisel peab arvestama tootja soovitustega ning aine kasutamise eesmärgiga. Lisaaine ja selle koguse va",
-      "estleg:legalText": "1 (1) Veekahuris on lisaks veele lubatud lisaainena kasutada: 1 1) markeerivat värvainet; 2 2) lakrimaatorit (CS) või pipragaasi (kapsaitsiin) gaasi kontsentratsiooniga kuni viis protsenti. Veekahuris on lisaks veele lubatud lisaainena kasutada: markeerivat värvainet; lakrimaatorit (CS) või pipragaasi (kapsaitsiin) gaasi kontsentratsiooniga kuni viis protsenti. 2 (2) Lisaaine ja selle koguse valimisel peab arvestama tootja soovitustega ning aine kasutamise eesmärgiga. Lisaaine ja selle koguse valimisel peab arvestama tootja soovitustega ning aine kasutamise eesmärgiga.",
+      "estleg:summary": {
+        "@value": "1 (1) Veekahuris on lisaks veele lubatud lisaainena kasutada: 1 1) markeerivat värvainet; 2 2) lakrimaatorit (CS) või pipragaasi (kapsaitsiin) gaasi kontsentratsiooniga kuni viis protsenti. 2 (2) Lisaaine ja selle koguse valimisel peab arvestama tootja soovitustega ning aine kasutamise eesmärgiga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Veekahuris on lisaks veele lubatud lisaainena kasutada: 1 1) markeerivat värvainet; 2 2) lakrimaatorit (CS) või pipragaasi (kapsaitsiin) gaasi kontsentratsiooniga kuni viis protsenti. 2 (2) Lisaaine ja selle koguse valimisel peab arvestama tootja soovitustega ning aine kasutamise eesmärgiga.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025251_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1025251_Par_3_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -168,25 +259,84 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1025251_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Veekahuris on lisaks veele lubatud lisaainena kasutada: 1) markeerivat värvainet; 2) lakrimaatorit (CS) või pipragaasi (kapsaitsiin) gaasi kontsentratsiooniga kuni viis protsenti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025251_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lisaaine ja selle koguse valimisel peab arvestama tootja soovitustega ning aine kasutamise eesmärgiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
       "@id": "estleg:Reg_1025251_Par_4",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Hoiatamine veekahuri kasutamisest",
+      "rdfs:label": {
+        "@value": "§ 4. Hoiatamine veekahuri kasutamisest",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veekahuri kasutamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025251_Map"
       },
-      "estleg:summary": "1 (1) Enne veekahuri kasutamist on korrakaitseorganil kohustus hoiatada valjuhääldi kaudu veekahuri kasutamisest. Veekahuri kasutamisest hoiatamisel: 1 1) antakse korraldus vabatahtlikult lahkuda veekahuri kasutamise mõjualast; 2 2) teatatakse veekahuri kasutamise algusaeg, mis peab olema piisav vabatahtlikuks lahkumiseks; 3 3) teatatakse lisaainete kasutamisest ning selle eesmärgist; 4 4) tehakse lisaainete kasutamisel ettepanek läheduses asuvate hoonete uste ja akende sulgemiseks. Enne veekahu",
-      "estleg:legalText": "1 (1) Enne veekahuri kasutamist on korrakaitseorganil kohustus hoiatada valjuhääldi kaudu veekahuri kasutamisest. Veekahuri kasutamisest hoiatamisel: 1 1) antakse korraldus vabatahtlikult lahkuda veekahuri kasutamise mõjualast; 2 2) teatatakse veekahuri kasutamise algusaeg, mis peab olema piisav vabatahtlikuks lahkumiseks; 3 3) teatatakse lisaainete kasutamisest ning selle eesmärgist; 4 4) tehakse lisaainete kasutamisel ettepanek läheduses asuvate hoonete uste ja akende sulgemiseks. Enne veekahuri kasutamist on korrakaitseorganil kohustus hoiatada valjuhääldi kaudu veekahuri kasutamisest. Veekahuri kasutamisest hoiatamisel: antakse korraldus vabatahtlikult lahkuda veekahuri kasutamise mõjualast; teatatakse veekahuri kasutamise algusaeg, mis peab olema piisav vabatahtlikuks lahkumiseks; teatatakse lisaainete kasutamisest ning selle eesmärgist; tehakse lisaainete kasutamisel ettepanek läheduses asuvate hoonete uste ja akende sulgemiseks. 2 (2) Vahetult enne veekahuri kasutamist antakse valjuhääldi kaudu teade veekahuri kasutamisest. Vahetult enne veekahuri kasutamist antakse valjuhääldi kaudu teade veekahuri kasutamisest. 3 (3) Veekahuri kasutamise vahetust teatamisest võib loobuda üksnes juhul, kui hoiatamine ei ole võimalik vahetu kõrgendatud ohu tõrjumise kiire vajaduse tõttu. Veekahuri kasutamise vahetust teatamisest võib loobuda üksnes juhul, kui hoiatamine ei ole võimalik vahetu kõrgendatud ohu tõrjumise kiire vajaduse tõttu.",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:summary": {
+        "@value": "1 (1) Enne veekahuri kasutamist on korrakaitseorganil kohustus hoiatada valjuhääldi kaudu veekahuri kasutamisest. Veekahuri kasutamisest hoiatamisel: 1 1) antakse korraldus vabatahtlikult lahkuda veekahuri kasutamise mõjualast; 2 2) teatatakse veekahuri kasutamise algusaeg, mis peab olema piisav vabatahtlikuks lahkumiseks; 3 3) teatatakse lisaainete kasutamisest ning selle eesmärgist; 4 4) tehakse lisaainete kasutamisel ettepanek läheduses asuvate hoonete uste ja akende sulgemiseks.",
+        "@language": "et"
       },
+      "estleg:legalText": "1 (1) Enne veekahuri kasutamist on korrakaitseorganil kohustus hoiatada valjuhääldi kaudu veekahuri kasutamisest. Veekahuri kasutamisest hoiatamisel: 1 1) antakse korraldus vabatahtlikult lahkuda veekahuri kasutamise mõjualast; 2 2) teatatakse veekahuri kasutamise algusaeg, mis peab olema piisav vabatahtlikuks lahkumiseks; 3 3) teatatakse lisaainete kasutamisest ning selle eesmärgist; 4 4) tehakse lisaainete kasutamisel ettepanek läheduses asuvate hoonete uste ja akende sulgemiseks. 2 (2) Vahetult enne veekahuri kasutamist antakse valjuhääldi kaudu teade veekahuri kasutamisest. 3 (3) Veekahuri kasutamise vahetust teatamisest võib loobuda üksnes juhul, kui hoiatamine ei ole võimalik vahetu kõrgendatud ohu tõrjumise kiire vajaduse tõttu.",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025251_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1025251_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1025251_Par_4_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -195,19 +345,84 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1025251_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne veekahuri kasutamist on korrakaitseorganil kohustus hoiatada valjuhääldi kaudu veekahuri kasutamisest. Veekahuri kasutamisest hoiatamisel: 1) antakse korraldus vabatahtlikult lahkuda veekahuri kasutamise mõjualast; 2) teatatakse veekahuri kasutamise algusaeg, mis peab olema piisav vabatahtlikuks lahkumiseks; 3) teatatakse lisaainete kasutamisest ning selle eesmärgist; 4) tehakse lisaainete kasutamisel ettepanek läheduses asuvate hoonete uste ja akende sulgemiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1025251_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vahetult enne veekahuri kasutamist antakse valjuhääldi kaudu teade veekahuri kasutamisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1025251_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Veekahuri kasutamise vahetust teatamisest võib loobuda üksnes juhul, kui hoiatamine ei ole võimalik vahetu kõrgendatud ohu tõrjumise kiire vajaduse tõttu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
       "@id": "estleg:Reg_1025251_Par_5",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Loa andmine veekahuri kasutamiseks",
+      "rdfs:label": {
+        "@value": "§ 5. Loa andmine veekahuri kasutamiseks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veekahuri kasutamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025251_Map"
       },
-      "estleg:summary": "Loa veekahuri kasutamiseks annab politseile Politsei- ja Piirivalveameti peadirektor või tema volitatud politseiametnik ning seaduses sätestatud juhul muule korrakaitseorganile selle juht.",
-      "estleg:legalText": "Loa veekahuri kasutamiseks annab politseile Politsei- ja Piirivalveameti peadirektor või tema volitatud politseiametnik ning seaduses sätestatud juhul muule korrakaitseorganile selle juht. Loa veekahuri kasutamiseks annab politseile Politsei- ja Piirivalveameti peadirektor või tema volitatud politseiametnik ning seaduses sätestatud juhul muule korrakaitseorganile selle juht.",
+      "estleg:summary": {
+        "@value": "Loa veekahuri kasutamiseks annab politseile Politsei- ja Piirivalveameti peadirektor või tema volitatud politseiametnik ning seaduses sätestatud juhul muule korrakaitseorganile selle juht.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Loa veekahuri kasutamiseks annab politseile Politsei- ja Piirivalveameti peadirektor või tema volitatud politseiametnik ning seaduses sätestatud juhul muule korrakaitseorganile selle juht.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -217,11 +432,43 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025251_Par_5_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025251_Par_5_v1025251"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025251_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Loa veekahuri kasutamiseks annab politseile Politsei- ja Piirivalveameti peadirektor või tema volitatud politseiametnik ning seaduses sätestatud juhul muule korrakaitseorganile selle juht.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
@@ -235,19 +482,30 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Keelud veekahuri kasutamisel",
+      "rdfs:label": {
+        "@value": "§ 6. Keelud veekahuri kasutamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veekahuri kasutamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025251_Map"
       },
-      "estleg:summary": "Veekahurit on keelatud kasutada, kui rahvahulk asub: 1 1) välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1000 volti või vähem, vahetus läheduses või nendest kuni viie meetri kaugusel; 2 2) välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1001 volti või rohkem, vahetus läheduses või nendest kuni kümne meetri kaugusel; 3 3) keemiliste ainete käitlemise koha läheduses, kui keemilised ained veega reageerimisel või veesurve tagajärjel võivad tekitada plahvatusohu. Veek",
-      "estleg:legalText": "Veekahurit on keelatud kasutada, kui rahvahulk asub: 1 1) välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1000 volti või vähem, vahetus läheduses või nendest kuni viie meetri kaugusel; 2 2) välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1001 volti või rohkem, vahetus läheduses või nendest kuni kümne meetri kaugusel; 3 3) keemiliste ainete käitlemise koha läheduses, kui keemilised ained veega reageerimisel või veesurve tagajärjel võivad tekitada plahvatusohu. Veekahurit on keelatud kasutada, kui rahvahulk asub: välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1000 volti või vähem, vahetus läheduses või nendest kuni viie meetri kaugusel; välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1001 volti või rohkem, vahetus läheduses või nendest kuni kümne meetri kaugusel; keemiliste ainete käitlemise koha läheduses, kui keemilised ained veega reageerimisel või veesurve tagajärjel võivad tekitada plahvatusohu.",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
+      "estleg:summary": {
+        "@value": "Veekahurit on keelatud kasutada, kui rahvahulk asub: 1 1) välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1000 volti või vähem, vahetus läheduses või nendest kuni viie meetri kaugusel; 2 2) välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1001 volti või rohkem, vahetus läheduses või nendest kuni kümne meetri kaugusel; 3 3) keemiliste ainete käitlemise koha läheduses, kui keemilised ained veega reageerimisel või veesurve tagajärjel võivad tekitada plahvatusohu.",
+        "@language": "et"
       },
+      "estleg:legalText": "Veekahurit on keelatud kasutada, kui rahvahulk asub: 1 1) välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1000 volti või vähem, vahetus läheduses või nendest kuni viie meetri kaugusel; 2 2) välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1001 volti või rohkem, vahetus läheduses või nendest kuni kümne meetri kaugusel; 3 3) keemiliste ainete käitlemise koha läheduses, kui keemilised ained veega reageerimisel või veesurve tagajärjel võivad tekitada plahvatusohu.",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025251_Par_6_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasVersion": [
         {
@@ -256,19 +514,50 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1025251_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Veekahurit on keelatud kasutada, kui rahvahulk asub: 1) välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1000 volti või vähem, vahetus läheduses või nendest kuni viie meetri kaugusel; 2) välja lülitamata elektriseadmete ja -rajatiste, milles on pinge 1001 volti või rohkem, vahetus läheduses või nendest kuni kümne meetri kaugusel; 3) keemiliste ainete käitlemise koha läheduses, kui keemilised ained veega reageerimisel või veesurve tagajärjel võivad tekitada plahvatusohu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
       "@id": "estleg:Reg_1025251_Par_7",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Veekahuri kasutamise protokollimine",
+      "rdfs:label": {
+        "@value": "§ 7. Veekahuri kasutamise protokollimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veekahuri kasutamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025251_Map"
       },
-      "estleg:summary": "Veekahuri kasutamine protokollitakse. Veekahuri kasutamisel dokumenteeritakse vähemalt järgmised andmed: 1 1) veekahuri kasutamiseks loa andnud politseiametniku andmed; 2 2) veekahuri kasutamisest hoiatamise aeg ja sisu; 3 3) teave lisaainete kasutamise kohta; 4 4) veejoa kasutamise algus- ja lõpuaeg; 5 5) arvatav isikute arv, kelle suhtes veekahurit kasutati; 6 6) märge veekahuri kasutamise videosalvestamise kohta või põhjus, miks ei videosalvestatud veekahuri kasutamist.",
-      "estleg:legalText": "Veekahuri kasutamine protokollitakse. Veekahuri kasutamisel dokumenteeritakse vähemalt järgmised andmed: 1 1) veekahuri kasutamiseks loa andnud politseiametniku andmed; 2 2) veekahuri kasutamisest hoiatamise aeg ja sisu; 3 3) teave lisaainete kasutamise kohta; 4 4) veejoa kasutamise algus- ja lõpuaeg; 5 5) arvatav isikute arv, kelle suhtes veekahurit kasutati; 6 6) märge veekahuri kasutamise videosalvestamise kohta või põhjus, miks ei videosalvestatud veekahuri kasutamist. Veekahuri kasutamine protokollitakse. Veekahuri kasutamisel dokumenteeritakse vähemalt järgmised andmed: veekahuri kasutamiseks loa andnud politseiametniku andmed; veekahuri kasutamisest hoiatamise aeg ja sisu; teave lisaainete kasutamise kohta; veejoa kasutamise algus- ja lõpuaeg; arvatav isikute arv, kelle suhtes veekahurit kasutati; märge veekahuri kasutamise videosalvestamise kohta või põhjus, miks ei videosalvestatud veekahuri kasutamist.",
+      "estleg:summary": {
+        "@value": "Veekahuri kasutamine protokollitakse. Veekahuri kasutamisel dokumenteeritakse vähemalt järgmised andmed: 1 1) veekahuri kasutamiseks loa andnud politseiametniku andmed; 2 2) veekahuri kasutamisest hoiatamise aeg ja sisu; 3 3) teave lisaainete kasutamise kohta; 4 4) veejoa kasutamise algus- ja lõpuaeg; 5 5) arvatav isikute arv, kelle suhtes veekahurit kasutati; 6 6) märge veekahuri kasutamise videosalvestamise kohta või põhjus, miks ei videosalvestatud veekahuri kasutamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Veekahuri kasutamine protokollitakse. Veekahuri kasutamisel dokumenteeritakse vähemalt järgmised andmed: 1 1) veekahuri kasutamiseks loa andnud politseiametniku andmed; 2 2) veekahuri kasutamisest hoiatamise aeg ja sisu; 3 3) teave lisaainete kasutamise kohta; 4 4) veejoa kasutamise algus- ja lõpuaeg; 5 5) arvatav isikute arv, kelle suhtes veekahurit kasutati; 6 6) märge veekahuri kasutamise videosalvestamise kohta või põhjus, miks ei videosalvestatud veekahuri kasutamist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -278,11 +567,46 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025251_Par_7_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025251_Par_7_v1025251"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025251_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Veekahuri kasutamine protokollitakse. Veekahuri kasutamisel dokumenteeritakse vähemalt järgmised andmed: 1) veekahuri kasutamiseks loa andnud politseiametniku andmed; 2) veekahuri kasutamisest hoiatamise aeg ja sisu; 3) teave lisaainete kasutamise kohta; 4) veejoa kasutamise algus- ja lõpuaeg; 5) arvatav isikute arv, kelle suhtes veekahurit kasutati; 6) märge veekahuri kasutamise videosalvestamise kohta või põhjus, miks ei videosalvestatud veekahuri kasutamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1025251_Par_8",
@@ -291,18 +615,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Veekahuri kasutamise videosalvestamine",
+      "rdfs:label": {
+        "@value": "§ 8. Veekahuri kasutamise videosalvestamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veekahuri kasutamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025251_Map"
       },
-      "estleg:summary": "Võimaluse korral veekahuri kasutamine videosalvestatakse.",
-      "estleg:legalText": "Võimaluse korral veekahuri kasutamine videosalvestatakse. Võimaluse korral veekahuri kasutamine videosalvestatakse.",
+      "estleg:summary": {
+        "@value": "Võimaluse korral veekahuri kasutamine videosalvestatakse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Võimaluse korral veekahuri kasutamine videosalvestatakse.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025251_Par_8_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025251_Par_8_v1025251"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025251_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Võimaluse korral veekahuri kasutamine videosalvestatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025251_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1025251_Map_1",

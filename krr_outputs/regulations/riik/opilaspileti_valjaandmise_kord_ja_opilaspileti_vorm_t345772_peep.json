@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm (määrus)",
+      "rdfs:label": {
+        "@value": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -31,18 +38,15 @@
       "estleg:actNumber": "42",
       "estleg:globalId": "13349855",
       "estleg:terviktekstId": "345772",
-      "estleg:entryIntoForce": {
-        "@value": "2010-09-01",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2010-08-19",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "dcterms:subject": [
         {
@@ -65,7 +69,16 @@
         {
           "@id": "http://eurovoc.europa.eu/2924"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2010-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2010-08-19",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_345772_Par_1",
@@ -74,38 +87,96 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Õpilaspileti mõiste",
+      "rdfs:label": {
+        "@value": "§ 1. Õpilaspileti mõiste",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_345772_Map"
       },
-      "estleg:summary": "1(1)Õpilaspilet on üldhariduskooli (edaspidi kool) õpilase õppimist tõendav dokument, mille annab õpilasele välja kool pärast õpilase arvamist kooli õpilaste nimekirja. Õpilaspilet on üldhariduskooli (edaspidi kool) õpilase õppimist tõendav dokument, mille annab õpilasele välja kool pärast õpilase arvamist kooli õpilaste nimekirja. 2(2)Õpilaspilet võib olla isikut tõendavaks dokumendiks «Isikut tõendavate dokumentide seaduse» §-s 4 kehtestatud tingimustel. Õpilaspilet võib olla isikut tõendavaks",
-      "estleg:legalText": "1(1)Õpilaspilet on üldhariduskooli (edaspidi kool) õpilase õppimist tõendav dokument, mille annab õpilasele välja kool pärast õpilase arvamist kooli õpilaste nimekirja. Õpilaspilet on üldhariduskooli (edaspidi kool) õpilase õppimist tõendav dokument, mille annab õpilasele välja kool pärast õpilase arvamist kooli õpilaste nimekirja. 2(2)Õpilaspilet võib olla isikut tõendavaks dokumendiks «Isikut tõendavate dokumentide seaduse» §-s 4 kehtestatud tingimustel. Õpilaspilet võib olla isikut tõendavaks dokumendiks «Isikut tõendavate dokumentide seaduse» §-s 4 kehtestatud tingimustel.",
+      "estleg:summary": {
+        "@value": "1(1)Õpilaspilet on üldhariduskooli (edaspidi kool) õpilase õppimist tõendav dokument, mille annab õpilasele välja kool pärast õpilase arvamist kooli õpilaste nimekirja. 2(2)Õpilaspilet võib olla isikut tõendavaks dokumendiks «Isikut tõendavate dokumentide seaduse» §-s 4 kehtestatud tingimustel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Õpilaspilet on üldhariduskooli (edaspidi kool) õpilase õppimist tõendav dokument, mille annab õpilasele välja kool pärast õpilase arvamist kooli õpilaste nimekirja. 2(2)Õpilaspilet võib olla isikut tõendavaks dokumendiks «Isikut tõendavate dokumentide seaduse» §-s 4 kehtestatud tingimustel.",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_345772_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_1_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1016112_Par_1"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_345772_Par_1_v345772"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õpilaspilet on üldhariduskooli (edaspidi kool) õpilase õppimist tõendav dokument, mille annab õpilasele välja kool pärast õpilase arvamist kooli õpilaste nimekirja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Õpilaspilet võib olla isikut tõendavaks dokumendiks «Isikut tõendavate dokumentide seaduse» §-s 4 kehtestatud tingimustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:Reg_345772_Par_2",
@@ -114,19 +185,43 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Õpilaspileti väljaandmine ja kasutamine",
+      "rdfs:label": {
+        "@value": "§ 2. Õpilaspileti väljaandmine ja kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_345772_Map"
       },
-      "estleg:summary": "1(1)Õpilaspilet antakse õpilasele õpilase või piiratud teovõimega õpilase vanema taotlusel tasuta. Õpilaspilet antakse õpilasele õpilase või piiratud teovõimega õpilase vanema taotlusel tasuta. 2(2)Õpilaspileti annavad välja kõik koolid sõltumata kooli omandivormist. Õpilaspileti annavad välja kõik koolid sõltumata kooli omandivormist. 3(3)Õpilaspileti väljaandmise eest vastutab kooli direktor. Õpilaspileti väljaandmise eest vastutab kooli direktor. 4(4)Õpilaspileti kasutamise kord koolis sätest",
-      "estleg:legalText": "1(1)Õpilaspilet antakse õpilasele õpilase või piiratud teovõimega õpilase vanema taotlusel tasuta. Õpilaspilet antakse õpilasele õpilase või piiratud teovõimega õpilase vanema taotlusel tasuta. 2(2)Õpilaspileti annavad välja kõik koolid sõltumata kooli omandivormist. Õpilaspileti annavad välja kõik koolid sõltumata kooli omandivormist. 3(3)Õpilaspileti väljaandmise eest vastutab kooli direktor. Õpilaspileti väljaandmise eest vastutab kooli direktor. 4(4)Õpilaspileti kasutamise kord koolis sätestatakse kooli kodukorras. Õpilaspileti kasutamise kord koolis sätestatakse kooli kodukorras.",
+      "estleg:summary": {
+        "@value": "1(1)Õpilaspilet antakse õpilasele õpilase või piiratud teovõimega õpilase vanema taotlusel tasuta. 2(2)Õpilaspileti annavad välja kõik koolid sõltumata kooli omandivormist. 3(3)Õpilaspileti väljaandmise eest vastutab kooli direktor. 4(4)Õpilaspileti kasutamise kord koolis sätestatakse kooli kodukorras.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Õpilaspilet antakse õpilasele õpilase või piiratud teovõimega õpilase vanema taotlusel tasuta. 2(2)Õpilaspileti annavad välja kõik koolid sõltumata kooli omandivormist. 3(3)Õpilaspileti väljaandmise eest vastutab kooli direktor. 4(4)Õpilaspileti kasutamise kord koolis sätestatakse kooli kodukorras.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         },
         {
           "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_345772_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_2_Lg_4"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -137,15 +232,102 @@
           "@id": "estleg:Reg_1016112_Par_3"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_345772_Par_2_v345772"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õpilaspilet antakse õpilasele õpilase või piiratud teovõimega õpilase vanema taotlusel tasuta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Õpilaspileti annavad välja kõik koolid sõltumata kooli omandivormist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Õpilaspileti väljaandmise eest vastutab kooli direktor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Õpilaspileti kasutamise kord koolis sätestatakse kooli kodukorras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_345772_Par_3",
@@ -154,13 +336,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Õpilaspileti vormistamine ja õpilaspiletile kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 3. Õpilaspileti vormistamine ja õpilaspiletile kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_345772_Map"
       },
-      "estleg:summary": "1(1)Õpilaspileti plangi esiküljele, selle ülaossa trükitakse trükitähtedega sõna «ÕPILASPILET». Õpilaspileti plangi esiküljele, selle ülaossa trükitakse trükitähtedega sõna «ÕPILASPILET». 2(2)Õpilaspileti plangi esiküljele vasakule poole trükitakse käesolevas lõikes toodud järjekorras ülalt alla järgmised sõnad ning kantakse vastavad andmed:11)kooli nimi;22)õpilase ees- ja perekonnanimi;33)õpilase isikukood;44)õpilaspileti number;55)kehtiv kuni. Õpilaspileti plangi esiküljele vasakule poole trük",
-      "estleg:legalText": "1(1)Õpilaspileti plangi esiküljele, selle ülaossa trükitakse trükitähtedega sõna «ÕPILASPILET». Õpilaspileti plangi esiküljele, selle ülaossa trükitakse trükitähtedega sõna «ÕPILASPILET». 2(2)Õpilaspileti plangi esiküljele vasakule poole trükitakse käesolevas lõikes toodud järjekorras ülalt alla järgmised sõnad ning kantakse vastavad andmed:11)kooli nimi;22)õpilase ees- ja perekonnanimi;33)õpilase isikukood;44)õpilaspileti number;55)kehtiv kuni. Õpilaspileti plangi esiküljele vasakule poole trükitakse käesolevas lõikes toodud järjekorras ülalt alla järgmised sõnad ning kantakse vastavad andmed: kooli nimi; õpilase ees- ja perekonnanimi; õpilase isikukood; õpilaspileti number; kehtiv kuni. 3(3)Tekst «kehtiv kuni» võib olla tekstiga «õpilaspileti number» ühel real. Tekst «kehtiv kuni» võib olla tekstiga «õpilaspileti number» ühel real. 4(4)Õpilaspileti number on ühes koolis kordumatu. Õpilaspileti number on ühes koolis kordumatu. 5(5)Õpilaspileti esiküljel, paremal pool on selle omaniku foto. Õpilaspileti esiküljel, paremal pool on selle omaniku foto. 6(6)Üle 15 aasta vanune õpilane allkirjastab õpilaspileti, allkirjastamise koht on õpilaspileti tagaküljel. Üle 15 aasta vanune õpilane allkirjastab õpilaspileti, allkirjastamise koht on õpilaspileti tagaküljel. 7(7)Õpilaspileti plangile võib kanda kooli sümboolika. Õpilaspileti plangile võib kanda kooli sümboolika. 8(8)Isikukoodi puudumisel kantakse õpilaspiletile õpilase sünniaeg. Isikukoodi puudumisel kantakse õpilaspiletile õpilase sünniaeg. 9(9)Õpilaspiletile kantavad andmed peavad olema selgelt loetavad. Õpilaspiletile kantavad andmed peavad olema selgelt loetavad. 10(10)Õpilaspileti vormistamise täpsem kord kehtestatakse kooli asjaajamiskorras. Õpilaspileti vormistamise täpsem kord kehtestatakse kooli asjaajamiskorras.",
+      "estleg:summary": {
+        "@value": "1(1)Õpilaspileti plangi esiküljele, selle ülaossa trükitakse trükitähtedega sõna «ÕPILASPILET». 2(2)Õpilaspileti plangi esiküljele vasakule poole trükitakse käesolevas lõikes toodud järjekorras ülalt alla järgmised sõnad ning kantakse vastavad andmed:11)kooli nimi;22)õpilase ees- ja perekonnanimi;33)õpilase isikukood;44)õpilaspileti number;55)kehtiv kuni. 3(3)Tekst «kehtiv kuni» võib olla tekstiga «õpilaspileti number» ühel real. 4(4)Õpilaspileti number on ühes koolis kordumatu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Õpilaspileti plangi esiküljele, selle ülaossa trükitakse trükitähtedega sõna «ÕPILASPILET». 2(2)Õpilaspileti plangi esiküljele vasakule poole trükitakse käesolevas lõikes toodud järjekorras ülalt alla järgmised sõnad ning kantakse vastavad andmed:11)kooli nimi;22)õpilase ees- ja perekonnanimi;33)õpilase isikukood;44)õpilaspileti number;55)kehtiv kuni. 3(3)Tekst «kehtiv kuni» võib olla tekstiga «õpilaspileti number» ühel real. 4(4)Õpilaspileti number on ühes koolis kordumatu. 5(5)Õpilaspileti esiküljel, paremal pool on selle omaniku foto. 6(6)Üle 15 aasta vanune õpilane allkirjastab õpilaspileti, allkirjastamise koht on õpilaspileti tagaküljel. 7(7)Õpilaspileti plangile võib kanda kooli sümboolika. 8(8)Isikukoodi puudumisel kantakse õpilaspiletile õpilase sünniaeg. 9(9)Õpilaspiletile kantavad andmed peavad olema selgelt loetavad. 10(10)Õpilaspileti vormistamise täpsem kord kehtestatakse kooli asjaajamiskorras.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -169,20 +357,263 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_345772_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_3_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_3_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_3_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_3_Lg_8"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_3_Lg_9"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_3_Lg_10"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1016112_Par_2"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_345772_Par_3_v345772"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õpilaspileti plangi esiküljele, selle ülaossa trükitakse trükitähtedega sõna «ÕPILASPILET».",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Õpilaspileti plangi esiküljele vasakule poole trükitakse käesolevas lõikes toodud järjekorras ülalt alla järgmised sõnad ning kantakse vastavad andmed: 1) kooli nimi; 2) õpilase ees- ja perekonnanimi; 3) õpilase isikukood; 4) õpilaspileti number; 5) kehtiv kuni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tekst «kehtiv kuni» võib olla tekstiga «õpilaspileti number» ühel real.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Õpilaspileti number on ühes koolis kordumatu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Õpilaspileti esiküljel, paremal pool on selle omaniku foto.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_3_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Üle 15 aasta vanune õpilane allkirjastab õpilaspileti, allkirjastamise koht on õpilaspileti tagaküljel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_3_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Õpilaspileti plangile võib kanda kooli sümboolika.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 7",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_3_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Isikukoodi puudumisel kantakse õpilaspiletile õpilase sünniaeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 8"
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_3_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Õpilaspiletile kantavad andmed peavad olema selgelt loetavad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 9",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_3_Lg_10",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "10",
+      "estleg:legalText": "(10) Õpilaspileti vormistamise täpsem kord kehtestatakse kooli asjaajamiskorras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 10",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_345772_Par_4",
@@ -191,35 +622,91 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Õpilaspiletite registreerimine",
+      "rdfs:label": {
+        "@value": "§ 4. Õpilaspiletite registreerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_345772_Map"
       },
-      "estleg:summary": "1(1)Õpilaspileti väljaandja registreerib igale õpilasele väljaantud õpilaspileti vastavalt kooli asjaajamiskorrale. Õpilaspileti väljaandja registreerib igale õpilasele väljaantud õpilaspileti vastavalt kooli asjaajamiskorrale. 2(2)Õpilaspiletite väljaandja on kohustatud pidama arvestust õpilaspiletite väljastamise üle. Õpilaspiletite väljaandja on kohustatud pidama arvestust õpilaspiletite väljastamise üle.",
-      "estleg:legalText": "1(1)Õpilaspileti väljaandja registreerib igale õpilasele väljaantud õpilaspileti vastavalt kooli asjaajamiskorrale. Õpilaspileti väljaandja registreerib igale õpilasele väljaantud õpilaspileti vastavalt kooli asjaajamiskorrale. 2(2)Õpilaspiletite väljaandja on kohustatud pidama arvestust õpilaspiletite väljastamise üle. Õpilaspiletite väljaandja on kohustatud pidama arvestust õpilaspiletite väljastamise üle.",
+      "estleg:summary": {
+        "@value": "1(1)Õpilaspileti väljaandja registreerib igale õpilasele väljaantud õpilaspileti vastavalt kooli asjaajamiskorrale. 2(2)Õpilaspiletite väljaandja on kohustatud pidama arvestust õpilaspiletite väljastamise üle.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Õpilaspileti väljaandja registreerib igale õpilasele väljaantud õpilaspileti vastavalt kooli asjaajamiskorrale. 2(2)Õpilaspiletite väljaandja on kohustatud pidama arvestust õpilaspiletite väljastamise üle.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1016112_Par_4"
+          "@id": "estleg:Reg_345772_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_4_Lg_2"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1016112_Par_4"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_345772_Par_4_v345772"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õpilaspileti väljaandja registreerib igale õpilasele väljaantud õpilaspileti vastavalt kooli asjaajamiskorrale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Õpilaspiletite väljaandja on kohustatud pidama arvestust õpilaspiletite väljastamise üle.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:Reg_345772_Par_5",
@@ -228,13 +715,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Õpilaspileti kehtivus",
+      "rdfs:label": {
+        "@value": "§ 5. Õpilaspileti kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_345772_Map"
       },
-      "estleg:summary": "1(1)Kool tähistab õpilaspileti kehtivuse vastava kuupäeva lisamisega õpilaspiletile igal õppeaastal. Kool tähistab õpilaspileti kehtivuse vastava kuupäeva lisamisega õpilaspiletile igal õppeaastal. 2(2)Õpilane või piiratud teovõimega õpilase vanem on kohustatud õpilaspileti koolile tagastama peale õpilase väljaarvamist kooli õpilaste nimekirjast. Õpilane või piiratud teovõimega õpilase vanem on kohustatud õpilaspileti koolile tagastama peale õpilase väljaarvamist kooli õpilaste nimekirjast. 3(3)",
-      "estleg:legalText": "1(1)Kool tähistab õpilaspileti kehtivuse vastava kuupäeva lisamisega õpilaspiletile igal õppeaastal. Kool tähistab õpilaspileti kehtivuse vastava kuupäeva lisamisega õpilaspiletile igal õppeaastal. 2(2)Õpilane või piiratud teovõimega õpilase vanem on kohustatud õpilaspileti koolile tagastama peale õpilase väljaarvamist kooli õpilaste nimekirjast. Õpilane või piiratud teovõimega õpilase vanem on kohustatud õpilaspileti koolile tagastama peale õpilase väljaarvamist kooli õpilaste nimekirjast. 3(3)Kool hävitab tagastatud õpilaspileti ning registreerib õpilaspileti kasutusest eemaldamise vastavalt kooli asjaajamiskorrale. Kool hävitab tagastatud õpilaspileti ning registreerib õpilaspileti kasutusest eemaldamise vastavalt kooli asjaajamiskorrale. 4(4)Õpilaspileti väljaandjalt on võimalik saada teavet õpilaspileti kehtivuse kohta «Avaliku teabe seaduses» sätestatud korras. Õpilaspileti väljaandjalt on võimalik saada teavet õpilaspileti kehtivuse kohta «Avaliku teabe seaduses» sätestatud korras.",
+      "estleg:summary": {
+        "@value": "1(1)Kool tähistab õpilaspileti kehtivuse vastava kuupäeva lisamisega õpilaspiletile igal õppeaastal. 2(2)Õpilane või piiratud teovõimega õpilase vanem on kohustatud õpilaspileti koolile tagastama peale õpilase väljaarvamist kooli õpilaste nimekirjast. 3(3)Kool hävitab tagastatud õpilaspileti ning registreerib õpilaspileti kasutusest eemaldamise vastavalt kooli asjaajamiskorrale.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Kool tähistab õpilaspileti kehtivuse vastava kuupäeva lisamisega õpilaspiletile igal õppeaastal. 2(2)Õpilane või piiratud teovõimega õpilase vanem on kohustatud õpilaspileti koolile tagastama peale õpilase väljaarvamist kooli õpilaste nimekirjast. 3(3)Kool hävitab tagastatud õpilaspileti ning registreerib õpilaspileti kasutusest eemaldamise vastavalt kooli asjaajamiskorrale. 4(4)Õpilaspileti väljaandjalt on võimalik saada teavet õpilaspileti kehtivuse kohta «Avaliku teabe seaduses» sätestatud korras.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -243,23 +736,122 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1016112_Par_5"
+          "@id": "estleg:Reg_345772_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_5_Lg_4"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1016112_Par_5"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_345772_Par_5_v345772"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kool tähistab õpilaspileti kehtivuse vastava kuupäeva lisamisega õpilaspiletile igal õppeaastal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Õpilane või piiratud teovõimega õpilase vanem on kohustatud õpilaspileti koolile tagastama peale õpilase väljaarvamist kooli õpilaste nimekirjast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kool hävitab tagastatud õpilaspileti ning registreerib õpilaspileti kasutusest eemaldamise vastavalt kooli asjaajamiskorrale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Õpilaspileti väljaandjalt on võimalik saada teavet õpilaspileti kehtivuse kohta «Avaliku teabe seaduses» sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
     },
     {
       "@id": "estleg:Reg_345772_Par_6",
@@ -268,13 +860,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Õpilaspileti korduv väljaandmine",
+      "rdfs:label": {
+        "@value": "§ 6. Õpilaspileti korduv väljaandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_345772_Map"
       },
-      "estleg:summary": "1(1)Õpilasel või piiratud teovõimega õpilase vanemal on õigus esitada koolile põhjendatud kirjalik taotlus uue õpilaspileti saamiseks, kui:11)õpilaspilet on rikutud, hävinud, kadunud või varastatud;22)õpilase nimi või isikukood on muutunud. Õpilasel või piiratud teovõimega õpilase vanemal on õigus esitada koolile põhjendatud kirjalik taotlus uue õpilaspileti saamiseks, kui: õpilaspilet on rikutud, hävinud, kadunud või varastatud; õpilase nimi või isikukood on muutunud. 2(2)Kool korraldab uue õpi",
-      "estleg:legalText": "1(1)Õpilasel või piiratud teovõimega õpilase vanemal on õigus esitada koolile põhjendatud kirjalik taotlus uue õpilaspileti saamiseks, kui:11)õpilaspilet on rikutud, hävinud, kadunud või varastatud;22)õpilase nimi või isikukood on muutunud. Õpilasel või piiratud teovõimega õpilase vanemal on õigus esitada koolile põhjendatud kirjalik taotlus uue õpilaspileti saamiseks, kui: õpilaspilet on rikutud, hävinud, kadunud või varastatud; õpilase nimi või isikukood on muutunud. 2(2)Kool korraldab uue õpilaspileti väljaandmise juhul, kui muutuvad õpilaspiletile kantavad kooli andmed. Kool korraldab uue õpilaspileti väljaandmise juhul, kui muutuvad õpilaspiletile kantavad kooli andmed. 3(3)Käesoleva paragrahvi lõike 1 punktis 2 ja lõikes 2 nimetatud juhul on õpilane või piiratud teovõimega õpilase vanem uue õpilaspileti saamisel kohustatud esmase õpilaspileti koolile tagastama. Kool hävitab tagastatud õpilaspileti ja registreerib õpilaspileti kasutusest eemaldamise käesoleva määruse nõuete kohaselt. Juhul kui tagastamine on võimatu, tunnistab kooli direktor käskkirjaga õpilaspileti kehtetuks. Käesoleva paragrahvi lõike 1 punktis 2 ja lõikes 2 nimetatud juhul on õpilane või piiratud teovõimega õpilase vanem uue õpilaspileti saamisel kohustatud esmase õpilaspileti koolile tagastama. Kool hävitab tagastatud õpilaspileti ja registreerib õpilaspileti kasutusest eemaldamise käesoleva määruse nõuete kohaselt. Juhul kui tagastamine on võimatu, tunnistab kooli direktor käskkirjaga õpilaspileti kehtetuks. 4(4)Kool vormistab ja registreerib uue õpilaspileti väljaandmise käesoleva määruse nõuete kohaselt. Kool vormistab ja registreerib uue õpilaspileti väljaandmise käesoleva määruse nõuete kohaselt.",
+      "estleg:summary": {
+        "@value": "1(1)Õpilasel või piiratud teovõimega õpilase vanemal on õigus esitada koolile põhjendatud kirjalik taotlus uue õpilaspileti saamiseks, kui:11)õpilaspilet on rikutud, hävinud, kadunud või varastatud;22)õpilase nimi või isikukood on muutunud. 2(2)Kool korraldab uue õpilaspileti väljaandmise juhul, kui muutuvad õpilaspiletile kantavad kooli andmed. 3(3)Käesoleva paragrahvi lõike 1 punktis 2 ja lõikes 2 nimetatud juhul on õpilane või piiratud teovõimega õpilase vanem uue õpilaspileti saamisel…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Õpilasel või piiratud teovõimega õpilase vanemal on õigus esitada koolile põhjendatud kirjalik taotlus uue õpilaspileti saamiseks, kui:11)õpilaspilet on rikutud, hävinud, kadunud või varastatud;22)õpilase nimi või isikukood on muutunud. 2(2)Kool korraldab uue õpilaspileti väljaandmise juhul, kui muutuvad õpilaspiletile kantavad kooli andmed. 3(3)Käesoleva paragrahvi lõike 1 punktis 2 ja lõikes 2 nimetatud juhul on õpilane või piiratud teovõimega õpilase vanem uue õpilaspileti saamisel kohustatud esmase õpilaspileti koolile tagastama. Kool hävitab tagastatud õpilaspileti ja registreerib õpilaspileti kasutusest eemaldamise käesoleva määruse nõuete kohaselt. Juhul kui tagastamine on võimatu, tunnistab kooli direktor käskkirjaga õpilaspileti kehtetuks. 4(4)Kool vormistab ja registreerib uue õpilaspileti väljaandmise käesoleva määruse nõuete kohaselt.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -283,23 +881,139 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1016112_Par_6"
+          "@id": "estleg:Reg_345772_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_6_Lg_4"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1016112_Par_6"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_345772_Par_6_v345772"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õpilasel või piiratud teovõimega õpilase vanemal on õigus esitada koolile põhjendatud kirjalik taotlus uue õpilaspileti saamiseks, kui: 1) õpilaspilet on rikutud, hävinud, kadunud või varastatud; 2) õpilase nimi või isikukood on muutunud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kool korraldab uue õpilaspileti väljaandmise juhul, kui muutuvad õpilaspiletile kantavad kooli andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõike 1 punktis 2 ja lõikes 2 nimetatud juhul on õpilane või piiratud teovõimega õpilase vanem uue õpilaspileti saamisel kohustatud esmase õpilaspileti koolile tagastama. Kool hävitab tagastatud õpilaspileti ja registreerib õpilaspileti kasutusest eemaldamise käesoleva määruse nõuete kohaselt. Juhul kui tagastamine on võimatu, tunnistab kooli direktor käskkirjaga õpilaspileti kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:itemNumber": "2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kool vormistab ja registreerib uue õpilaspileti väljaandmise käesoleva määruse nõuete kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_345772_Par_7",
@@ -308,13 +1022,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Üleminekusätted",
+      "rdfs:label": {
+        "@value": "§ 7. Üleminekusätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_345772_Map"
       },
-      "estleg:summary": "1(1)Kuni 2012. aasta 1. septembrini on koolil õigus väljastada õpilaspilet enne käesoleva määruse jõustumist kehtinud korras ja vormil. Kuni 2012. aasta 1. septembrini on koolil õigus väljastada õpilaspilet enne käesoleva määruse jõustumist kehtinud korras ja vormil. 2(2)Enne käesoleva määruse jõustumist kehtinud vormil väljastatud õpilaspileti kehtivust võib pikendada kuni õpilase väljaarvamiseni kooli õpilaste nimekirjast, tähistades õpilaspileti kehtivuse vastava õppeaasta lisamisega. Enne kä",
-      "estleg:legalText": "1(1)Kuni 2012. aasta 1. septembrini on koolil õigus väljastada õpilaspilet enne käesoleva määruse jõustumist kehtinud korras ja vormil. Kuni 2012. aasta 1. septembrini on koolil õigus väljastada õpilaspilet enne käesoleva määruse jõustumist kehtinud korras ja vormil. 2(2)Enne käesoleva määruse jõustumist kehtinud vormil väljastatud õpilaspileti kehtivust võib pikendada kuni õpilase väljaarvamiseni kooli õpilaste nimekirjast, tähistades õpilaspileti kehtivuse vastava õppeaasta lisamisega. Enne käesoleva määruse jõustumist kehtinud vormil väljastatud õpilaspileti kehtivust võib pikendada kuni õpilase väljaarvamiseni kooli õpilaste nimekirjast, tähistades õpilaspileti kehtivuse vastava õppeaasta lisamisega.",
+      "estleg:summary": {
+        "@value": "1(1)Kuni 2012. aasta 1. septembrini on koolil õigus väljastada õpilaspilet enne käesoleva määruse jõustumist kehtinud korras ja vormil. 2(2)Enne käesoleva määruse jõustumist kehtinud vormil väljastatud õpilaspileti kehtivust võib pikendada kuni õpilase väljaarvamiseni kooli õpilaste nimekirjast, tähistades õpilaspileti kehtivuse vastava õppeaasta lisamisega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Kuni 2012. aasta 1. septembrini on koolil õigus väljastada õpilaspilet enne käesoleva määruse jõustumist kehtinud korras ja vormil. 2(2)Enne käesoleva määruse jõustumist kehtinud vormil väljastatud õpilaspileti kehtivust võib pikendada kuni õpilase väljaarvamiseni kooli õpilaste nimekirjast, tähistades õpilaspileti kehtivuse vastava õppeaasta lisamisega.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -323,12 +1043,20 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_345772_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_345772_Par_7_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -337,19 +1065,63 @@
       ]
     },
     {
+      "@id": "estleg:Reg_345772_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kuni 2012. aasta 1. septembrini on koolil õigus väljastada õpilaspilet enne käesoleva määruse jõustumist kehtinud korras ja vormil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Enne käesoleva määruse jõustumist kehtinud vormil väljastatud õpilaspileti kehtivust võib pikendada kuni õpilase väljaarvamiseni kooli õpilaste nimekirjast, tähistades õpilaspileti kehtivuse vastava õppeaasta lisamisega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
       "@id": "estleg:Reg_345772_Par_8",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 8. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õpilaspileti väljaandmise kord ja õpilaspileti vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_345772_Map"
       },
-      "estleg:summary": "Määrus jõustub 2010. aasta 1. septembril.<table border=\"0\" width=\"90%\"> <tbody><tr> <td width=\"55%\"> </td> <td><b>Minister Tõnis LUKAS</b></td> </tr> <tr> <td> </td> <td><b>Kõrghariduse ja teaduse asekantsler<br/> kantsleri ülesannetes Andres KOPPEL</b></td> </tr> </tbody></table>",
-      "estleg:legalText": "Määrus jõustub 2010. aasta 1. septembril.<table border=\"0\" width=\"90%\"> <tbody><tr> <td width=\"55%\"> </td> <td><b>Minister Tõnis LUKAS</b></td> </tr> <tr> <td> </td> <td><b>Kõrghariduse ja teaduse asekantsler<br/> kantsleri ülesannetes Andres KOPPEL</b></td> </tr> </tbody></table> Määrus jõustub 2010. aasta 1. septembril.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 2010. aasta 1. septembril.<table border=\"0\" width=\"90%\"> <tbody><tr> <td width=\"55%\"> </td> <td><b>Minister Tõnis LUKAS</b></td> </tr> <tr> <td> </td> <td><b>Kõrghariduse ja teaduse asekantsler<br/> kantsleri ülesannetes Andres KOPPEL</b></td> </tr> </tbody></table>",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 2010. aasta 1. septembril.<table border=\"0\" width=\"90%\"> <tbody><tr> <td width=\"55%\"> </td> <td><b>Minister Tõnis LUKAS</b></td> </tr> <tr> <td> </td> <td><b>Kõrghariduse ja teaduse asekantsler<br/> kantsleri ülesannetes Andres KOPPEL</b></td> </tr> </tbody></table>",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -359,11 +1131,29 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_345772_Par_8_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_345772_Par_8_v345772"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_345772_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 2010. aasta 1. septembril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_345772_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
     }
   ]
 }

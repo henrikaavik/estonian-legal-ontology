@@ -291,8 +291,7 @@ def test_law_slug_from_iri_unknown_returns_none() -> None:
 # Citation derivation
 # ---------------------------------------------------------------------------
 def test_rt_url_strips_xml_and_is_riigiteataja() -> None:
-    # PS keeps a real dcterms:source, so it exercises the happy path (KarS no
-    # longer can -- see test_rt_url_rejects_non_riigiteataja_sameas).
+    # PS keeps a real dcterms:source, so it exercises the happy path.
     rec = data.resolve_law("PS")
     assert rec is not None
     url = data.rt_url(data.act_node(data.load_law_graph(rec)))
@@ -306,14 +305,30 @@ def test_rt_url_handles_missing_node() -> None:
 
 
 def test_rt_url_rejects_non_riigiteataja_sameas() -> None:
-    # #680: KarS carries no dcterms:source and an owl:sameAs Wikidata IRI. The
-    # field is documented as the official riigiteataja.ee URL, so returning
-    # wikidata.org under it misleads every caller: "" is the honest answer,
-    # and external_ids keeps the Wikidata IRI reachable.
+    # #680: an act node with no dcterms:source and only an owl:sameAs Wikidata
+    # IRI (KarS's shape before wave 6) must yield "": the field is documented
+    # as the official riigiteataja.ee URL, so wikidata.org would mislead every
+    # caller. external_ids keeps the Wikidata IRI reachable.
+    wikidata = "http://www.wikidata.org/entity/Q2352833"
+    foreign_only = {
+        "@id": "estleg:SYNTH_Map",
+        "@type": "estleg:LegalAct",
+        "owl:sameAs": {"@id": wikidata},
+    }
+    assert data.rt_url(foreign_only) == ""
+    assert data.external_ids(foreign_only) == {"wikidata": wikidata}
+
+
+def test_rt_url_kars_source_restored() -> None:
+    # Wave 6 (#707) restored KarS's dcterms:source (the human RT page), so its
+    # citation is now riigiteataja.ee while the Wikidata sameAs stays in
+    # external_ids.
     rec = data.resolve_law("KarS")
     assert rec is not None
     act = data.act_node(data.load_law_graph(rec))
-    assert data.rt_url(act) == ""
+    url = data.rt_url(act)
+    assert url.startswith("https://www.riigiteataja.ee/akt/")
+    assert ".xml" not in url
     assert data.external_ids(act) == {
         "wikidata": "http://www.wikidata.org/entity/Q2352833"
     }

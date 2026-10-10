@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri (määrus)",
+      "rdfs:label": {
+        "@value": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -40,34 +47,21 @@
           "@id": "estleg:Reg_312829_Annex_2"
         }
       ],
-      "estleg:entryIntoForce": {
-        "@value": "2007-05-18",
-        "@type": "xsd:date"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2016-06-30",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2016-07-06",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Amendment_Reg_312829_eebe50c791"
-        },
-        {
-          "@id": "estleg:Amendment_Reg_312829_7e3590547b"
-        },
-        {
-          "@id": "estleg:Amendment_Reg_312829_807530843f"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
+      "dcterms:title": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:transposesDirectiveAsserted": [
+        {
+          "@id": "estleg:EU_31992L0043"
+        }
+      ],
       "estleg:issuedUnder": [
         {
           "@id": "estleg:LKS_Map"
@@ -99,6 +93,30 @@
         {
           "@id": "http://eurovoc.europa.eu/2442"
         }
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2007-05-18",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2016-06-30",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2016-07-06",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_Reg_312829_eebe50c791"
+        },
+        {
+          "@id": "estleg:Amendment_Reg_312829_7e3590547b"
+        },
+        {
+          "@id": "estleg:Amendment_Reg_312829_807530843f"
+        }
       ]
     },
     {
@@ -107,7 +125,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Pärnu rannaniidu looduskaitseala\n\t\t\t\n\t\t\t\t\n\t\t\t\t\tRT I\n\t\t\t\t\t2016-07-06\n\t\t\t\t\t22\n\t\t\t\t\t106072016022\n\t\t\t\t\n\t\t\t\t2016-07-16",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -116,7 +137,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -126,22 +150,46 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Pärnu rannaniidu looduskaitseala kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Pärnu rannaniidu looduskaitseala kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "1 (1) Pärnu rannaniidu looduskaitseala2 (edaspidi kaitseala) kaitse-eesmärk on kaitsta ja tutvustada: 1 1) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liivased ja mudased pagurannad (1140), rannikulõukad (1150*)3, rannaniidud (1630*), valged luited ehk liikuvad rannikuluited (2120), hallid luited (2130*) ning puiskarjamaad (9070); 2 2) nõukogu direktiivi 92/43",
-      "estleg:legalText": "1 (1) Pärnu rannaniidu looduskaitseala2 (edaspidi kaitseala) kaitse-eesmärk on kaitsta ja tutvustada: 1 1) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liivased ja mudased pagurannad (1140), rannikulõukad (1150*)3, rannaniidud (1630*), valged luited ehk liikuvad rannikuluited (2120), hallid luited (2130*) ning puiskarjamaad (9070); 2 2) nõukogu direktiivi 92/43/EMÜ II lisas nimetatud kaitsealuse liigi emaputke (Angelica palustris) elupaiku; 3 3) liike, keda Euroopa Parlamendi ja nõukogu direktiiv 2009/147/EÜ loodusliku linnustiku kaitse kohta (ELT L 20, 26.01.2010, lk 7–25) nimetab I lisas: kiivitaja (Vanellus vanellus), mustsaba-vigle (Limosa limosa), punajalg-tilder (Tringa totanus), jõgitiir (Sterna hirundo), väiketiir (Sterna albifrons), ja nende elupaiku; 4 4) rändlinnuliike nagu väiketüll (Charadrius dubius), liivatüll (Charadrius hiaticula), hänilane (Motacilla flava), kuldhänilane (Motacilla citreola) ja nende elupaiku; 5 5) kaitsealuseid liike nagu sile kardhein (Ceratophyllum submersum), kahelehine käokeel (Platanthera bifolia), kahkjaspunane sõrmkäpp (Dactylorhiza incarnata), balti sõrmkäpp (Dactylorhiza baltica) ja ahtalehine ängelhein (Thalictrum lucidum) ning nende elupaiku. RT I 2016-07-06 22 106072016022 2016-07-16 Pärnu rannaniidu looduskaitseala2 (edaspidi kaitseala) kaitse-eesmärk on kaitsta ja tutvustada: elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liivased ja mudased pagurannad (1140), rannikulõukad (1150*)3, rannaniidud (1630*), valged luited ehk liikuvad rannikuluited (2120), hallid luited (2130*) ning puiskarjamaad (9070); nõukogu direktiivi 92/43/EMÜ II lisas nimetatud kaitsealuse liigi emaputke (Angelica palustris) elupaiku; liike, keda Euroopa Parlamendi ja nõukogu direktiiv 2009/147/EÜ loodusliku linnustiku kaitse kohta (ELT L 20, 26.01.2010, lk 7–25) nimetab I lisas: kiivitaja (Vanellus vanellus), mustsaba-vigle (Limosa limosa), punajalg-tilder (Tringa totanus), jõgitiir (Sterna hirundo), väiketiir (Sterna albifrons), ja nende elupaiku; rändlinnuliike nagu väiketüll (Charadrius dubius), liivatüll (Charadrius hiaticula), hänilane (Motacilla flava), kuldhänilane (Motacilla citreola) ja nende elupaiku; kaitsealuseid liike nagu sile kardhein (Ceratophyllum submersum), kahelehine käokeel (Platanthera bifolia), kahkjaspunane sõrmkäpp (Dactylorhiza incarnata), balti sõrmkäpp (Dactylorhiza baltica) ja ahtalehine ängelhein (Thalictrum lucidum) ning nende elupaiku. 2 (2) Kaitseala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kolmeks sihtkaitsevööndiks ja üheks piiranguvööndiks. Kaitseala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kolmeks sihtkaitsevööndiks ja üheks piiranguvööndiks. 3 (3) Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega. Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega.",
+      "estleg:summary": {
+        "@value": "1 (1) Pärnu rannaniidu looduskaitseala2 (edaspidi kaitseala) kaitse-eesmärk on kaitsta ja tutvustada: 1 1) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liivased ja mudased pagurannad (1140), rannikulõukad (1150*)3, rannaniidud (1630*), valged luited ehk liikuvad rannikuluited (2120), hallid luited (2130*) ning puiskarjamaad (9070); 2 2) nõukogu direktiivi…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Pärnu rannaniidu looduskaitseala2 (edaspidi kaitseala) kaitse-eesmärk on kaitsta ja tutvustada: 1 1) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liivased ja mudased pagurannad (1140), rannikulõukad (1150*)3, rannaniidud (1630*), valged luited ehk liikuvad rannikuluited (2120), hallid luited (2130*) ning puiskarjamaad (9070); 2 2) nõukogu direktiivi 92/43/EMÜ II lisas nimetatud kaitsealuse liigi emaputke (Angelica palustris) elupaiku; 3 3) liike, keda Euroopa Parlamendi ja nõukogu direktiiv 2009/147/EÜ loodusliku linnustiku kaitse kohta (ELT L 20, 26.01.2010, lk 7–25) nimetab I lisas: kiivitaja (Vanellus vanellus), mustsaba-vigle (Limosa limosa), punajalg-tilder (Tringa totanus), jõgitiir (Sterna hirundo), väiketiir (Sterna albifrons), ja nende elupaiku; 4 4) rändlinnuliike nagu väiketüll (Charadrius dubius), liivatüll (Charadrius hiaticula), hänilane (Motacilla flava), kuldhänilane (Motacilla citreola) ja nende elupaiku; 5 5) kaitsealuseid liike nagu sile kardhein (Ceratophyllum submersum), kahelehine käokeel (Platanthera bifolia), kahkjaspunane sõrmkäpp (Dactylorhiza incarnata), balti sõrmkäpp (Dactylorhiza baltica) ja ahtalehine ängelhein (Thalictrum lucidum) ning nende elupaiku. RT I 2016-07-06 22 106072016022 2016-07-16 2 (2) Kaitseala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kolmeks sihtkaitsevööndiks ja üheks piiranguvööndiks. 3 (3) Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_312829_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_312829_Par_1_Lg_3"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1000133_Par_1"
         },
         {
-          "@id": "estleg:Reg_1044454_Par_1"
+          "@id": "estleg:Reg_1037432_Par_1"
         },
         {
-          "@id": "estleg:Reg_1044455_Par_1"
+          "@id": "estleg:Reg_1044454_Par_1"
         },
         {
           "@id": "estleg:Reg_1048345_Par_1"
@@ -157,19 +205,86 @@
       ]
     },
     {
+      "@id": "estleg:Reg_312829_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pärnu rannaniidu looduskaitseala² (edaspidi kaitseala) kaitse-eesmärk on kaitsta ja tutvustada: 1) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liivased ja mudased pagurannad (1140), rannikulõukad (1150*)³, rannaniidud (1630*), valged luited ehk liikuvad rannikuluited (2120), hallid luited (2130*) ning puiskarjamaad (9070); 2) nõukogu direktiivi 92/43/EMÜ II lisas nimetatud kaitsealuse liigi emaputke (Angelica palustris) elupaiku; 3) liike, keda Euroopa Parlamendi ja nõukogu direktiiv 2009/147/EÜ loodusliku linnustiku kaitse kohta (ELT L 20, 26.01.2010, lk 7–25) nimetab I lisas: kiivitaja (Vanellus vanellus), mustsaba-vigle (Limosa limosa), punajalg-tilder (Tringa totanus), jõgitiir (Sterna hirundo), väiketiir (Sterna albifrons), ja nende elupaiku; 4) rändlinnuliike nagu väiketüll (Charadrius dubius), liivatüll (Charadrius hiaticula), hänilane (Motacilla flava), kuldhänilane (Motacilla citreola) ja nende elupaiku; 5) kaitsealuseid liike nagu sile kardhein (Ceratophyllum submersum), kahelehine käokeel (Platanthera bifolia), kahkjaspunane sõrmkäpp (Dactylorhiza incarnata), balti sõrmkäpp (Dactylorhiza baltica) ja ahtalehine ängelhein (Thalictrum lucidum) ning nende elupaiku.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kolmeks sihtkaitsevööndiks ja üheks piiranguvööndiks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
       "@id": "estleg:Reg_312829_Par_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kaitseala asukoht",
+      "rdfs:label": {
+        "@value": "§ 2. Kaitseala asukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala asub Pärnu maakonnas Pärnu linnas ja Tahkuranna vallas Reiu külas. Kaitseala asub Pärnu maakonnas Pärnu linnas ja Tahkuranna vallas Reiu külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4. Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
-      "estleg:legalText": "1 (1) Kaitseala asub Pärnu maakonnas Pärnu linnas ja Tahkuranna vallas Reiu külas. Kaitseala asub Pärnu maakonnas Pärnu linnas ja Tahkuranna vallas Reiu külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4. Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala asub Pärnu maakonnas Pärnu linnas ja Tahkuranna vallas Reiu külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala asub Pärnu maakonnas Pärnu linnas ja Tahkuranna vallas Reiu külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_312829_Par_2_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1044955_Par_2"
@@ -194,24 +309,74 @@
       ]
     },
     {
+      "@id": "estleg:Reg_312829_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala asub Pärnu maakonnas Pärnu linnas ja Tahkuranna vallas Reiu külas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas⁴.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
       "@id": "estleg:Reg_312829_Par_2_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2¹.",
-      "rdfs:label": "§ 2¹. Ehituskeeluvööndi laius",
+      "rdfs:label": {
+        "@value": "§ 2¹. Ehituskeeluvööndi laius",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "Kaitsealal on ehituskeeluvööndi laius 50 meetrit. RT I 2016-07-06 22 106072016022 2016-07-16",
-      "estleg:legalText": "Kaitsealal on ehituskeeluvööndi laius 50 meetrit. RT I 2016-07-06 22 106072016022 2016-07-16 Kaitsealal on ehituskeeluvööndi laius 50 meetrit.",
+      "estleg:summary": {
+        "@value": "Kaitsealal on ehituskeeluvööndi laius 50 meetrit. RT I 2016-07-06 22 106072016022 2016-07-16",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitsealal on ehituskeeluvööndi laius 50 meetrit. RT I 2016-07-06 22 106072016022 2016-07-16",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_2_2_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_312829_Par_2_2_v312829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_2_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitsealal on ehituskeeluvööndi laius 50 meetrit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_2_2"
+      },
+      "rdfs:label": "§ 2¹ lg 1"
     },
     {
       "@id": "estleg:Reg_312829_Par_3",
@@ -220,13 +385,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kaitseala valitseja",
+      "rdfs:label": {
+        "@value": "§ 3. Kaitseala valitseja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01",
-      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01 Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -236,11 +407,43 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_3_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_312829_Par_3_v312829"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_keskkonnaamet"
@@ -254,47 +457,129 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 4. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "1 (1) Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala kogu kaitsealal. Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala kogu kaitsealal. 2 (2) Kehtetu - RT I 2016-07-06 22 106072016022 2016-07-16 Kehtetu - 3 (3) Telkimine ja lõkke tegemine kaitsealal on lubatud paikades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Õuemaal on telkimine ja lõkke tegemine lubatud omaniku lo",
-      "estleg:legalText": "1 (1) Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala kogu kaitsealal. Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala kogu kaitsealal. 2 (2) Kehtetu - RT I 2016-07-06 22 106072016022 2016-07-16 Kehtetu - 3 (3) Telkimine ja lõkke tegemine kaitsealal on lubatud paikades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Õuemaal on telkimine ja lõkke tegemine lubatud omaniku loal. Telkimine ja lõkke tegemine kaitsealal on lubatud paikades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Õuemaal on telkimine ja lõkke tegemine lubatud omaniku loal. 4 (4) Kaitsealal on lubatud sõidukiga sõitmine teedel. Sõidukiga sõitmine väljaspool teid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitse-eeskirjaga lubatud töödel, kaitseala valitsemisega seotud töödel ning kaitseala valitseja nõusolekul teostatavas teadustegevuses ja lisaks piiranguvööndis teostatavatel liinirajatiste hooldustöödel ja maatulundusmaal metsamajandus- või põllumajandustöödel. RT I 2009 7 48 13125268 2009-02-01 Kaitsealal on lubatud sõidukiga sõitmine teedel. Sõidukiga sõitmine väljaspool teid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitse-eeskirjaga lubatud töödel, kaitseala valitsemisega seotud töödel ning kaitseala valitseja nõusolekul teostatavas teadustegevuses ja lisaks piiranguvööndis teostatavatel liinirajatiste hooldustöödel ja maatulundusmaal metsamajandus- või põllumajandustöödel.",
+      "estleg:summary": {
+        "@value": "1 (1) Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala kogu kaitsealal. 2 (2) Kehtetu - RT I 2016-07-06 22 106072016022 2016-07-16 3 (3) Telkimine ja lõkke tegemine kaitsealal on lubatud paikades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Õuemaal on telkimine ja lõkke tegemine lubatud omaniku loal. 4 (4) Kaitsealal on lubatud sõidukiga sõitmine teedel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala kogu kaitsealal. 2 (2) Kehtetu - RT I 2016-07-06 22 106072016022 2016-07-16 3 (3) Telkimine ja lõkke tegemine kaitsealal on lubatud paikades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Õuemaal on telkimine ja lõkke tegemine lubatud omaniku loal. 4 (4) Kaitsealal on lubatud sõidukiga sõitmine teedel. Sõidukiga sõitmine väljaspool teid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitse-eeskirjaga lubatud töödel, kaitseala valitsemisega seotud töödel ning kaitseala valitseja nõusolekul teostatavas teadustegevuses ja lisaks piiranguvööndis teostatavatel liinirajatiste hooldustöödel ja maatulundusmaal metsamajandus- või põllumajandustöödel. RT I 2009 7 48 13125268 2009-02-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_312829_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_312829_Par_4_Lg_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:Reg_1021971_Par_5"
+          "@id": "estleg:Reg_1025418_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1028705_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1033625_Par_5"
         },
         {
           "@id": "estleg:Reg_1033626_Par_5"
         },
         {
           "@id": "estleg:Reg_1044045_Par_5"
-        },
-        {
-          "@id": "estleg:Reg_1056383_Par_5"
-        },
-        {
-          "@id": "estleg:Reg_310688_Par_4"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_312829_Par_4_v312829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala kogu kaitsealal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Telkimine ja lõkke tegemine kaitsealal on lubatud paikades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Õuemaal on telkimine ja lõkke tegemine lubatud omaniku loal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kaitsealal on lubatud sõidukiga sõitmine teedel. Sõidukiga sõitmine väljaspool teid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitse-eeskirjaga lubatud töödel, kaitseala valitsemisega seotud töödel ning kaitseala valitseja nõusolekul teostatavas teadustegevuses ja lisaks piiranguvööndis teostatavatel liinirajatiste hooldustöödel ja maatulundusmaal metsamajandus- või põllumajandustöödel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:Reg_312829_Par_5",
@@ -303,13 +588,34 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 5. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "1 (1) Kaitsealal on keelatud jahipidamine. Kaitsealal on keelatud jahipidamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; 5 5) anda projekteerimistingimus",
-      "estleg:legalText": "1 (1) Kaitsealal on keelatud jahipidamine. Kaitsealal on keelatud jahipidamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8 8) jahiulukeid lisasööta. RT I 2016-07-06 22 106072016022 2016-07-16 Kaitseala valitseja nõusolekuta on kaitsealal keelatud: muuta katastriüksuse kõlvikute piire ja sihtotstarvet; koostada maakorralduskava ja teha maakorraldustoiminguid; kehtestada detailplaneeringut ja üldplaneeringut; lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; anda projekteerimistingimusi; anda ehitusluba; rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; jahiulukeid lisasööta.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitsealal on keelatud jahipidamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitsealal on keelatud jahipidamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8 8) jahiulukeid lisasööta. RT I 2016-07-06 22 106072016022 2016-07-16",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_312829_Par_5_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1020298_Par_6"
@@ -318,27 +624,70 @@
           "@id": "estleg:Reg_1022022_Par_6"
         },
         {
+          "@id": "estleg:Reg_1031605_Par_6"
+        },
+        {
           "@id": "estleg:Reg_1053340_Par_7"
         },
         {
           "@id": "estleg:Reg_1055808_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_312896_Par_5"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_312829_Par_5_v312829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitsealal on keelatud jahipidamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3) kehtestada detailplaneeringut ja üldplaneeringut; 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; 5) anda projekteerimistingimusi; 6) anda ehitusluba; 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8) jahiulukeid lisasööta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_312829_Par_6",
@@ -347,47 +696,103 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Tegevuse kooskõlastamine",
+      "rdfs:label": {
+        "@value": "§ 6. Tegevuse kooskõlastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja k",
-      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas. Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas. 3 (3) Kehtetu - RT I 2016-07-06 22 106072016022 2016-07-16 Kehtetu -",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas. 3 (3) Kehtetu - RT I 2016-07-06 22 106072016022 2016-07-16",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1000133_Par_7"
+          "@id": "estleg:Reg_312829_Par_6_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1015353_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_1015857_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_1017162_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_1017814_Par_7"
+          "@id": "estleg:Reg_312829_Par_6_Lg_2"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1000132_Par_6"
+        },
+        {
+          "@id": "estleg:Reg_1000133_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1000181_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1015353_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1020297_Par_7"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_312829_Par_6_v312829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_312829_Par_7",
@@ -396,14 +801,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Sihtkaitsevööndi määratlus",
+      "rdfs:label": {
+        "@value": "§ 7. Sihtkaitsevööndi määratlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. 2 (2) Kaitsealal on kolm sihtkaitsevööndit: 1 1) Rannaniidu sihtkaitsevöönd; 2 2) Naisteranna sihtkaitsevöönd; 3 3) Vana-Pärnu sihtkaitsevöönd. Kaitsealal on kolm sihtkaitsevööndit: Rannaniidu sihtkaitsevöönd; Naisteranna si",
-      "estleg:legalText": "1 (1) Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. 2 (2) Kaitsealal on kolm sihtkaitsevööndit: 1 1) Rannaniidu sihtkaitsevöönd; 2 2) Naisteranna sihtkaitsevöönd; 3 3) Vana-Pärnu sihtkaitsevöönd. Kaitsealal on kolm sihtkaitsevööndit: Rannaniidu sihtkaitsevöönd; Naisteranna sihtkaitsevöönd; Vana-Pärnu sihtkaitsevöönd.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. 2 (2) Kaitsealal on kolm sihtkaitsevööndit: 1 1) Rannaniidu sihtkaitsevöönd; 2 2) Naisteranna sihtkaitsevöönd; 3 3) Vana-Pärnu sihtkaitsevöönd.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. 2 (2) Kaitsealal on kolm sihtkaitsevööndit: 1 1) Rannaniidu sihtkaitsevöönd; 2 2) Naisteranna sihtkaitsevöönd; 3 3) Vana-Pärnu sihtkaitsevöönd.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_312829_Par_7_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1037432_Par_5"
+        },
         {
           "@id": "estleg:Reg_1037434_Par_5"
         },
@@ -414,10 +836,7 @@
           "@id": "estleg:Reg_1047490_Par_9"
         },
         {
-          "@id": "estleg:Reg_158857_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_300311_Par_8"
+          "@id": "estleg:Reg_1050292_Par_5"
         }
       ],
       "estleg:hasVersion": [
@@ -427,24 +846,95 @@
       ]
     },
     {
+      "@id": "estleg:Reg_312829_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on kolm sihtkaitsevööndit: 1) Rannaniidu sihtkaitsevöönd; 2) Naisteranna sihtkaitsevöönd; 3) Vana-Pärnu sihtkaitsevöönd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
       "@id": "estleg:Reg_312829_Par_8",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Sihtkaitsevööndite kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 8. Sihtkaitsevööndite kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "1 (1) Rannaniidu ja Vana-Pärnu sihtkaitsevööndi kaitse-eesmärk on rannaniitude, rannikulõugaste, puiskarjamaade, liivaste ja mudaste pagurandade ja seal leiduvate kaitsealuste liikide elupaikade kaitse ja tutvustamine. Rannaniidu ja Vana-Pärnu sihtkaitsevööndi kaitse-eesmärk on rannaniitude, rannikulõugaste, puiskarjamaade, liivaste ja mudaste pagurandade ja seal leiduvate kaitsealuste liikide elupaikade kaitse ja tutvustamine. 2 (2) Naisteranna sihtkaitsevööndi kaitse-eesmärk on hallide luidete",
-      "estleg:legalText": "1 (1) Rannaniidu ja Vana-Pärnu sihtkaitsevööndi kaitse-eesmärk on rannaniitude, rannikulõugaste, puiskarjamaade, liivaste ja mudaste pagurandade ja seal leiduvate kaitsealuste liikide elupaikade kaitse ja tutvustamine. Rannaniidu ja Vana-Pärnu sihtkaitsevööndi kaitse-eesmärk on rannaniitude, rannikulõugaste, puiskarjamaade, liivaste ja mudaste pagurandade ja seal leiduvate kaitsealuste liikide elupaikade kaitse ja tutvustamine. 2 (2) Naisteranna sihtkaitsevööndi kaitse-eesmärk on hallide luidete, rannikulõugaste ja rannaluidete ning kaitsealuste liikide elupaikade kaitse ja tutvustamine. RT I 2016-07-06 22 106072016022 2016-07-16 Naisteranna sihtkaitsevööndi kaitse-eesmärk on hallide luidete, rannikulõugaste ja rannaluidete ning kaitsealuste liikide elupaikade kaitse ja tutvustamine.",
+      "estleg:summary": {
+        "@value": "1 (1) Rannaniidu ja Vana-Pärnu sihtkaitsevööndi kaitse-eesmärk on rannaniitude, rannikulõugaste, puiskarjamaade, liivaste ja mudaste pagurandade ja seal leiduvate kaitsealuste liikide elupaikade kaitse ja tutvustamine. 2 (2) Naisteranna sihtkaitsevööndi kaitse-eesmärk on hallide luidete, rannikulõugaste ja rannaluidete ning kaitsealuste liikide elupaikade kaitse ja tutvustamine. RT I 2016-07-06 22 106072016022 2016-07-16",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Rannaniidu ja Vana-Pärnu sihtkaitsevööndi kaitse-eesmärk on rannaniitude, rannikulõugaste, puiskarjamaade, liivaste ja mudaste pagurandade ja seal leiduvate kaitsealuste liikide elupaikade kaitse ja tutvustamine. 2 (2) Naisteranna sihtkaitsevööndi kaitse-eesmärk on hallide luidete, rannikulõugaste ja rannaluidete ning kaitsealuste liikide elupaikade kaitse ja tutvustamine. RT I 2016-07-06 22 106072016022 2016-07-16",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_312829_Par_8_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_312829_Par_8_v312829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rannaniidu ja Vana-Pärnu sihtkaitsevööndi kaitse-eesmärk on rannaniitude, rannikulõugaste, puiskarjamaade, liivaste ja mudaste pagurandade ja seal leiduvate kaitsealuste liikide elupaikade kaitse ja tutvustamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Naisteranna sihtkaitsevööndi kaitse-eesmärk on hallide luidete, rannikulõugaste ja rannaluidete ning kaitsealuste liikide elupaikade kaitse ja tutvustamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
     },
     {
       "@id": "estleg:Reg_312829_Par_9",
@@ -453,42 +943,124 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 9. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "1 (1) Sihtkaitsevööndis on lubatud rahvaürituse korraldamine, sealjuures rohkem kui 100 osalejaga rahvaürituse korraldamine on lubatud üksnes kaitseala valitseja nõusolekul. RT I 2009 7 48 13125268 2009-02-01 Sihtkaitsevööndis on lubatud rahvaürituse korraldamine, sealjuures rohkem kui 100 osalejaga rahvaürituse korraldamine on lubatud üksnes kaitseala valitseja nõusolekul. 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) kaitsealuste liikide elutingimuste säilitamiseks ni",
-      "estleg:legalText": "1 (1) Sihtkaitsevööndis on lubatud rahvaürituse korraldamine, sealjuures rohkem kui 100 osalejaga rahvaürituse korraldamine on lubatud üksnes kaitseala valitseja nõusolekul. RT I 2009 7 48 13125268 2009-02-01 Sihtkaitsevööndis on lubatud rahvaürituse korraldamine, sealjuures rohkem kui 100 osalejaga rahvaürituse korraldamine on lubatud üksnes kaitseala valitseja nõusolekul. 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) kaitsealuste liikide elutingimuste säilitamiseks ning poollooduslike koosluste ilme ja liigikoosseisu tagamiseks vajalik tegevus; 2 2) metsakoosluse kujundamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudmisi raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas; 3 3) olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine. Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: kaitsealuste liikide elutingimuste säilitamiseks ning poollooduslike koosluste ilme ja liigikoosseisu tagamiseks vajalik tegevus; metsakoosluse kujundamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudmisi raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas; olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine. 3 (3) Kaitseala valitseja nõusolekul on lubatud pilliroo ja adru varumine. RT I 2009 7 48 13125268 2009-02-01 Kaitseala valitseja nõusolekul on lubatud pilliroo ja adru varumine.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Sihtkaitsevööndis on lubatud rahvaürituse korraldamine, sealjuures rohkem kui 100 osalejaga rahvaürituse korraldamine on lubatud üksnes kaitseala valitseja nõusolekul. RT I 2009 7 48 13125268 2009-02-01 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) kaitsealuste liikide elutingimuste säilitamiseks ning poollooduslike koosluste ilme ja liigikoosseisu tagamiseks vajalik tegevus; 2 2) metsakoosluse kujundamine vastavalt kaitse-eesmärgile, kusjuures kaitseala…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sihtkaitsevööndis on lubatud rahvaürituse korraldamine, sealjuures rohkem kui 100 osalejaga rahvaürituse korraldamine on lubatud üksnes kaitseala valitseja nõusolekul. RT I 2009 7 48 13125268 2009-02-01 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) kaitsealuste liikide elutingimuste säilitamiseks ning poollooduslike koosluste ilme ja liigikoosseisu tagamiseks vajalik tegevus; 2 2) metsakoosluse kujundamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudmisi raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas; 3 3) olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine. 3 (3) Kaitseala valitseja nõusolekul on lubatud pilliroo ja adru varumine. RT I 2009 7 48 13125268 2009-02-01",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1026133_Par_10"
+          "@id": "estleg:Reg_312829_Par_9_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1041146_Par_10"
+          "@id": "estleg:Reg_312829_Par_9_Lg_2"
         },
         {
-          "@id": "estleg:Reg_1042683_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_313093_Par_9"
-        },
-        {
-          "@id": "estleg:Reg_344112_Par_9"
+          "@id": "estleg:Reg_312829_Par_9_Lg_3"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1026133_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1045057_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_300311_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_305244_Par_9"
+        },
+        {
+          "@id": "estleg:Reg_305939_Par_10"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_312829_Par_9_v312829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevööndis on lubatud rahvaürituse korraldamine, sealjuures rohkem kui 100 osalejaga rahvaürituse korraldamine on lubatud üksnes kaitseala valitseja nõusolekul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1) kaitsealuste liikide elutingimuste säilitamiseks ning poollooduslike koosluste ilme ja liigikoosseisu tagamiseks vajalik tegevus; 2) metsakoosluse kujundamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudmisi raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas; 3) olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitseala valitseja nõusolekul on lubatud pilliroo ja adru varumine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:Reg_312829_Par_10",
@@ -497,13 +1069,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 10. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "Sihtkaitsevööndis on keelatud: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tee või tehnovõrgu rajatise ning tootmisotstarbeta ehitise püstitamine, kaitseala või kaitsealal paikneva kinnistu tarbeks ja olemasolevate ehitiste hooldustööd. RT I 2016-07-06 22 106072016022 2016-07-16 Sihtkaitsevööndis on keelatud: majandustegevus; loodusvarade kasutamine; uute ehitiste püstitamine, välja arvatud kaitseala valitseja n",
-      "estleg:legalText": "Sihtkaitsevööndis on keelatud: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tee või tehnovõrgu rajatise ning tootmisotstarbeta ehitise püstitamine, kaitseala või kaitsealal paikneva kinnistu tarbeks ja olemasolevate ehitiste hooldustööd. RT I 2016-07-06 22 106072016022 2016-07-16 Sihtkaitsevööndis on keelatud: majandustegevus; loodusvarade kasutamine; uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tee või tehnovõrgu rajatise ning tootmisotstarbeta ehitise püstitamine, kaitseala või kaitsealal paikneva kinnistu tarbeks ja olemasolevate ehitiste hooldustööd.",
+      "estleg:summary": {
+        "@value": "Sihtkaitsevööndis on keelatud: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tee või tehnovõrgu rajatise ning tootmisotstarbeta ehitise püstitamine, kaitseala või kaitsealal paikneva kinnistu tarbeks ja olemasolevate ehitiste hooldustööd. RT I 2016-07-06 22 106072016022 2016-07-16",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sihtkaitsevööndis on keelatud: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tee või tehnovõrgu rajatise ning tootmisotstarbeta ehitise püstitamine, kaitseala või kaitsealal paikneva kinnistu tarbeks ja olemasolevate ehitiste hooldustööd. RT I 2016-07-06 22 106072016022 2016-07-16",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_10_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158643_Par_8"
@@ -512,7 +1102,7 @@
           "@id": "estleg:Reg_159025_Par_8"
         },
         {
-          "@id": "estleg:Reg_310426_Par_7"
+          "@id": "estleg:Reg_305244_Par_10"
         },
         {
           "@id": "estleg:Reg_312069_Par_10"
@@ -521,18 +1111,36 @@
           "@id": "estleg:Reg_312291_Par_11"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_312829_Par_10_v312829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevööndis on keelatud: 1) majandustegevus; 2) loodusvarade kasutamine; 3) uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tee või tehnovõrgu rajatise ning tootmisotstarbeta ehitise püstitamine, kaitseala või kaitsealal paikneva kinnistu tarbeks ja olemasolevate ehitiste hooldustööd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_312829_Par_11",
@@ -541,13 +1149,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Vajalik tegevus",
+      "rdfs:label": {
+        "@value": "§ 11. Vajalik tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "Rannaniidu ja Vana-Pärnu sihtkaitsevööndites on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik heina ja roo niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine.",
-      "estleg:legalText": "Rannaniidu ja Vana-Pärnu sihtkaitsevööndites on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik heina ja roo niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine. Rannaniidu ja Vana-Pärnu sihtkaitsevööndites on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik heina ja roo niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine.",
+      "estleg:summary": {
+        "@value": "Rannaniidu ja Vana-Pärnu sihtkaitsevööndites on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik heina ja roo niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Rannaniidu ja Vana-Pärnu sihtkaitsevööndites on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik heina ja roo niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_11_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1035420_Par_6"
@@ -572,19 +1191,49 @@
       ]
     },
     {
+      "@id": "estleg:Reg_312829_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rannaniidu ja Vana-Pärnu sihtkaitsevööndites on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik heina ja roo niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
       "@id": "estleg:Reg_312829_Par_12",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Piiranguvööndi määratlus",
+      "rdfs:label": {
+        "@value": "§ 12. Piiranguvööndi määratlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. Kaitseala piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on Kristiine piiranguvöönd. Kaitsealal on Kristiine piiranguvöönd. 3 (3) Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine. Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine.",
-      "estleg:legalText": "1 (1) Kaitseala piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. Kaitseala piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on Kristiine piiranguvöönd. Kaitsealal on Kristiine piiranguvöönd. 3 (3) Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine. Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on Kristiine piiranguvöönd. 3 (3) Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on Kristiine piiranguvöönd. 3 (3) Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_312829_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_312829_Par_12_Lg_3"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1015353_Par_13"
@@ -609,47 +1258,141 @@
       ]
     },
     {
+      "@id": "estleg:Reg_312829_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on Kristiine piiranguvöönd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
       "@id": "estleg:Reg_312829_Par_13",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 13. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus; 2 2) kuni 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. Piiranguvööndis on lubatud: majandustegevus; kuni 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: 1 1) ehitise, kaasa arvatud ajutise ehitise püstitamine; 2 2) rohkem kui 150 osalej",
-      "estleg:legalText": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus; 2 2) kuni 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. Piiranguvööndis on lubatud: majandustegevus; kuni 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: 1 1) ehitise, kaasa arvatud ajutise ehitise püstitamine; 2 2) rohkem kui 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. RT I 2016-07-06 22 106072016022 2016-07-16 Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: ehitise, kaasa arvatud ajutise ehitise püstitamine; rohkem kui 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus; 2 2) kuni 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: 1 1) ehitise, kaasa arvatud ajutise ehitise püstitamine; 2 2) rohkem kui 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. RT I 2016-07-06 22 106072016022 2016-07-16",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus; 2 2) kuni 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: 1 1) ehitise, kaasa arvatud ajutise ehitise püstitamine; 2 2) rohkem kui 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. RT I 2016-07-06 22 106072016022 2016-07-16",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1031605_Par_15"
+          "@id": "estleg:Reg_312829_Par_13_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1033625_Par_15"
-        },
-        {
-          "@id": "estleg:Reg_305939_Par_14"
-        },
-        {
-          "@id": "estleg:Reg_313105_Par_17"
-        },
-        {
-          "@id": "estleg:Reg_344112_Par_13"
+          "@id": "estleg:Reg_312829_Par_13_Lg_2"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1020297_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_1041151_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_1044455_Par_14"
+        },
+        {
+          "@id": "estleg:Reg_303772_Par_13"
+        },
+        {
+          "@id": "estleg:Reg_313105_Par_17"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_312829_Par_13_v312829"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on lubatud: 1) majandustegevus; 2) kuni 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: 1) ehitise, kaasa arvatud ajutise ehitise püstitamine; 2) rohkem kui 150 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -659,42 +1402,82 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 14. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "Piiranguvööndis on keelatud: 1 1) kehtetu - RT I 2016-07-06 22 106072016022 2016-07-16 2 2) veekogude veetaseme ja kaldajoone muutmine; 3 3) uue maaparandussüsteemi rajamine; 4 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5 5) maavara kaevandamine; 6 6) uuendusraie; 7 7) biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud õuemaal. Piiranguvööndis on keelatud: kehtetu - veekogude veetaseme ja kaldajoone muutmine; uue maaparandussüsteemi rajamine; puhtpuistute kujundamine ja ener",
-      "estleg:legalText": "Piiranguvööndis on keelatud: 1 1) kehtetu - RT I 2016-07-06 22 106072016022 2016-07-16 2 2) veekogude veetaseme ja kaldajoone muutmine; 3 3) uue maaparandussüsteemi rajamine; 4 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5 5) maavara kaevandamine; 6 6) uuendusraie; 7 7) biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud õuemaal. Piiranguvööndis on keelatud: kehtetu - veekogude veetaseme ja kaldajoone muutmine; uue maaparandussüsteemi rajamine; puhtpuistute kujundamine ja energiapuistute rajamine; maavara kaevandamine; uuendusraie; biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud õuemaal.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "Piiranguvööndis on keelatud: 1 1) kehtetu - RT I 2016-07-06 22 106072016022 2016-07-16 2 2) veekogude veetaseme ja kaldajoone muutmine; 3 3) uue maaparandussüsteemi rajamine; 4 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5 5) maavara kaevandamine; 6 6) uuendusraie; 7 7) biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud õuemaal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Piiranguvööndis on keelatud: 1 1) kehtetu - RT I 2016-07-06 22 106072016022 2016-07-16 2 2) veekogude veetaseme ja kaldajoone muutmine; 3 3) uue maaparandussüsteemi rajamine; 4 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5 5) maavara kaevandamine; 6 6) uuendusraie; 7 7) biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud õuemaal.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1031605_Par_17"
-        },
-        {
-          "@id": "estleg:Reg_1039315_Par_15"
-        },
-        {
-          "@id": "estleg:Reg_1040654_Par_16"
-        },
-        {
-          "@id": "estleg:Reg_1044455_Par_16"
-        },
-        {
-          "@id": "estleg:Reg_1047663_Par_16"
+          "@id": "estleg:Reg_312829_Par_14_Lg_1"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1040654_Par_16"
+        },
+        {
+          "@id": "estleg:Reg_158859_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_302261_Par_13"
+        },
+        {
+          "@id": "estleg:Reg_306836_Par_14"
+        },
+        {
+          "@id": "estleg:Reg_312119_Par_15"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_312829_Par_14_v312829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on keelatud: 1) 2) veekogude veetaseme ja kaldajoone muutmine; 3) uue maaparandussüsteemi rajamine; 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5) maavara kaevandamine; 6) uuendusraie; 7) biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud õuemaal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_312829_Par_15",
@@ -703,13 +1486,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Vajalik tegevus",
+      "rdfs:label": {
+        "@value": "§ 15. Vajalik tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pärnu rannaniidu looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_312829_Map"
       },
-      "estleg:summary": "Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu säilimise tagamiseks vajalik heina ja roo niitmine ning puu- ja põõsarinde kujundamine.",
-      "estleg:legalText": "Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu säilimise tagamiseks vajalik heina ja roo niitmine ning puu- ja põõsarinde kujundamine. Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu säilimise tagamiseks vajalik heina ja roo niitmine ning puu- ja põõsarinde kujundamine.",
+      "estleg:summary": {
+        "@value": "Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu säilimise tagamiseks vajalik heina ja roo niitmine ning puu- ja põõsarinde kujundamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu säilimise tagamiseks vajalik heina ja roo niitmine ning puu- ja põõsarinde kujundamine.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_312829_Par_15_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1026685_Par_17"
@@ -732,6 +1526,19 @@
           "@id": "estleg:Reg_312829_Par_15_v312829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_312829_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu säilimise tagamiseks vajalik heina ja roo niitmine ning puu- ja põõsarinde kujundamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_312829_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_312829_Map_1",

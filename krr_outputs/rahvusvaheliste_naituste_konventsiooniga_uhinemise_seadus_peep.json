@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:RNKU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Rahvusvaheliste näituste konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Rahvusvaheliste näituste konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Rahvusvaheliste näituste konventsiooniga ühinemise seadus",
       "dcterms:title": "Rahvusvaheliste näituste konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13175633.xml"
+        "@id": "https://www.riigiteataja.ee/akt/13175633"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/13175633/xml"
+      },
+      "estleg:globalId": "13175633",
+      "eli:id_local": "13175633",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "334959",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "f41206092b1713254c1c65945c542920733fe50f0d0625e54b5008b17f9a54d9",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2009-04-30",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -50,19 +62,20 @@
         {
           "@id": "http://eurovoc.europa.eu/3474"
         }
-      ]
-    },
-    {
-      "@id": "estleg:RNKU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Rahvusvaheliste näituste konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_RNKU_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2009-04-30",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2009-04-29",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2009-04-30",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_RNKU_default",
@@ -71,12 +84,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RNKU_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:RNKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Rahvusvaheliste näituste konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RNKU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:RNKU_Par_1",
@@ -85,13 +119,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud rahvusvaheliste näituste konventsiooniga./13175648, mis on...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud rahvusvaheliste näituste konventsiooniga , mis on koostatu...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvaheliste näituste konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RNKU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on koostatud 1928. aasta 22. novembril Pariisis, ja rahvusvaheliste näituste konventsiooni muutmise protokolliga, mis on koostatud 1972. aasta 30. novembril Pariisis.",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1928. aasta 22. novembril Pariisis, ja rahvusvaheliste näituste konventsiooni muutmise protokolliga, mis on koostatud 1972. aasta 30. novembril Pariisis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud rahvusvaheliste näituste konventsiooniga , mis on koostatud 1928. aasta 22. novembril Pariisis, ja rahvusvaheliste näituste konventsiooni muutmise protokolliga, mis on koostatud 1972. aasta 30. novembril Pariisis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud rahvusvaheliste näituste konventsiooniga , mis on koostatud 1928. aasta 22. novembril Pariisis, ja rahvusvaheliste näituste konventsiooni muutmise protokolliga, mis on koostatud 1972. aasta 30. novembril Pariisis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RNKU_default"
       },
@@ -111,10 +151,10 @@
           "@id": "estleg:RKIOMPU1974_Par_1"
         },
         {
-          "@id": "estleg:RORUKSPHPLNN_Par_1"
+          "@id": "estleg:RORUKSPHPLNN_Par_2"
         },
         {
-          "@id": "estleg:RORUKSPHPLNN_Par_2"
+          "@id": "estleg:jaatmete_ja_muude_ainete_kaadamisest_poh_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -129,10 +169,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1928. aasta 22. novembril Pariisis, ja rahvusvaheliste näituste konventsiooni muutmise protokolliga, mis on koostatud 1972. aasta 30. novembril Pariisis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud rahvusvaheliste näituste konventsiooniga , mis on koostatud 1928. aasta 22. novembril Pariisis, ja rahvusvaheliste näituste konventsiooni muutmise protokolliga, mis on koostatud 1972. aasta 30. novembril Pariisis.",
       "estleg:parentProvision": {
         "@id": "estleg:RNKU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:RNKU_Par_2",
@@ -141,12 +183,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.<table summ...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvaheliste näituste konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RNKU_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RNKU_default"
@@ -168,10 +216,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:parentProvision": {
         "@id": "estleg:RNKU_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

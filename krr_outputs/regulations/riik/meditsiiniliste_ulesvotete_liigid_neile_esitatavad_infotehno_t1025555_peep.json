@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord (määrus)",
+      "rdfs:label": {
+        "@value": "Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,18 +39,15 @@
       "estleg:globalId": "129082014008",
       "estleg:terviktekstId": "1025555",
       "estleg:preambleText": "Määrus kehtestatakse tervishoiuteenuste korraldamise seaduse § 59",
-      "estleg:entryIntoForce": {
-        "@value": "2014-09-01",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2014-08-29",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "estleg:issuedUnder": [
         {
@@ -76,7 +80,16 @@
         {
           "@id": "http://eurovoc.europa.eu/5181"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2014-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2014-08-29",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1025555_Par_1",
@@ -85,18 +98,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Üldsäte",
+      "rdfs:label": {
+        "@value": "§ 1. Üldsäte",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025555_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning nende kättesaadavaks tegemise tingimused ja kord.",
-      "estleg:legalText": "Määrusega kehtestatakse meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning nende kättesaadavaks tegemise tingimused ja kord. Määrusega kehtestatakse meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning nende kättesaadavaks tegemise tingimused ja kord.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning nende kättesaadavaks tegemise tingimused ja kord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning nende kättesaadavaks tegemise tingimused ja kord.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025555_Par_1_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025555_Par_1_v1025555"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025555_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning nende kättesaadavaks tegemise tingimused ja kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025555_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1025555_Par_2",
@@ -105,18 +142,49 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Meditsiinilise ülesvõtte mõiste",
+      "rdfs:label": {
+        "@value": "§ 2. Meditsiinilise ülesvõtte mõiste",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025555_Map"
       },
-      "estleg:summary": "Meditsiiniline ülesvõte on patsiendi kohta käivat informatsiooni sisaldav pilt või muu visuaalne kujutis anatoomiast või füsioloogilisest protsessist.",
-      "estleg:legalText": "Meditsiiniline ülesvõte on patsiendi kohta käivat informatsiooni sisaldav pilt või muu visuaalne kujutis anatoomiast või füsioloogilisest protsessist. Meditsiiniline ülesvõte on patsiendi kohta käivat informatsiooni sisaldav pilt või muu visuaalne kujutis anatoomiast või füsioloogilisest protsessist.",
+      "estleg:summary": {
+        "@value": "Meditsiiniline ülesvõte on patsiendi kohta käivat informatsiooni sisaldav pilt või muu visuaalne kujutis anatoomiast või füsioloogilisest protsessist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Meditsiiniline ülesvõte on patsiendi kohta käivat informatsiooni sisaldav pilt või muu visuaalne kujutis anatoomiast või füsioloogilisest protsessist.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025555_Par_2_Lg_1"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025555_Par_2_v1025555"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025555_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Meditsiiniline ülesvõte on patsiendi kohta käivat informatsiooni sisaldav pilt või muu visuaalne kujutis anatoomiast või füsioloogilisest protsessist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025555_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:Reg_1025555_Par_3",
@@ -125,18 +193,65 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Meditsiiniliste ülesvõtete liigid ja neile esitatavad infotehnoloogilised nõuded",
+      "rdfs:label": {
+        "@value": "§ 3. Meditsiiniliste ülesvõtete liigid ja neile esitatavad infotehnoloogilised nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025555_Map"
       },
-      "estleg:summary": "1 (1) Meditsiiniliste ülesvõtete liigid on: 1 1) radioloogilised ülesvõtted, sealhulgas günekoloogilise ultraheliuuringu ja südame ultraheliuuringu pildid või jäädvustused; 2 2) endoskoopilised ülesvõtted; 3 3) fotod ja videod; 4 4) biosignaali fikseerivad kujutised; 5 5) muud meditsiinilised ülesvõtted. Meditsiiniliste ülesvõtete liigid on: radioloogilised ülesvõtted, sealhulgas günekoloogilise ultraheliuuringu ja südame ultraheliuuringu pildid või jäädvustused; endoskoopilised ülesvõtted; foto",
-      "estleg:legalText": "1 (1) Meditsiiniliste ülesvõtete liigid on: 1 1) radioloogilised ülesvõtted, sealhulgas günekoloogilise ultraheliuuringu ja südame ultraheliuuringu pildid või jäädvustused; 2 2) endoskoopilised ülesvõtted; 3 3) fotod ja videod; 4 4) biosignaali fikseerivad kujutised; 5 5) muud meditsiinilised ülesvõtted. Meditsiiniliste ülesvõtete liigid on: radioloogilised ülesvõtted, sealhulgas günekoloogilise ultraheliuuringu ja südame ultraheliuuringu pildid või jäädvustused; endoskoopilised ülesvõtted; fotod ja videod; biosignaali fikseerivad kujutised; muud meditsiinilised ülesvõtted. 2 (2) Meditsiiniliste ülesvõtete kättesaadavaks tegemisel kasutatakse DICOM- või muud vormingut ja standardit HL7. Meditsiiniliste ülesvõtete kättesaadavaks tegemisel kasutatakse DICOM- või muud vormingut ja standardit HL7.",
+      "estleg:summary": {
+        "@value": "1 (1) Meditsiiniliste ülesvõtete liigid on: 1 1) radioloogilised ülesvõtted, sealhulgas günekoloogilise ultraheliuuringu ja südame ultraheliuuringu pildid või jäädvustused; 2 2) endoskoopilised ülesvõtted; 3 3) fotod ja videod; 4 4) biosignaali fikseerivad kujutised; 5 5) muud meditsiinilised ülesvõtted. 2 (2) Meditsiiniliste ülesvõtete kättesaadavaks tegemisel kasutatakse DICOM- või muud vormingut ja standardit HL7.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Meditsiiniliste ülesvõtete liigid on: 1 1) radioloogilised ülesvõtted, sealhulgas günekoloogilise ultraheliuuringu ja südame ultraheliuuringu pildid või jäädvustused; 2 2) endoskoopilised ülesvõtted; 3 3) fotod ja videod; 4 4) biosignaali fikseerivad kujutised; 5 5) muud meditsiinilised ülesvõtted. 2 (2) Meditsiiniliste ülesvõtete kättesaadavaks tegemisel kasutatakse DICOM- või muud vormingut ja standardit HL7.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025555_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1025555_Par_3_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025555_Par_3_v1025555"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025555_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Meditsiiniliste ülesvõtete liigid on: 1) radioloogilised ülesvõtted, sealhulgas günekoloogilise ultraheliuuringu ja südame ultraheliuuringu pildid või jäädvustused; 2) endoskoopilised ülesvõtted; 3) fotod ja videod; 4) biosignaali fikseerivad kujutised; 5) muud meditsiinilised ülesvõtted.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025555_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025555_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Meditsiiniliste ülesvõtete kättesaadavaks tegemisel kasutatakse DICOM- või muud vormingut ja standardit HL7.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025555_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
     },
     {
       "@id": "estleg:Reg_1025555_Par_4",
@@ -145,18 +260,104 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Meditsiiniliste ülesvõtete kättesaadavaks tegemise tingimused ja kord",
+      "rdfs:label": {
+        "@value": "§ 4. Meditsiiniliste ülesvõtete kättesaadavaks tegemise tingimused ja kord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025555_Map"
       },
-      "estleg:summary": "1 (1) Meditsiinilised ülesvõtted tehakse tervishoiuteenuse osutajale kättesaadavaks tervise infosüsteemi kaudu. Meditsiinilised ülesvõtted tehakse tervishoiuteenuse osutajale kättesaadavaks tervise infosüsteemi kaudu. 2 (2) Tervishoiuteenuse osutaja edastab DICOM-vormingus meditsiinilise ülesvõtte tervise infosüsteemi viivitamatult pärast ülesvõtte tegemist, välja arvatud meditsiinilised ülesvõtted, mida tervishoiuteenuse osutaja kasutatav tehnoloogia ei võimalda nõutud kujul esitada. Tervishoiu",
-      "estleg:legalText": "1 (1) Meditsiinilised ülesvõtted tehakse tervishoiuteenuse osutajale kättesaadavaks tervise infosüsteemi kaudu. Meditsiinilised ülesvõtted tehakse tervishoiuteenuse osutajale kättesaadavaks tervise infosüsteemi kaudu. 2 (2) Tervishoiuteenuse osutaja edastab DICOM-vormingus meditsiinilise ülesvõtte tervise infosüsteemi viivitamatult pärast ülesvõtte tegemist, välja arvatud meditsiinilised ülesvõtted, mida tervishoiuteenuse osutaja kasutatav tehnoloogia ei võimalda nõutud kujul esitada. Tervishoiuteenuse osutaja edastab DICOM-vormingus meditsiinilise ülesvõtte tervise infosüsteemi viivitamatult pärast ülesvõtte tegemist, välja arvatud meditsiinilised ülesvõtted, mida tervishoiuteenuse osutaja kasutatav tehnoloogia ei võimalda nõutud kujul esitada. 3 (3) Tervishoiuteenuse osutaja edastab saatekirja vastuse koos meditsiinilise ülesvõtte viidaga tervise infosüsteemi ühe tööpäeva jooksul peale vastuse kinnitamist. Tervishoiuteenuse osutaja edastab saatekirja vastuse koos meditsiinilise ülesvõtte viidaga tervise infosüsteemi ühe tööpäeva jooksul peale vastuse kinnitamist. 4 (4) Meditsiinilise ülesvõtte viit peab sisaldama isikuandmeid ja pildi ligipääsunumbrit. Meditsiinilise ülesvõtte viit peab sisaldama isikuandmeid ja pildi ligipääsunumbrit.",
+      "estleg:summary": {
+        "@value": "1 (1) Meditsiinilised ülesvõtted tehakse tervishoiuteenuse osutajale kättesaadavaks tervise infosüsteemi kaudu. 2 (2) Tervishoiuteenuse osutaja edastab DICOM-vormingus meditsiinilise ülesvõtte tervise infosüsteemi viivitamatult pärast ülesvõtte tegemist, välja arvatud meditsiinilised ülesvõtted, mida tervishoiuteenuse osutaja kasutatav tehnoloogia ei võimalda nõutud kujul esitada.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Meditsiinilised ülesvõtted tehakse tervishoiuteenuse osutajale kättesaadavaks tervise infosüsteemi kaudu. 2 (2) Tervishoiuteenuse osutaja edastab DICOM-vormingus meditsiinilise ülesvõtte tervise infosüsteemi viivitamatult pärast ülesvõtte tegemist, välja arvatud meditsiinilised ülesvõtted, mida tervishoiuteenuse osutaja kasutatav tehnoloogia ei võimalda nõutud kujul esitada. 3 (3) Tervishoiuteenuse osutaja edastab saatekirja vastuse koos meditsiinilise ülesvõtte viidaga tervise infosüsteemi ühe tööpäeva jooksul peale vastuse kinnitamist. 4 (4) Meditsiinilise ülesvõtte viit peab sisaldama isikuandmeid ja pildi ligipääsunumbrit.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025555_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1025555_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1025555_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1025555_Par_4_Lg_4"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025555_Par_4_v1025555"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025555_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Meditsiinilised ülesvõtted tehakse tervishoiuteenuse osutajale kättesaadavaks tervise infosüsteemi kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025555_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1025555_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tervishoiuteenuse osutaja edastab DICOM-vormingus meditsiinilise ülesvõtte tervise infosüsteemi viivitamatult pärast ülesvõtte tegemist, välja arvatud meditsiinilised ülesvõtted, mida tervishoiuteenuse osutaja kasutatav tehnoloogia ei võimalda nõutud kujul esitada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025555_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1025555_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tervishoiuteenuse osutaja edastab saatekirja vastuse koos meditsiinilise ülesvõtte viidaga tervise infosüsteemi ühe tööpäeva jooksul peale vastuse kinnitamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025555_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1025555_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Meditsiinilise ülesvõtte viit peab sisaldama isikuandmeid ja pildi ligipääsunumbrit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025555_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:Reg_1025555_Par_5",
@@ -165,18 +366,47 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 5. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025555_Map"
       },
-      "estleg:summary": "Sotsiaalministri 21. augusti 2008. a määrus nr 47 „Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord“ (RTL 2008, 73, 1020) tunnistatakse kehtetuks.",
-      "estleg:legalText": "Sotsiaalministri 21. augusti 2008. a määrus nr 47 „Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord“ (RTL 2008, 73, 1020) tunnistatakse kehtetuks. Sotsiaalministri 21. augusti 2008. a määrus nr 47 „Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord“ (RTL 2008, 73, 1020) tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Sotsiaalministri 21. augusti 2008. a määrus nr 47 „Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord“ (RTL 2008, 73, 1020) tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sotsiaalministri 21. augusti 2008. a määrus nr 47 „Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord“ (RTL 2008, 73, 1020) tunnistatakse kehtetuks.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025555_Par_5_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_sotsiaalminister"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025555_Par_5_v1025555"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025555_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sotsiaalministri 21. augusti 2008. a määrus nr 47 „Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord“ (RTL 2008, 73, 1020) tunnistatakse kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025555_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_sotsiaalminister"
@@ -190,18 +420,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 6. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiiniliste ülesvõtete liigid, neile esitatavad infotehnoloogilised nõuded ning kättesaadavaks tegemise tingimused ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025555_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. septembril 2014. a.",
-      "estleg:legalText": "Määrus jõustub 1. septembril 2014. a. Määrus jõustub 1. septembril 2014. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. septembril 2014. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. septembril 2014. a.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025555_Par_6_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025555_Par_6_v1025555"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025555_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. septembril 2014. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025555_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1025555_Map_1",

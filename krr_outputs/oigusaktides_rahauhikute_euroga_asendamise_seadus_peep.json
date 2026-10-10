@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:OREAS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Õigusaktides rahaühikute euroga asendamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Õigusaktides rahaühikute euroga asendamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Õigusaktides rahaühikute euroga asendamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Õigusaktides rahaühikute euroga asendamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Substitution of Euro for Currency Units in Legislation Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Õigusaktides rahaühikute euroga asendamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/73370.xml"
+        "@id": "https://www.riigiteataja.ee/akt/73370"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/73370/xml"
+      },
+      "estleg:globalId": "73370",
+      "eli:id_local": "73370",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "154247",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "98d20ec55b8a9d6065cf739a208710869f9889bd2d336ea3c1e4dad6a05a88fc",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/510032014002"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/510032014002"
       },
       "dcterms:subject": [
@@ -57,19 +63,20 @@
         {
           "@id": "http://eurovoc.europa.eu/525"
         }
-      ]
-    },
-    {
-      "@id": "estleg:OREAS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Õigusaktides rahaühikute euroga asendamise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_OREAS_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2001-12-27",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_OREAS_default",
@@ -78,12 +85,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Õigusaktides rahaühikute euroga asendamise seadus",
-      "skos:prefLabel": "§1–2 Õigusaktides rahaühikute euroga asendamise seadus",
+      "rdfs:label": {
+        "@value": "§1–2 Õigusaktides rahaühikute euroga asendamise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Õigusaktides rahaühikute euroga asendamise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:OREAS_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:OREAS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Õigusaktides rahaühikute euroga asendamise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_OREAS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:OREAS_Par_1",
@@ -92,12 +120,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Seadustes, välja arvatud välislaenulepingute ja laenudele riigigarantii andmise...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Seadustes, välja arvatud välislaenulepingute ja laenudele riigigarantii andmise...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õigusaktides rahaühikute euroga asendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OREAS_Map"
       },
-      "estleg:summary": "Seadustes, välja arvatud välislaenulepingute ja laenudele riigigarantii andmise ratifitseerimise seadused, loetakse euro kasutusele võtnud Euroopa Liidu liikmesriikide rahaühikud rahaühikuks euro (EUR), arvestades Euroopa Liidu Nõukogu kehtestatud konverteerimiskursse.",
+      "estleg:summary": {
+        "@value": "Seadustes, välja arvatud välislaenulepingute ja laenudele riigigarantii andmise ratifitseerimise seadused, loetakse euro kasutusele võtnud Euroopa Liidu liikmesriikide rahaühikud rahaühikuks euro (EUR), arvestades Euroopa Liidu Nõukogu kehtestatud konverteerimiskursse.",
+        "@language": "et"
+      },
       "estleg:legalText": "Seadustes, välja arvatud välislaenulepingute ja laenudele riigigarantii andmise ratifitseerimise seadused, loetakse euro kasutusele võtnud Euroopa Liidu liikmesriikide rahaühikud rahaühikuks euro (EUR), arvestades Euroopa Liidu Nõukogu kehtestatud konverteerimiskursse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OREAS_default"
@@ -115,12 +149,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Käesolev seadus jõustub 2002. aasta 1. jaanuaril.]",
+      "rdfs:label": {
+        "@value": "§ 2. [Käesolev seadus jõustub 2002. aasta 1. jaanuaril.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õigusaktides rahaühikute euroga asendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OREAS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OREAS_default"
@@ -130,6 +170,22 @@
           "@id": "estleg:OREAS_Par_2_v73370"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/510032014002",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:OREAS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Substitution of Euro for Currency Units in Legislation Act",
+        "@language": "en"
+      }
     }
   ]
 }

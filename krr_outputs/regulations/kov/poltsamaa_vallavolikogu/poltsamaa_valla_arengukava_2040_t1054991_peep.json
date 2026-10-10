@@ -6,7 +6,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -15,7 +16,10 @@
         "estleg:Act",
         "estleg:MunicipalRegulation"
       ],
-      "rdfs:label": "Põltsamaa valla arengukava 2040 (määrus)",
+      "rdfs:label": {
+        "@value": "Põltsamaa valla arengukava 2040 (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Põltsamaa valla arengukava 2040",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -58,48 +62,46 @@
       },
       "estleg:titleNormalized": "arengukava 2040",
       "estleg:regulationTypeBucket": "arengukava",
-      "estleg:similarAct": [
+      "estleg:municipalityStatus": "current",
+      "estleg:enablingProvisionOutdated": {
+        "@value": true,
+        "@type": "xsd:boolean"
+      },
+      "estleg:earliestSupersedingDate": {
+        "@value": "2026-01-17",
+        "@type": "xsd:date"
+      },
+      "dcterms:title": "Põltsamaa valla arengukava 2040",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:issuedUnder": [
         {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054422_Map"
+          "@id": "estleg:KOKS_Map"
+        }
+      ],
+      "estleg:implementsCitation": [
+        {
+          "@id": "estleg:Citation_Reg_1054991_Map_1"
         },
         {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1060517_Map"
-        },
+          "@id": "estleg:Citation_Reg_1054991_Map_2"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "dcterms:subject": [
         {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1059825_Map"
-        },
+          "@id": "http://eurovoc.europa.eu/5050"
+        }
+      ],
+      "eli:is_about": [
         {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044874_Map"
-        },
-        {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054875_Map"
-        },
-        {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054969_Map"
-        },
-        {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1056851_Map"
-        },
-        {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1059735_Map"
-        },
-        {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1055118_Map"
-        },
-        {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044370_Map"
-        },
-        {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1055041_Map"
-        },
-        {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044772_Map"
-        },
-        {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054528_Map"
-        },
-        {
-          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044766_Map"
+          "@id": "http://eurovoc.europa.eu/5050"
         }
       ],
       "estleg:entryIntoForce": {
@@ -130,28 +132,53 @@
           "@id": "estleg:Amendment_Reg_1054991_84efa8b56d"
         }
       ],
-      "estleg:municipalityStatus": "current",
-      "estleg:issuedUnder": [
+      "estleg:similarAct": [
         {
-          "@id": "estleg:KOKS_Map"
-        }
-      ],
-      "estleg:implementsCitation": [
-        {
-          "@id": "estleg:Citation_Reg_1054991_Map_1"
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054422_Map"
         },
         {
-          "@id": "estleg:Citation_Reg_1054991_Map_2"
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1060517_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1059825_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054875_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044874_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054969_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1056851_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1059735_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1055118_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1055041_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044370_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054528_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044772_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044766_Map"
+        },
+        {
+          "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1057169_Map"
         }
-      ],
-      "estleg:enablingProvisionOutdated": {
-        "@value": true,
-        "@type": "xsd:boolean"
-      },
-      "estleg:earliestSupersedingDate": {
-        "@value": "2026-01-17",
-        "@type": "xsd:date"
-      }
+      ]
     },
     {
       "@id": "estleg:Reg_1054991_Annex_1",
@@ -159,7 +186,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Põltsamaa valla arengukava 2040",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -168,7 +198,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -177,7 +210,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 3",
+      "rdfs:label": {
+        "@value": "Lisa 3 – Põltsmaa valla eelarvestrateegia 2026-2029\n\t\t\t\n\t\tRT IV2025-09-2494240920250092025-09-27",
+        "@language": "et"
+      },
       "estleg:annexNumber": "3"
     },
     {
@@ -186,7 +222,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 4",
+      "rdfs:label": {
+        "@value": "Lisa 4",
+        "@language": "et"
+      },
       "estleg:annexNumber": "4"
     },
     {
@@ -195,7 +234,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 5",
+      "rdfs:label": {
+        "@value": "Lisa 5 – Hetkeolukorra kirjeldus ja analüüs",
+        "@language": "et"
+      },
       "estleg:annexNumber": "5"
     },
     {
@@ -204,7 +246,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 6",
+      "rdfs:label": {
+        "@value": "Lisa 6",
+        "@language": "et"
+      },
       "estleg:annexNumber": "6"
     },
     {
@@ -215,10 +260,16 @@
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Arengukava vastuvõtmine",
+      "rdfs:label": {
+        "@value": "§ 1. Arengukava vastuvõtmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põltsamaa valla arengukava 2040",
-      "estleg:summary": "Võtta vastu Põltsamaa valla arengukava 2040 vastavalt määruse lisale.",
-      "estleg:legalText": "Võtta vastu Põltsamaa valla arengukava 2040 vastavalt määruse lisale. Võtta vastu Põltsamaa valla arengukava 2040 vastavalt määruse lisale.",
+      "estleg:summary": {
+        "@value": "Võtta vastu Põltsamaa valla arengukava 2040 vastavalt määruse lisale.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Võtta vastu Põltsamaa valla arengukava 2040 vastavalt määruse lisale.",
       "estleg:enactedBy": {
         "@id": "estleg:Issuer_poltsamaa_vallavolikogu"
       },
@@ -227,7 +278,25 @@
       },
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054991_Map"
-      }
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054991_Par_1_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054991_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Võtta vastu Põltsamaa valla arengukava 2040 vastavalt määruse lisale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054991_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1054991_Par_2",
@@ -237,10 +306,16 @@
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 2. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põltsamaa valla arengukava 2040",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud].",
-      "estleg:legalText": "[Käesolevast tekstist välja jäetud]. [Käesolevast tekstist välja jäetud].",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud].",
+        "@language": "et"
+      },
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud].",
       "estleg:enactedBy": {
         "@id": "estleg:Issuer_poltsamaa_vallavolikogu"
       },
@@ -249,7 +324,25 @@
       },
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054991_Map"
-      }
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054991_Par_2_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054991_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) [Käesolevast tekstist välja jäetud].",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054991_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:Reg_1054991_Par_3",
@@ -259,10 +352,16 @@
         "estleg:KovProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 3. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põltsamaa valla arengukava 2040",
-      "estleg:summary": "Määrus jõustub kolmandal päeval pärast Riigi Teatajas avaldamist.",
-      "estleg:legalText": "Määrus jõustub kolmandal päeval pärast Riigi Teatajas avaldamist. Määrus jõustub kolmandal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub kolmandal päeval pärast Riigi Teatajas avaldamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub kolmandal päeval pärast Riigi Teatajas avaldamist.",
       "estleg:enactedBy": {
         "@id": "estleg:Issuer_poltsamaa_vallavolikogu"
       },
@@ -271,217 +370,25 @@
       },
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054991_Map"
-      }
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054991_Par_3_Lg_1"
+        }
+      ]
     },
     {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054422_Map",
+      "@id": "estleg:Reg_1054991_Par_3_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1054422_Map"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub kolmandal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054991_Par_3"
       },
-      "estleg:similarityScore": {
-        "@value": "0.537",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1060517_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1060517_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.52",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1059825_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1059825_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.51",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044874_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1044874_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.502",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054875_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1054875_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.501",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054969_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1054969_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.494",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1056851_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1056851_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.444",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1059735_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1059735_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.428",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1055118_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1055118_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.417",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044370_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1044370_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.369",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1055041_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1055041_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.363",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044772_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1044772_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.354",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054528_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1054528_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.349",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
-    },
-    {
-      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044766_Map",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Similarity"
-      ],
-      "estleg:similarTarget": {
-        "@id": "estleg:Reg_1044766_Map"
-      },
-      "estleg:similarityScore": {
-        "@value": "0.34",
-        "@type": "xsd:decimal"
-      },
-      "estleg:similarityModel": "tfidf-cosine"
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1054991_Map_1",
@@ -505,6 +412,231 @@
         "@id": "estleg:KOKS_Par_37"
       },
       "estleg:citationText": ", § 37"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054422_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1054422_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.525",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1060517_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1060517_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.512",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1059825_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1059825_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.503",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054875_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1054875_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.494",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044874_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1044874_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.484",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054969_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1054969_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.473",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1056851_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1056851_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.438",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1059735_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1059735_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.423",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1055118_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1055118_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.408",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1055041_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1055041_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.357",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044370_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1044370_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.353",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1054528_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1054528_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.349",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044772_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1044772_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.348",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1044766_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1044766_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.34",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
+    },
+    {
+      "@id": "estleg:Similarity_Reg_1054991_Map_Reg_1057169_Map",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Similarity"
+      ],
+      "estleg:similarTarget": {
+        "@id": "estleg:Reg_1057169_Map"
+      },
+      "estleg:similarityScore": {
+        "@value": "0.328",
+        "@type": "xsd:decimal"
+      },
+      "estleg:similarityModel": "tfidf-cosine"
     }
   ]
 }

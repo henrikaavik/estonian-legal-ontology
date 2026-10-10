@@ -5,55 +5,55 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:SaAS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Säästva arengu seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Säästva arengu seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Säästva arengu seadus",
-      "dcterms:title": [
-        {
-          "@value": "Säästva arengu seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Sustainable Development Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Säästva arengu seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/110112016016.xml"
+        "@id": "https://www.riigiteataja.ee/akt/110112016016"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/110112016016/xml"
+      },
+      "estleg:globalId": "110112016016",
+      "eli:id_local": "110112016016",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "159283",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "d6f2d765ece582a061ab4f201ece33584a50c7dbbbc19e39c25e16b45d84b031",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2017-01-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/520122016001"
       },
-      "estleg:implementedBy": [
-        {
-          "@id": "estleg:Reg_1037289_Map"
-        }
-      ],
-      "estleg:implementedByCount": 1,
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/520122016001"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2825"
@@ -75,19 +75,60 @@
         {
           "@id": "http://eurovoc.europa.eu/68"
         }
-      ]
-    },
-    {
-      "@id": "estleg:SaAS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Säästva arengu seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:entryIntoForce": {
+        "@value": "1995-04-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2017-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2016-11-10",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
         {
-          "@id": "estleg:Cluster_SaAS_default"
+          "@id": "estleg:Institution_vabariigivalitsus"
         }
-      ]
+      ],
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_SaAS_fecd6bf2ab"
+        },
+        {
+          "@id": "estleg:Amendment_SaAS_512bee68ef"
+        },
+        {
+          "@id": "estleg:Amendment_SaAS_46a3f6dc1e"
+        },
+        {
+          "@id": "estleg:Amendment_SaAS_701798b0b8"
+        },
+        {
+          "@id": "estleg:Amendment_SaAS_7a026eb455"
+        },
+        {
+          "@id": "estleg:Amendment_SaAS_5ee61a280a"
+        },
+        {
+          "@id": "estleg:Amendment_SaAS_e70b2fb143"
+        },
+        {
+          "@id": "estleg:Amendment_SaAS_a4b69463de"
+        },
+        {
+          "@id": "estleg:Amendment_SaAS_a59ebd9c32"
+        }
+      ],
+      "estleg:implementedBy": [
+        {
+          "@id": "estleg:Reg_1037289_Map"
+        }
+      ],
+      "estleg:implementedByCount": 1
     },
     {
       "@id": "estleg:Cluster_SaAS_default",
@@ -96,12 +137,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–13 Säästva arengu seadus",
-      "skos:prefLabel": "§1–13 Säästva arengu seadus",
+      "rdfs:label": {
+        "@value": "§1–13 Säästva arengu seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–13 Säästva arengu seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SaAS_TopicScheme"
       },
       "estleg:provisionCount": 13
+    },
+    {
+      "@id": "estleg:SaAS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Säästva arengu seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_SaAS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:SaAS_Par_1",
@@ -110,12 +172,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse ülesanne",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse ülesanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus sätestab säästva arengu rahvusliku strateegia alused. (2) Säästva arengu rahvuslik strateegia tugineb ÜRO Keskkonna- ja Arengukonverentsi otsustes (Rio de Janeiro, 1992) sätestatud põhimõtetele. (3) Käesoleva seaduse II osa sätestab looduskeskkonna ja loodusvarade säästliku kasutamise alused. (4) Säästva arengu alused teistes valdkondades sätestab seadus, muu õigusakt või riiklik programm.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus sätestab säästva arengu rahvusliku strateegia alused. (2) Säästva arengu rahvuslik strateegia tugineb ÜRO Keskkonna- ja Arengukonverentsi otsustes (Rio de Janeiro, 1992) sätestatud põhimõtetele. (3) Käesoleva seaduse II osa sätestab looduskeskkonna ja loodusvarade säästliku kasutamise alused. (4) Säästva arengu alused teistes valdkondades sätestab seadus, muu õigusakt või riiklik programm.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus sätestab säästva arengu rahvusliku strateegia alused. (2) Säästva arengu rahvuslik strateegia tugineb ÜRO Keskkonna- ja Arengukonverentsi otsustes (Rio de Janeiro, 1992) sätestatud põhimõtetele. (3) Käesoleva seaduse II osa sätestab looduskeskkonna ja loodusvarade säästliku kasutamise alused. (4) Säästva arengu alused teistes valdkondades sätestab seadus, muu õigusakt või riiklik programm.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
@@ -199,12 +267,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Looduskeskkonna ja loodusvarade säästliku kasutamise eesmärk",
+      "rdfs:label": {
+        "@value": "§ 2. Looduskeskkonna ja loodusvarade säästliku kasutamise eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "Looduskeskkonna ja loodusvarade säästliku kasutamise eesmärgiks on tagada inimesi rahuldav elukeskkond ja majanduse arenguks vajalikud ressursid looduskeskkonda oluliselt kahjustamata ning looduslikku mitmekesisust säilitades.",
+      "estleg:summary": {
+        "@value": "Looduskeskkonna ja loodusvarade säästliku kasutamise eesmärgiks on tagada inimesi rahuldav elukeskkond ja majanduse arenguks vajalikud ressursid looduskeskkonda oluliselt kahjustamata ning looduslikku mitmekesisust säilitades.",
+        "@language": "et"
+      },
       "estleg:legalText": "Looduskeskkonna ja loodusvarade säästliku kasutamise eesmärgiks on tagada inimesi rahuldav elukeskkond ja majanduse arenguks vajalikud ressursid looduskeskkonda oluliselt kahjustamata ning looduslikku mitmekesisust säilitades.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
@@ -226,10 +300,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Looduskeskkonna ja loodusvarade säästliku kasutamise eesmärgiks on tagada inimesi rahuldav elukeskkond ja majanduse arenguks vajalikud ressursid looduskeskkonda oluliselt kahjustamata ning looduslikku mitmekesisust säilitades.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Looduskeskkonna ja loodusvarade säästliku kasutamise eesmärgiks on tagada inimesi rahuldav elukeskkond ja majanduse arenguks vajalikud ressursid looduskeskkonda oluliselt kahjustamata ning looduslikku mitmekesisust säilitades.",
       "estleg:parentProvision": {
         "@id": "estleg:SaAS_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:SaAS_Par_3",
@@ -238,12 +314,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Looduskeskkonda ja loodusvarasid säästva arengu alused",
+      "rdfs:label": {
+        "@value": "§ 3. Looduskeskkonda ja loodusvarasid säästva arengu alused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "(1) Eesti Vabariigi põhiseaduse järgi on igaüks kohustatud säästma elu- ja looduskeskkonda ning hoiduma sellele kahju tekitamast. (2) Omandi käsutamise ja ettevõtlusega tegelemise vabadust kitsendatakse, lähtudes vajadusest kaitsta loodust kui inimkonna ühisvara ja rahvuslikku rikkust. (3) Looduskeskkonna saastamise minimeerimine ja loodusvarade kasutamine loodusliku tasakaalu säilitavates kogustes on majandustegevuse põhinõuded. (4) Üle riigipiiri leviva mõjuga või looduskeskkonda oluliselt",
+      "estleg:summary": {
+        "@value": "(1) Eesti Vabariigi põhiseaduse järgi on igaüks kohustatud säästma elu- ja looduskeskkonda ning hoiduma sellele kahju tekitamast. (2) Omandi käsutamise ja ettevõtlusega tegelemise vabadust kitsendatakse, lähtudes vajadusest kaitsta loodust kui inimkonna ühisvara ja rahvuslikku rikkust. (3) Looduskeskkonna saastamise minimeerimine ja loodusvarade kasutamine loodusliku tasakaalu säilitavates kogustes on majandustegevuse põhinõuded. (4) Üle riigipiiri leviva mõjuga või looduskeskkonda oluliselt",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Vabariigi põhiseaduse järgi on igaüks kohustatud säästma elu- ja looduskeskkonda ning hoiduma sellele kahju tekitamast. (2) Omandi käsutamise ja ettevõtlusega tegelemise vabadust kitsendatakse, lähtudes vajadusest kaitsta loodust kui inimkonna ühisvara ja rahvuslikku rikkust. (3) Looduskeskkonna saastamise minimeerimine ja loodusvarade kasutamine loodusliku tasakaalu säilitavates kogustes on majandustegevuse põhinõuded. (4) Üle riigipiiri leviva mõjuga või looduskeskkonda oluliselt mõjutada võiva tegevuse kavandamine ja keskkonnakaitse üldine korraldamine toimub rahvusvahelises koostöös. (5) Looduskeskkonna ja loodusvarade kasutamist reguleerivad kasutus- ning tasumäärad, mille kehtestamisel arvestatakse looduskasutuse mõju keskkonnaseisundile. (6) Looduskasutust kavandavad planeeringud, programmid, arengukavad ja projektid on avalikud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
@@ -359,13 +441,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Välislepingute täitmine",
+      "rdfs:label": {
+        "@value": "§ 4. Välislepingute täitmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "(1) Välislepingust tulenevate keskkonnakaitseliste kohustuste täitmine toimub kinnitatud riiklike programmide kaudu. (2) Omavalitsusüksuse arengukava kinnitamisel ja ettevõtluse korraldamisel peab kohalik omavalitsus arvestama välislepingutest tulenevaid kohustusi ja nende täitmiseks kinnitatud riiklikke programme.",
-      "estleg:legalText": "(1) Välislepingust tulenevate keskkonnakaitseliste kohustuste täitmine toimub kinnitatud riiklike programmide kaudu. (2) Omavalitsusüksuse arengukava kinnitamisel ja ettevõtluse korraldamisel peab kohalik omavalitsus arvestama välislepingutest tulenevaid kohustusi ja nende täitmiseks kinnitatud riiklikke programme.",
+      "estleg:summary": {
+        "@value": "(1) Välislepingust tulenevate keskkonnakaitseliste kohustuste täitmine toimub Vabariigi Valitsuse kinnitatud riiklike programmide kaudu. (2) Omavalitsusüksuse arengukava kinnitamisel ja ettevõtluse korraldamisel peab kohalik omavalitsus arvestama välislepingutest tulenevaid kohustusi ja nende täitmiseks kinnitatud riiklikke programme.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Välislepingust tulenevate keskkonnakaitseliste kohustuste täitmine toimub Vabariigi Valitsuse kinnitatud riiklike programmide kaudu. (2) Omavalitsusüksuse arengukava kinnitamisel ja ettevõtluse korraldamisel peab kohalik omavalitsus arvestama välislepingutest tulenevaid kohustusi ja nende täitmiseks kinnitatud riiklikke programme.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
       },
@@ -382,13 +470,21 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:SaAS_Par_4_v22325"
@@ -402,11 +498,6 @@
         {
           "@id": "estleg:SaAS_Par_4_v110112016016"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
       ]
     },
     {
@@ -416,11 +507,25 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Välislepingust tulenevate keskkonnakaitseliste kohustuste täitmine toimub kinnitatud riiklike programmide kaudu.",
+      "estleg:legalText": "(1) Välislepingust tulenevate keskkonnakaitseliste kohustuste täitmine toimub Vabariigi Valitsuse kinnitatud riiklike programmide kaudu.",
       "estleg:parentProvision": {
         "@id": "estleg:SaAS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:SaAS_Par_4_Lg_2",
@@ -434,9 +539,6 @@
         "@id": "estleg:SaAS_Par_4"
       },
       "rdfs:label": "§ 4 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -445,6 +547,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -459,13 +564,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Taastuv loodusvara",
+      "rdfs:label": {
+        "@value": "§ 5. Taastuv loodusvara",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "(1) Taastuva loodusvara varu jaguneb kriitiliseks varuks ja kasutatavaks varuks. (2) Taastuva loodusvara kriitiline varu on väikseim suurus, mis tagab loodusliku tasakaalu ja taastootmise, kaitserežiimide täitmise ning bioloogilise ja maastikulise mitmekesisuse säilimise. (3) Taastuva loodusvara kriitilise varu suuruse kehtestab , arvestades juurde määramatusest tuleneva reservi. (4) Taastuva loodusvara kehtestatud kriitilisest varust ülejääv osa on taastuva loodusvara kasutatav varu.",
-      "estleg:legalText": "(1) Taastuva loodusvara varu jaguneb kriitiliseks varuks ja kasutatavaks varuks. (2) Taastuva loodusvara kriitiline varu on väikseim suurus, mis tagab loodusliku tasakaalu ja taastootmise, kaitserežiimide täitmise ning bioloogilise ja maastikulise mitmekesisuse säilimise. (3) Taastuva loodusvara kriitilise varu suuruse kehtestab , arvestades juurde määramatusest tuleneva reservi. (4) Taastuva loodusvara kehtestatud kriitilisest varust ülejääv osa on taastuva loodusvara kasutatav varu. Majandustegevuse kavandamisel ei tohi ületada kasutatava varu kehtestatud suurust. (5) Kasutatava varu suuruse ja aastased kasutusmäärad kehtestab , arvestades looduslikku juurdekasvu. Taastuva loodusvara kasutatava varu kasutamise korralduse sätestab seadus.",
+      "estleg:summary": {
+        "@value": "(1) Taastuva loodusvara varu jaguneb kriitiliseks varuks ja kasutatavaks varuks. (2) Taastuva loodusvara kriitiline varu on väikseim suurus, mis tagab loodusliku tasakaalu ja taastootmise, kaitserežiimide täitmise ning bioloogilise ja maastikulise mitmekesisuse säilimise. (3) Taastuva loodusvara kriitilise varu suuruse kehtestab Vabariigi Valitsus , arvestades juurde määramatusest tuleneva reservi. (4) Taastuva loodusvara kehtestatud kriitilisest varust ülejääv osa on taastuva loodusvara",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Taastuva loodusvara varu jaguneb kriitiliseks varuks ja kasutatavaks varuks. (2) Taastuva loodusvara kriitiline varu on väikseim suurus, mis tagab loodusliku tasakaalu ja taastootmise, kaitserežiimide täitmise ning bioloogilise ja maastikulise mitmekesisuse säilimise. (3) Taastuva loodusvara kriitilise varu suuruse kehtestab Vabariigi Valitsus , arvestades juurde määramatusest tuleneva reservi. (4) Taastuva loodusvara kehtestatud kriitilisest varust ülejääv osa on taastuva loodusvara kasutatav varu. Majandustegevuse kavandamisel ei tohi ületada kasutatava varu kehtestatud suurust. (5) Kasutatava varu suuruse ja aastased kasutusmäärad kehtestab Vabariigi Valitsus , arvestades looduslikku juurdekasvu. Taastuva loodusvara kasutatava varu kasutamise korralduse sätestab seadus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
       },
@@ -486,6 +597,24 @@
           "@id": "estleg:SaAS_Par_5_Lg_5"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation",
       "estleg:hasVersion": [
         {
           "@id": "estleg:SaAS_Par_5_v22325"
@@ -537,11 +666,26 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Taastuva loodusvara kriitilise varu suuruse kehtestab , arvestades juurde määramatusest tuleneva reservi.",
+      "estleg:legalText": "(3) Taastuva loodusvara kriitilise varu suuruse kehtestab Vabariigi Valitsus , arvestades juurde määramatusest tuleneva reservi.",
       "estleg:parentProvision": {
         "@id": "estleg:SaAS_Par_5"
       },
       "rdfs:label": "§ 5 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation",
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1037289_Map"
@@ -561,12 +705,12 @@
         "@id": "estleg:SaAS_Par_5"
       },
       "rdfs:label": "§ 5 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -576,11 +720,26 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kasutatava varu suuruse ja aastased kasutusmäärad kehtestab , arvestades looduslikku juurdekasvu. Taastuva loodusvara kasutatava varu kasutamise korralduse sätestab seadus.",
+      "estleg:legalText": "(5) Kasutatava varu suuruse ja aastased kasutusmäärad kehtestab Vabariigi Valitsus , arvestades looduslikku juurdekasvu. Taastuva loodusvara kasutatava varu kasutamise korralduse sätestab seadus.",
       "estleg:parentProvision": {
         "@id": "estleg:SaAS_Par_5"
       },
-      "rdfs:label": "§ 5 lg 5"
+      "rdfs:label": "§ 5 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:SaAS_Par_6",
@@ -589,13 +748,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Taastumatu loodusvara",
+      "rdfs:label": {
+        "@value": "§ 6. Taastumatu loodusvara",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "(1) Taastumatu loodusvara kasutamise kavandamisel lähtutakse järgmistest põhitingimustest: teada olevate varude jätkumisest võimalikult pikaks ajaks; taastuva loodusvara toodanguga või ammendamatu energiaallikaga asendamisvõimalusest; jäätmetega või teisese toormega asendamisvõimalusest. (2) Majandustegevuse kavandamisel arvatakse kasutatavast varust välja kaitsealadel asuvad varud. (3) Kehtetu -",
-      "estleg:legalText": "(1) Taastumatu loodusvara kasutamise kavandamisel lähtutakse järgmistest põhitingimustest: teada olevate varude jätkumisest võimalikult pikaks ajaks; taastuva loodusvara toodanguga või ammendamatu energiaallikaga asendamisvõimalusest; jäätmetega või teisese toormega asendamisvõimalusest. (2) Majandustegevuse kavandamisel arvatakse kasutatavast varust välja kaitsealadel asuvad varud. (3) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Taastumatu loodusvara kasutamise kavandamisel lähtutakse järgmistest põhitingimustest: 1) teada olevate varude jätkumisest võimalikult pikaks ajaks; 2) taastuva loodusvara toodanguga või ammendamatu energiaallikaga asendamisvõimalusest; 3) jäätmetega või teisese toormega asendamisvõimalusest. (2) Majandustegevuse kavandamisel arvatakse kasutatavast varust välja kaitsealadel asuvad varud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Taastumatu loodusvara kasutamise kavandamisel lähtutakse järgmistest põhitingimustest: 1) teada olevate varude jätkumisest võimalikult pikaks ajaks; 2) taastuva loodusvara toodanguga või ammendamatu energiaallikaga asendamisvõimalusest; 3) jäätmetega või teisese toormega asendamisvõimalusest. (2) Majandustegevuse kavandamisel arvatakse kasutatavast varust välja kaitsealadel asuvad varud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
       },
@@ -605,9 +770,6 @@
         },
         {
           "@id": "estleg:SaAS_Par_6_Lg_2"
-        },
-        {
-          "@id": "estleg:SaAS_Par_6_Lg_3"
         }
       ],
       "estleg:hasVersion": [
@@ -629,11 +791,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Taastumatu loodusvara kasutamise kavandamisel lähtutakse järgmistest põhitingimustest: teada olevate varude jätkumisest võimalikult pikaks ajaks; taastuva loodusvara toodanguga või ammendamatu energiaallikaga asendamisvõimalusest; jäätmetega või teisese toormega asendamisvõimalusest.",
+      "estleg:legalText": "(1) Taastumatu loodusvara kasutamise kavandamisel lähtutakse järgmistest põhitingimustest: 1) teada olevate varude jätkumisest võimalikult pikaks ajaks; 2) taastuva loodusvara toodanguga või ammendamatu energiaallikaga asendamisvõimalusest; 3) jäätmetega või teisese toormega asendamisvõimalusest.",
       "estleg:parentProvision": {
         "@id": "estleg:SaAS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 1"
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:SaAS_Par_6_Lg_2",
@@ -649,31 +816,24 @@
       "rdfs:label": "§ 6 lg 2"
     },
     {
-      "@id": "estleg:SaAS_Par_6_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:SaAS_Par_6"
-      },
-      "rdfs:label": "§ 6 lg 3"
-    },
-    {
       "@id": "estleg:SaAS_Par_7",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Kaasnev loodusvara",
+      "rdfs:label": {
+        "@value": "§ 7. Kaasnev loodusvara",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "(1) Kaasnev loodusvara on ühe loodusvara kasutamisega mõjutatud või mõjutatav mis tahes teine loodusvara. (2) Kaasnev loodusvara tuleb kas kasutada või säilitada kasutamiskõlblikuna võimalikult endises kvaliteedis. (3) Kaasneva loodusvara kaitse ja kasutamise korralduse sätestab seadus.",
+      "estleg:summary": {
+        "@value": "(1) Kaasnev loodusvara on ühe loodusvara kasutamisega mõjutatud või mõjutatav mis tahes teine loodusvara. (2) Kaasnev loodusvara tuleb kas kasutada või säilitada kasutamiskõlblikuna võimalikult endises kvaliteedis. (3) Kaasneva loodusvara kaitse ja kasutamise korralduse sätestab seadus.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kaasnev loodusvara on ühe loodusvara kasutamisega mõjutatud või mõjutatav mis tahes teine loodusvara. (2) Kaasnev loodusvara tuleb kas kasutada või säilitada kasutamiskõlblikuna võimalikult endises kvaliteedis. (3) Kaasneva loodusvara kaitse ja kasutamise korralduse sätestab seadus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
@@ -689,12 +849,12 @@
           "@id": "estleg:SaAS_Par_7_Lg_3"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -727,12 +887,12 @@
         "@id": "estleg:SaAS_Par_7"
       },
       "rdfs:label": "§ 7 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -755,12 +915,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Keskkonnamõju hindamine ja keskkonnajuhtimissüsteem",
+      "rdfs:label": {
+        "@value": "§ 8. Keskkonnamõju hindamine ja keskkonnajuhtimissüsteem",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "Keskkonnamõju hindamise õiguslikud alused ja korra, ühenduse keskkonnajuhtimis- ja keskkonnaauditeerimissüsteemi korralduse ning ühenduse ökomärgise andmise õiguslikud alused sätestab seadus.",
+      "estleg:summary": {
+        "@value": "Keskkonnamõju hindamise õiguslikud alused ja korra, ühenduse keskkonnajuhtimis- ja keskkonnaauditeerimissüsteemi korralduse ning ühenduse ökomärgise andmise õiguslikud alused sätestab seadus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Keskkonnamõju hindamise õiguslikud alused ja korra, ühenduse keskkonnajuhtimis- ja keskkonnaauditeerimissüsteemi korralduse ning ühenduse ökomärgise andmise õiguslikud alused sätestab seadus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
@@ -790,10 +956,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Keskkonnamõju hindamise õiguslikud alused ja korra, ühenduse keskkonnajuhtimis- ja keskkonnaauditeerimissüsteemi korralduse ning ühenduse ökomärgise andmise õiguslikud alused sätestab seadus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Keskkonnamõju hindamise õiguslikud alused ja korra, ühenduse keskkonnajuhtimis- ja keskkonnaauditeerimissüsteemi korralduse ning ühenduse ökomärgise andmise õiguslikud alused sätestab seadus.",
       "estleg:parentProvision": {
         "@id": "estleg:SaAS_Par_8"
-      }
+      },
+      "rdfs:label": "§ 8 lg 1"
     },
     {
       "@id": "estleg:SaAS_Par_9",
@@ -802,13 +970,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Bioloogilise mitmekesisuse säilitamine",
+      "rdfs:label": {
+        "@value": "§ 9. Bioloogilise mitmekesisuse säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "(1) Bioloogilise mitmekesisuse säilitamine tagatakse kinnitatud riikliku programmi ja tegevuskavaga, mille koostamist finantseeritakse riigieelarvest. (2) Bioloogilise mitmekesisuse säilitamise põhialused on: looduslike liikide osas nende kaitse võimalikult madala taksonoomilise üksuse tasandil ja võimalikult kõikide liikide säilitamiseks; kohalike kultuurtaimede sortide ja koduloomatõugude osas nende arvelevõtmine ja andmepankade hoidmine võimalikult kõikide sortide ja tõugude kohta;",
-      "estleg:legalText": "(1) Bioloogilise mitmekesisuse säilitamine tagatakse kinnitatud riikliku programmi ja tegevuskavaga, mille koostamist finantseeritakse riigieelarvest. (2) Bioloogilise mitmekesisuse säilitamise põhialused on: looduslike liikide osas nende kaitse võimalikult madala taksonoomilise üksuse tasandil ja võimalikult kõikide liikide säilitamiseks; kohalike kultuurtaimede sortide ja koduloomatõugude osas nende arvelevõtmine ja andmepankade hoidmine võimalikult kõikide sortide ja tõugude kohta; eritüübiliste ökosüsteemide ja maastike säilitamine ning süsteemi loomine looduslikest ja poollooduslikest kooslustest asustuse ja majandustegevuse mõju tasakaalustamiseks ning kompenseerimiseks; sotsiaalse, majandusliku või teadusliku tähtsusega geneetilise materjali määratlemine.",
+      "estleg:summary": {
+        "@value": "(1) Bioloogilise mitmekesisuse säilitamine tagatakse Vabariigi Valitsuse kinnitatud riikliku programmi ja tegevuskavaga, mille koostamist finantseeritakse riigieelarvest. (2) Bioloogilise mitmekesisuse säilitamise põhialused on: 1) looduslike liikide osas nende kaitse võimalikult madala taksonoomilise üksuse tasandil ja võimalikult kõikide liikide säilitamiseks; 2) kohalike kultuurtaimede sortide ja koduloomatõugude osas nende arvelevõtmine ja andmepankade hoidmine võimalikult kõikide sortide",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Bioloogilise mitmekesisuse säilitamine tagatakse Vabariigi Valitsuse kinnitatud riikliku programmi ja tegevuskavaga, mille koostamist finantseeritakse riigieelarvest. (2) Bioloogilise mitmekesisuse säilitamise põhialused on: 1) looduslike liikide osas nende kaitse võimalikult madala taksonoomilise üksuse tasandil ja võimalikult kõikide liikide säilitamiseks; 2) kohalike kultuurtaimede sortide ja koduloomatõugude osas nende arvelevõtmine ja andmepankade hoidmine võimalikult kõikide sortide ja tõugude kohta; 3) eritüübiliste ökosüsteemide ja maastike säilitamine ning süsteemi loomine looduslikest ja poollooduslikest kooslustest asustuse ja majandustegevuse mõju tasakaalustamiseks ning kompenseerimiseks; 4) sotsiaalse, majandusliku või teadusliku tähtsusega geneetilise materjali määratlemine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
       },
@@ -818,6 +992,20 @@
         },
         {
           "@id": "estleg:SaAS_Par_9_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
         }
       ],
       "estleg:hasVersion": [
@@ -842,11 +1030,25 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Bioloogilise mitmekesisuse säilitamine tagatakse kinnitatud riikliku programmi ja tegevuskavaga, mille koostamist finantseeritakse riigieelarvest.",
+      "estleg:legalText": "(1) Bioloogilise mitmekesisuse säilitamine tagatakse Vabariigi Valitsuse kinnitatud riikliku programmi ja tegevuskavaga, mille koostamist finantseeritakse riigieelarvest.",
       "estleg:parentProvision": {
         "@id": "estleg:SaAS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 1"
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:SaAS_Par_9_Lg_2",
@@ -855,11 +1057,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Bioloogilise mitmekesisuse säilitamise põhialused on: looduslike liikide osas nende kaitse võimalikult madala taksonoomilise üksuse tasandil ja võimalikult kõikide liikide säilitamiseks; kohalike kultuurtaimede sortide ja koduloomatõugude osas nende arvelevõtmine ja andmepankade hoidmine võimalikult kõikide sortide ja tõugude kohta; eritüübiliste ökosüsteemide ja maastike säilitamine ning süsteemi loomine looduslikest ja poollooduslikest kooslustest asustuse ja majandustegevuse mõju tasakaalustamiseks ning kompenseerimiseks; sotsiaalse, majandusliku või teadusliku tähtsusega geneetilise materjali määratlemine.",
+      "estleg:legalText": "(2) Bioloogilise mitmekesisuse säilitamise põhialused on: 1) looduslike liikide osas nende kaitse võimalikult madala taksonoomilise üksuse tasandil ja võimalikult kõikide liikide säilitamiseks; 2) kohalike kultuurtaimede sortide ja koduloomatõugude osas nende arvelevõtmine ja andmepankade hoidmine võimalikult kõikide sortide ja tõugude kohta; 3) eritüübiliste ökosüsteemide ja maastike säilitamine ning süsteemi loomine looduslikest ja poollooduslikest kooslustest asustuse ja majandustegevuse mõju tasakaalustamiseks ning kompenseerimiseks; 4) sotsiaalse, majandusliku või teadusliku tähtsusega geneetilise materjali määratlemine.",
       "estleg:parentProvision": {
         "@id": "estleg:SaAS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 2"
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
     },
     {
       "@id": "estleg:SaAS_Par_10",
@@ -868,12 +1076,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Keskkonnanormatiiv ja -standard",
+      "rdfs:label": {
+        "@value": "§ 10. Keskkonnanormatiiv ja -standard",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "(1) Keskkonnanormatiiv on keskkonna kvaliteedile, heitmekogusele või toodangu ühikule kehtestatud keskkonnakaitseline kontrollarv või loodusvara erikulu. (2) Keskkonnanormatiiv muudetakse kohustuslikuks valdkonna eest vastutava ministri määruse või saasteloaga. (3) Keskkonnastandard on asjaosaliste kokkuleppel koostatud ning kinnitatud reegleid, juhtnööre ja arvnäitajaid sisaldav dokument, mis korraldab keskkonnaseisundit mõjutavat või mõjutada võivat tegevust või tegevuse tulemust.",
+      "estleg:summary": {
+        "@value": "(1) Keskkonnanormatiiv on keskkonna kvaliteedile, heitmekogusele või toodangu ühikule kehtestatud keskkonnakaitseline kontrollarv või loodusvara erikulu. (2) Keskkonnanormatiiv muudetakse kohustuslikuks valdkonna eest vastutava ministri määruse või saasteloaga. (3) Keskkonnastandard on asjaosaliste kokkuleppel koostatud ning kinnitatud reegleid, juhtnööre ja arvnäitajaid sisaldav dokument, mis korraldab keskkonnaseisundit mõjutavat või mõjutada võivat tegevust või tegevuse tulemust.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Keskkonnanormatiiv on keskkonna kvaliteedile, heitmekogusele või toodangu ühikule kehtestatud keskkonnakaitseline kontrollarv või loodusvara erikulu. (2) Keskkonnanormatiiv muudetakse kohustuslikuks valdkonna eest vastutava ministri määruse või saasteloaga. (3) Keskkonnastandard on asjaosaliste kokkuleppel koostatud ning kinnitatud reegleid, juhtnööre ja arvnäitajaid sisaldav dokument, mis korraldab keskkonnaseisundit mõjutavat või mõjutada võivat tegevust või tegevuse tulemust. (4) [Välja jäetud]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
@@ -963,12 +1177,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Keskkonnaseire",
+      "rdfs:label": {
+        "@value": "§ 11. Keskkonnaseire",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "Keskkonnaseire (monitooring) on keskkonna seisundi ja seda mõjutavate tegurite järjepidev jälgimine, mille põhieesmärk on prognoosida keskkonnaseisundit ja saada lähteandmeid programmidele, planeeringutele ja arengukavadele.Keskkonnaseire korralduse sätestab seadus.",
+      "estleg:summary": {
+        "@value": "Keskkonnaseire (monitooring) on keskkonna seisundi ja seda mõjutavate tegurite järjepidev jälgimine, mille põhieesmärk on prognoosida keskkonnaseisundit ja saada lähteandmeid programmidele, planeeringutele ja arengukavadele.Keskkonnaseire korralduse sätestab seadus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Keskkonnaseire (monitooring) on keskkonna seisundi ja seda mõjutavate tegurite järjepidev jälgimine, mille põhieesmärk on prognoosida keskkonnaseisundit ja saada lähteandmeid programmidele, planeeringutele ja arengukavadele.Keskkonnaseire korralduse sätestab seadus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
@@ -993,10 +1213,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Keskkonnaseire (monitooring) on keskkonna seisundi ja seda mõjutavate tegurite järjepidev jälgimine, mille põhieesmärk on prognoosida keskkonnaseisundit ja saada lähteandmeid programmidele, planeeringutele ja arengukavadele.Keskkonnaseire korralduse sätestab seadus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Keskkonnaseire (monitooring) on keskkonna seisundi ja seda mõjutavate tegurite järjepidev jälgimine, mille põhieesmärk on prognoosida keskkonnaseisundit ja saada lähteandmeid programmidele, planeeringutele ja arengukavadele.Keskkonnaseire korralduse sätestab seadus.",
       "estleg:parentProvision": {
         "@id": "estleg:SaAS_Par_11"
-      }
+      },
+      "rdfs:label": "§ 11 lg 1"
     },
     {
       "@id": "estleg:SaAS_Par_12",
@@ -1005,16 +1227,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Tasakaalustatud arengu kavandamine",
+      "rdfs:label": {
+        "@value": "§ 12. Tasakaalustatud arengu kavandamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 12. Tasakaalustatud arengu kavandamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:SaAS_Par_12_v22325"
@@ -1031,12 +1259,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Biosfääri programmiala",
+      "rdfs:label": {
+        "@value": "§ 13. Biosfääri programmiala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säästva arengu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaAS_Map"
       },
-      "estleg:summary": "(1) Biosfääri programmiala on UNESCO programmiga MAB (Man and Biosphere) haaratud ala haridus-, seire- ja uurimistöö korraldamiseks ning loodusvarade kaitse ja säästliku kasutamise ühitamiseks. (2) Biosfääri programmialal töötatakse välja inimeste ja nende elukeskkonna tasakaalustatud suhete alused ning suunatakse planeerimis- ja arendustegevuse kaudu kohalikku arengut vastavalt UNESCO programmi MAB eesmärkidele.»",
+      "estleg:summary": {
+        "@value": "(1) Biosfääri programmiala on UNESCO programmiga MAB (Man and Biosphere) haaratud ala haridus-, seire- ja uurimistöö korraldamiseks ning loodusvarade kaitse ja säästliku kasutamise ühitamiseks. (2) Biosfääri programmialal töötatakse välja inimeste ja nende elukeskkonna tasakaalustatud suhete alused ning suunatakse planeerimis- ja arendustegevuse kaudu kohalikku arengut vastavalt UNESCO programmi MAB eesmärkidele.»",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Biosfääri programmiala on UNESCO programmiga MAB (Man and Biosphere) haaratud ala haridus-, seire- ja uurimistöö korraldamiseks ning loodusvarade kaitse ja säästliku kasutamise ühitamiseks. (2) Biosfääri programmialal töötatakse välja inimeste ja nende elukeskkonna tasakaalustatud suhete alused ning suunatakse planeerimis- ja arendustegevuse kaudu kohalikku arengut vastavalt UNESCO programmi MAB eesmärkidele.»",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaAS_default"
@@ -1080,6 +1314,22 @@
         "@id": "estleg:SaAS_Par_13"
       },
       "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/520122016001",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:SaAS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Sustainable Development Act",
+        "@language": "en"
+      }
     }
   ]
 }

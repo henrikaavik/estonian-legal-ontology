@@ -5,54 +5,67 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:horvaatia_vabariigi_euroopa_majanduspiir_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimise seadus",
       "dcterms:title": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/222112016002.xml"
+        "@id": "https://www.riigiteataja.ee/akt/222112016002"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/222112016002/xml"
+      },
+      "estleg:globalId": "222112016002",
+      "eli:id_local": "222112016002",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "1036637",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "dcd7a3fb43de50b1f89c791552511d5a60507b360c19321d9398d02e25df321d",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2016-12-02",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
         "@type": "xsd:boolean"
       },
-      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
-    },
-    {
-      "@id": "estleg:horvaatia_vabariigi_euroopa_majanduspiir_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_horvaatia_vabariigi_euroopa_majanduspiir_default"
-        }
-      ]
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528).",
+      "estleg:entryIntoForce": {
+        "@value": "2016-12-02",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2016-11-22",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2016-12-02",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_horvaatia_vabariigi_euroopa_majanduspiir_default",
@@ -61,12 +74,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:horvaatia_vabariigi_euroopa_majanduspiir_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:horvaatia_vabariigi_euroopa_majanduspiir_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_horvaatia_vabariigi_euroopa_majanduspiir_default"
+        }
+      ]
     },
     {
       "@id": "estleg:horvaatia_vabariigi_euroopa_majanduspiir_Par_1",
@@ -75,12 +109,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Lepingu ratifitseerimine",
+      "rdfs:label": {
+        "@value": "§ 1. Lepingu ratifitseerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:horvaatia_vabariigi_euroopa_majanduspiir_Map"
       },
-      "estleg:summary": "Ratifitseerida Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise leping (ELT L 170, 11.06.2014, lk 5–48), mis on alla kirjutatud 2014. aasta 11. aprillil Brüsselis.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise leping (ELT L 170, 11.06.2014, lk 5–48), mis on alla kirjutatud 2014. aasta 11. aprillil Brüsselis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise leping (ELT L 170, 11.06.2014, lk 5–48), mis on alla kirjutatud 2014. aasta 11. aprillil Brüsselis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_horvaatia_vabariigi_euroopa_majanduspiir_default"
@@ -93,12 +133,6 @@
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:EMEVEPLR_Par_1"
-        },
-        {
-          "@id": "estleg:EVVAUVRMPFKR_Par_1"
-        },
-        {
-          "@id": "estleg:EVVUVVVVKLR_Par_1"
         },
         {
           "@id": "estleg:euroopa_stabiilsusmehhanismi_asutamislepingu_ratif_Par_1"
@@ -116,10 +150,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise leping (ELT L 170, 11.06.2014, lk 5–48), mis on alla kirjutatud 2014. aasta 11. aprillil Brüsselis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise leping (ELT L 170, 11.06.2014, lk 5–48), mis on alla kirjutatud 2014. aasta 11. aprillil Brüsselis.",
       "estleg:parentProvision": {
         "@id": "estleg:horvaatia_vabariigi_euroopa_majanduspiir_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:horvaatia_vabariigi_euroopa_majanduspiir_Par_2",
@@ -128,12 +164,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Ühisdeklaratsioonide ja -avalduste kinnitamine",
+      "rdfs:label": {
+        "@value": "§ 2. Ühisdeklaratsioonide ja -avalduste kinnitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:horvaatia_vabariigi_euroopa_majanduspiir_Map"
       },
-      "estleg:summary": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimisel kinnitab Eesti Vabariik lepingu lõppaktile lisatud ühisdeklaratsioonid ja -avaldused.",
+      "estleg:summary": {
+        "@value": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimisel kinnitab Eesti Vabariik lepingu lõppaktile lisatud ühisdeklaratsioonid ja -avaldused.",
+        "@language": "et"
+      },
       "estleg:legalText": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimisel kinnitab Eesti Vabariik lepingu lõppaktile lisatud ühisdeklaratsioonid ja -avaldused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_horvaatia_vabariigi_euroopa_majanduspiir_default"
@@ -155,10 +197,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimisel kinnitab Eesti Vabariik lepingu lõppaktile lisatud ühisdeklaratsioonid ja -avaldused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Horvaatia Vabariigi Euroopa Majanduspiirkonnas osalemise lepingu ratifitseerimisel kinnitab Eesti Vabariik lepingu lõppaktile lisatud ühisdeklaratsioonid ja -avaldused.",
       "estleg:parentProvision": {
         "@id": "estleg:horvaatia_vabariigi_euroopa_majanduspiir_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

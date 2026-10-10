@@ -169,6 +169,20 @@ STUB_KEEP_PROPS = (
     "dcterms:source",
 )
 
+#: #711: inverse edges a closure stub carries verbatim from its source root.
+#: ``estleg:harmonisedWith`` (act -> HarmonisationLink) is the inverse of
+#: ``estleg:harmonises``, whose subject lives on the combined surface; since the
+#: transposition matcher anchors directives on regulations, regulation roots carry
+#: it but reach combined only as stubs. The target is closed by the stub fixpoint.
+STUB_COPIED_INVERSE_EDGES = ("estleg:harmonisedWith",)
+
+#: The full set of estleg: object predicates a closure stub may carry: the
+#: shaped closure edges plus the copied inverse edges above. The validator's
+#: leaky-stub rule mirrors this (validate_all.STUB_EDGE_ALLOWLIST).
+STUB_EDGE_ALLOWLIST: frozenset[str] = (
+    estleg_common.STUB_SEMANTIC_EDGE_PREDICATES | frozenset(STUB_COPIED_INVERSE_EDGES)
+)
+
 INDEX_ALLOWED_JSONLD = (
     "karistusseadustik_eriosa_owl.jsonld",
     "tsus_osa7_138_169_owl.jsonld",
@@ -1036,6 +1050,12 @@ def _make_closure_stub(source: dict) -> dict:
         asserted = node_type if isinstance(node_type, list) else [node_type]
         entailed_types = _materialize_supertypes([t for t in asserted if isinstance(t, str)])
     for prop in estleg_common.required_closure_props(entailed_types):
+        if prop in source and prop not in stub:
+            value = source[prop]
+            stub[prop] = copy.deepcopy(value) if isinstance(value, (dict, list)) else value
+    # #711: copy the allowlisted inverse edges (harmonisedWith) verbatim, so a
+    # regulation stub keeps its act -> HarmonisationLink forward edge.
+    for prop in STUB_COPIED_INVERSE_EDGES:
         if prop in source and prop not in stub:
             value = source[prop]
             stub[prop] = copy.deepcopy(value) if isinstance(value, (dict, list)) else value

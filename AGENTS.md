@@ -66,6 +66,12 @@ convention.
   prefix remap, which only rewrites the law/regulation
   `<prefix>_Par_/_Lg/_Osa/_Map_/Cluster_/LegalProvision_/LegalConcept_`
   families.
+- **Riigikohus decisions are frozen (#697).** A decision's `@id` is
+  `estleg:RK_<sanitize(caseNumber)>`. The 121 second documents that share a
+  case number keep the `estleg:RK_<sanitize(caseNumber)>_<oid>` form listed in
+  `data/rk_iri_collisions.json`; a new collision gets the same `_<oid>` form
+  and is appended there. Changing this scheme is a MAJOR change (see
+  `docs/ARCHITECTURE.md` and `docs/STABILITY.md`).
 - **The "≤ 60 chars" goal is met for the law/provision/cluster families but
   not corpus-wide.** ~78k `@id`s still exceed 60 chars, almost all
   `Amendment_*` / `AmendmentChain_*` / `AmendmentLink_*` where the length comes

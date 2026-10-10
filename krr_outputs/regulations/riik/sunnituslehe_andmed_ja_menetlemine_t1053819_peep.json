@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Sünnituslehe andmed ja menetlemine (määrus)",
+      "rdfs:label": {
+        "@value": "Sünnituslehe andmed ja menetlemine (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Sünnituslehe andmed ja menetlemine",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,18 +39,15 @@
       "estleg:globalId": "124032022011",
       "estleg:terviktekstId": "1053819",
       "estleg:preambleText": "Määrus kehtestatakse perehüvitiste seaduse § 46 lõike 7 alusel.",
-      "estleg:entryIntoForce": {
-        "@value": "2022-04-01",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2022-03-24",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Sünnituslehe andmed ja menetlemine",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "estleg:issuedUnder": [
         {
@@ -76,7 +80,16 @@
         {
           "@id": "http://eurovoc.europa.eu/5188"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2022-04-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2022-03-24",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1053819_Par_1",
@@ -85,29 +98,64 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sünnituslehe andmed ja menetlemine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053819_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse sünnituslehe andmekoosseis ning sünnituslehe andmete Sotsiaalkindlustusametile edastamise tingimused ja kord.",
-      "estleg:legalText": "Määrusega kehtestatakse sünnituslehe andmekoosseis ning sünnituslehe andmete Sotsiaalkindlustusametile edastamise tingimused ja kord. Määrusega kehtestatakse sünnituslehe andmekoosseis ning sünnituslehe andmete Sotsiaalkindlustusametile edastamise tingimused ja kord.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse sünnituslehe andmekoosseis ning sünnituslehe andmete Sotsiaalkindlustusametile edastamise tingimused ja kord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse sünnituslehe andmekoosseis ning sünnituslehe andmete Sotsiaalkindlustusametile edastamise tingimused ja kord.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053819_Par_1_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_sotsiaalkindlustusamet"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1033034_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1048660_Par_1"
         },
         {
           "@id": "estleg:Reg_1054587_Par_1"
         },
         {
           "@id": "estleg:Reg_1059781_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1061699_Par_1"
         }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053819_Par_1_v1053819"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053819_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse sünnituslehe andmekoosseis ning sünnituslehe andmete Sotsiaalkindlustusametile edastamise tingimused ja kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053819_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
@@ -121,17 +169,49 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Sünnituslehe andmekoosseis",
+      "rdfs:label": {
+        "@value": "§ 2. Sünnituslehe andmekoosseis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sünnituslehe andmed ja menetlemine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053819_Map"
       },
-      "estleg:summary": "Sünnituslehe andmekoosseisu kuuluvad järgmised andmed: 1 1) raseda ees- ja perekonnanimi ning isikukood või sünniaeg (päev, kuu ja aasta); 2 2) lapse eeldatav sünnikuupäev; 3 3) tuvastatud loodete arv; 4 4) arsti või ämmaemanda ees- ja perekonnanimi ning isikukood; 5 5) tervishoiuteenuse osutaja nimetus ja registrikood; 6 6) sünnituslehe edastamise kuupäev ja kellaaeg. Sünnituslehe andmekoosseisu kuuluvad järgmised andmed: raseda ees- ja perekonnanimi ning isikukood või sünniaeg (päev, kuu ja aa",
-      "estleg:legalText": "Sünnituslehe andmekoosseisu kuuluvad järgmised andmed: 1 1) raseda ees- ja perekonnanimi ning isikukood või sünniaeg (päev, kuu ja aasta); 2 2) lapse eeldatav sünnikuupäev; 3 3) tuvastatud loodete arv; 4 4) arsti või ämmaemanda ees- ja perekonnanimi ning isikukood; 5 5) tervishoiuteenuse osutaja nimetus ja registrikood; 6 6) sünnituslehe edastamise kuupäev ja kellaaeg. Sünnituslehe andmekoosseisu kuuluvad järgmised andmed: raseda ees- ja perekonnanimi ning isikukood või sünniaeg (päev, kuu ja aasta); lapse eeldatav sünnikuupäev; tuvastatud loodete arv; arsti või ämmaemanda ees- ja perekonnanimi ning isikukood; tervishoiuteenuse osutaja nimetus ja registrikood; sünnituslehe edastamise kuupäev ja kellaaeg.",
+      "estleg:summary": {
+        "@value": "Sünnituslehe andmekoosseisu kuuluvad järgmised andmed: 1 1) raseda ees- ja perekonnanimi ning isikukood või sünniaeg (päev, kuu ja aasta); 2 2) lapse eeldatav sünnikuupäev; 3 3) tuvastatud loodete arv; 4 4) arsti või ämmaemanda ees- ja perekonnanimi ning isikukood; 5 5) tervishoiuteenuse osutaja nimetus ja registrikood; 6 6) sünnituslehe edastamise kuupäev ja kellaaeg.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sünnituslehe andmekoosseisu kuuluvad järgmised andmed: 1 1) raseda ees- ja perekonnanimi ning isikukood või sünniaeg (päev, kuu ja aasta); 2 2) lapse eeldatav sünnikuupäev; 3 3) tuvastatud loodete arv; 4 4) arsti või ämmaemanda ees- ja perekonnanimi ning isikukood; 5 5) tervishoiuteenuse osutaja nimetus ja registrikood; 6 6) sünnituslehe edastamise kuupäev ja kellaaeg.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053819_Par_2_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053819_Par_2_v1053819"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053819_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sünnituslehe andmekoosseisu kuuluvad järgmised andmed: 1) raseda ees- ja perekonnanimi ning isikukood või sünniaeg (päev, kuu ja aasta); 2) lapse eeldatav sünnikuupäev; 3) tuvastatud loodete arv; 4) arsti või ämmaemanda ees- ja perekonnanimi ning isikukood; 5) tervishoiuteenuse osutaja nimetus ja registrikood; 6) sünnituslehe edastamise kuupäev ja kellaaeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053819_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -141,13 +221,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Sünnituslehe andmete edastamine",
+      "rdfs:label": {
+        "@value": "§ 3. Sünnituslehe andmete edastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sünnituslehe andmed ja menetlemine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053819_Map"
       },
-      "estleg:summary": "1 (1) Tervishoiuteenuse osutaja infosüsteemis olevad sünnituslehe andmed edastatakse automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi, kui naise rasedus on kestnud vähemalt 22 nädalat. Sünnituslehe andmed on Sotsiaalkindlustusametile aluseks perehüvitiste seadusest tuleneva vanemahüvitise pakkumisel, määramisel ja maksmisel. Tervishoiuteenuse osutaja infosüsteemis olevad sünnituslehe andmed edastatakse automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi, kui naise rasedus on kes",
-      "estleg:legalText": "1 (1) Tervishoiuteenuse osutaja infosüsteemis olevad sünnituslehe andmed edastatakse automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi, kui naise rasedus on kestnud vähemalt 22 nädalat. Sünnituslehe andmed on Sotsiaalkindlustusametile aluseks perehüvitiste seadusest tuleneva vanemahüvitise pakkumisel, määramisel ja maksmisel. Tervishoiuteenuse osutaja infosüsteemis olevad sünnituslehe andmed edastatakse automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi, kui naise rasedus on kestnud vähemalt 22 nädalat. Sünnituslehe andmed on Sotsiaalkindlustusametile aluseks perehüvitiste seadusest tuleneva vanemahüvitise pakkumisel, määramisel ja maksmisel. 2 (2) Kui sünnituslehe andmed muutuvad peale 22. rasedusnädalat, edastab tervishoiuteenuse osutaja muutunud andmed automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi. Kui sünnituslehe andmed muutuvad peale 22. rasedusnädalat, edastab tervishoiuteenuse osutaja muutunud andmed automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi. 3 (3) Sotsiaalkindlustusamet võtab vanemahüvitise pakkumise, määramise ja maksmise aluseks sotsiaalkaitse infosüsteemi ajaliselt hiljem edastatud andmed. Sotsiaalkindlustusamet võtab vanemahüvitise pakkumise, määramise ja maksmise aluseks sotsiaalkaitse infosüsteemi ajaliselt hiljem edastatud andmed. 4 (4) Kui sünnituslehe andmeid ei ole automaatse andmevahetuse kaudu võimalik sotsiaalkaitse infosüsteemi edastada, edastab arst või ämmaemand andmed tervishoiuteenuse osutamise päeval Sotsiaalkindlustusametile e-posti teel ja teeb selle kohta tervishoiuteenuse osutaja infosüsteemi märke. Kui sünnituslehe andmeid ei ole automaatse andmevahetuse kaudu võimalik sotsiaalkaitse infosüsteemi edastada, edastab arst või ämmaemand andmed tervishoiuteenuse osutamise päeval Sotsiaalkindlustusametile e-posti teel ja teeb selle kohta tervishoiuteenuse osutaja infosüsteemi märke. 5 (5) Raseda soovi korral võib arst või ämmaemand sünnituslehe välja kirjutada paberil ning sellisel juhul edastab isik selle Sotsiaalkindlustusametile. Raseda soovi korral võib arst või ämmaemand sünnituslehe välja kirjutada paberil ning sellisel juhul edastab isik selle Sotsiaalkindlustusametile.",
+      "estleg:summary": {
+        "@value": "1 (1) Tervishoiuteenuse osutaja infosüsteemis olevad sünnituslehe andmed edastatakse automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi, kui naise rasedus on kestnud vähemalt 22 nädalat. Sünnituslehe andmed on Sotsiaalkindlustusametile aluseks perehüvitiste seadusest tuleneva vanemahüvitise pakkumisel, määramisel ja maksmisel. 2 (2) Kui sünnituslehe andmed muutuvad peale 22.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Tervishoiuteenuse osutaja infosüsteemis olevad sünnituslehe andmed edastatakse automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi, kui naise rasedus on kestnud vähemalt 22 nädalat. Sünnituslehe andmed on Sotsiaalkindlustusametile aluseks perehüvitiste seadusest tuleneva vanemahüvitise pakkumisel, määramisel ja maksmisel. 2 (2) Kui sünnituslehe andmed muutuvad peale 22. rasedusnädalat, edastab tervishoiuteenuse osutaja muutunud andmed automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi. 3 (3) Sotsiaalkindlustusamet võtab vanemahüvitise pakkumise, määramise ja maksmise aluseks sotsiaalkaitse infosüsteemi ajaliselt hiljem edastatud andmed. 4 (4) Kui sünnituslehe andmeid ei ole automaatse andmevahetuse kaudu võimalik sotsiaalkaitse infosüsteemi edastada, edastab arst või ämmaemand andmed tervishoiuteenuse osutamise päeval Sotsiaalkindlustusametile e-posti teel ja teeb selle kohta tervishoiuteenuse osutaja infosüsteemi märke. 5 (5) Raseda soovi korral võib arst või ämmaemand sünnituslehe välja kirjutada paberil ning sellisel juhul edastab isik selle Sotsiaalkindlustusametile.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -157,11 +243,146 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053819_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053819_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053819_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1053819_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1053819_Par_3_Lg_5"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_sotsiaalkindlustusamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053819_Par_3_v1053819"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053819_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tervishoiuteenuse osutaja infosüsteemis olevad sünnituslehe andmed edastatakse automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi, kui naise rasedus on kestnud vähemalt 22 nädalat. Sünnituslehe andmed on Sotsiaalkindlustusametile aluseks perehüvitiste seadusest tuleneva vanemahüvitise pakkumisel, määramisel ja maksmisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053819_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_sotsiaalkindlustusamet"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053819_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui sünnituslehe andmed muutuvad peale 22. rasedusnädalat, edastab tervishoiuteenuse osutaja muutunud andmed automaatse andmevahetuse kaudu sotsiaalkaitse infosüsteemi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053819_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1053819_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Sotsiaalkindlustusamet võtab vanemahüvitise pakkumise, määramise ja maksmise aluseks sotsiaalkaitse infosüsteemi ajaliselt hiljem edastatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053819_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_sotsiaalkindlustusamet"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053819_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui sünnituslehe andmeid ei ole automaatse andmevahetuse kaudu võimalik sotsiaalkaitse infosüsteemi edastada, edastab arst või ämmaemand andmed tervishoiuteenuse osutamise päeval Sotsiaalkindlustusametile e-posti teel ja teeb selle kohta tervishoiuteenuse osutaja infosüsteemi märke.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053819_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_sotsiaalkindlustusamet"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053819_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Raseda soovi korral võib arst või ämmaemand sünnituslehe välja kirjutada paberil ning sellisel juhul edastab isik selle Sotsiaalkindlustusametile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053819_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
@@ -175,18 +396,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 4. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sünnituslehe andmed ja menetlemine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053819_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. aprillil 2022. a.",
-      "estleg:legalText": "Määrus jõustub 1. aprillil 2022. a. Määrus jõustub 1. aprillil 2022. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. aprillil 2022. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. aprillil 2022. a.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053819_Par_4_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053819_Par_4_v1053819"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053819_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. aprillil 2022. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053819_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1053819_Map_1",

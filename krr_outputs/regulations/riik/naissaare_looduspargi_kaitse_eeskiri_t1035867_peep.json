@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Naissaare looduspargi kaitse-eeskiri (määrus)",
+      "rdfs:label": {
+        "@value": "Naissaare looduspargi kaitse-eeskiri (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -40,19 +47,21 @@
           "@id": "estleg:Reg_1035867_Annex_2"
         }
       ],
-      "estleg:entryIntoForce": {
-        "@value": "2016-09-30",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2016-09-20",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
+      "dcterms:title": "Naissaare looduspargi kaitse-eeskiri",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:transposesDirectiveAsserted": [
+        {
+          "@id": "estleg:EU_31992L0043"
+        }
+      ],
       "estleg:issuedUnder": [
         {
           "@id": "estleg:LKS_Map"
@@ -84,7 +93,16 @@
         {
           "@id": "http://eurovoc.europa.eu/2442"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2016-09-30",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2016-09-20",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1035867_Annex_1",
@@ -92,7 +110,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Naissaare looduspark",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -101,7 +122,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -111,28 +135,52 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Naissaare looduspargi kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Naissaare looduspargi kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "1 (1) Naissaare looduspargi2 (edaspidi kaitseala) eesmärk on kaitsta: 1 1) Naissaare looduslikke ja poollooduslikke kooslusi ja kaitsealuseid liike ning säilitada maastikuilmet ja ajaloolis-kultuurilisi objekte; 2 2) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on esmased rannavallid (1210)3, püsitaimestuga kivirannad (1220), rannaniidud (1630*), püsitaimestuga li",
-      "estleg:legalText": "1 (1) Naissaare looduspargi2 (edaspidi kaitseala) eesmärk on kaitsta: 1 1) Naissaare looduslikke ja poollooduslikke kooslusi ja kaitsealuseid liike ning säilitada maastikuilmet ja ajaloolis-kultuurilisi objekte; 2 2) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on esmased rannavallid (1210)3, püsitaimestuga kivirannad (1220), rannaniidud (1630*), püsitaimestuga liivarannad (1640), eelluited (2110), valged luited (liikuvad rannikuluited – 2120), hallid luited (kinnistunud rannikuluited – 2130*), metsastunud luited (2180), luidetevahelised niisked nõod (2190), puisniidud (6530*), vanad loodusmetsad (9010*), soostuvad ja soo-lehtmetsad (9080*) ning siirdesoo- ja rabametsad (91D0*); 3 3) kaitsealuseid liike, mida Euroopa Parlamendi ja nõukogu direktiiv 2009/147/EÜ loodusliku linnustiku kaitse kohta (ELT L 20, 26.01.2010, lk 7–25) nimetab I lisas, ja nende elupaiku. Need on merikotkas (Haliaeetus albicilla), karvasjalg-kakk (Aegolius funereus) ja valgeselg-kirjurähn (Dendrocopos leucotos); 4 4) kaitsealust loomaliiki põhja-nahkhiirt (Eptesicus nilssonii) ja tema elupaiku; 5 5) kaitsealuseid seeneliike limatünnikut (Sarcosoma globosum) ja valget sirmikut (Macrolepiota nympharum) ning nende elupaiku. Naissaare looduspargi2 (edaspidi kaitseala) eesmärk on kaitsta: Naissaare looduslikke ja poollooduslikke kooslusi ja kaitsealuseid liike ning säilitada maastikuilmet ja ajaloolis-kultuurilisi objekte; elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on esmased rannavallid (1210)3, püsitaimestuga kivirannad (1220), rannaniidud (1630*), püsitaimestuga liivarannad (1640), eelluited (2110), valged luited (liikuvad rannikuluited – 2120), hallid luited (kinnistunud rannikuluited – 2130*), metsastunud luited (2180), luidetevahelised niisked nõod (2190), puisniidud (6530*), vanad loodusmetsad (9010*), soostuvad ja soo-lehtmetsad (9080*) ning siirdesoo- ja rabametsad (91D0*); kaitsealuseid liike, mida Euroopa Parlamendi ja nõukogu direktiiv 2009/147/EÜ loodusliku linnustiku kaitse kohta (ELT L 20, 26.01.2010, lk 7–25) nimetab I lisas, ja nende elupaiku. Need on merikotkas (Haliaeetus albicilla), karvasjalg-kakk (Aegolius funereus) ja valgeselg-kirjurähn (Dendrocopos leucotos); kaitsealust loomaliiki põhja-nahkhiirt (Eptesicus nilssonii) ja tema elupaiku; kaitsealuseid seeneliike limatünnikut (Sarcosoma globosum) ja valget sirmikut (Macrolepiota nympharum) ning nende elupaiku. 2 (2) Kaitseala maa-ala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kuueks sihtkaitsevööndiks ja üheksaks piiranguvööndiks. Kaitseala maa-ala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kuueks sihtkaitsevööndiks ja üheksaks piiranguvööndiks. 3 (3) Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega. Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega.",
+      "estleg:summary": {
+        "@value": "1 (1) Naissaare looduspargi2 (edaspidi kaitseala) eesmärk on kaitsta: 1 1) Naissaare looduslikke ja poollooduslikke kooslusi ja kaitsealuseid liike ning säilitada maastikuilmet ja ajaloolis-kultuurilisi objekte; 2 2) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Naissaare looduspargi2 (edaspidi kaitseala) eesmärk on kaitsta: 1 1) Naissaare looduslikke ja poollooduslikke kooslusi ja kaitsealuseid liike ning säilitada maastikuilmet ja ajaloolis-kultuurilisi objekte; 2 2) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on esmased rannavallid (1210)3, püsitaimestuga kivirannad (1220), rannaniidud (1630*), püsitaimestuga liivarannad (1640), eelluited (2110), valged luited (liikuvad rannikuluited – 2120), hallid luited (kinnistunud rannikuluited – 2130*), metsastunud luited (2180), luidetevahelised niisked nõod (2190), puisniidud (6530*), vanad loodusmetsad (9010*), soostuvad ja soo-lehtmetsad (9080*) ning siirdesoo- ja rabametsad (91D0*); 3 3) kaitsealuseid liike, mida Euroopa Parlamendi ja nõukogu direktiiv 2009/147/EÜ loodusliku linnustiku kaitse kohta (ELT L 20, 26.01.2010, lk 7–25) nimetab I lisas, ja nende elupaiku. Need on merikotkas (Haliaeetus albicilla), karvasjalg-kakk (Aegolius funereus) ja valgeselg-kirjurähn (Dendrocopos leucotos); 4 4) kaitsealust loomaliiki põhja-nahkhiirt (Eptesicus nilssonii) ja tema elupaiku; 5 5) kaitsealuseid seeneliike limatünnikut (Sarcosoma globosum) ja valget sirmikut (Macrolepiota nympharum) ning nende elupaiku. 2 (2) Kaitseala maa-ala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kuueks sihtkaitsevööndiks ja üheksaks piiranguvööndiks. 3 (3) Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1035867_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1035867_Par_1_Lg_3"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:Reg_1038528_Par_1"
-        },
-        {
-          "@id": "estleg:Reg_1040654_Par_1"
-        },
-        {
-          "@id": "estleg:Reg_1040656_Par_1"
+          "@id": "estleg:Reg_1037430_Par_1"
         },
         {
           "@id": "estleg:Reg_1041145_Par_1"
         },
         {
           "@id": "estleg:Reg_1044455_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1046896_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1053338_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -142,19 +190,86 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1035867_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Naissaare looduspargi² (edaspidi kaitseala) eesmärk on kaitsta: 1) Naissaare looduslikke ja poollooduslikke kooslusi ja kaitsealuseid liike ning säilitada maastikuilmet ja ajaloolis-kultuurilisi objekte; 2) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on esmased rannavallid (1210)³, püsitaimestuga kivirannad (1220), rannaniidud (1630*), püsitaimestuga liivarannad (1640), eelluited (2110), valged luited (liikuvad rannikuluited – 2120), hallid luited (kinnistunud rannikuluited – 2130*), metsastunud luited (2180), luidetevahelised niisked nõod (2190), puisniidud (6530*), vanad loodusmetsad (9010*), soostuvad ja soo-lehtmetsad (9080*) ning siirdesoo- ja rabametsad (91D0*); 3) kaitsealuseid liike, mida Euroopa Parlamendi ja nõukogu direktiiv 2009/147/EÜ loodusliku linnustiku kaitse kohta (ELT L 20, 26.01.2010, lk 7–25) nimetab I lisas, ja nende elupaiku. Need on merikotkas (Haliaeetus albicilla), karvasjalg-kakk (Aegolius funereus) ja valgeselg-kirjurähn (Dendrocopos leucotos); 4) kaitsealust loomaliiki põhja-nahkhiirt (Eptesicus nilssonii) ja tema elupaiku; 5) kaitsealuseid seeneliike limatünnikut (Sarcosoma globosum) ja valget sirmikut (Macrolepiota nympharum) ning nende elupaiku.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala maa-ala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kuueks sihtkaitsevööndiks ja üheksaks piiranguvööndiks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
       "@id": "estleg:Reg_1035867_Par_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kaitseala asukoht",
+      "rdfs:label": {
+        "@value": "§ 2. Kaitseala asukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala asub Harju maakonnas Viimsi vallas Naissaarel. Kaitseala asub Harju maakonnas Viimsi vallas Naissaarel. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4. Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
-      "estleg:legalText": "1 (1) Kaitseala asub Harju maakonnas Viimsi vallas Naissaarel. Kaitseala asub Harju maakonnas Viimsi vallas Naissaarel. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4. Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala asub Harju maakonnas Viimsi vallas Naissaarel. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala asub Harju maakonnas Viimsi vallas Naissaarel. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1035867_Par_2_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1035420_Par_2"
@@ -179,23 +294,78 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1035867_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala asub Harju maakonnas Viimsi vallas Naissaarel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas⁴.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1035867_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Ehituskeeluvööndi ulatus",
+      "rdfs:label": {
+        "@value": "§ 3. Ehituskeeluvööndi ulatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Naissaarel on ehituskeeluvööndi laius 200 m, välja arvatud: 1 1) Naissaare piiranguvööndis Sadama katastriüksusel (katastritunnus 89001:001:0048), kus ehituskeeluvööndi laius on 0 meetrit, ja ülejäänud piiranguvööndi ulatuses 50 meetrit veepiirist; 2 2) Lõunaküla ja Väikeheinamaa küla piiranguvööndis, kus ehituskeeluvööndi laius on 50 meetrit põhikaardile kantud rannaastangu servast ning rannaastangu alla kuni veepiirini jääv ala; 3 3) Jurka küla, Põhjaküla ja Virbi küla piiranguvööndis, kus ehi",
-      "estleg:legalText": "Naissaarel on ehituskeeluvööndi laius 200 m, välja arvatud: 1 1) Naissaare piiranguvööndis Sadama katastriüksusel (katastritunnus 89001:001:0048), kus ehituskeeluvööndi laius on 0 meetrit, ja ülejäänud piiranguvööndi ulatuses 50 meetrit veepiirist; 2 2) Lõunaküla ja Väikeheinamaa küla piiranguvööndis, kus ehituskeeluvööndi laius on 50 meetrit põhikaardile kantud rannaastangu servast ning rannaastangu alla kuni veepiirini jääv ala; 3 3) Jurka küla, Põhjaküla ja Virbi küla piiranguvööndis, kus ehituskeeluvööndi laius on 50 meetrit veepiirist. Naissaarel on ehituskeeluvööndi laius 200 m, välja arvatud: Naissaare piiranguvööndis Sadama katastriüksusel (katastritunnus 89001:001:0048), kus ehituskeeluvööndi laius on 0 meetrit, ja ülejäänud piiranguvööndi ulatuses 50 meetrit veepiirist; Lõunaküla ja Väikeheinamaa küla piiranguvööndis, kus ehituskeeluvööndi laius on 50 meetrit põhikaardile kantud rannaastangu servast ning rannaastangu alla kuni veepiirini jääv ala; Jurka küla, Põhjaküla ja Virbi küla piiranguvööndis, kus ehituskeeluvööndi laius on 50 meetrit veepiirist.",
+      "estleg:summary": {
+        "@value": "Naissaarel on ehituskeeluvööndi laius 200 m, välja arvatud: 1 1) Naissaare piiranguvööndis Sadama katastriüksusel (katastritunnus 89001:001:0048), kus ehituskeeluvööndi laius on 0 meetrit, ja ülejäänud piiranguvööndi ulatuses 50 meetrit veepiirist; 2 2) Lõunaküla ja Väikeheinamaa küla piiranguvööndis, kus ehituskeeluvööndi laius on 50 meetrit põhikaardile kantud rannaastangu servast ning rannaastangu alla kuni veepiirini jääv ala; 3 3) Jurka küla, Põhjaküla ja Virbi küla piiranguvööndis, kus…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Naissaarel on ehituskeeluvööndi laius 200 m, välja arvatud: 1 1) Naissaare piiranguvööndis Sadama katastriüksusel (katastritunnus 89001:001:0048), kus ehituskeeluvööndi laius on 0 meetrit, ja ülejäänud piiranguvööndi ulatuses 50 meetrit veepiirist; 2 2) Lõunaküla ja Väikeheinamaa küla piiranguvööndis, kus ehituskeeluvööndi laius on 50 meetrit põhikaardile kantud rannaastangu servast ning rannaastangu alla kuni veepiirini jääv ala; 3 3) Jurka küla, Põhjaküla ja Virbi küla piiranguvööndis, kus ehituskeeluvööndi laius on 50 meetrit veepiirist.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_3_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_3_v1035867"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Naissaarel on ehituskeeluvööndi laius 200 m, välja arvatud: 1) Naissaare piiranguvööndis Sadama katastriüksusel (katastritunnus 89001:001:0048), kus ehituskeeluvööndi laius on 0 meetrit, ja ülejäänud piiranguvööndi ulatuses 50 meetrit veepiirist; 2) Lõunaküla ja Väikeheinamaa küla piiranguvööndis, kus ehituskeeluvööndi laius on 50 meetrit põhikaardile kantud rannaastangu servast ning rannaastangu alla kuni veepiirini jääv ala; 3) Jurka küla, Põhjaküla ja Virbi küla piiranguvööndis, kus ehituskeeluvööndi laius on 50 meetrit veepiirist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -205,13 +375,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kaitseala valitseja",
+      "rdfs:label": {
+        "@value": "§ 4. Kaitseala valitseja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Kaitseala valitseja on Keskkonnaamet.",
-      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet. Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja on Keskkonnaamet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -221,11 +397,43 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_4_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_4_v1035867"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_keskkonnaamet"
@@ -239,13 +447,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Kaitse alla võtmise ja piirangute põhjendused",
+      "rdfs:label": {
+        "@value": "§ 5. Kaitse alla võtmise ja piirangute põhjendused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Määruse seletuskirjas on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta. Määruse seletuskirjas on esitatud põhjendused: kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; loodusobjekti kaitse alla võtmise otst",
-      "estleg:legalText": "Määruse seletuskirjas on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta. Määruse seletuskirjas on esitatud põhjendused: kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; loodusobjekti kaitse alla võtmise otstarbekuse kohta; kaitstava loodusobjekti tüübi valiku kohta; kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; kaitsekorra kohta.",
+      "estleg:summary": {
+        "@value": "Määruse seletuskirjas on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määruse seletuskirjas on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_5_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1031810_Par_4"
@@ -260,7 +479,7 @@
           "@id": "estleg:Reg_1035870_Par_4"
         },
         {
-          "@id": "estleg:Reg_1036825_Par_4"
+          "@id": "estleg:Reg_1036012_Par_4"
         }
       ],
       "estleg:hasVersion": [
@@ -270,48 +489,168 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1035867_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruse seletuskirjas on esitatud põhjendused: 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3) kaitstava loodusobjekti tüübi valiku kohta; 4) kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; 5) kaitsekorra kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
       "@id": "estleg:Reg_1035867_Par_6",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 6. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "1 (1) Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Telkimine ja lõkketegemine on kaitsealal lubatud õuemaal ning kohtades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Telkimine ja lõkketegemine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohtades on lubatud järelevalve- ja pääs",
-      "estleg:legalText": "1 (1) Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Telkimine ja lõkketegemine on kaitsealal lubatud õuemaal ning kohtades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Telkimine ja lõkketegemine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohtades on lubatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadus- ja kaitse korraldamisega seotud tegevusel. Telkimine ja lõkketegemine on kaitsealal lubatud õuemaal ning kohtades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Telkimine ja lõkketegemine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohtades on lubatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadus- ja kaitse korraldamisega seotud tegevusel. 3 (3) Kaitsealal on lubatud mootorsõidukiga ja maastikusõidukiga sõitmine teedel ning jalgrattaga sõitmine teedel ja radadel. Mootorsõidukiga sõitmine väljaspool teid, jalgrattaga sõitmine väljaspool teid ja radasid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel, liinirajatiste hooldustöödel ning kaitse-eeskirjaga lubatud töödel, sealhulgas metsa- ja põllumajandustöödel. Kaitsealal on lubatud mootorsõidukiga ja maastikusõidukiga sõitmine teedel ning jalgrattaga sõitmine teedel ja radadel. Mootorsõidukiga sõitmine väljaspool teid, jalgrattaga sõitmine väljaspool teid ja radasid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel, liinirajatiste hooldustöödel ning kaitse-eeskirjaga lubatud töödel, sealhulgas metsa- ja põllumajandustöödel. 4 (4) Kaitsealal on lubatud jahipidamine 1. septembrist 14. veebruarini. Kaitsealal on lubatud jahipidamine 1. septembrist 14. veebruarini.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Telkimine ja lõkketegemine on kaitsealal lubatud õuemaal ning kohtades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Telkimine ja lõkketegemine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohtades on lubatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadus- ja kaitse korraldamisega seotud tegevusel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Telkimine ja lõkketegemine on kaitsealal lubatud õuemaal ning kohtades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Telkimine ja lõkketegemine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohtades on lubatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadus- ja kaitse korraldamisega seotud tegevusel. 3 (3) Kaitsealal on lubatud mootorsõidukiga ja maastikusõidukiga sõitmine teedel ning jalgrattaga sõitmine teedel ja radadel. Mootorsõidukiga sõitmine väljaspool teid, jalgrattaga sõitmine väljaspool teid ja radasid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel, liinirajatiste hooldustöödel ning kaitse-eeskirjaga lubatud töödel, sealhulgas metsa- ja põllumajandustöödel. 4 (4) Kaitsealal on lubatud jahipidamine 1. septembrist 14. veebruarini.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1018083_Par_5"
+          "@id": "estleg:Reg_1035867_Par_6_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1024833_Par_5"
+          "@id": "estleg:Reg_1035867_Par_6_Lg_2"
         },
         {
-          "@id": "estleg:Reg_1038491_Par_5"
+          "@id": "estleg:Reg_1035867_Par_6_Lg_3"
         },
         {
-          "@id": "estleg:Reg_1055807_Par_5"
-        },
-        {
-          "@id": "estleg:Reg_306836_Par_4"
+          "@id": "estleg:Reg_1035867_Par_6_Lg_4"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1041145_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1045057_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1048140_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1056383_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1056683_Par_5"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_6_v1035867"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Telkimine ja lõkketegemine on kaitsealal lubatud õuemaal ning kohtades, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Telkimine ja lõkketegemine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohtades on lubatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadus- ja kaitse korraldamisega seotud tegevusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitsealal on lubatud mootorsõidukiga ja maastikusõidukiga sõitmine teedel ning jalgrattaga sõitmine teedel ja radadel. Mootorsõidukiga sõitmine väljaspool teid, jalgrattaga sõitmine väljaspool teid ja radasid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel, liinirajatiste hooldustöödel ning kaitse-eeskirjaga lubatud töödel, sealhulgas metsa- ja põllumajandustöödel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kaitsealal on lubatud jahipidamine 1. septembrist 14. veebruarini.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:Reg_1035867_Par_7",
@@ -320,13 +659,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 7. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole va",
-      "estleg:legalText": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8 8) jahiulukeid lisasööta. Kaitseala valitseja nõusolekuta on kaitsealal keelatud: muuta katastriüksuse kõlvikute piire ja sihtotstarvet; koostada maakorralduskava ja teha maakorraldustoiminguid; kehtestada detailplaneeringut ja üldplaneeringut; lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lautrit või paadisilda; anda projekteerimistingimusi; anda ehitusluba; rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; jahiulukeid lisasööta.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8 8) jahiulukeid lisasööta.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_7_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1031605_Par_6"
@@ -344,18 +701,41 @@
           "@id": "estleg:Reg_1039315_Par_6"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_7_v1035867"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3) kehtestada detailplaneeringut ja üldplaneeringut; 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lautrit või paadisilda; 5) anda projekteerimistingimusi; 6) anda ehitusluba; 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8) jahiulukeid lisasööta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_1035867_Par_8",
@@ -364,25 +744,40 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Tegevuse kooskõlastamine",
+      "rdfs:label": {
+        "@value": "§ 8. Tegevuse kooskõlastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud k",
-      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes. Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1035867_Par_8_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1000133_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_1015353_Par_7"
-        },
         {
           "@id": "estleg:Reg_1015857_Par_7"
         },
@@ -391,20 +786,61 @@
         },
         {
           "@id": "estleg:Reg_1017814_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1018083_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1018084_Par_8"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_8_v1035867"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1035867_Par_9",
@@ -413,13 +849,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Sihtkaitsevööndi määratlus",
+      "rdfs:label": {
+        "@value": "§ 9. Sihtkaitsevööndi määratlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. 2 (2) Kaitsealal on kuus sihtkaitsevööndit: 1 1) Hülkari sihtkaitsevöönd; 2 2) Kivikangrute sihtkaitsevöönd; 3 3) Kunilamäe sihtkaitsevöönd; 4 4) Naissaare sihtkaitsevöönd; 5 5) Savikalda sihtkaitsevöönd; 6 6) Taani Kuninga aia sihtkaitsevöönd. Kaitsealal on kuus sihtkaitsevööndit: Hülkari sihtkaitsev",
-      "estleg:legalText": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. 2 (2) Kaitsealal on kuus sihtkaitsevööndit: 1 1) Hülkari sihtkaitsevöönd; 2 2) Kivikangrute sihtkaitsevöönd; 3 3) Kunilamäe sihtkaitsevöönd; 4 4) Naissaare sihtkaitsevöönd; 5 5) Savikalda sihtkaitsevöönd; 6 6) Taani Kuninga aia sihtkaitsevöönd. Kaitsealal on kuus sihtkaitsevööndit: Hülkari sihtkaitsevöönd; Kivikangrute sihtkaitsevöönd; Kunilamäe sihtkaitsevöönd; Naissaare sihtkaitsevöönd; Savikalda sihtkaitsevöönd; Taani Kuninga aia sihtkaitsevöönd.",
+      "estleg:summary": {
+        "@value": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. 2 (2) Kaitsealal on kuus sihtkaitsevööndit: 1 1) Hülkari sihtkaitsevöönd; 2 2) Kivikangrute sihtkaitsevöönd; 3 3) Kunilamäe sihtkaitsevöönd; 4 4) Naissaare sihtkaitsevöönd; 5 5) Savikalda sihtkaitsevöönd; 6 6) Taani Kuninga aia sihtkaitsevöönd.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. 2 (2) Kaitsealal on kuus sihtkaitsevööndit: 1 1) Hülkari sihtkaitsevöönd; 2 2) Kivikangrute sihtkaitsevöönd; 3 3) Kunilamäe sihtkaitsevöönd; 4 4) Naissaare sihtkaitsevöönd; 5 5) Savikalda sihtkaitsevöönd; 6 6) Taani Kuninga aia sihtkaitsevöönd.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1035867_Par_9_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1015353_Par_8"
@@ -444,34 +894,91 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1035867_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on kuus sihtkaitsevööndit: 1) Hülkari sihtkaitsevöönd; 2) Kivikangrute sihtkaitsevöönd; 3) Kunilamäe sihtkaitsevöönd; 4) Naissaare sihtkaitsevöönd; 5) Savikalda sihtkaitsevöönd; 6) Taani Kuninga aia sihtkaitsevöönd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
       "@id": "estleg:Reg_1035867_Par_10",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Sihtkaitsevööndi kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 10. Sihtkaitsevööndi kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "1 (1) Hülkari ja Naissaare sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste loodusliku arengu tagamine ning kaitsealuste liikide elupaikade kaitse. Hülkari ja Naissaare sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste loodusliku arengu tagamine ning kaitsealuste liikide elupaikade kaitse. 2 (2) Kivikangrute sihtkaitsevööndi kaitse-eesmärk on metsakoosluste ja maastikuilme säilitamine ning kaitsealuste liikide elupaikade kaitse. Kivikangrute sihtkaitsevööndi kaitse-eesmä",
-      "estleg:legalText": "1 (1) Hülkari ja Naissaare sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste loodusliku arengu tagamine ning kaitsealuste liikide elupaikade kaitse. Hülkari ja Naissaare sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste loodusliku arengu tagamine ning kaitsealuste liikide elupaikade kaitse. 2 (2) Kivikangrute sihtkaitsevööndi kaitse-eesmärk on metsakoosluste ja maastikuilme säilitamine ning kaitsealuste liikide elupaikade kaitse. Kivikangrute sihtkaitsevööndi kaitse-eesmärk on metsakoosluste ja maastikuilme säilitamine ning kaitsealuste liikide elupaikade kaitse. 3 (3) Kunilamäe sihtkaitsevööndi kaitse-eesmärk on metsakoosluste säilitamine ja taastamine, metsakoosluste liikide ja vanuse struktuuri hoidmine, rannikukoosluste säilitamine ning kaitsealuste liikide elupaikade kaitse. Kunilamäe sihtkaitsevööndi kaitse-eesmärk on metsakoosluste säilitamine ja taastamine, metsakoosluste liikide ja vanuse struktuuri hoidmine, rannikukoosluste säilitamine ning kaitsealuste liikide elupaikade kaitse. 4 (4) Savikalda sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste säilitamine, maastikuilme säilitamine ning kaitsealuste liikide elupaikade kaitse. Savikalda sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste säilitamine, maastikuilme säilitamine ning kaitsealuste liikide elupaikade kaitse. 5 (5) Taani Kuninga aia sihtkaitsevööndi kaitse-eesmärk on puisniitude säilitamine ja taastamine, vanade loodusmetsade, soostuvate ja soo-lehtmetsade ja rannikukoosluste säilitamine ning kaitsealuste liikide elupaikade kaitse. Taani Kuninga aia sihtkaitsevööndi kaitse-eesmärk on puisniitude säilitamine ja taastamine, vanade loodusmetsade, soostuvate ja soo-lehtmetsade ja rannikukoosluste säilitamine ning kaitsealuste liikide elupaikade kaitse.",
+      "estleg:summary": {
+        "@value": "1 (1) Hülkari ja Naissaare sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste loodusliku arengu tagamine ning kaitsealuste liikide elupaikade kaitse. 2 (2) Kivikangrute sihtkaitsevööndi kaitse-eesmärk on metsakoosluste ja maastikuilme säilitamine ning kaitsealuste liikide elupaikade kaitse. 3 (3) Kunilamäe sihtkaitsevööndi kaitse-eesmärk on metsakoosluste säilitamine ja taastamine, metsakoosluste liikide ja vanuse struktuuri hoidmine, rannikukoosluste säilitamine ning kaitsealuste…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Hülkari ja Naissaare sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste loodusliku arengu tagamine ning kaitsealuste liikide elupaikade kaitse. 2 (2) Kivikangrute sihtkaitsevööndi kaitse-eesmärk on metsakoosluste ja maastikuilme säilitamine ning kaitsealuste liikide elupaikade kaitse. 3 (3) Kunilamäe sihtkaitsevööndi kaitse-eesmärk on metsakoosluste säilitamine ja taastamine, metsakoosluste liikide ja vanuse struktuuri hoidmine, rannikukoosluste säilitamine ning kaitsealuste liikide elupaikade kaitse. 4 (4) Savikalda sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste säilitamine, maastikuilme säilitamine ning kaitsealuste liikide elupaikade kaitse. 5 (5) Taani Kuninga aia sihtkaitsevööndi kaitse-eesmärk on puisniitude säilitamine ja taastamine, vanade loodusmetsade, soostuvate ja soo-lehtmetsade ja rannikukoosluste säilitamine ning kaitsealuste liikide elupaikade kaitse.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1035867_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1035867_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1035867_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1035867_Par_10_Lg_5"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:Reg_1026757_Par_9"
+          "@id": "estleg:Reg_1015353_Par_9"
         },
         {
           "@id": "estleg:Reg_1038528_Par_9"
         },
         {
+          "@id": "estleg:Reg_1040746_Par_9"
+        },
+        {
           "@id": "estleg:Reg_1043878_Par_9"
         },
         {
-          "@id": "estleg:Reg_1053343_Par_9"
-        },
-        {
-          "@id": "estleg:Reg_310688_Par_8"
+          "@id": "estleg:Reg_1053338_Par_9"
         }
       ],
       "estleg:hasVersion": [
@@ -481,47 +988,166 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1035867_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hülkari ja Naissaare sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste loodusliku arengu tagamine ning kaitsealuste liikide elupaikade kaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kivikangrute sihtkaitsevööndi kaitse-eesmärk on metsakoosluste ja maastikuilme säilitamine ning kaitsealuste liikide elupaikade kaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kunilamäe sihtkaitsevööndi kaitse-eesmärk on metsakoosluste säilitamine ja taastamine, metsakoosluste liikide ja vanuse struktuuri hoidmine, rannikukoosluste säilitamine ning kaitsealuste liikide elupaikade kaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Savikalda sihtkaitsevööndi kaitse-eesmärk on metsa- ja rannikukoosluste säilitamine, maastikuilme säilitamine ning kaitsealuste liikide elupaikade kaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Taani Kuninga aia sihtkaitsevööndi kaitse-eesmärk on puisniitude säilitamine ja taastamine, vanade loodusmetsade, soostuvate ja soo-lehtmetsade ja rannikukoosluste säilitamine ning kaitsealuste liikide elupaikade kaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5"
+    },
+    {
       "@id": "estleg:Reg_1035867_Par_11",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 11. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "1 (1) Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistatud kohas. Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistatud kohas. 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituste korraldamine ja rahvaürituse korraldamine selleks ettevalmistamata kohas; 2 2) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 3 3) Kivikangrute, Kunilamäe, S",
-      "estleg:legalText": "1 (1) Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistatud kohas. Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistatud kohas. 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituste korraldamine ja rahvaürituse korraldamine selleks ettevalmistamata kohas; 2 2) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 3 3) Kivikangrute, Kunilamäe, Savikalda ja Taani Kuninga aia sihtkaitsevööndis koosluse kujundamine vastavalt kaitse-eesmärgile; 4 4) teede ja metsasihtide maapinna hooldus tulekaitse abinõuna; 5 5) olemasolevate ehitiste hooldustööd. Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: rohkem kui 50 osalejaga rahvaürituste korraldamine ja rahvaürituse korraldamine selleks ettevalmistamata kohas; kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; Kivikangrute, Kunilamäe, Savikalda ja Taani Kuninga aia sihtkaitsevööndis koosluse kujundamine vastavalt kaitse-eesmärgile; teede ja metsasihtide maapinna hooldus tulekaitse abinõuna; olemasolevate ehitiste hooldustööd.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistatud kohas. 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituste korraldamine ja rahvaürituse korraldamine selleks ettevalmistamata kohas; 2 2) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 3 3) Kivikangrute, Kunilamäe, Savikalda ja Taani Kuninga aia sihtkaitsevööndis koosluse kujundamine vastavalt kaitse-eesmärgile; 4 4)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistatud kohas. 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituste korraldamine ja rahvaürituse korraldamine selleks ettevalmistamata kohas; 2 2) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 3 3) Kivikangrute, Kunilamäe, Savikalda ja Taani Kuninga aia sihtkaitsevööndis koosluse kujundamine vastavalt kaitse-eesmärgile; 4 4) teede ja metsasihtide maapinna hooldus tulekaitse abinõuna; 5 5) olemasolevate ehitiste hooldustööd.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1040655_Par_11"
+          "@id": "estleg:Reg_1035867_Par_11_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1040656_Par_11"
-        },
-        {
-          "@id": "estleg:Reg_1041146_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_1041151_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_1042683_Par_10"
+          "@id": "estleg:Reg_1035867_Par_11_Lg_2"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1015353_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1026685_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1041151_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1048140_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1055281_Par_10"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_11_v1035867"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistatud kohas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1) rohkem kui 50 osalejaga rahvaürituste korraldamine ja rahvaürituse korraldamine selleks ettevalmistamata kohas; 2) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 3) Kivikangrute, Kunilamäe, Savikalda ja Taani Kuninga aia sihtkaitsevööndis koosluse kujundamine vastavalt kaitse-eesmärgile; 4) teede ja metsasihtide maapinna hooldus tulekaitse abinõuna; 5) olemasolevate ehitiste hooldustööd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
       ]
     },
     {
@@ -531,13 +1157,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Vajalik tegevus",
+      "rdfs:label": {
+        "@value": "§ 12. Vajalik tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Taani Kuninga aia sihtkaitsevööndi poollooduslike koosluste esinemisaladel on nende ilme ja liigikoosseisu tagamiseks vajalik heina niitmine, loomade karjatamine ning puu- ja põõsarinde kujundamine ja harvendamine.",
-      "estleg:legalText": "Taani Kuninga aia sihtkaitsevööndi poollooduslike koosluste esinemisaladel on nende ilme ja liigikoosseisu tagamiseks vajalik heina niitmine, loomade karjatamine ning puu- ja põõsarinde kujundamine ja harvendamine. Taani Kuninga aia sihtkaitsevööndi poollooduslike koosluste esinemisaladel on nende ilme ja liigikoosseisu tagamiseks vajalik heina niitmine, loomade karjatamine ning puu- ja põõsarinde kujundamine ja harvendamine.",
+      "estleg:summary": {
+        "@value": "Taani Kuninga aia sihtkaitsevööndi poollooduslike koosluste esinemisaladel on nende ilme ja liigikoosseisu tagamiseks vajalik heina niitmine, loomade karjatamine ning puu- ja põõsarinde kujundamine ja harvendamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Taani Kuninga aia sihtkaitsevööndi poollooduslike koosluste esinemisaladel on nende ilme ja liigikoosseisu tagamiseks vajalik heina niitmine, loomade karjatamine ning puu- ja põõsarinde kujundamine ja harvendamine.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_12_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1029636_Par_16"
@@ -562,19 +1199,50 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1035867_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Taani Kuninga aia sihtkaitsevööndi poollooduslike koosluste esinemisaladel on nende ilme ja liigikoosseisu tagamiseks vajalik heina niitmine, loomade karjatamine ning puu- ja põõsarinde kujundamine ja harvendamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1035867_Par_13",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 13. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Sihtkaitsevööndis on keelatud, arvestades käesolevas määruses sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tootmisotstarbeta ehitise püstitamine kaitseala tarbeks ning tee või tehnovõrgu rajatise püstitamine kaitsealal paikneva kinnistu või kaitseala tarbeks; 4 4) adru varumine, välja arvatud kaitsealal asuva majapidamise tarbeks.",
-      "estleg:legalText": "Sihtkaitsevööndis on keelatud, arvestades käesolevas määruses sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tootmisotstarbeta ehitise püstitamine kaitseala tarbeks ning tee või tehnovõrgu rajatise püstitamine kaitsealal paikneva kinnistu või kaitseala tarbeks; 4 4) adru varumine, välja arvatud kaitsealal asuva majapidamise tarbeks. Sihtkaitsevööndis on keelatud, arvestades käesolevas määruses sätestatud erisusi: majandustegevus; loodusvarade kasutamine; uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tootmisotstarbeta ehitise püstitamine kaitseala tarbeks ning tee või tehnovõrgu rajatise püstitamine kaitsealal paikneva kinnistu või kaitseala tarbeks; adru varumine, välja arvatud kaitsealal asuva majapidamise tarbeks.",
+      "estleg:summary": {
+        "@value": "Sihtkaitsevööndis on keelatud, arvestades käesolevas määruses sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tootmisotstarbeta ehitise püstitamine kaitseala tarbeks ning tee või tehnovõrgu rajatise püstitamine kaitsealal paikneva kinnistu või kaitseala tarbeks; 4 4) adru varumine, välja arvatud kaitsealal asuva majapidamise tarbeks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sihtkaitsevööndis on keelatud, arvestades käesolevas määruses sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tootmisotstarbeta ehitise püstitamine kaitseala tarbeks ning tee või tehnovõrgu rajatise püstitamine kaitsealal paikneva kinnistu või kaitseala tarbeks; 4 4) adru varumine, välja arvatud kaitsealal asuva majapidamise tarbeks.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_13_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1038528_Par_11"
@@ -592,18 +1260,37 @@
           "@id": "estleg:Reg_1055281_Par_11"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_13_v1035867"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevööndis on keelatud, arvestades käesolevas määruses sätestatud erisusi: 1) majandustegevus; 2) loodusvarade kasutamine; 3) uute ehitiste püstitamine, välja arvatud kaitseala valitseja nõusolekul tootmisotstarbeta ehitise püstitamine kaitseala tarbeks ning tee või tehnovõrgu rajatise püstitamine kaitsealal paikneva kinnistu või kaitseala tarbeks; 4) adru varumine, välja arvatud kaitsealal asuva majapidamise tarbeks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_1035867_Par_14",
@@ -612,14 +1299,40 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Piiranguvööndi määratlus",
+      "rdfs:label": {
+        "@value": "§ 14. Piiranguvööndi määratlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on üheksa piiranguvööndit: 1 1) Haldja küla piiranguvöönd; 2 2) Jurka küla piiranguvöönd; 3 3) Kunilamäe piiranguvöönd; 4 4) Lõunaküla piiranguvöönd; 5 5) Naissaare piiranguvöönd; 6 6) Noodamajaranna piiranguvöönd; 7 7) Põhjaküla piiranguvöönd; 8 8) Virbi piiranguvöönd; 9 9) Väikeheinamaa küla piiranguvöönd. Kaitsealal on üheksa piiranguvööndi",
-      "estleg:legalText": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on üheksa piiranguvööndit: 1 1) Haldja küla piiranguvöönd; 2 2) Jurka küla piiranguvöönd; 3 3) Kunilamäe piiranguvöönd; 4 4) Lõunaküla piiranguvöönd; 5 5) Naissaare piiranguvöönd; 6 6) Noodamajaranna piiranguvöönd; 7 7) Põhjaküla piiranguvöönd; 8 8) Virbi piiranguvöönd; 9 9) Väikeheinamaa küla piiranguvöönd. Kaitsealal on üheksa piiranguvööndit: Haldja küla piiranguvöönd; Jurka küla piiranguvöönd; Kunilamäe piiranguvöönd; Lõunaküla piiranguvöönd; Naissaare piiranguvöönd; Noodamajaranna piiranguvöönd; Põhjaküla piiranguvöönd; Virbi piiranguvöönd; Väikeheinamaa küla piiranguvöönd.",
+      "estleg:summary": {
+        "@value": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on üheksa piiranguvööndit: 1 1) Haldja küla piiranguvöönd; 2 2) Jurka küla piiranguvöönd; 3 3) Kunilamäe piiranguvöönd; 4 4) Lõunaküla piiranguvöönd; 5 5) Naissaare piiranguvöönd; 6 6) Noodamajaranna piiranguvöönd; 7 7) Põhjaküla piiranguvöönd; 8 8) Virbi piiranguvöönd; 9 9) Väikeheinamaa küla piiranguvöönd.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on üheksa piiranguvööndit: 1 1) Haldja küla piiranguvöönd; 2 2) Jurka küla piiranguvöönd; 3 3) Kunilamäe piiranguvöönd; 4 4) Lõunaküla piiranguvöönd; 5 5) Naissaare piiranguvöönd; 6 6) Noodamajaranna piiranguvöönd; 7 7) Põhjaküla piiranguvöönd; 8 8) Virbi piiranguvöönd; 9 9) Väikeheinamaa küla piiranguvöönd.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1035867_Par_14_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1025716_Par_12"
+        },
+        {
+          "@id": "estleg:Reg_1026685_Par_13"
+        },
+        {
+          "@id": "estleg:Reg_1031810_Par_13"
+        },
+        {
+          "@id": "estleg:Reg_1037880_Par_12"
+        },
         {
           "@id": "estleg:Reg_1040656_Par_13"
         }
@@ -631,22 +1344,70 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1035867_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on üheksa piiranguvööndit: 1) Haldja küla piiranguvöönd; 2) Jurka küla piiranguvöönd; 3) Kunilamäe piiranguvöönd; 4) Lõunaküla piiranguvöönd; 5) Naissaare piiranguvöönd; 6) Noodamajaranna piiranguvöönd; 7) Põhjaküla piiranguvöönd; 8) Virbi piiranguvöönd; 9) Väikeheinamaa küla piiranguvöönd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
+    },
+    {
       "@id": "estleg:Reg_1035867_Par_15",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Piiranguvööndi kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 15. Piiranguvööndi kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse, maastikuilme ja rannikukoosluste säilitamine ning kaitsealuste liikide kaitse.",
-      "estleg:legalText": "Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse, maastikuilme ja rannikukoosluste säilitamine ning kaitsealuste liikide kaitse. Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse, maastikuilme ja rannikukoosluste säilitamine ning kaitsealuste liikide kaitse.",
+      "estleg:summary": {
+        "@value": "Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse, maastikuilme ja rannikukoosluste säilitamine ning kaitsealuste liikide kaitse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse, maastikuilme ja rannikukoosluste säilitamine ning kaitsealuste liikide kaitse.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_15_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:Reg_1015353_Par_13"
+          "@id": "estleg:Reg_1033166_Par_14"
         },
         {
           "@id": "estleg:Reg_1037880_Par_13"
@@ -668,47 +1429,119 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1035867_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndi kaitse-eesmärk on elustiku mitmekesisuse, maastikuilme ja rannikukoosluste säilitamine ning kaitsealuste liikide kaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1035867_Par_16",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 16. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus, arvestades käesolevas määruses sätestatud erisusi; 2 2) kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. Piiranguvööndis on lubatud: majandustegevus, arvestades käesolevas määruses sätestatud erisusi; kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on piirangu",
-      "estleg:legalText": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus, arvestades käesolevas määruses sätestatud erisusi; 2 2) kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. Piiranguvööndis on lubatud: majandustegevus, arvestades käesolevas määruses sätestatud erisusi; kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 2 2) lageraie kuusikutes langi pindalaga kuni üks hektar ning turberaie häilraiena; 3 3) rajatise püstitamine Haldja küla, Jurka küla, Kunilamäe, Lõunaküla, Naissaare, Põhjaküla, Virbi ja Väikeheinamaa küla piiranguvööndis; 4 4) rajatise püstitamine kaitseala tarbeks Noodamajaranna piiranguvööndis; 5 5) hoonete püstitamine Haldja küla, Lõunaküla, Naissaare ja Virbi piiranguvööndis; 6 6) hoonete püstitamine ajaloolistes asustuskohtades või hajaasustusena Jurka küla, Põhjaküla ja Väikeheinamaa küla piiranguvööndis. Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: rohkem kui 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; lageraie kuusikutes langi pindalaga kuni üks hektar ning turberaie häilraiena; rajatise püstitamine Haldja küla, Jurka küla, Kunilamäe, Lõunaküla, Naissaare, Põhjaküla, Virbi ja Väikeheinamaa küla piiranguvööndis; rajatise püstitamine kaitseala tarbeks Noodamajaranna piiranguvööndis; hoonete püstitamine Haldja küla, Lõunaküla, Naissaare ja Virbi piiranguvööndis; hoonete püstitamine ajaloolistes asustuskohtades või hajaasustusena Jurka küla, Põhjaküla ja Väikeheinamaa küla piiranguvööndis.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus, arvestades käesolevas määruses sätestatud erisusi; 2 2) kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 2 2) lageraie kuusikutes langi pindalaga kuni üks hektar ning…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus, arvestades käesolevas määruses sätestatud erisusi; 2 2) kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 2 2) lageraie kuusikutes langi pindalaga kuni üks hektar ning turberaie häilraiena; 3 3) rajatise püstitamine Haldja küla, Jurka küla, Kunilamäe, Lõunaküla, Naissaare, Põhjaküla, Virbi ja Väikeheinamaa küla piiranguvööndis; 4 4) rajatise püstitamine kaitseala tarbeks Noodamajaranna piiranguvööndis; 5 5) hoonete püstitamine Haldja küla, Lõunaküla, Naissaare ja Virbi piiranguvööndis; 6 6) hoonete püstitamine ajaloolistes asustuskohtades või hajaasustusena Jurka küla, Põhjaküla ja Väikeheinamaa küla piiranguvööndis.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1026757_Par_14"
+          "@id": "estleg:Reg_1035867_Par_16_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1028299_Par_19"
-        },
-        {
-          "@id": "estleg:Reg_1041146_Par_14"
-        },
-        {
-          "@id": "estleg:Reg_1041151_Par_15"
-        },
-        {
-          "@id": "estleg:Reg_1041720_Par_15"
+          "@id": "estleg:Reg_1035867_Par_16_Lg_2"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1026757_Par_14"
+        },
+        {
+          "@id": "estleg:Reg_1035868_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_1038527_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_1039315_Par_14"
+        },
+        {
+          "@id": "estleg:Reg_1042654_Par_15"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_16_v1035867"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on lubatud: 1) majandustegevus, arvestades käesolevas määruses sätestatud erisusi; 2) kuni 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala valitseja nõusolekul on piiranguvööndis lubatud: 1) rohkem kui 50 osalejaga rahvaürituse korraldamine selleks ettevalmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 2) lageraie kuusikutes langi pindalaga kuni üks hektar ning turberaie häilraiena; 3) rajatise püstitamine Haldja küla, Jurka küla, Kunilamäe, Lõunaküla, Naissaare, Põhjaküla, Virbi ja Väikeheinamaa küla piiranguvööndis; 4) rajatise püstitamine kaitseala tarbeks Noodamajaranna piiranguvööndis; 5) hoonete püstitamine Haldja küla, Lõunaküla, Naissaare ja Virbi piiranguvööndis; 6) hoonete püstitamine ajaloolistes asustuskohtades või hajaasustusena Jurka küla, Põhjaküla ja Väikeheinamaa küla piiranguvööndis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -718,19 +1551,40 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 17. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "1 (1) Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine, välja arvatud Väikeheinamaa küla piiranguvööndis üksikkraavide taastamine ja rajamine kaitseala valitseja nõusolekul; 2 2) maavara kaevandamine, välja arvatud liiva ja kruusa võtmine saaresisesteks vajadusteks Kunilamäe ja Naissaare piiranguvööndis kaitseala valitseja nõusolekul ning liiva ja kruusa võtmine oma kinnistu piires isiklikus majapidamises kasutamise eesmärgil; 3 3) veekogude veetaseme ja kaldajoone muutmine; 4 ",
-      "estleg:legalText": "1 (1) Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine, välja arvatud Väikeheinamaa küla piiranguvööndis üksikkraavide taastamine ja rajamine kaitseala valitseja nõusolekul; 2 2) maavara kaevandamine, välja arvatud liiva ja kruusa võtmine saaresisesteks vajadusteks Kunilamäe ja Naissaare piiranguvööndis kaitseala valitseja nõusolekul ning liiva ja kruusa võtmine oma kinnistu piires isiklikus majapidamises kasutamise eesmärgil; 3 3) veekogude veetaseme ja kaldajoone muutmine; 4 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5 5) biotsiidi, taimekaitsevahendi ja väetise kasutamine, välja arvatud põllu- ja õuemaal. Piiranguvööndis on keelatud: uue maaparandussüsteemi rajamine, välja arvatud Väikeheinamaa küla piiranguvööndis üksikkraavide taastamine ja rajamine kaitseala valitseja nõusolekul; maavara kaevandamine, välja arvatud liiva ja kruusa võtmine saaresisesteks vajadusteks Kunilamäe ja Naissaare piiranguvööndis kaitseala valitseja nõusolekul ning liiva ja kruusa võtmine oma kinnistu piires isiklikus majapidamises kasutamise eesmärgil; veekogude veetaseme ja kaldajoone muutmine; puhtpuistute kujundamine ja energiapuistute rajamine; biotsiidi, taimekaitsevahendi ja väetise kasutamine, välja arvatud põllu- ja õuemaal. 2 (2) Piiranguvööndis on keelatud puidu kokku- ja väljavedu külmumata pinnaselt. Kaitseala valitseja võib lubada puidu kokku- ja väljavedu, kui pinnas seda võimaldab. Piiranguvööndis on keelatud puidu kokku- ja väljavedu külmumata pinnaselt. Kaitseala valitseja võib lubada puidu kokku- ja väljavedu, kui pinnas seda võimaldab.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine, välja arvatud Väikeheinamaa küla piiranguvööndis üksikkraavide taastamine ja rajamine kaitseala valitseja nõusolekul; 2 2) maavara kaevandamine, välja arvatud liiva ja kruusa võtmine saaresisesteks vajadusteks Kunilamäe ja Naissaare piiranguvööndis kaitseala valitseja nõusolekul ning liiva ja kruusa võtmine oma kinnistu piires isiklikus majapidamises kasutamise eesmärgil; 3 3) veekogude veetaseme ja kaldajoone muutmine; 4…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine, välja arvatud Väikeheinamaa küla piiranguvööndis üksikkraavide taastamine ja rajamine kaitseala valitseja nõusolekul; 2 2) maavara kaevandamine, välja arvatud liiva ja kruusa võtmine saaresisesteks vajadusteks Kunilamäe ja Naissaare piiranguvööndis kaitseala valitseja nõusolekul ning liiva ja kruusa võtmine oma kinnistu piires isiklikus majapidamises kasutamise eesmärgil; 3 3) veekogude veetaseme ja kaldajoone muutmine; 4 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5 5) biotsiidi, taimekaitsevahendi ja väetise kasutamine, välja arvatud põllu- ja õuemaal. 2 (2) Piiranguvööndis on keelatud puidu kokku- ja väljavedu külmumata pinnaselt. Kaitseala valitseja võib lubada puidu kokku- ja väljavedu, kui pinnas seda võimaldab.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1026762_Par_15"
+          "@id": "estleg:Reg_1035867_Par_17_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1031605_Par_17"
+          "@id": "estleg:Reg_1035867_Par_17_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1038527_Par_16"
+        },
+        {
+          "@id": "estleg:Reg_1040655_Par_16"
         },
         {
           "@id": "estleg:Reg_1042654_Par_17"
@@ -742,18 +1596,58 @@
           "@id": "estleg:Reg_1053343_Par_16"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_17_v1035867"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on keelatud: 1) uue maaparandussüsteemi rajamine, välja arvatud Väikeheinamaa küla piiranguvööndis üksikkraavide taastamine ja rajamine kaitseala valitseja nõusolekul; 2) maavara kaevandamine, välja arvatud liiva ja kruusa võtmine saaresisesteks vajadusteks Kunilamäe ja Naissaare piiranguvööndis kaitseala valitseja nõusolekul ning liiva ja kruusa võtmine oma kinnistu piires isiklikus majapidamises kasutamise eesmärgil; 3) veekogude veetaseme ja kaldajoone muutmine; 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5) biotsiidi, taimekaitsevahendi ja väetise kasutamine, välja arvatud põllu- ja õuemaal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Piiranguvööndis on keelatud puidu kokku- ja väljavedu külmumata pinnaselt. Kaitseala valitseja võib lubada puidu kokku- ja väljavedu, kui pinnas seda võimaldab.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_1035867_Par_18",
@@ -762,19 +1656,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Määruse rakendamine",
+      "rdfs:label": {
+        "@value": "§ 18. Määruse rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Enne käesoleva määruse jõustumist kehtestatud detailplaneeringu alusel on ehitiste püstitamine piiranguvööndis lubatud detailplaneeringu kohaselt.",
-      "estleg:legalText": "Enne käesoleva määruse jõustumist kehtestatud detailplaneeringu alusel on ehitiste püstitamine piiranguvööndis lubatud detailplaneeringu kohaselt. Enne käesoleva määruse jõustumist kehtestatud detailplaneeringu alusel on ehitiste püstitamine piiranguvööndis lubatud detailplaneeringu kohaselt.",
+      "estleg:summary": {
+        "@value": "Enne käesoleva määruse jõustumist kehtestatud detailplaneeringu alusel on ehitiste püstitamine piiranguvööndis lubatud detailplaneeringu kohaselt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Enne käesoleva määruse jõustumist kehtestatud detailplaneeringu alusel on ehitiste püstitamine piiranguvööndis lubatud detailplaneeringu kohaselt.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_18_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158947_Par_12"
-        },
-        {
-          "@id": "estleg:Reg_313094_Par_17"
         }
       ],
       "estleg:hasVersion": [
@@ -784,24 +1686,61 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1035867_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne käesoleva määruse jõustumist kehtestatud detailplaneeringu alusel on ehitiste püstitamine piiranguvööndis lubatud detailplaneeringu kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1035867_Par_19",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 19. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
-      "estleg:legalText": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist. Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_19_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_19_v1035867"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
     },
     {
       "@id": "estleg:Reg_1035867_Par_20",
@@ -810,13 +1749,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 20. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Vabariigi Valitsuse 24. jaanuari 2001. a määrus nr 38 „Naissaare Looduspargi kaitse-eeskiri” tunnistatakse kehtetuks.",
-      "estleg:legalText": "Vabariigi Valitsuse 24. jaanuari 2001. a määrus nr 38 „Naissaare Looduspargi kaitse-eeskiri” tunnistatakse kehtetuks. Vabariigi Valitsuse 24. jaanuari 2001. a määrus nr 38 „Naissaare Looduspargi kaitse-eeskiri” tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Vabariigi Valitsuse 24. jaanuari 2001. a määrus nr 38 „Naissaare Looduspargi kaitse-eeskiri” tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vabariigi Valitsuse 24. jaanuari 2001. a määrus nr 38 „Naissaare Looduspargi kaitse-eeskiri” tunnistatakse kehtetuks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -826,11 +1771,43 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_20_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_20_v1035867"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsuse 24. jaanuari 2001. a määrus nr 38 „Naissaare Looduspargi kaitse-eeskiri” tunnistatakse kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
@@ -844,13 +1821,29 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Menetluse läbiviimine",
+      "rdfs:label": {
+        "@value": "§ 21. Menetluse läbiviimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Määruse menetlus viidi läbi keskkonnaministri 8. juuli 2009. a käskkirjaga nr 1097 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas5.",
-      "estleg:legalText": "Määruse menetlus viidi läbi keskkonnaministri 8. juuli 2009. a käskkirjaga nr 1097 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas5. Määruse menetlus viidi läbi keskkonnaministri 8. juuli 2009. a käskkirjaga nr 1097 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas5.",
+      "estleg:summary": {
+        "@value": "Määruse menetlus viidi läbi keskkonnaministri 8. juuli 2009. a käskkirjaga nr 1097 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas5.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määruse menetlus viidi läbi keskkonnaministri 8. juuli 2009. a käskkirjaga nr 1097 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas5.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_21_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1047489_Par_18"
@@ -872,7 +1865,20 @@
         {
           "@id": "estleg:Reg_1035867_Par_21_v1035867"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruse menetlus viidi läbi keskkonnaministri 8. juuli 2009. a käskkirjaga nr 1097 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas⁵.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_keskkonnaminister"
@@ -886,44 +1892,82 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 22. Vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naissaare looduspargi kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1035867_Map"
       },
-      "estleg:summary": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
-      "estleg:legalText": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist. Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
+      "estleg:summary": {
+        "@value": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1017814_Par_18"
-        },
-        {
-          "@id": "estleg:Reg_1018083_Par_20"
-        },
-        {
-          "@id": "estleg:Reg_1018084_Par_12"
-        },
-        {
-          "@id": "estleg:Reg_1018085_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_1018086_Par_10"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1035867_Par_22_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_halduskohus"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1015353_Par_19"
+        },
+        {
+          "@id": "estleg:Reg_1015354_Par_12"
+        },
+        {
+          "@id": "estleg:Reg_1015857_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1017162_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1017814_Par_18"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1035867_Par_22_v1035867"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1035867_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1035867_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_halduskohus"

@@ -242,6 +242,20 @@ estleg:LegalProvisionShape
     a sh:NodeShape ;
     sh:targetClass estleg:LegalProvision ;
     sh:targetSubjectsOf estleg:paragrahv ;
+    sh:property [
+        sh:path estleg:provisionRepealed ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+        sh:name "provisionRepealed" ;
+        sh:description "True on a § Riigi Teataja marks 'Kehtetu -'; such a § carries no legalText (#703)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:provisionOmitted ;
+        sh:datatype xsd:boolean ;
+        sh:maxCount 1 ;
+        sh:name "provisionOmitted" ;
+        sh:description "True on a spent § Riigi Teataja omits from the consolidated text ('–', kehtiv=\"0\"); such a § carries no legalText (#703)." ;
+    ] ;
     # #700 human override provenance and #456 classifier confidence.
     sh:property [
         sh:path prov:wasAttributedTo ;

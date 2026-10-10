@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Kohtulikult karistatud isikute üleandmise Euroopa konventsiooni ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Kohtulikult karistatud isikute üleandmise Euroopa konventsiooni ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Kohtulikult karistatud isikute üleandmise Euroopa konventsiooni ratifitseerimise seadus",
       "dcterms:title": "Kohtulikult karistatud isikute üleandmise Euroopa konventsiooni ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/78650.xml"
+        "@id": "https://www.riigiteataja.ee/akt/78650"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/78650/xml"
+      },
+      "estleg:globalId": "78650",
+      "eli:id_local": "78650",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "118591",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "f71b9f93502a56f661a52baeb2b45cd60e921abdfcf5ddae748a7e05195b97ab",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -50,19 +62,20 @@
         {
           "@id": "http://eurovoc.europa.eu/3474"
         }
-      ]
-    },
-    {
-      "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Kohtulikult karistatud isikute üleandmise Euroopa konventsiooni ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_kohtulikult_karistatud_isikute_uleandmise_euroopa_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1997-03-17",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_kohtulikult_karistatud_isikute_uleandmise_euroopa_default",
@@ -71,12 +84,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Kohtulikult karistatud isikute üleandmise Euroopa konventsiooni ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_kohtulikult_karistatud_isikute_uleandmise_euroopa_default"
+        }
+      ]
     },
     {
       "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Par_1",
@@ -85,13 +119,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud kohtulikult karistatud isikute üleandmise Euroopa k...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud kohtulikult karistatud isikute üleandmise Euroopa k...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtulikult karistatud isikute üleandmise Euroopa konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1983. aasta 21. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1983. aasta 21. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud kohtulikult karistatud isikute üleandmise Euroopa konventsioon , mis on koostatud 1983. aasta 21. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud kohtulikult karistatud isikute üleandmise Euroopa konventsioon , mis on koostatud 1983. aasta 21. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kohtulikult_karistatud_isikute_uleandmise_euroopa_default"
       },
@@ -100,6 +140,10 @@
           "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Par_1_Lg_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -107,25 +151,21 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:KVAEKSLR_Par_1"
-        },
-        {
-          "@id": "estleg:PEVAKVKTEKSP_Par_1"
+          "@id": "estleg:EVIVKKIUKR_Par_1"
         },
         {
           "@id": "estleg:TTEKR_Par_1"
         },
         {
-          "@id": "estleg:kriminaalmenetluse_ulevotmise_euroopa_ko_Par_1"
+          "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_4"
         },
         {
-          "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Par_3"
+          "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_6"
+        },
+        {
+          "@id": "estleg:kriminaalmenetluse_ulevotmise_euroopa_ko_Par_1"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Par_1_v78650"
@@ -138,9 +178,20 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1983. aasta 21. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud kohtulikult karistatud isikute üleandmise Euroopa konventsioon , mis on koostatud 1983. aasta 21. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is.",
       "estleg:parentProvision": {
         "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -150,12 +201,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Ratifitseerimisel teha järgmine deklaratsioon:",
+      "rdfs:label": {
+        "@value": "§ 2. Ratifitseerimisel teha järgmine deklaratsioon:",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtulikult karistatud isikute üleandmise Euroopa konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Map"
       },
-      "estleg:summary": "Vastavalt konventsiooni artikli 17 lõikele 3 deklareerib Eesti Vabariik, et Eestile esitatakse taotlused ja nende lisad koos eesti- või ingliskeelse tõlkega.",
+      "estleg:summary": {
+        "@value": "Vastavalt konventsiooni artikli 17 lõikele 3 deklareerib Eesti Vabariik, et Eestile esitatakse taotlused ja nende lisad koos eesti- või ingliskeelse tõlkega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vastavalt konventsiooni artikli 17 lõikele 3 deklareerib Eesti Vabariik, et Eestile esitatakse taotlused ja nende lisad koos eesti- või ingliskeelse tõlkega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kohtulikult_karistatud_isikute_uleandmise_euroopa_default"
@@ -167,19 +224,10 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:HSDVUEKR_Par_3"
+          "@id": "estleg:HSDVUEKR_Par_2"
         },
         {
-          "@id": "estleg:KMTLMKSPR_Par_3"
-        },
-        {
-          "@id": "estleg:RTITIVAKNR_Par_2"
-        },
-        {
-          "@id": "estleg:VOHMEKR_Par_2"
-        },
-        {
-          "@id": "estleg:rahvusvahelise_organiseeritud_kuritegevu_Par_5"
+          "@id": "estleg:TKVTETVVIKKE_Par_2"
         }
       ],
       "estleg:hasVersion": [
@@ -194,10 +242,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vastavalt konventsiooni artikli 17 lõikele 3 deklareerib Eesti Vabariik, et Eestile esitatakse taotlused ja nende lisad koos eesti- või ingliskeelse tõlkega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vastavalt konventsiooni artikli 17 lõikele 3 deklareerib Eesti Vabariik, et Eestile esitatakse taotlused ja nende lisad koos eesti- või ingliskeelse tõlkega.",
       "estleg:parentProvision": {
         "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VPTKS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Vabariigi Presidendi töökorra seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Vabariigi Presidendi töökorra seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Vabariigi Presidendi töökorra seadus",
-      "dcterms:title": [
-        {
-          "@value": "Vabariigi Presidendi töökorra seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "President of the Republic Work Procedure Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Vabariigi Presidendi töökorra seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/127062017011.xml"
+        "@id": "https://www.riigiteataja.ee/akt/130062026042"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/130062026042/xml"
+      },
+      "estleg:globalId": "130062026042",
+      "eli:id_local": "130062026042",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "160822",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "e8009679d31057b709928962dcb3353d8bd1b0f43f1f99f052c1aa87514d7a76",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2017-07-07",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/504072017010"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/504072017010"
       },
       "estleg:references": [
@@ -90,6 +96,19 @@
           "@id": "http://eurovoc.europa.eu/68"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2001-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2017-07-07",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2001-07-08",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -114,14 +133,83 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU17_0488"
         }
+      ],
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_VPTKS_0bd777e659"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_e7d4f02aa5"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_d33aba7626"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_60015b7220"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_fd01efb7da"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_85765d783d"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_5afc61e0a8"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_499f482f18"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_1cd1d698dc"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_49964d8b8a"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_6aefacc811"
+        },
+        {
+          "@id": "estleg:Amendment_VPTKS_6661abebd8"
+        }
+      ],
+      "estleg:hasProposedAmendment": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU17_0488_VPTKS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU26_0191_VPTKS"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Cluster_VPTKS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–2 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:VPTKS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
     },
     {
       "@id": "estleg:VPTKS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Vabariigi Presidendi töökorra seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Vabariigi Presidendi töökorra seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_VPTKS_1"
@@ -144,26 +232,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_VPTKS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–2 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–2 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:VPTKS_TopicScheme"
-      },
-      "estleg:provisionCount": 2
-    },
-    {
       "@id": "estleg:Chapter_VPTKS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
@@ -183,8 +260,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§3–12 VABARIIGI PRESIDENDI VOLITUSED",
-      "skos:prefLabel": "§3–12 VABARIIGI PRESIDENDI VOLITUSED",
+      "rdfs:label": {
+        "@value": "§3–12 VABARIIGI PRESIDENDI VOLITUSED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§3–12 VABARIIGI PRESIDENDI VOLITUSED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VPTKS_TopicScheme"
       },
@@ -196,7 +279,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – VABARIIGI PRESIDENDI VOLITUSED",
+      "rdfs:label": {
+        "@value": "2. peatükk – VABARIIGI PRESIDENDI VOLITUSED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
@@ -216,8 +302,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§13–18 VABARIIGI PRESIDENDI ÕIGUSAKTID",
-      "skos:prefLabel": "§13–18 VABARIIGI PRESIDENDI ÕIGUSAKTID",
+      "rdfs:label": {
+        "@value": "§13–18 VABARIIGI PRESIDENDI ÕIGUSAKTID",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§13–18 VABARIIGI PRESIDENDI ÕIGUSAKTID",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VPTKS_TopicScheme"
       },
@@ -229,7 +321,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – VABARIIGI PRESIDENDI ÕIGUSAKTID",
+      "rdfs:label": {
+        "@value": "3. peatükk – VABARIIGI PRESIDENDI ÕIGUSAKTID",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
@@ -249,8 +344,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§19–20 AMETISSENIMETAMISED JA AMETIST VABASTAMISED",
-      "skos:prefLabel": "§19–20 AMETISSENIMETAMISED JA AMETIST VABASTAMISED",
+      "rdfs:label": {
+        "@value": "§19–20 AMETISSENIMETAMISED JA AMETIST VABASTAMISED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§19–20 AMETISSENIMETAMISED JA AMETIST VABASTAMISED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VPTKS_TopicScheme"
       },
@@ -262,7 +363,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – AMETISSENIMETAMISED JA AMETIST VABASTAMISED",
+      "rdfs:label": {
+        "@value": "4. peatükk – AMETISSENIMETAMISED JA AMETIST VABASTAMISED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
@@ -282,8 +386,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§21–24 VABARIIGI PRESIDENDI KANTSELEI",
-      "skos:prefLabel": "§21–24 VABARIIGI PRESIDENDI KANTSELEI",
+      "rdfs:label": {
+        "@value": "§21–24 VABARIIGI PRESIDENDI KANTSELEI",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§21–24 VABARIIGI PRESIDENDI KANTSELEI",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VPTKS_TopicScheme"
       },
@@ -295,7 +405,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – VABARIIGI PRESIDENDI KANTSELEI",
+      "rdfs:label": {
+        "@value": "5. peatükk – VABARIIGI PRESIDENDI KANTSELEI",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
@@ -315,8 +428,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§25–30 RAKENDUSSÄTTED",
-      "skos:prefLabel": "§25–30 RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "§25–30 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§25–30 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VPTKS_TopicScheme"
       },
@@ -328,7 +447,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "6. peatükk – RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
@@ -348,12 +470,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "Käesolev seadus sätestab Eesti Vabariigi põhiseadusest (edaspidi põhiseadus) tulenevate Vabariigi Presidendi volituste tekkimise ja lõppemise ning Vabariigi Presidendi ametiülesannete täitmise korralduse.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus sätestab Eesti Vabariigi põhiseadusest (edaspidi põhiseadus) tulenevate Vabariigi Presidendi volituste tekkimise ja lõppemise ning Vabariigi Presidendi ametiülesannete täitmise korralduse.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus sätestab Eesti Vabariigi põhiseadusest (edaspidi põhiseadus) tulenevate Vabariigi Presidendi volituste tekkimise ja lõppemise ning Vabariigi Presidendi ametiülesannete täitmise korralduse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_1"
@@ -366,14 +494,14 @@
           "@id": "estleg:VPTKS_Par_1_Lg_1"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_1_v27017"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_1_v27017"
         }
       ]
     },
@@ -383,10 +511,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus sätestab Eesti Vabariigi põhiseadusest (edaspidi põhiseadus) tulenevate Vabariigi Presidendi volituste tekkimise ja lõppemise ning Vabariigi Presidendi ametiülesannete täitmise korralduse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab Eesti Vabariigi põhiseadusest (edaspidi põhiseadus) tulenevate Vabariigi Presidendi volituste tekkimise ja lõppemise ning Vabariigi Presidendi ametiülesannete täitmise korralduse.",
       "estleg:parentProvision": {
         "@id": "estleg:VPTKS_Par_1"
       },
+      "rdfs:label": "§ 1 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -400,12 +530,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Vabariigi President",
+      "rdfs:label": {
+        "@value": "§ 2. Vabariigi President",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi President on Eesti riigipea. (2) Vabariigi President on isik, kes on valitud Vabariigi Presidendiks Vabariigi Presidendi valimise seaduses ettenähtud korras. (3) Käesolevat seadust kohaldatakse asjakohaste erisustega ka Riigikogu esimehele Vabariigi Presidendi ülesannetes.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi President on Eesti riigipea. (2) Vabariigi President on isik, kes on valitud Vabariigi Presidendiks Vabariigi Presidendi valimise seaduses ettenähtud korras. (3) Käesolevat seadust kohaldatakse asjakohaste erisustega ka Riigikogu esimehele Vabariigi Presidendi ülesannetes.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi President on Eesti riigipea. (2) Vabariigi President on isik, kes on valitud Vabariigi Presidendiks Vabariigi Presidendi valimise seaduses ettenähtud korras. (3) Käesolevat seadust kohaldatakse asjakohaste erisustega ka Riigikogu esimehele Vabariigi Presidendi ülesannetes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_1"
@@ -426,9 +562,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -436,20 +569,20 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_2_v27017"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_2_v13009843"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
         },
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_2_v27017"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_2_v13009843"
         }
       ]
     },
@@ -535,12 +668,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Vabariigi Presidendi ametisseastumine",
+      "rdfs:label": {
+        "@value": "§ 3. Vabariigi Presidendi ametisseastumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi ametiaeg on viis aastat ja algab ametisseastumise päevast. (2) Vabariigi President annab ametisse astudes Riigikogu ees vastavalt põhiseaduse §-le 81 ametivande. (3) Vabariigi President kirjutab alla ametivande tekstile, mida tema ametivolituste ajal hoitakse Riigikogu Kantseleis ja pärast ametivolituste lõppemist Rahvusarhiivis. (4) Vabariigi Presidendi valimise korral järjestikku teiseks ametiajaks astub ta ametisse käesolevas paragrahvis määratud korras.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi ametiaeg on viis aastat ja algab ametisseastumise päevast. (2) Vabariigi President annab ametisse astudes Riigikogu ees vastavalt põhiseaduse §-le 81 ametivande. (3) Vabariigi President kirjutab alla ametivande tekstile, mida tema ametivolituste ajal hoitakse Riigikogu Kantseleis ja pärast ametivolituste lõppemist Rahvusarhiivis. (4) Vabariigi Presidendi valimise korral järjestikku teiseks ametiajaks astub ta ametisse käesolevas paragrahvis määratud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Presidendi ametiaeg on viis aastat ja algab ametisseastumise päevast. (2) Vabariigi President annab ametisse astudes Riigikogu ees vastavalt põhiseaduse §-le 81 ametivande. (3) Vabariigi President kirjutab alla ametivande tekstile, mida tema ametivolituste ajal hoitakse Riigikogu Kantseleis ja pärast ametivolituste lõppemist Rahvusarhiivis. (4) Vabariigi Presidendi valimise korral järjestikku teiseks ametiajaks astub ta ametisse käesolevas paragrahvis määratud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_2"
@@ -576,14 +715,6 @@
           "@id": "estleg:eesti_vabariigi_pohiseadus_Par_81"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_3_v27017"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_3_v108072011074"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -592,7 +723,15 @@
           "@id": "estleg:Institution_riigikogu"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_3_v27017"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_3_v108072011074"
+        }
+      ]
     },
     {
       "@id": "estleg:VPTKS_Par_3_Lg_1",
@@ -703,13 +842,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Vabariigi Presidendi volituste peatumine",
+      "rdfs:label": {
+        "@value": "§ 4. Vabariigi Presidendi volituste peatumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi volitused peatuvad, kui: ta on ajutiselt võimetu täitma oma ülesandeid; ta on võetud kriminaalvastutusele vastavalt Vabariigi Presidendi ja Vabariigi Valitsuse liikme kohtulikule vastutusele võtmise korra seadusele; ta on tunnistatud kestvalt võimetuks täitma oma ülesandeid. (2) Vabariigi Presidendi volituste peatumise korral lähevad need ajutiselt üle Riigikogu esimehele, kes hakkab täitma Vabariigi Presidendi ülesandeid.",
-      "estleg:legalText": "(1) Vabariigi Presidendi volitused peatuvad, kui: ta on ajutiselt võimetu täitma oma ülesandeid; ta on võetud kriminaalvastutusele vastavalt Vabariigi Presidendi ja Vabariigi Valitsuse liikme kohtulikule vastutusele võtmise korra seadusele; ta on tunnistatud kestvalt võimetuks täitma oma ülesandeid. (2) Vabariigi Presidendi volituste peatumise korral lähevad need ajutiselt üle Riigikogu esimehele, kes hakkab täitma Vabariigi Presidendi ülesandeid.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi volitused peatuvad, kui: 1) ta on ajutiselt võimetu täitma oma ülesandeid; 2) ta on võetud kriminaalvastutusele vastavalt Vabariigi Presidendi ja Vabariigi Valitsuse liikme kohtulikule vastutusele võtmise korra seadusele; 3) ta on tunnistatud kestvalt võimetuks täitma oma ülesandeid. (2) Vabariigi Presidendi volituste peatumise korral lähevad need ajutiselt üle Riigikogu esimehele, kes hakkab täitma Vabariigi Presidendi ülesandeid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vabariigi Presidendi volitused peatuvad, kui: 1) ta on ajutiselt võimetu täitma oma ülesandeid; 2) ta on võetud kriminaalvastutusele vastavalt Vabariigi Presidendi ja Vabariigi Valitsuse liikme kohtulikule vastutusele võtmise korra seadusele; 3) ta on tunnistatud kestvalt võimetuks täitma oma ülesandeid. (2) Vabariigi Presidendi volituste peatumise korral lähevad need ajutiselt üle Riigikogu esimehele, kes hakkab täitma Vabariigi Presidendi ülesandeid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_2"
       },
@@ -733,17 +878,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_4_v27017"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_4_v182903"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_4_v13009843"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -754,6 +888,17 @@
         {
           "@id": "estleg:Institution_riigikogu"
         }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_4_v27017"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_4_v182903"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_4_v13009843"
+        }
       ]
     },
     {
@@ -763,11 +908,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Vabariigi Presidendi volitused peatuvad, kui: ta on ajutiselt võimetu täitma oma ülesandeid; ta on võetud kriminaalvastutusele vastavalt Vabariigi Presidendi ja Vabariigi Valitsuse liikme kohtulikule vastutusele võtmise korra seadusele; ta on tunnistatud kestvalt võimetuks täitma oma ülesandeid.",
+      "estleg:legalText": "(1) Vabariigi Presidendi volitused peatuvad, kui: 1) ta on ajutiselt võimetu täitma oma ülesandeid; 2) ta on võetud kriminaalvastutusele vastavalt Vabariigi Presidendi ja Vabariigi Valitsuse liikme kohtulikule vastutusele võtmise korra seadusele; 3) ta on tunnistatud kestvalt võimetuks täitma oma ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:VPTKS_Par_4"
       },
       "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -823,12 +973,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Vabariigi Presidendi ajutine võimetus täita oma ülesandeid",
+      "rdfs:label": {
+        "@value": "§ 5. Vabariigi Presidendi ajutine võimetus täita oma ülesandeid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Kui Vabariigi President on haiguse või muu takistuse tõttu ajutiselt võimetu täitma oma ülesandeid, teeb ta Riigikogu esimehele selle kohta kirjaliku avalduse, milles nimetab põhjuse. (2) Kui Vabariigi President on võimetu käesoleva paragrahvi lõikes 1 nimetatud avaldust esitama või tema asukoht on üle 48 tunni teadmata, teeb seda õiguskantsler. (3) Vabariigi Presidendi volitused lähevad käesoleva paragrahvi lõigetes 1 ja 2 nimetatud juhtudel Riigikogu esimehele üle avalduse saamisest.",
+      "estleg:summary": {
+        "@value": "(1) Kui Vabariigi President on haiguse või muu takistuse tõttu ajutiselt võimetu täitma oma ülesandeid, teeb ta Riigikogu esimehele selle kohta kirjaliku avalduse, milles nimetab põhjuse. (2) Kui Vabariigi President on võimetu käesoleva paragrahvi lõikes 1 nimetatud avaldust esitama või tema asukoht on üle 48 tunni teadmata, teeb seda õiguskantsler. (3) Vabariigi Presidendi volitused lähevad käesoleva paragrahvi lõigetes 1 ja 2 nimetatud juhtudel Riigikogu esimehele üle avalduse saamisest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui Vabariigi President on haiguse või muu takistuse tõttu ajutiselt võimetu täitma oma ülesandeid, teeb ta Riigikogu esimehele selle kohta kirjaliku avalduse, milles nimetab põhjuse. (2) Kui Vabariigi President on võimetu käesoleva paragrahvi lõikes 1 nimetatud avaldust esitama või tema asukoht on üle 48 tunni teadmata, teeb seda õiguskantsler. (3) Vabariigi Presidendi volitused lähevad käesoleva paragrahvi lõigetes 1 ja 2 nimetatud juhtudel Riigikogu esimehele üle avalduse saamisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_2"
@@ -856,6 +1012,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:VPTKS_Par_5_v27017"
@@ -865,14 +1029,6 @@
         },
         {
           "@id": "estleg:VPTKS_Par_5_v127062017011"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigipresident"
-        },
-        {
-          "@id": "estleg:Institution_riigikogu"
         }
       ]
     },
@@ -961,12 +1117,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Vabariigi Presidendi volituste peatumine kriminaalvastutusele võtmisel",
+      "rdfs:label": {
+        "@value": "§ 6. Vabariigi Presidendi volituste peatumine kriminaalvastutusele võtmisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi volitused peatuvad Riigikogu otsusest anda nõusolek Vabariigi Presidendi kriminaalvastutusele võtmiseks. (2) Vabariigi Presidendi volituste taastumise aluseks on tema suhtes õigeksmõistev kohtuotsus või tema kriminaalasja lõpetamine.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi volitused peatuvad Riigikogu otsusest anda nõusolek Vabariigi Presidendi kriminaalvastutusele võtmiseks. (2) Vabariigi Presidendi volituste taastumise aluseks on tema suhtes õigeksmõistev kohtuotsus või tema kriminaalasja lõpetamine.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Presidendi volitused peatuvad Riigikogu otsusest anda nõusolek Vabariigi Presidendi kriminaalvastutusele võtmiseks. (2) Vabariigi Presidendi volituste taastumise aluseks on tema suhtes õigeksmõistev kohtuotsus või tema kriminaalasja lõpetamine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_2"
@@ -987,26 +1149,21 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:OIGUSK_Par_11"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_6_v27017"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
         },
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_6_v27017"
         }
       ]
     },
@@ -1065,12 +1222,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Vabariigi Presidendi ametivolituste taastumine",
+      "rdfs:label": {
+        "@value": "§ 7. Vabariigi Presidendi ametivolituste taastumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "Kui Vabariigi Presidendi volituste peatumise aluseks olnud asjaolu on ära langenud, taastuvad volitused alates Vabariigi Presidendi otsusest asuda täitma oma ülesandeid.",
+      "estleg:summary": {
+        "@value": "Kui Vabariigi Presidendi volituste peatumise aluseks olnud asjaolu on ära langenud, taastuvad volitused alates Vabariigi Presidendi otsusest asuda täitma oma ülesandeid.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui Vabariigi Presidendi volituste peatumise aluseks olnud asjaolu on ära langenud, taastuvad volitused alates Vabariigi Presidendi otsusest asuda täitma oma ülesandeid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_2"
@@ -1083,14 +1246,14 @@
           "@id": "estleg:VPTKS_Par_7_Lg_1"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_7_v27017"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_7_v27017"
         }
       ]
     },
@@ -1100,10 +1263,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui Vabariigi Presidendi volituste peatumise aluseks olnud asjaolu on ära langenud, taastuvad volitused alates Vabariigi Presidendi otsusest asuda täitma oma ülesandeid.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui Vabariigi Presidendi volituste peatumise aluseks olnud asjaolu on ära langenud, taastuvad volitused alates Vabariigi Presidendi otsusest asuda täitma oma ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:VPTKS_Par_7"
       },
+      "rdfs:label": "§ 7 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -1117,12 +1282,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Vabariigi Presidendi volituste korraline lõppemine",
+      "rdfs:label": {
+        "@value": "§ 8. Vabariigi Presidendi volituste korraline lõppemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi volitused lõpevad korraliselt, kui ametisse astub järgmine Vabariigi President. (2) Vastavalt põhiseaduse §-le 131 ei valita Vabariigi Presidenti ega lõpe tema volitused erakorralise ega sõjaseisukorra ajal, välja arvatud kestva võimetuse korral oma ülesandeid täita.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi volitused lõpevad korraliselt, kui ametisse astub järgmine Vabariigi President. (2) Vastavalt põhiseaduse §-le 131 ei valita Vabariigi Presidenti ega lõpe tema volitused erakorralise ega sõjaseisukorra ajal, välja arvatud kestva võimetuse korral oma ülesandeid täita.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Presidendi volitused lõpevad korraliselt, kui ametisse astub järgmine Vabariigi President. (2) Vastavalt põhiseaduse §-le 131 ei valita Vabariigi Presidenti ega lõpe tema volitused erakorralise ega sõjaseisukorra ajal, välja arvatud kestva võimetuse korral oma ülesandeid täita.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_2"
@@ -1143,14 +1314,14 @@
           "@id": "estleg:eesti_vabariigi_pohiseadus_Par_131"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_8_v27017"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_8_v27017"
         }
       ]
     },
@@ -1197,13 +1368,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Vabariigi Presidendi volituste ennetähtaegne lõppemine",
+      "rdfs:label": {
+        "@value": "§ 9. Vabariigi Presidendi volituste ennetähtaegne lõppemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "Vabariigi Presidendi volitused lõpevad enne tähtaega, kui: ta astub ametist tagasi; ta sureb; jõustub teda süüdi mõistev kohtuotsus. kehtetu -",
-      "estleg:legalText": "Vabariigi Presidendi volitused lõpevad enne tähtaega, kui: ta astub ametist tagasi; ta sureb; jõustub teda süüdi mõistev kohtuotsus. kehtetu -",
+      "estleg:summary": {
+        "@value": "Vabariigi Presidendi volitused lõpevad enne tähtaega, kui: 1) ta astub ametist tagasi; 2) ta sureb; 3) jõustub teda süüdi mõistev kohtuotsus. 4)",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vabariigi Presidendi volitused lõpevad enne tähtaega, kui: 1) ta astub ametist tagasi; 2) ta sureb; 3) jõustub teda süüdi mõistev kohtuotsus. 4)",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_2"
       },
@@ -1224,6 +1401,16 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:eesti_vabariigi_pohiseadus_Par_82"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:VPTKS_Par_9_v27017"
@@ -1234,11 +1421,6 @@
         {
           "@id": "estleg:VPTKS_Par_9_v13312048"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigipresident"
-        }
       ]
     },
     {
@@ -1247,10 +1429,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vabariigi Presidendi volitused lõpevad enne tähtaega, kui: ta astub ametist tagasi; ta sureb; jõustub teda süüdi mõistev kohtuotsus. kehtetu -",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Presidendi volitused lõpevad enne tähtaega, kui: 1) ta astub ametist tagasi; 2) ta sureb; 3) jõustub teda süüdi mõistev kohtuotsus. 4)",
       "estleg:parentProvision": {
         "@id": "estleg:VPTKS_Par_9"
       },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1273,12 +1463,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Vabariigi Presidendi tagasiastumine",
+      "rdfs:label": {
+        "@value": "§ 10. Vabariigi Presidendi tagasiastumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Ametist tagasiastumiseks esitab Vabariigi President Riigikogu esimehele põhjendatud kirjaliku avalduse. (2) Vabariigi President teeb avalduse ametist tagasiastumise kohta Riigikogu esimesel istungil samal või järgmisel nädalal pärast käesoleva paragrahvi lõikes 1 nimetatud avalduse esitamist. (3) Vabariigi Presidendi volitused lõpevad, kui ta on ametist tagasiastumise teatavaks teinud Riigikogu istungil. Kui Vabariigi President ei ole võimeline Riigikogu ees esinema, teeb seda Riigikogu",
+      "estleg:summary": {
+        "@value": "(1) Ametist tagasiastumiseks esitab Vabariigi President Riigikogu esimehele põhjendatud kirjaliku avalduse. (2) Vabariigi President teeb avalduse ametist tagasiastumise kohta Riigikogu esimesel istungil samal või järgmisel nädalal pärast käesoleva paragrahvi lõikes 1 nimetatud avalduse esitamist. (3) Vabariigi Presidendi volitused lõpevad, kui ta on ametist tagasiastumise teatavaks teinud Riigikogu istungil. Kui Vabariigi President ei ole võimeline Riigikogu ees esinema, teeb seda Riigikogu",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ametist tagasiastumiseks esitab Vabariigi President Riigikogu esimehele põhjendatud kirjaliku avalduse. (2) Vabariigi President teeb avalduse ametist tagasiastumise kohta Riigikogu esimesel istungil samal või järgmisel nädalal pärast käesoleva paragrahvi lõikes 1 nimetatud avalduse esitamist. (3) Vabariigi Presidendi volitused lõpevad, kui ta on ametist tagasiastumise teatavaks teinud Riigikogu istungil. Kui Vabariigi President ei ole võimeline Riigikogu ees esinema, teeb seda Riigikogu esimees.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_2"
@@ -1309,17 +1505,17 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_10_v27017"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
         },
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_10_v27017"
         }
       ]
     },
@@ -1423,12 +1619,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Vabariigi Presidendi kestev võimetus täita oma ülesandeid",
+      "rdfs:label": {
+        "@value": "§ 11. Vabariigi Presidendi kestev võimetus täita oma ülesandeid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi kestev võimetus on tema tervisest tulenev ilmne võimetus täita oma ülesandeid. (2) Käesoleva paragrahvi lõikes 1 toodud asjaolu esinemisel esitab õiguskantsler Riigikohtule põhjendatud taotluse tunnistada oma otsusega Vabariigi President kestvalt võimetuks täitma oma ülesandeid. (3) Riigikohtu üldkogu vaatab taotluse läbi ja teeb otsuse viivitamata. (4) Riigikohtu otsus, millega Vabariigi President tunnistatakse kestvalt võimetuks täitma oma ülesandeid, jõustub",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi kestev võimetus on tema tervisest tulenev ilmne võimetus täita oma ülesandeid. (2) Käesoleva paragrahvi lõikes 1 toodud asjaolu esinemisel esitab õiguskantsler Riigikohtule põhjendatud taotluse tunnistada oma otsusega Vabariigi President kestvalt võimetuks täitma oma ülesandeid. (3) Riigikohtu üldkogu vaatab taotluse läbi ja teeb otsuse viivitamata. (4) Riigikohtu otsus, millega Vabariigi President tunnistatakse kestvalt võimetuks täitma oma ülesandeid, jõustub",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Presidendi kestev võimetus on tema tervisest tulenev ilmne võimetus täita oma ülesandeid. (2) Käesoleva paragrahvi lõikes 1 toodud asjaolu esinemisel esitab õiguskantsler Riigikohtule põhjendatud taotluse tunnistada oma otsusega Vabariigi President kestvalt võimetuks täitma oma ülesandeid. (3) Riigikohtu üldkogu vaatab taotluse läbi ja teeb otsuse viivitamata. (4) Riigikohtu otsus, millega Vabariigi President tunnistatakse kestvalt võimetuks täitma oma ülesandeid, jõustub väljakuulutamise päeval. (5) Vabariigi Presidendi volitused peatuvad Riigikohtu otsuse jõustumisel ja Riigikogu esimees täidab ajutiselt Vabariigi Presidendi ülesandeid kuni järgmise Vabariigi Presidendi ametisseastumiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_2"
@@ -1461,20 +1663,10 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:pohiseaduslikkuse_jarelevalve_kohtumenet_Par_25"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_11_v27017"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -1484,6 +1676,19 @@
         },
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:OIGUSK_Par_10"
+        },
+        {
+          "@id": "estleg:RKS_Par_23"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_11_v27017"
         }
       ]
     },
@@ -1608,12 +1813,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Riigikogu esimees Vabariigi Presidendi ülesannetes",
+      "rdfs:label": {
+        "@value": "§ 12. Riigikogu esimees Vabariigi Presidendi ülesannetes",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Riigikogu esimehe volitused Riigikogu liikmena peatuvad ajaks, mil ta täidab Vabariigi Presidendi ülesandeid. (2) Kui Riigikogu esimees täidab Vabariigi Presidendi ülesandeid ja tema volitused Riigikogu liikmena lõpevad seoses uue Riigikogu valimisega, täidab ta Vabariigi Presidendi ülesandeid uue Riigikogu esimehe valimiseni. (3) Riigikogu esimehel Vabariigi Presidendi ülesannetes ei ole õigust kuulutada välja Riigikogu erakorralisi valimisi ega keelduda seadusi välja kuulutamast",
+      "estleg:summary": {
+        "@value": "(1) Riigikogu esimehe volitused Riigikogu liikmena peatuvad ajaks, mil ta täidab Vabariigi Presidendi ülesandeid. (2) Kui Riigikogu esimees täidab Vabariigi Presidendi ülesandeid ja tema volitused Riigikogu liikmena lõpevad seoses uue Riigikogu valimisega, täidab ta Vabariigi Presidendi ülesandeid uue Riigikogu esimehe valimiseni. (3) Riigikogu esimehel Vabariigi Presidendi ülesannetes ei ole õigust kuulutada välja Riigikogu erakorralisi valimisi ega keelduda seadusi välja kuulutamast",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigikogu esimehe volitused Riigikogu liikmena peatuvad ajaks, mil ta täidab Vabariigi Presidendi ülesandeid. (2) Kui Riigikogu esimees täidab Vabariigi Presidendi ülesandeid ja tema volitused Riigikogu liikmena lõpevad seoses uue Riigikogu valimisega, täidab ta Vabariigi Presidendi ülesandeid uue Riigikogu esimehe valimiseni. (3) Riigikogu esimehel Vabariigi Presidendi ülesannetes ei ole õigust kuulutada välja Riigikogu erakorralisi valimisi ega keelduda seadusi välja kuulutamast Riigikohtu nõusolekuta. Nõusoleku saamiseks esitab Riigikogu esimees Riigikohtule põhjendatud kirjaliku avalduse. (4) Riigikohus otsustab Vabariigi Presidendi ülesannetes Riigikogu esimehele nõusoleku andmise põhiseaduslikkuse järelevalve kohtumenetluse seaduses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_2"
@@ -1643,26 +1854,10 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:RKTS_Par_2"
-        },
-        {
-          "@id": "estleg:RKT_Par_15"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_12_v27017"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_12_v182903"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_riigikohus"
@@ -1675,6 +1870,22 @@
         },
         {
           "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RKTS_Par_2"
+        },
+        {
+          "@id": "estleg:eesti_vabariigi_pohiseadus_Par_83"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_12_v27017"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_12_v182903"
         }
       ]
     },
@@ -1820,12 +2031,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Vabariigi Presidendi õigusaktid",
+      "rdfs:label": {
+        "@value": "§ 13. Vabariigi Presidendi õigusaktid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi õigusaktid on seadlus, otsus ja käskkiri. (2) Vabariigi Presidendi õigusaktide täitmist korraldab Vabariigi Valitsus vastavalt põhiseaduse § 87 punktile 3. (3) Vabariigi Presidendi õigusaktid avaldatakse Riigi Teatajas. (4) Seadus avaldatakse koos viitega Vabariigi Presidendi otsusele seaduse väljakuulutamise kohta. (5) Vabariigi Presidendi otsust süüdimõistetu armuandmispalve läbivaatamise kohta Riigi Teatajas ei avaldata.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi õigusaktid on seadlus, otsus ja käskkiri. (2) Vabariigi Presidendi õigusaktide täitmist korraldab Vabariigi Valitsus vastavalt põhiseaduse § 87 punktile 3. (3) Vabariigi Presidendi õigusaktid avaldatakse Riigi Teatajas. (4) Seadus avaldatakse koos viitega Vabariigi Presidendi otsusele seaduse väljakuulutamise kohta. (5) Vabariigi Presidendi otsust süüdimõistetu armuandmispalve läbivaatamise kohta Riigi Teatajas ei avaldata.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Presidendi õigusaktid on seadlus, otsus ja käskkiri. (2) Vabariigi Presidendi õigusaktide täitmist korraldab Vabariigi Valitsus vastavalt põhiseaduse § 87 punktile 3. (3) Vabariigi Presidendi õigusaktid avaldatakse Riigi Teatajas. (4) Seadus avaldatakse koos viitega Vabariigi Presidendi otsusele seaduse väljakuulutamise kohta. (5) Vabariigi Presidendi otsust süüdimõistetu armuandmispalve läbivaatamise kohta Riigi Teatajas ei avaldata. (6) Käesoleva paragrahvi lõigetes 4 ja 5 nimetatud otsused avaldatakse Vabariigi Presidendi Kantselei dokumendiregistris.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_3"
@@ -1867,14 +2084,6 @@
           "@id": "estleg:eesti_vabariigi_pohiseadus_Par_87"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_13_v27017"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_13_v13312048"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
@@ -1884,6 +2093,14 @@
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_13_v27017"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_13_v13312048"
         }
       ]
     },
@@ -2017,12 +2234,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Vabariigi Presidendi seadlus",
+      "rdfs:label": {
+        "@value": "§ 14. Vabariigi Presidendi seadlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi seadlus on seaduse jõuga õigustloov akt. (2) Kui Riigikogu ei saa kokku tulla ja on ilmnenud edasilükkamatu riiklik vajadus, võib Vabariigi President anda seadlusi, mis kannavad Riigikogu esimehe ja peaministri kaasallkirja. (3) Vabariigi Presidendi seadlusega ei saa kehtestada, muuta ega tühistada põhiseaduse §-s 110 nimetatud seadusi. (4) Vabariigi Presidendi õigustloovate aktide üle teostab järelevalvet õiguskantsler.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi seadlus on seaduse jõuga õigustloov akt. (2) Kui Riigikogu ei saa kokku tulla ja on ilmnenud edasilükkamatu riiklik vajadus, võib Vabariigi President anda seadlusi, mis kannavad Riigikogu esimehe ja peaministri kaasallkirja. (3) Vabariigi Presidendi seadlusega ei saa kehtestada, muuta ega tühistada põhiseaduse §-s 110 nimetatud seadusi. (4) Vabariigi Presidendi õigustloovate aktide üle teostab järelevalvet õiguskantsler.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Presidendi seadlus on seaduse jõuga õigustloov akt. (2) Kui Riigikogu ei saa kokku tulla ja on ilmnenud edasilükkamatu riiklik vajadus, võib Vabariigi President anda seadlusi, mis kannavad Riigikogu esimehe ja peaministri kaasallkirja. (3) Vabariigi Presidendi seadlusega ei saa kehtestada, muuta ega tühistada põhiseaduse §-s 110 nimetatud seadusi. (4) Vabariigi Presidendi õigustloovate aktide üle teostab järelevalvet õiguskantsler.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_3"
@@ -2049,14 +2272,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:eesti_vabariigi_pohiseadus_Par_109"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2066,11 +2281,9 @@
           "@id": "estleg:eesti_vabariigi_pohiseadus_Par_110"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_14_v27017"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikogu"
@@ -2080,6 +2293,11 @@
         },
         {
           "@id": "estleg:Institution_peaminister"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_14_v27017"
         }
       ]
     },
@@ -2108,9 +2326,6 @@
         "@id": "estleg:VPTKS_Par_14"
       },
       "rdfs:label": "§ 14 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2119,6 +2334,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -2180,12 +2398,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Seadluse kaasallkirjad",
+      "rdfs:label": {
+        "@value": "§ 15. Seadluse kaasallkirjad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Enda allkirjastatud seadluse teksti edastab Vabariigi President Riigikogu esimehele kaasallkirja saamiseks. Riigikogu esimees otsustab kaasallkirja andmise seadluse kättesaamisest 24 tunni jooksul ja edastab seadluse teksti viivitamata peaministrile. Peaminister otsustab kaasallkirja andmise 24 tunni jooksul ja edastab seadluse teksti viivitamata Vabariigi Presidendile. (2) Kui seadluse algatab Riigikogu esimees, edastab ta oma kaasallkirjaga seadluse teksti peaministrile.",
+      "estleg:summary": {
+        "@value": "(1) Enda allkirjastatud seadluse teksti edastab Vabariigi President Riigikogu esimehele kaasallkirja saamiseks. Riigikogu esimees otsustab kaasallkirja andmise seadluse kättesaamisest 24 tunni jooksul ja edastab seadluse teksti viivitamata peaministrile. Peaminister otsustab kaasallkirja andmise 24 tunni jooksul ja edastab seadluse teksti viivitamata Vabariigi Presidendile. (2) Kui seadluse algatab Riigikogu esimees, edastab ta oma kaasallkirjaga seadluse teksti peaministrile.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Enda allkirjastatud seadluse teksti edastab Vabariigi President Riigikogu esimehele kaasallkirja saamiseks. Riigikogu esimees otsustab kaasallkirja andmise seadluse kättesaamisest 24 tunni jooksul ja edastab seadluse teksti viivitamata peaministrile. Peaminister otsustab kaasallkirja andmise 24 tunni jooksul ja edastab seadluse teksti viivitamata Vabariigi Presidendile. (2) Kui seadluse algatab Riigikogu esimees, edastab ta oma kaasallkirjaga seadluse teksti peaministrile. Peaminister otsustab kaasallkirja andmise 24 tunni jooksul ja edastab seadluse teksti viivitamata Vabariigi Presidendile. (3) Kui seadluse algatab peaminister, edastab ta oma kaasallkirjaga seadluse teksti Riigikogu esimehele. Riigikogu esimees otsustab kaasallkirja andmise 24 tunni jooksul ja edastab seadluse teksti viivitamata Vabariigi Presidendile. (4) Riigikogu esimees ja peaminister teavitavad teineteist kaasallkirja andmisest või sellest keeldumisest ning teatavad sellest viivitamata Vabariigi Presidendile. Kaasallkirja andmisest keeldumise korral lisatakse tagastatavale seadlusele kirjalik keeldumise põhjendus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_3"
@@ -2219,11 +2443,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_15_v27017"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_peaminister"
@@ -2236,6 +2455,11 @@
         },
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_15_v27017"
         }
       ]
     },
@@ -2396,12 +2620,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Vabariigi Presidendi seadluse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 16. Vabariigi Presidendi seadluse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "Vabariigi Presidendi seadlus jõustub Riigi Teatajas avaldamise päevale järgneval päeval, kui seadluses eneses ei ole sätestatud teist tähtaega.",
+      "estleg:summary": {
+        "@value": "Vabariigi Presidendi seadlus jõustub Riigi Teatajas avaldamise päevale järgneval päeval, kui seadluses eneses ei ole sätestatud teist tähtaega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vabariigi Presidendi seadlus jõustub Riigi Teatajas avaldamise päevale järgneval päeval, kui seadluses eneses ei ole sätestatud teist tähtaega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_3"
@@ -2414,14 +2644,14 @@
           "@id": "estleg:VPTKS_Par_16_Lg_1"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_16_v27017"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_16_v27017"
         }
       ]
     },
@@ -2431,10 +2661,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vabariigi Presidendi seadlus jõustub Riigi Teatajas avaldamise päevale järgneval päeval, kui seadluses eneses ei ole sätestatud teist tähtaega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Presidendi seadlus jõustub Riigi Teatajas avaldamise päevale järgneval päeval, kui seadluses eneses ei ole sätestatud teist tähtaega.",
       "estleg:parentProvision": {
         "@id": "estleg:VPTKS_Par_16"
       },
+      "rdfs:label": "§ 16 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -2448,12 +2680,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Vabariigi Presidendi seadluse kehtivus",
+      "rdfs:label": {
+        "@value": "§ 17. Vabariigi Presidendi seadluse kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "Vabariigi President esitab seadluse või seadlused Riigikogule selle kokkutuleku päeval. Riigikogu võtab vastavalt põhiseaduse § 109 lõikele 2 viivitamata vastu seaduse Vabariigi Presidendi seadluse või seadluste kinnitamise või tühistamise kohta.",
+      "estleg:summary": {
+        "@value": "Vabariigi President esitab seadluse või seadlused Riigikogule selle kokkutuleku päeval. Riigikogu võtab vastavalt põhiseaduse § 109 lõikele 2 viivitamata vastu seaduse Vabariigi Presidendi seadluse või seadluste kinnitamise või tühistamise kohta.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vabariigi President esitab seadluse või seadlused Riigikogule selle kokkutuleku päeval. Riigikogu võtab vastavalt põhiseaduse § 109 lõikele 2 viivitamata vastu seaduse Vabariigi Presidendi seadluse või seadluste kinnitamise või tühistamise kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_3"
@@ -2480,17 +2718,22 @@
           "@id": "estleg:eesti_vabariigi_pohiseadus_Par_109"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_17_v27017"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
         },
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:eesti_vabariigi_pohiseadus_Par_109"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_17_v27017"
         }
       ]
     },
@@ -2500,10 +2743,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vabariigi President esitab seadluse või seadlused Riigikogule selle kokkutuleku päeval. Riigikogu võtab vastavalt põhiseaduse § 109 lõikele 2 viivitamata vastu seaduse Vabariigi Presidendi seadluse või seadluste kinnitamise või tühistamise kohta.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi President esitab seadluse või seadlused Riigikogule selle kokkutuleku päeval. Riigikogu võtab vastavalt põhiseaduse § 109 lõikele 2 viivitamata vastu seaduse Vabariigi Presidendi seadluse või seadluste kinnitamise või tühistamise kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:VPTKS_Par_17"
       },
+      "rdfs:label": "§ 17 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2534,12 +2779,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Vabariigi Presidendi otsus ja käskkiri",
+      "rdfs:label": {
+        "@value": "§ 18. Vabariigi Presidendi otsus ja käskkiri",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi otsus ja käskkiri on üksikaktid. (2) Vabariigi President võtab oma põhiseaduslike ülesannete täitmiseks vastu otsuseid. (3) Riigikaitse kõrgeima juhina ja Vabariigi Presidendi Kantselei tegevuse korraldamiseks annab Vabariigi President käskkirju. (4) Vabariigi Presidendi otsused ja käskkirjad jõustuvad nende allakirjutamisega, kui nendes enestes ei sätestata teist tähtaega.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi otsus ja käskkiri on üksikaktid. (2) Vabariigi President võtab oma põhiseaduslike ülesannete täitmiseks vastu otsuseid. (3) Riigikaitse kõrgeima juhina ja Vabariigi Presidendi Kantselei tegevuse korraldamiseks annab Vabariigi President käskkirju. (4) Vabariigi Presidendi otsused ja käskkirjad jõustuvad nende allakirjutamisega, kui nendes enestes ei sätestata teist tähtaega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Presidendi otsus ja käskkiri on üksikaktid. (2) Vabariigi President võtab oma põhiseaduslike ülesannete täitmiseks vastu otsuseid. (3) Riigikaitse kõrgeima juhina ja Vabariigi Presidendi Kantselei tegevuse korraldamiseks annab Vabariigi President käskkirju. (4) Vabariigi Presidendi otsused ja käskkirjad jõustuvad nende allakirjutamisega, kui nendes enestes ei sätestata teist tähtaega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_3"
@@ -2561,17 +2812,17 @@
           "@id": "estleg:VPTKS_Par_18_Lg_4"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_18_v27017"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigipresident"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_18_v27017"
+        }
+      ]
     },
     {
       "@id": "estleg:VPTKS_Par_18_Lg_1",
@@ -2654,13 +2905,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Ametissenimetamise ja ametist vabastamise kord",
+      "rdfs:label": {
+        "@value": "§ 19. Ametissenimetamise ja ametist vabastamise kord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi President nimetab ametisse ja vabastab ametist Eesti Panga nõukogu ettepanekul Eesti Panga presidendi vastava ettepaneku saamisest 30 tööpäeva jooksul. (2) Kehtetu - (3) Vabariigi President nimetab Riigikohtu ettepanekul kohtunikud vastava ettepaneku saamisest 30 tööpäeva jooksul. (4) Vabariigi President võib keelduda käesolevas paragrahvis nimetatud isikuid ametisse nimetamast, kui see on vastuolus seadusega või riigi huvidega.",
-      "estleg:legalText": "(1) Vabariigi President nimetab ametisse ja vabastab ametist Eesti Panga nõukogu ettepanekul Eesti Panga presidendi vastava ettepaneku saamisest 30 tööpäeva jooksul. (2) Kehtetu - (3) Vabariigi President nimetab Riigikohtu ettepanekul kohtunikud vastava ettepaneku saamisest 30 tööpäeva jooksul. (4) Vabariigi President võib keelduda käesolevas paragrahvis nimetatud isikuid ametisse nimetamast, kui see on vastuolus seadusega või riigi huvidega.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi President nimetab ametisse ja vabastab ametist Eesti Panga nõukogu ettepanekul Eesti Panga presidendi vastava ettepaneku saamisest 30 tööpäeva jooksul. (3) Vabariigi President nimetab Riigikohtu ettepanekul kohtunikud vastava ettepaneku saamisest 30 tööpäeva jooksul. (4) Vabariigi President võib keelduda käesolevas paragrahvis nimetatud isikuid ametisse nimetamast, kui see on vastuolus seadusega või riigi huvidega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vabariigi President nimetab ametisse ja vabastab ametist Eesti Panga nõukogu ettepanekul Eesti Panga presidendi vastava ettepaneku saamisest 30 tööpäeva jooksul. (3) Vabariigi President nimetab Riigikohtu ettepanekul kohtunikud vastava ettepaneku saamisest 30 tööpäeva jooksul. (4) Vabariigi President võib keelduda käesolevas paragrahvis nimetatud isikuid ametisse nimetamast, kui see on vastuolus seadusega või riigi huvidega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_4"
       },
@@ -2672,9 +2929,6 @@
           "@id": "estleg:VPTKS_Par_19_Lg_1"
         },
         {
-          "@id": "estleg:VPTKS_Par_19_Lg_2"
-        },
-        {
           "@id": "estleg:VPTKS_Par_19_Lg_3"
         },
         {
@@ -2683,38 +2937,19 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:EESTI_2_Par_10"
         },
         {
-          "@id": "estleg:eesti_vabariigi_pohiseadus_Par_150"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_19_v27017"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_19_v13009843"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_19_v108072011073"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -2724,6 +2959,22 @@
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikohus"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:eesti_vabariigi_pohiseadus_Par_150"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_19_v27017"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_19_v13009843"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_19_v108072011073"
         }
       ]
     },
@@ -2754,19 +3005,6 @@
         }
       ],
       "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:VPTKS_Par_19_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:VPTKS_Par_19"
-      },
-      "rdfs:label": "§ 19 lg 2"
     },
     {
       "@id": "estleg:VPTKS_Par_19_Lg_3",
@@ -2810,9 +3048,6 @@
         "@id": "estleg:VPTKS_Par_19"
       },
       "rdfs:label": "§ 19 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2821,6 +3056,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:competentAuthority": [
         {
@@ -2836,13 +3074,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Ametissenimetamiseks esitamine",
+      "rdfs:label": {
+        "@value": "§ 20. Ametissenimetamiseks esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi President teeb Riigikogule ettepaneku Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolöri ja õiguskantsleri ametisse nimetamiseks põhiseaduse § 78 punkti 11 kohaselt. (2) Käesoleva paragrahvi lõikes 1 nimetatud ametiisiku volituste tähtaegse lõppemise korral teeb Vabariigi President ametissenimetamise ettepaneku Riigikogule hiljemalt 30 tööpäeva enne vastava ametiisiku volituste tähtaegset lõppemist. (3) Käesoleva paragrahvi lõikes 1 nimetatud ametiisiku volituste",
-      "estleg:legalText": "(1) Vabariigi President teeb Riigikogule ettepaneku Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolöri ja õiguskantsleri ametisse nimetamiseks põhiseaduse § 78 punkti 11 kohaselt. (2) Käesoleva paragrahvi lõikes 1 nimetatud ametiisiku volituste tähtaegse lõppemise korral teeb Vabariigi President ametissenimetamise ettepaneku Riigikogule hiljemalt 30 tööpäeva enne vastava ametiisiku volituste tähtaegset lõppemist. (3) Käesoleva paragrahvi lõikes 1 nimetatud ametiisiku volituste ennetähtaegse lõppemise korral teeb Vabariigi President ametissenimetamise ettepaneku Riigikogule nelja kuu jooksul, alates vastava ametiisiku volituste ennetähtaegsest lõppemisest.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi President teeb Riigikogule ettepaneku Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolöri ja õiguskantsleri ametisse nimetamiseks põhiseaduse § 78 punkti 11 kohaselt. (2) Käesoleva paragrahvi lõikes 1 nimetatud ametiisiku volituste tähtaegse lõppemise korral teeb Vabariigi President ametissenimetamise ettepaneku Riigikogule hiljemalt 30 tööpäeva enne vastava ametiisiku volituste tähtaegset lõppemist. (3) Käesoleva paragrahvi lõikes 1 nimetatud ametiisiku volituste",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vabariigi President teeb Riigikogule ettepaneku Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolöri ja õiguskantsleri ametisse nimetamiseks põhiseaduse § 78 punkti 11 kohaselt. (2) Käesoleva paragrahvi lõikes 1 nimetatud ametiisiku volituste tähtaegse lõppemise korral teeb Vabariigi President ametissenimetamise ettepaneku Riigikogule hiljemalt 30 tööpäeva enne vastava ametiisiku volituste tähtaegset lõppemist. (3) Käesoleva paragrahvi lõikes 1 nimetatud ametiisiku volituste ennetähtaegse lõppemise korral teeb Vabariigi President ametissenimetamise ettepaneku Riigikogule viie kuu jooksul, alates vastava ametiisiku volituste ennetähtaegsest lõppemisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_4"
       },
@@ -2877,17 +3121,6 @@
           "@id": "estleg:eesti_vabariigi_pohiseadus_Par_78"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_20_v27017"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_20_v262590"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_20_v108072011073"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -2897,6 +3130,17 @@
         },
         {
           "@id": "estleg:Institution_riigikohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_20_v27017"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_20_v262590"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_20_v108072011073"
         }
       ]
     },
@@ -2979,7 +3223,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 nimetatud ametiisiku volituste ennetähtaegse lõppemise korral teeb Vabariigi President ametissenimetamise ettepaneku Riigikogule nelja kuu jooksul, alates vastava ametiisiku volituste ennetähtaegsest lõppemisest.",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 nimetatud ametiisiku volituste ennetähtaegse lõppemise korral teeb Vabariigi President ametissenimetamise ettepaneku Riigikogule viie kuu jooksul, alates vastava ametiisiku volituste ennetähtaegsest lõppemisest.",
       "estleg:parentProvision": {
         "@id": "estleg:VPTKS_Par_20"
       },
@@ -3003,6 +3247,14 @@
         {
           "@id": "estleg:Institution_riigikogu"
         }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KORKS_Map"
+        },
+        {
+          "@id": "estleg:KORKS_Par_271"
+        }
       ]
     },
     {
@@ -3012,12 +3264,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Vabariigi Presidendi Kantselei",
+      "rdfs:label": {
+        "@value": "§ 21. Vabariigi Presidendi Kantselei",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi juures on Vabariigi Presidendi Kantselei. (2) Vabariigi Presidendi Kantselei on riigi ametiasutus, mis täidab seadustest tulenevaid ülesandeid ja Vabariigi Presidendi antud ülesandeid. (3) Vabariigi Presidendi Kantselei asukoht on Tallinn. (4) Vabariigi Presidendi Kantselei kulud kaetakse riigieelarvest. (5) Vabariigi Presidendi Kantselei registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi juures on Vabariigi Presidendi Kantselei. (2) Vabariigi Presidendi Kantselei on riigi ametiasutus, mis täidab seadustest tulenevaid ülesandeid ja Vabariigi Presidendi antud ülesandeid. (3) Vabariigi Presidendi Kantselei asukoht on Tallinn. (4) Vabariigi Presidendi Kantselei kulud kaetakse riigieelarvest. (5) Vabariigi Presidendi Kantselei registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Presidendi juures on Vabariigi Presidendi Kantselei. (2) Vabariigi Presidendi Kantselei on riigi ametiasutus, mis täidab seadustest tulenevaid ülesandeid ja Vabariigi Presidendi antud ülesandeid. (3) Vabariigi Presidendi Kantselei asukoht on Tallinn. (4) Vabariigi Presidendi Kantselei kulud kaetakse riigieelarvest. (5) Vabariigi Presidendi Kantselei registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_5"
@@ -3047,15 +3305,35 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:VABARI_Par_76"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KTL_Par_8_6"
+        },
+        {
+          "@id": "estleg:RKS_Par_5_1"
+        },
+        {
+          "@id": "estleg:RKTS_Par_20_25"
+        },
+        {
+          "@id": "estleg:RKT_Par_157_1"
+        },
+        {
+          "@id": "estleg:RRKS_Par_16"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:VPTKS_Par_21_v27017"
@@ -3065,14 +3343,6 @@
         },
         {
           "@id": "estleg:VPTKS_Par_21_v262590"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigipresident"
-        },
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ]
     },
@@ -3194,13 +3464,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Vabariigi Presidendi Kantselei ülesanded ja struktuur",
+      "rdfs:label": {
+        "@value": "§ 22. Vabariigi Presidendi Kantselei ülesanded ja struktuur",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi Kantselei: korraldab Vabariigi Presidendi asjaajamist ja tehnilist teenindamist; korraldab Vabariigi Presidendi suhtlemist teiste ametiasutustega; teavitab Vabariigi Presidenti sise- ja välispoliitilistest probleemidest; nõustab Vabariigi Presidenti ametiülesannete täitmisega seotud küsimustes; valmistab ette Vabariigi Presidendi õigusaktide eelnõusid; korraldab Vabariigi Presidendi välissuhtlemist; korraldab Riigikaitse Nõukogu asjaajamist; korraldab Vabariigi",
-      "estleg:legalText": "(1) Vabariigi Presidendi Kantselei: korraldab Vabariigi Presidendi asjaajamist ja tehnilist teenindamist; korraldab Vabariigi Presidendi suhtlemist teiste ametiasutustega; teavitab Vabariigi Presidenti sise- ja välispoliitilistest probleemidest; nõustab Vabariigi Presidenti ametiülesannete täitmisega seotud küsimustes; valmistab ette Vabariigi Presidendi õigusaktide eelnõusid; korraldab Vabariigi Presidendi välissuhtlemist; korraldab Riigikaitse Nõukogu asjaajamist; korraldab Vabariigi Presidendi ja tema abikaasa ametihüvede rakendamist; korraldab Vabariigi Presidendi Kantselei ja Vabariigi Presidendi arhiivi; teenindab Vabariigi Presidendi nõuandvaid komisjone ja nõukogusid. (2) Vabariigi Presidendi Kantselei koosseisu kuuluvad osakonnad ja muud struktuuriüksused vastavalt Vabariigi Presidendi Kantselei põhimäärusele. (3) Vabariigi Presidendi Kantselei teenistujad valmistavad Vabariigi Presidendile esitamiseks ette Vabariigi Presidendi nimele tulnud ametliku kirjavahetuse. (4) Vabariigi President võib moodustada nõuandva õigusega komisjone ja nõukogusid, mille ülesanded ning töökorra ta ise määrab. (5) Oma ülesannete täitmiseks on Vabariigi Presidendi Kantseleil õigus saada asjaomaseid dokumente ja teavet teistelt riigi ja kohaliku omavalitsuse ametiasutustelt.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi Kantselei: 1) korraldab Vabariigi Presidendi asjaajamist ja tehnilist teenindamist; 2) korraldab Vabariigi Presidendi suhtlemist teiste ametiasutustega; 3) teavitab Vabariigi Presidenti sise- ja välispoliitilistest probleemidest; 4) nõustab Vabariigi Presidenti ametiülesannete täitmisega seotud küsimustes; 5) valmistab ette Vabariigi Presidendi õigusaktide eelnõusid; 6) korraldab Vabariigi Presidendi välissuhtlemist; 7) korraldab Riigikaitse Nõukogu asjaajamist; 8)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vabariigi Presidendi Kantselei: 1) korraldab Vabariigi Presidendi asjaajamist ja tehnilist teenindamist; 2) korraldab Vabariigi Presidendi suhtlemist teiste ametiasutustega; 3) teavitab Vabariigi Presidenti sise- ja välispoliitilistest probleemidest; 4) nõustab Vabariigi Presidenti ametiülesannete täitmisega seotud küsimustes; 5) valmistab ette Vabariigi Presidendi õigusaktide eelnõusid; 6) korraldab Vabariigi Presidendi välissuhtlemist; 7) korraldab Riigikaitse Nõukogu asjaajamist; 8) korraldab Vabariigi Presidendi ja tema abikaasa ametihüvede rakendamist; 9) korraldab Vabariigi Presidendi Kantselei ja Vabariigi Presidendi arhiivi; 10) teenindab Vabariigi Presidendi nõuandvaid komisjone ja nõukogusid. (2) Vabariigi Presidendi Kantselei koosseisu kuuluvad osakonnad ja muud struktuuriüksused vastavalt Vabariigi Presidendi Kantselei põhimäärusele. (3) Vabariigi Presidendi Kantselei teenistujad valmistavad Vabariigi Presidendile esitamiseks ette Vabariigi Presidendi nimele tulnud ametliku kirjavahetuse. (4) Vabariigi President võib moodustada nõuandva õigusega komisjone ja nõukogusid, mille ülesanded ning töökorra ta ise määrab. (5) Oma ülesannete täitmiseks on Vabariigi Presidendi Kantseleil õigus saada asjaomaseid dokumente ja teavet teistelt riigi ja kohaliku omavalitsuse ametiasutustelt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_5"
       },
@@ -3236,20 +3512,23 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_22_v27017"
-        },
-        {
-          "@id": "estleg:VPTKS_Par_22_v993400"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
         },
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_22_v27017"
+        },
+        {
+          "@id": "estleg:VPTKS_Par_22_v993400"
         }
       ]
     },
@@ -3260,11 +3539,23 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Vabariigi Presidendi Kantselei: korraldab Vabariigi Presidendi asjaajamist ja tehnilist teenindamist; korraldab Vabariigi Presidendi suhtlemist teiste ametiasutustega; teavitab Vabariigi Presidenti sise- ja välispoliitilistest probleemidest; nõustab Vabariigi Presidenti ametiülesannete täitmisega seotud küsimustes; valmistab ette Vabariigi Presidendi õigusaktide eelnõusid; korraldab Vabariigi Presidendi välissuhtlemist; korraldab Riigikaitse Nõukogu asjaajamist; korraldab Vabariigi Presidendi ja tema abikaasa ametihüvede rakendamist; korraldab Vabariigi Presidendi Kantselei ja Vabariigi Presidendi arhiivi; teenindab Vabariigi Presidendi nõuandvaid komisjone ja nõukogusid.",
+      "estleg:legalText": "(1) Vabariigi Presidendi Kantselei: 1) korraldab Vabariigi Presidendi asjaajamist ja tehnilist teenindamist; 2) korraldab Vabariigi Presidendi suhtlemist teiste ametiasutustega; 3) teavitab Vabariigi Presidenti sise- ja välispoliitilistest probleemidest; 4) nõustab Vabariigi Presidenti ametiülesannete täitmisega seotud küsimustes; 5) valmistab ette Vabariigi Presidendi õigusaktide eelnõusid; 6) korraldab Vabariigi Presidendi välissuhtlemist; 7) korraldab Riigikaitse Nõukogu asjaajamist; 8) korraldab Vabariigi Presidendi ja tema abikaasa ametihüvede rakendamist; 9) korraldab Vabariigi Presidendi Kantselei ja Vabariigi Presidendi arhiivi; 10) teenindab Vabariigi Presidendi nõuandvaid komisjone ja nõukogusid.",
       "estleg:parentProvision": {
         "@id": "estleg:VPTKS_Par_22"
       },
       "rdfs:label": "§ 22 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -3337,12 +3628,12 @@
         "@id": "estleg:VPTKS_Par_22"
       },
       "rdfs:label": "§ 22 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3387,13 +3678,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Vabariigi Presidendi Kantselei direktor",
+      "rdfs:label": {
+        "@value": "§ 23. Vabariigi Presidendi Kantselei direktor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi Kantseleid juhib Vabariigi Presidendi Kantselei põhimääruses sätestatud korras direktor. (2) Vabariigi Presidendi Kantselei direktori nimetab ametisse ja vabastab ametist Vabariigi President. (2¹) Vabariigi Presidendi Kantselei direktor vabastatakse teenistusest, kui Vabariigi Presidendi hinnangul tema koostöö direktoriga ei laabu. Vabariigi Presidendi Kantselei direktorit ei tohi teenistusest vabastada koostöö mittelaabumise tõttu enne kuue kuu möödumist Vabariigi",
-      "estleg:legalText": "(1) Vabariigi Presidendi Kantseleid juhib Vabariigi Presidendi Kantselei põhimääruses sätestatud korras direktor. (2) Vabariigi Presidendi Kantselei direktori nimetab ametisse ja vabastab ametist Vabariigi President. (2¹) Vabariigi Presidendi Kantselei direktor vabastatakse teenistusest, kui Vabariigi Presidendi hinnangul tema koostöö direktoriga ei laabu. Vabariigi Presidendi Kantselei direktorit ei tohi teenistusest vabastada koostöö mittelaabumise tõttu enne kuue kuu möödumist Vabariigi Presidendi ja direktori koos töötamise algusest. (2²) Teenistusest vabastamise korral käesoleva paragrahvi lõikes 21 sätestatud alusel makstakse Vabariigi Presidendi Kantselei direktorile hüvitisena kuue kuu ametipalk. (3) Vabariigi Presidendi Kantselei direktor nimetab ametisse ja vabastab ametist Vabariigi Presidendi Kantselei teenistujad. (4) Avaliku teenistuse seaduse § 33 alusel ametniku Vabariigi Presidendi nõunikuks üleviimise korral ei tohi üleviimise tähtaeg ületada Vabariigi Presidendi volituste aega.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi Kantseleid juhib Vabariigi Presidendi Kantselei põhimääruses sätestatud korras direktor. (2) Vabariigi Presidendi Kantselei direktori nimetab ametisse ja vabastab ametist Vabariigi President. (2¹) Vabariigi Presidendi Kantselei direktor vabastatakse teenistusest, kui Vabariigi Presidendi hinnangul tema koostöö direktoriga ei laabu. Vabariigi Presidendi Kantselei direktorit ei tohi teenistusest vabastada koostöö mittelaabumise tõttu enne kuue kuu möödumist Vabariigi",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vabariigi Presidendi Kantseleid juhib Vabariigi Presidendi Kantselei põhimääruses sätestatud korras direktor. (2) Vabariigi Presidendi Kantselei direktori nimetab ametisse ja vabastab ametist Vabariigi President. (2¹) Vabariigi Presidendi Kantselei direktor vabastatakse teenistusest, kui Vabariigi Presidendi hinnangul tema koostöö direktoriga ei laabu. Vabariigi Presidendi Kantselei direktorit ei tohi teenistusest vabastada koostöö mittelaabumise tõttu enne kuue kuu möödumist Vabariigi Presidendi ja direktori koos töötamise algusest. (2²) Teenistusest vabastamise korral käesoleva paragrahvi lõikes 2¹ sätestatud alusel makstakse Vabariigi Presidendi Kantselei direktorile hüvitisena kuue kuu ametipalk. (3) Vabariigi Presidendi Kantselei direktor nimetab ametisse ja vabastab ametist Vabariigi Presidendi Kantselei teenistujad. (4) Avaliku teenistuse seaduse § 33 alusel ametniku Vabariigi Presidendi nõunikuks üleviimise korral ei tohi üleviimise tähtaeg ületada Vabariigi Presidendi volituste aega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_5"
       },
@@ -3428,21 +3725,19 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_162521_Par_3_5"
-        },
-        {
-          "@id": "estleg:eesti_vabariigi_pohiseadus_Par_134"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:hasVersion": [
         {
           "@id": "estleg:VPTKS_Par_23_v27017"
@@ -3450,13 +3745,7 @@
         {
           "@id": "estleg:VPTKS_Par_23_v106072012027"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigipresident"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:VPTKS_Par_23_Lg_1",
@@ -3528,9 +3817,6 @@
         "@id": "estleg:VPTKS_Par_23"
       },
       "rdfs:label": "§ 23 lg 2¹",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -3539,6 +3825,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3553,7 +3842,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2²",
-      "estleg:legalText": "(2²) Teenistusest vabastamise korral käesoleva paragrahvi lõikes 21 sätestatud alusel makstakse Vabariigi Presidendi Kantselei direktorile hüvitisena kuue kuu ametipalk.",
+      "estleg:legalText": "(2²) Teenistusest vabastamise korral käesoleva paragrahvi lõikes 2¹ sätestatud alusel makstakse Vabariigi Presidendi Kantselei direktorile hüvitisena kuue kuu ametipalk.",
       "estleg:parentProvision": {
         "@id": "estleg:VPTKS_Par_23"
       },
@@ -3615,9 +3904,6 @@
         "@id": "estleg:VPTKS_Par_23"
       },
       "rdfs:label": "§ 23 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -3627,16 +3913,19 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:AVALIK_Par_33"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:AVALIK_Par_33"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:AVALIK_Par_33"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -3650,13 +3939,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Vabariigi Presidendi Kantselei põhimäärus",
+      "rdfs:label": {
+        "@value": "§ 24. Vabariigi Presidendi Kantselei põhimäärus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi Kantselei tegevuse korraldus on määratud Vabariigi Presidendi Kantselei põhimäärusega. (2) Vabariigi Presidendi Kantselei põhimääruse kinnitab Vabariigi President käskkirjaga direktori ettepanekul. (3) Vabariigi Presidendi Kantselei põhimäärus peab sisaldama: ülesanded; juhtimise korralduse; struktuuri ja struktuuriüksuste põhiülesanded; muud Vabariigi Presidendi Kantselei ülesannete täitmiseks vajalikud sätted.",
-      "estleg:legalText": "(1) Vabariigi Presidendi Kantselei tegevuse korraldus on määratud Vabariigi Presidendi Kantselei põhimäärusega. (2) Vabariigi Presidendi Kantselei põhimääruse kinnitab Vabariigi President käskkirjaga direktori ettepanekul. (3) Vabariigi Presidendi Kantselei põhimäärus peab sisaldama: ülesanded; juhtimise korralduse; struktuuri ja struktuuriüksuste põhiülesanded; muud Vabariigi Presidendi Kantselei ülesannete täitmiseks vajalikud sätted.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi Kantselei tegevuse korraldus on määratud Vabariigi Presidendi Kantselei põhimäärusega. (2) Vabariigi Presidendi Kantselei põhimääruse kinnitab Vabariigi President käskkirjaga direktori ettepanekul. (3) Vabariigi Presidendi Kantselei põhimäärus peab sisaldama: 1) ülesanded; 2) juhtimise korralduse; 3) struktuuri ja struktuuriüksuste põhiülesanded; 4) muud Vabariigi Presidendi Kantselei ülesannete täitmiseks vajalikud sätted.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vabariigi Presidendi Kantselei tegevuse korraldus on määratud Vabariigi Presidendi Kantselei põhimäärusega. (2) Vabariigi Presidendi Kantselei põhimääruse kinnitab Vabariigi President käskkirjaga direktori ettepanekul. (3) Vabariigi Presidendi Kantselei põhimäärus peab sisaldama: 1) ülesanded; 2) juhtimise korralduse; 3) struktuuri ja struktuuriüksuste põhiülesanded; 4) muud Vabariigi Presidendi Kantselei ülesannete täitmiseks vajalikud sätted.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_5"
       },
@@ -3679,24 +3974,24 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VPTKS_Par_24_v27017"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigipresident"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VPTKS_Par_24_v27017"
+        }
+      ]
     },
     {
       "@id": "estleg:VPTKS_Par_24_Lg_1",
@@ -3751,17 +4046,23 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Vabariigi Presidendi Kantselei põhimäärus peab sisaldama: ülesanded; juhtimise korralduse; struktuuri ja struktuuriüksuste põhiülesanded; muud Vabariigi Presidendi Kantselei ülesannete täitmiseks vajalikud sätted.",
+      "estleg:legalText": "(3) Vabariigi Presidendi Kantselei põhimäärus peab sisaldama: 1) ülesanded; 2) juhtimise korralduse; 3) struktuuri ja struktuuriüksuste põhiülesanded; 4) muud Vabariigi Presidendi Kantselei ülesannete täitmiseks vajalikud sätted.",
       "estleg:parentProvision": {
         "@id": "estleg:VPTKS_Par_24"
       },
       "rdfs:label": "§ 24 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3776,18 +4077,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25.",
+      "rdfs:label": {
+        "@value": "§ 25. [–]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
+      "estleg:summary": "§ 25.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_6"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VPTKS_6"
       },
-      "estleg:summary": "§ 25."
+      "estleg:provisionOmitted": true
     },
     {
       "@id": "estleg:VPTKS_Par_29",
@@ -3796,12 +4101,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 29. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_6"
@@ -3822,12 +4133,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 30. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Presidendi töökorra seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VPTKS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2001. aasta 1. septembril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2001. aasta 1. septembril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2001. aasta 1. septembril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VPTKS_6"
@@ -3846,6 +4163,22 @@
           "@id": "estleg:VPTKS_Par_30_v106072012027"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/504072017010",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:VPTKS_Map"
+      },
+      "rdfs:label": {
+        "@value": "President of the Republic Work Procedure Act",
+        "@language": "en"
+      }
     }
   ]
 }

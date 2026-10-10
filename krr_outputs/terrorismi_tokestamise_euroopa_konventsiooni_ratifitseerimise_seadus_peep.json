@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:TTEKR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Terrorismi tõkestamise Euroopa konventsiooni ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Terrorismi tõkestamise Euroopa konventsiooni ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Terrorismi tõkestamise Euroopa konventsiooni ratifitseerimise seadus",
       "dcterms:title": "Terrorismi tõkestamise Euroopa konventsiooni ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/78610.xml"
+        "@id": "https://www.riigiteataja.ee/akt/78610"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/78610/xml"
+      },
+      "estleg:globalId": "78610",
+      "eli:id_local": "78610",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "118556",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "d774aa7a37723cd1b35864caf58d325f4752648e7d60178038f018e60b92a0e0",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -57,6 +69,15 @@
           "@id": "http://eurovoc.europa.eu/217"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1997-02-19",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_RAM21_1001"
@@ -64,19 +85,11 @@
         {
           "@id": "estleg:Draft_RAM19_0975"
         }
-      ]
-    },
-    {
-      "@id": "estleg:TTEKR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Terrorismi tõkestamise Euroopa konventsiooni ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_TTEKR_default"
-        }
-      ]
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_TTEKR_default",
@@ -85,12 +98,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TTEKR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:TTEKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Terrorismi tõkestamise Euroopa konventsiooni ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_TTEKR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:TTEKR_Par_1",
@@ -99,13 +133,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud terrorismi tõkestamise Euroopa konventsioon./78608,...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud terrorismi tõkestamise Euroopa konventsioon , mis o...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terrorismi tõkestamise Euroopa konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTEKR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1977. aasta 27. jaanuaril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1977. aasta 27. jaanuaril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud terrorismi tõkestamise Euroopa konventsioon , mis on koostatud 1977. aasta 27. jaanuaril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud terrorismi tõkestamise Euroopa konventsioon , mis on koostatud 1977. aasta 27. jaanuaril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTEKR_default"
       },
@@ -116,19 +156,19 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
+          "@id": "estleg:AKEKR_Par_1"
+        },
+        {
+          "@id": "estleg:EAKKR_Par_1"
+        },
+        {
           "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_3"
         },
         {
           "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_7"
         },
         {
-          "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Par_1"
-        },
-        {
           "@id": "estleg:kriminaalmenetluse_ulevotmise_euroopa_ko_Par_1"
-        },
-        {
-          "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Par_2"
         }
       ],
       "estleg:hasVersion": [
@@ -143,10 +183,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1977. aasta 27. jaanuaril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud terrorismi tõkestamise Euroopa konventsioon , mis on koostatud 1977. aasta 27. jaanuaril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
       "estleg:parentProvision": {
         "@id": "estleg:TTEKR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:TTEKR_Par_2",
@@ -155,12 +197,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Ratifitseerimisel teha järgmine reservatsioon:",
+      "rdfs:label": {
+        "@value": "§ 2. Ratifitseerimisel teha järgmine reservatsioon:",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terrorismi tõkestamise Euroopa konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTEKR_Map"
       },
-      "estleg:summary": "Konventsiooni artikli 13 lõike 1 kohaselt ning kooskõlas selles sätestatud tingimustega reserveerib Eesti Vabariik õiguse keelduda väljaandmisest konventsiooni artiklis 1 nimetatud ükskõik millise kuriteo puhul, mida ta peab poliitiliseks kuriteoks või poliitilise kuriteoga seotud kuriteoks.",
+      "estleg:summary": {
+        "@value": "Konventsiooni artikli 13 lõike 1 kohaselt ning kooskõlas selles sätestatud tingimustega reserveerib Eesti Vabariik õiguse keelduda väljaandmisest konventsiooni artiklis 1 nimetatud ükskõik millise kuriteo puhul, mida ta peab poliitiliseks kuriteoks või poliitilise kuriteoga seotud kuriteoks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Konventsiooni artikli 13 lõike 1 kohaselt ning kooskõlas selles sätestatud tingimustega reserveerib Eesti Vabariik õiguse keelduda väljaandmisest konventsiooni artiklis 1 nimetatud ükskõik millise kuriteo puhul, mida ta peab poliitiliseks kuriteoks või poliitilise kuriteoga seotud kuriteoks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTEKR_default"
@@ -170,17 +218,12 @@
           "@id": "estleg:TTEKR_Par_2_Lg_1"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:TKVTETVVIKKE_Par_3"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -194,16 +237,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Konventsiooni artikli 13 lõike 1 kohaselt ning kooskõlas selles sätestatud tingimustega reserveerib Eesti Vabariik õiguse keelduda väljaandmisest konventsiooni artiklis 1 nimetatud ükskõik millise kuriteo puhul, mida ta peab poliitiliseks kuriteoks või poliitilise kuriteoga seotud kuriteoks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Konventsiooni artikli 13 lõike 1 kohaselt ning kooskõlas selles sätestatud tingimustega reserveerib Eesti Vabariik õiguse keelduda väljaandmisest konventsiooni artiklis 1 nimetatud ükskõik millise kuriteo puhul, mida ta peab poliitiliseks kuriteoks või poliitilise kuriteoga seotud kuriteoks.",
       "estleg:parentProvision": {
         "@id": "estleg:TTEKR_Par_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     }
   ]

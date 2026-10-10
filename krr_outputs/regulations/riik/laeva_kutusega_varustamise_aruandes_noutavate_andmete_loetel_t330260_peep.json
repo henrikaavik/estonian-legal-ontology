@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Laeva kütusega varustamise aruandes nõutavate andmete loetelu (määrus)",
+      "rdfs:label": {
+        "@value": "Laeva kütusega varustamise aruandes nõutavate andmete loetelu (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Laeva kütusega varustamise aruandes nõutavate andmete loetelu",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -31,18 +38,15 @@
       "estleg:actNumber": "57",
       "estleg:globalId": "13100542",
       "estleg:terviktekstId": "330260",
-      "estleg:entryIntoForce": {
-        "@value": "2009-01-01",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2008-12-29",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Laeva kütusega varustamise aruandes nõutavate andmete loetelu",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "dcterms:subject": [
         {
@@ -65,7 +69,16 @@
         {
           "@id": "http://eurovoc.europa.eu/502"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2009-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2008-12-29",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_330260_Par_1",
@@ -74,13 +87,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laeva kütusega varustamise aruandes nõutavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_330260_Map"
       },
-      "estleg:summary": "Määrusega reguleeritakse, millised andmed on laevavarustaja kohustatud esitama Maksu- ja Tolliametile laevavarustamise aruandes (edaspidi aruanne) energia aktsiisivabastuse loa alusel soetatud ja imporditud kütuse kohta.",
-      "estleg:legalText": "Määrusega reguleeritakse, millised andmed on laevavarustaja kohustatud esitama Maksu- ja Tolliametile laevavarustamise aruandes (edaspidi aruanne) energia aktsiisivabastuse loa alusel soetatud ja imporditud kütuse kohta. Määrusega reguleeritakse, millised andmed on laevavarustaja kohustatud esitama Maksu- ja Tolliametile laevavarustamise aruandes (edaspidi aruanne) energia aktsiisivabastuse loa alusel soetatud ja imporditud kütuse kohta.",
+      "estleg:summary": {
+        "@value": "Määrusega reguleeritakse, millised andmed on laevavarustaja kohustatud esitama Maksu- ja Tolliametile laevavarustamise aruandes (edaspidi aruanne) energia aktsiisivabastuse loa alusel soetatud ja imporditud kütuse kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega reguleeritakse, millised andmed on laevavarustaja kohustatud esitama Maksu- ja Tolliametile laevavarustamise aruandes (edaspidi aruanne) energia aktsiisivabastuse loa alusel soetatud ja imporditud kütuse kohta.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -90,11 +109,43 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_330260_Par_1_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_330260_Par_1_v330260"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_330260_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega reguleeritakse, millised andmed on laevavarustaja kohustatud esitama Maksu- ja Tolliametile laevavarustamise aruandes (edaspidi aruanne) energia aktsiisivabastuse loa alusel soetatud ja imporditud kütuse kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_330260_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
@@ -108,30 +159,61 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Aruande täitmine",
+      "rdfs:label": {
+        "@value": "§ 2. Aruande täitmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laeva kütusega varustamise aruandes nõutavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_330260_Map"
       },
-      "estleg:summary": "Aruanne peab olema täidetud loetavalt ja sellisel viisil, et kandeid ei oleks võimalik kustutada.",
-      "estleg:legalText": "Aruanne peab olema täidetud loetavalt ja sellisel viisil, et kandeid ei oleks võimalik kustutada. Aruanne peab olema täidetud loetavalt ja sellisel viisil, et kandeid ei oleks võimalik kustutada.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "Aruanne peab olema täidetud loetavalt ja sellisel viisil, et kandeid ei oleks võimalik kustutada.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Aruanne peab olema täidetud loetavalt ja sellisel viisil, et kandeid ei oleks võimalik kustutada.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_156247_Par_2"
+          "@id": "estleg:Reg_330260_Par_2_Lg_1"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_156247_Par_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_330260_Par_2_v330260"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_330260_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Aruanne peab olema täidetud loetavalt ja sellisel viisil, et kandeid ei oleks võimalik kustutada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_330260_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:Reg_330260_Par_3",
@@ -140,17 +222,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Aruandes sisalduvate andmete loetelu",
+      "rdfs:label": {
+        "@value": "§ 3. Aruandes sisalduvate andmete loetelu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laeva kütusega varustamise aruandes nõutavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_330260_Map"
       },
-      "estleg:summary": "1(1)Aruandes esitatakse järgmised üldandmed:11)aruande esitaja ärinimi ja kontaktandmed;22)tegevuskoha aadress. Laeva puhul laeva nimi ja registrinumber;33)aruandeperiood ja aasta, mille kohta aruanne esitatakse;44)aruande esitajale väljastatud energia aktsiisivabastuse loa number;55)aruande täitja ees- ja perekonnanimi, ametinimetus ja aruande koostamise kuupäev. Aruandes esitatakse järgmised üldandmed: aruande esitaja ärinimi ja kontaktandmed; tegevuskoha aadress. Laeva puhul laeva nimi ja reg",
-      "estleg:legalText": "1(1)Aruandes esitatakse järgmised üldandmed:11)aruande esitaja ärinimi ja kontaktandmed;22)tegevuskoha aadress. Laeva puhul laeva nimi ja registrinumber;33)aruandeperiood ja aasta, mille kohta aruanne esitatakse;44)aruande esitajale väljastatud energia aktsiisivabastuse loa number;55)aruande täitja ees- ja perekonnanimi, ametinimetus ja aruande koostamise kuupäev. Aruandes esitatakse järgmised üldandmed: aruande esitaja ärinimi ja kontaktandmed; tegevuskoha aadress. Laeva puhul laeva nimi ja registrinumber; aruandeperiood ja aasta, mille kohta aruanne esitatakse; aruande esitajale väljastatud energia aktsiisivabastuse loa number; aruande täitja ees- ja perekonnanimi, ametinimetus ja aruande koostamise kuupäev. 2(2)Aruandes esitatakse järgmised andmed kütuse kohta:11)aktsiisiga maksustamata kütuse alg- ja lõppjääk kilogrammides, kombineeritud nomenklatuuri (edaspidi KN) alamrubriik ja sellele vastav kirjeldus «Alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse» (edaspidi aktsiisiseadus) kohaselt;22)aktsiisiga maksustamata kütuse importimisel tollideklaratsiooni liik ja aktsepteerimise number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;33)aktsiisiga maksustamata kütuse soetamisel aktsiisilaost aktsiisikauba saatelehe number, aktsiisilao number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;44)aktsiisiga maksustamata kütuse vastuvõtmisel ettevõtja teisest tegevuskohast tegevuskoha andmed vastavalt käesoleva paragrahvi lõike 1 punktile 2, saatedokumendi number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;55)aktsiisiga maksustamata kütuse võõrandamisel laeva varudeks tollideklaratsiooni liik ja aktsepteerimise number, tollideklaratsiooni puudumisel saatedokumendi nimetus ja number ning kütuse võõrandamise kuupäev, isiku nimi, kellele kütus võõrandati, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;66)aktsiisiga maksustamata kütuse lähetamisel aktsiisilattu aktsiisiseaduse § 26 lõike 1 punktis 8 nimetatud juhul aktsiisilaopidaja number, lähetamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;77)aktsiisiga maksustamata kütuse üleandmisel ettevõtja teise tegevuskohta tegevuskoha andmed vastavalt käesoleva paragrahvi lõike 1 punktile 2, saatedokumendi number, kütuse üleandmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;88)aktsiisiga maksustamata kütuse võõrandamisel teisele laevavarustajale viimase energia aktsiisivabastuse loa number, saatedokumendi nimetus ja number, kütuse võõrandamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;99)aktsiisiga maksustamata kütuse soetamisel teiselt laevavarustajalt viimase energia aktsiisivabastuse loa number, saatedokumendi nimetus ja number, kütuse soetamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt. Aruandes esitatakse järgmised andmed kütuse kohta: aktsiisiga maksustamata kütuse alg- ja lõppjääk kilogrammides, kombineeritud nomenklatuuri (edaspidi KN) alamrubriik ja sellele vastav kirjeldus «Alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse» (edaspidi aktsiisiseadus) kohaselt; aktsiisiga maksustamata kütuse importimisel tollideklaratsiooni liik ja aktsepteerimise number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; aktsiisiga maksustamata kütuse soetamisel aktsiisilaost aktsiisikauba saatelehe number, aktsiisilao number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; aktsiisiga maksustamata kütuse vastuvõtmisel ettevõtja teisest tegevuskohast tegevuskoha andmed vastavalt käesoleva paragrahvi lõike 1 punktile 2, saatedokumendi number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; aktsiisiga maksustamata kütuse võõrandamisel laeva varudeks tollideklaratsiooni liik ja aktsepteerimise number, tollideklaratsiooni puudumisel saatedokumendi nimetus ja number ning kütuse võõrandamise kuupäev, isiku nimi, kellele kütus võõrandati, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; aktsiisiga maksustamata kütuse lähetamisel aktsiisilattu aktsiisiseaduse § 26 lõike 1 punktis 8 nimetatud juhul aktsiisilaopidaja number, lähetamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; aktsiisiga maksustamata kütuse üleandmisel ettevõtja teise tegevuskohta tegevuskoha andmed vastavalt käesoleva paragrahvi lõike 1 punktile 2, saatedokumendi number, kütuse üleandmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; aktsiisiga maksustamata kütuse võõrandamisel teisele laevavarustajale viimase energia aktsiisivabastuse loa number, saatedokumendi nimetus ja number, kütuse võõrandamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; aktsiisiga maksustamata kütuse soetamisel teiselt laevavarustajalt viimase energia aktsiisivabastuse loa number, saatedokumendi nimetus ja number, kütuse soetamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt.",
+      "estleg:summary": {
+        "@value": "1(1)Aruandes esitatakse järgmised üldandmed:11)aruande esitaja ärinimi ja kontaktandmed;22)tegevuskoha aadress. Laeva puhul laeva nimi ja registrinumber;33)aruandeperiood ja aasta, mille kohta aruanne esitatakse;44)aruande esitajale väljastatud energia aktsiisivabastuse loa number;55)aruande täitja ees- ja perekonnanimi, ametinimetus ja aruande koostamise kuupäev.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Aruandes esitatakse järgmised üldandmed:11)aruande esitaja ärinimi ja kontaktandmed;22)tegevuskoha aadress. Laeva puhul laeva nimi ja registrinumber;33)aruandeperiood ja aasta, mille kohta aruanne esitatakse;44)aruande esitajale väljastatud energia aktsiisivabastuse loa number;55)aruande täitja ees- ja perekonnanimi, ametinimetus ja aruande koostamise kuupäev. 2(2)Aruandes esitatakse järgmised andmed kütuse kohta:11)aktsiisiga maksustamata kütuse alg- ja lõppjääk kilogrammides, kombineeritud nomenklatuuri (edaspidi KN) alamrubriik ja sellele vastav kirjeldus «Alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse» (edaspidi aktsiisiseadus) kohaselt;22)aktsiisiga maksustamata kütuse importimisel tollideklaratsiooni liik ja aktsepteerimise number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;33)aktsiisiga maksustamata kütuse soetamisel aktsiisilaost aktsiisikauba saatelehe number, aktsiisilao number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;44)aktsiisiga maksustamata kütuse vastuvõtmisel ettevõtja teisest tegevuskohast tegevuskoha andmed vastavalt käesoleva paragrahvi lõike 1 punktile 2, saatedokumendi number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;55)aktsiisiga maksustamata kütuse võõrandamisel laeva varudeks tollideklaratsiooni liik ja aktsepteerimise number, tollideklaratsiooni puudumisel saatedokumendi nimetus ja number ning kütuse võõrandamise kuupäev, isiku nimi, kellele kütus võõrandati, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;66)aktsiisiga maksustamata kütuse lähetamisel aktsiisilattu aktsiisiseaduse § 26 lõike 1 punktis 8 nimetatud juhul aktsiisilaopidaja number, lähetamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;77)aktsiisiga maksustamata kütuse üleandmisel ettevõtja teise tegevuskohta tegevuskoha andmed vastavalt käesoleva paragrahvi lõike 1 punktile 2, saatedokumendi number, kütuse üleandmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;88)aktsiisiga maksustamata kütuse võõrandamisel teisele laevavarustajale viimase energia aktsiisivabastuse loa number, saatedokumendi nimetus ja number, kütuse võõrandamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt;99)aktsiisiga maksustamata kütuse soetamisel teiselt laevavarustajalt viimase energia aktsiisivabastuse loa number, saatedokumendi nimetus ja number, kütuse soetamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt.",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -159,11 +244,72 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_330260_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_330260_Par_3_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_330260_Par_3_v330260"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_330260_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Aruandes esitatakse järgmised üldandmed: 1) aruande esitaja ärinimi ja kontaktandmed; 2) tegevuskoha aadress. Laeva puhul laeva nimi ja registrinumber; 3) aruandeperiood ja aasta, mille kohta aruanne esitatakse; 4) aruande esitajale väljastatud energia aktsiisivabastuse loa number; 5) aruande täitja ees- ja perekonnanimi, ametinimetus ja aruande koostamise kuupäev.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_330260_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_330260_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Aruandes esitatakse järgmised andmed kütuse kohta: 1) aktsiisiga maksustamata kütuse alg- ja lõppjääk kilogrammides, kombineeritud nomenklatuuri (edaspidi KN) alamrubriik ja sellele vastav kirjeldus «Alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse» (edaspidi aktsiisiseadus) kohaselt; 2) aktsiisiga maksustamata kütuse importimisel tollideklaratsiooni liik ja aktsepteerimise number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; 3) aktsiisiga maksustamata kütuse soetamisel aktsiisilaost aktsiisikauba saatelehe number, aktsiisilao number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; 4) aktsiisiga maksustamata kütuse vastuvõtmisel ettevõtja teisest tegevuskohast tegevuskoha andmed vastavalt käesoleva paragrahvi lõike 1 punktile 2, saatedokumendi number, kütuse vastuvõtmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; 5) aktsiisiga maksustamata kütuse võõrandamisel laeva varudeks tollideklaratsiooni liik ja aktsepteerimise number, tollideklaratsiooni puudumisel saatedokumendi nimetus ja number ning kütuse võõrandamise kuupäev, isiku nimi, kellele kütus võõrandati, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; 6) aktsiisiga maksustamata kütuse lähetamisel aktsiisilattu aktsiisiseaduse § 26 lõike 1 punktis 8 nimetatud juhul aktsiisilaopidaja number, lähetamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; 7) aktsiisiga maksustamata kütuse üleandmisel ettevõtja teise tegevuskohta tegevuskoha andmed vastavalt käesoleva paragrahvi lõike 1 punktile 2, saatedokumendi number, kütuse üleandmise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; 8) aktsiisiga maksustamata kütuse võõrandamisel teisele laevavarustajale viimase energia aktsiisivabastuse loa number, saatedokumendi nimetus ja number, kütuse võõrandamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt; 9) aktsiisiga maksustamata kütuse soetamisel teiselt laevavarustajalt viimase energia aktsiisivabastuse loa number, saatedokumendi nimetus ja number, kütuse soetamise kuupäev, kogus kilogrammides, KNi alamrubriik ja sellele vastav kirjeldus aktsiisiseaduse kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_330260_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_330260_Par_4",
@@ -172,13 +318,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 4. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laeva kütusega varustamise aruandes nõutavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_330260_Map"
       },
-      "estleg:summary": "Määrus jõustub 2009. aasta 1. jaanuaril.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Minister Ivari PADAR</b></font> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Kantsler Tea VARRAK</b></font> </td> </tr> </tbody></table>",
-      "estleg:legalText": "Määrus jõustub 2009. aasta 1. jaanuaril.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Minister Ivari PADAR</b></font> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Kantsler Tea VARRAK</b></font> </td> </tr> </tbody></table> Määrus jõustub 2009. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 2009. aasta 1. jaanuaril.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Minister Ivari PADAR</b></font> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Kantsler Tea VARRAK</b></font> </td> </tr> </tbody></table>",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 2009. aasta 1. jaanuaril.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Minister Ivari PADAR</b></font> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Kantsler Tea VARRAK</b></font> </td> </tr> </tbody></table>",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -188,11 +340,29 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_330260_Par_4_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_330260_Par_4_v330260"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_330260_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 2009. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_330260_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     }
   ]
 }

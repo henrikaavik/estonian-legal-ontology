@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:OTEEKR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus",
       "dcterms:title": "Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/79006.xml"
+        "@id": "https://www.riigiteataja.ee/akt/79006"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/79006/xml"
+      },
+      "estleg:globalId": "79006",
+      "eli:id_local": "79006",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "118876",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "0ce6c3ffb2f7cea7d9ddb61fc4128dae9eae963e78f35235a06dbe67ff7101c9",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -51,23 +63,24 @@
           "@id": "http://eurovoc.europa.eu/217"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1998-11-10",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_SIM14_1810"
         }
-      ]
-    },
-    {
-      "@id": "estleg:OTEEKR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_OTEEKR_default"
-        }
-      ]
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_OTEEKR_default",
@@ -76,12 +89,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus",
-      "skos:prefLabel": "§1–3 Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus",
+      "rdfs:label": {
+        "@value": "§1–3 Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:OTEEKR_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:OTEEKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_OTEEKR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:OTEEKR_Par_1",
@@ -90,13 +124,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud õigusabi taotluste edastamise Euroopa kokkulepe./79...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud õigusabi taotluste edastamise Euroopa kokkulepe , m...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OTEEKR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on sõlmitud 1977. aasta 27. jaanuaril Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1998. aasta 25. veebruaril.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on sõlmitud 1977. aasta 27. jaanuaril Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1998. aasta 25. veebruaril.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud õigusabi taotluste edastamise Euroopa kokkulepe , mis on sõlmitud 1977. aasta 27. jaanuaril Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1998. aasta 25. veebruaril.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud õigusabi taotluste edastamise Euroopa kokkulepe , mis on sõlmitud 1977. aasta 27. jaanuaril Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1998. aasta 25. veebruaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OTEEKR_default"
       },
@@ -113,13 +153,13 @@
           "@id": "estleg:ESMKSPR_Par_2"
         },
         {
+          "@id": "estleg:IENKR_Par_1"
+        },
+        {
           "@id": "estleg:euroopa_sotsiaalkindlustuskoodeksi_ratif_Par_1"
         },
         {
           "@id": "estleg:euroopa_stabiilsusmehhanismi_asutamislep_Par_1"
-        },
-        {
-          "@id": "estleg:osamaksete_uhtsesse_kriisilahendusfondi_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -134,10 +174,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on sõlmitud 1977. aasta 27. jaanuaril Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1998. aasta 25. veebruaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud õigusabi taotluste edastamise Euroopa kokkulepe , mis on sõlmitud 1977. aasta 27. jaanuaril Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1998. aasta 25. veebruaril.",
       "estleg:parentProvision": {
         "@id": "estleg:OTEEKR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:OTEEKR_Par_2",
@@ -146,12 +188,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ratifitseerimisel teha selle kokkuleppe artikli 6 lõike 1 punktile b sama kokkul...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ratifitseerimisel teha selle kokkuleppe artikli 6 lõike 1 punktile b sama kokkul...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OTEEKR_Map"
       },
-      "estleg:summary": "Ratifitseerimisel teha selle kokkuleppe artikli 6 lõike 1 punktile b sama kokkuleppe artikli 13 alusel järgmine reservatsioon: Eesti Vabariik deklareerib, et ei aktsepteeri dokumenti, mis on prantsuse keeles või millele on lisatud tõlge prantsuse keelde, kui dokumendil puudub tõlge inglise või eesti keelde.",
+      "estleg:summary": {
+        "@value": "Ratifitseerimisel teha selle kokkuleppe artikli 6 lõike 1 punktile b sama kokkuleppe artikli 13 alusel järgmine reservatsioon: Eesti Vabariik deklareerib, et ei aktsepteeri dokumenti, mis on prantsuse keeles või millele on lisatud tõlge prantsuse keelde, kui dokumendil puudub tõlge inglise või eesti keelde.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerimisel teha selle kokkuleppe artikli 6 lõike 1 punktile b sama kokkuleppe artikli 13 alusel järgmine reservatsioon: Eesti Vabariik deklareerib, et ei aktsepteeri dokumenti, mis on prantsuse keeles või millele on lisatud tõlge prantsuse keelde, kui dokumendil puudub tõlge inglise või eesti keelde.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OTEEKR_default"
@@ -173,10 +221,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerimisel teha selle kokkuleppe artikli 6 lõike 1 punktile b sama kokkuleppe artikli 13 alusel järgmine reservatsioon: Eesti Vabariik deklareerib, et ei aktsepteeri dokumenti, mis on prantsuse keeles või millele on lisatud tõlge prantsuse keelde, kui dokumendil puudub tõlge inglise või eesti keelde.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerimisel teha selle kokkuleppe artikli 6 lõike 1 punktile b sama kokkuleppe artikli 13 alusel järgmine reservatsioon: Eesti Vabariik deklareerib, et ei aktsepteeri dokumenti, mis on prantsuse keeles või millele on lisatud tõlge prantsuse keelde, kui dokumendil puudub tõlge inglise või eesti keelde.",
       "estleg:parentProvision": {
         "@id": "estleg:OTEEKR_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:OTEEKR_Par_3",
@@ -185,12 +235,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Nimetada õigusabi taotlusi vastuvõtvaks keskasutuseks ja edastavaks asutuseks ee...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Nimetada õigusabi taotlusi vastuvõtvaks keskasutuseks ja edastavaks asutuseks ee...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õigusabi taotluste edastamise Euroopa kokkuleppe ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OTEEKR_Map"
       },
-      "estleg:summary": "Nimetada õigusabi taotlusi vastuvõtvaks keskasutuseks ja edastavaks asutuseks eelnimetatud kokkuleppe artikli 2 tähenduses Justiitsministeerium.",
+      "estleg:summary": {
+        "@value": "Nimetada õigusabi taotlusi vastuvõtvaks keskasutuseks ja edastavaks asutuseks eelnimetatud kokkuleppe artikli 2 tähenduses Justiitsministeerium.",
+        "@language": "et"
+      },
       "estleg:legalText": "Nimetada õigusabi taotlusi vastuvõtvaks keskasutuseks ja edastavaks asutuseks eelnimetatud kokkuleppe artikli 2 tähenduses Justiitsministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OTEEKR_default"
@@ -205,32 +261,18 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:EVEISGR_Par_2"
-        },
-        {
-          "@id": "estleg:EVPISGR_Par_2"
-        },
-        {
-          "@id": "estleg:MRRMKPU_Par_3"
-        },
-        {
-          "@id": "estleg:TVKOKU_Par_2"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:OTEEKR_Par_3_v79006"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:OTEEKR_Par_3_v79006"
         }
       ]
     },
@@ -240,10 +282,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Nimetada õigusabi taotlusi vastuvõtvaks keskasutuseks ja edastavaks asutuseks eelnimetatud kokkuleppe artikli 2 tähenduses Justiitsministeerium.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nimetada õigusabi taotlusi vastuvõtvaks keskasutuseks ja edastavaks asutuseks eelnimetatud kokkuleppe artikli 2 tähenduses Justiitsministeerium.",
       "estleg:parentProvision": {
         "@id": "estleg:OTEEKR_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"

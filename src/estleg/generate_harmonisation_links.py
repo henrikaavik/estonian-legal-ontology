@@ -30,8 +30,10 @@ import re
 import shutil
 import sys
 import time
+from collections.abc import Iterable
 from datetime import date as _date
 from datetime import datetime
+from functools import lru_cache
 from pathlib import Path
 
 from estleg.estleg_common import (
@@ -594,6 +596,74 @@ def pick_harmonisation_law_file(celex: str, law_files: list[str]) -> str | None:
     return law_files[0]
 
 
+# #711: the transposition matcher also anchors directives on state (riik) and
+# municipal (kov) REGULATIONS. Their ``law_files`` entries are
+# ``regulations/{riik,kov}/...`` paths relative to ``krr_outputs/``; the peep
+# file name always ends in ``_t<RT terviktekst id>_peep.json`` and the act root
+# is ``estleg:Reg_<tid>_Map``. KOV peeps sit one issuer directory deeper
+# (``regulations/kov/<issuer>/``), and a Riigi Teataja refresh may re-slug a
+# title, so a recorded path that no longer exists is re-resolved by its tid.
+_REGULATION_PEEP_TID_RE = re.compile(r"_t(\d+)_peep\.json$")
+_REGULATION_ROOT_IRI_RE = re.compile(r"^estleg:Reg_(\d+)_Map$")
+
+
+@lru_cache(maxsize=4)
+def _regulation_peep_index(krr_dir: Path) -> dict[str, Path]:
+    """Map RT tid -> regulation peep under ``krr_dir/regulations/**`` (first by path)."""
+    index: dict[str, Path] = {}
+    reg_dir = krr_dir / "regulations"
+    if not reg_dir.is_dir():
+        return index
+    for path in sorted(reg_dir.rglob("*_peep.json"), key=lambda q: q.as_posix()):
+        match = _REGULATION_PEEP_TID_RE.search(path.name)
+        if match is not None:
+            index.setdefault(match.group(1), path)
+    return index
+
+
+def find_regulation_peep(tid_or_iri: str, krr_dir: Path | None = None) -> Path | None:
+    """Return the regulation peep for an RT tid or an ``estleg:Reg_<tid>_Map`` IRI."""
+    match = _REGULATION_ROOT_IRI_RE.match(tid_or_iri)
+    tid = match.group(1) if match else tid_or_iri
+    if not tid.isdigit():
+        return None
+    return _regulation_peep_index(KRR_DIR if krr_dir is None else krr_dir).get(tid)
+
+
+def resolve_harmonisation_file(law_file: str, krr_dir: Path | None = None) -> Path | None:
+    """Resolve a mapping ``law_files`` entry to the peep that carries the act root.
+
+    Law entries are plain ``krr_outputs/``-relative file names and are used as
+    is. A regulation entry (#711) whose recorded path is missing falls back to
+    the ``_t<tid>_peep.json`` lookup under ``regulations/**`` (riik and kov).
+    Returns ``None`` when nothing on disk matches.
+    """
+    base = KRR_DIR if krr_dir is None else krr_dir
+    candidate = base / law_file
+    if candidate.is_file():
+        return candidate
+    match = _REGULATION_PEEP_TID_RE.search(Path(law_file).name)
+    if match is None:
+        return None
+    return find_regulation_peep(match.group(1), base)
+
+
+def harmonisation_write_targets(law_entry: dict, celex: str) -> list[str]:
+    """The file(s) a directive's forward ``estleg:harmonisedWith`` edge is written to.
+
+    Exactly the anchor :func:`pick_harmonisation_law_file` chose for the row
+    (stored as ``anchor_file`` when the row was built), never every entry of
+    ``files``: a multipart law would otherwise carry the edge on all its
+    Parts and undo the #578b VÕS pinning on every run. An entry whose anchor
+    was deliberately dropped (``None``) gets no edge.
+    """
+    if "anchor_file" in law_entry:
+        anchor = law_entry["anchor_file"]
+    else:
+        anchor = pick_harmonisation_law_file(celex, law_entry.get("files", []))
+    return [anchor] if anchor else []
+
+
 def get_law_harmonisation_target_iri(law_file: str) -> str | None:
     """Return the real act-level node IRI for a mapped law file.
 
@@ -604,8 +674,11 @@ def get_law_harmonisation_target_iri(law_file: str) -> str | None:
     an act-level ``@type`` (see ``_ACT_LEVEL_TYPES``); otherwise return
     ``None`` and let the caller skip the law (and log it in the report).
     """
+    path = resolve_harmonisation_file(law_file)
+    if path is None:
+        return None
     try:
-        data = load_json(KRR_DIR / law_file)
+        data = load_json(path)
     except Exception:
         return None
 
@@ -844,6 +917,37 @@ def _check_mapping_freshness(
         sys.exit(1)
 
 
+def clear_harmonised_with(peep_files: Iterable[Path]) -> int:
+    """Strip ``estleg:harmonisedWith`` from every node of ``peep_files``.
+
+    Run before each regeneration so an act that lost its directive mapping
+    does not keep a stale forward edge. Covers law peeps and regulation peeps
+    (riik + kov, #711). A cheap substring test skips the ~12k KOV files that
+    carry no edge without parsing them. Returns the number of files rewritten.
+    """
+    cleared = 0
+    for peep_file in peep_files:
+        try:
+            text = Path(peep_file).read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        if '"estleg:harmonisedWith"' not in text:
+            continue
+        try:
+            doc = json.loads(text)
+        except json.JSONDecodeError:
+            continue
+        modified = False
+        for node in doc.get("@graph", []):
+            if isinstance(node, dict) and "estleg:harmonisedWith" in node:
+                del node["estleg:harmonisedWith"]
+                modified = True
+        if modified:
+            save_json(Path(peep_file), doc)
+            cleared += 1
+    return cleared
+
+
 def main():
     args = parse_args()
     if args.patch_combined:
@@ -868,21 +972,9 @@ def main():
 
     # --- Step 0: Clear existing harmonisation data ---
     print("\n--- Clearing existing harmonisation data ---")
-    cleared = 0
-    for peep_file in iter_peep_files(include_kov=False):  # KOV does not apply
-        try:
-            with open(peep_file, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-            modified = False
-            for node in doc.get("@graph", []):
-                if "estleg:harmonisedWith" in node:
-                    del node["estleg:harmonisedWith"]
-                    modified = True
-            if modified:
-                save_json(peep_file, doc)
-                cleared += 1
-        except Exception:
-            continue
+    # #711: regulation roots (riik AND kov) are harmonisation anchors too, so
+    # the stale-edge sweep covers every managed peep, not just laws.
+    cleared = clear_harmonised_with(iter_peep_files(include_kov=True))
     print(f"  Cleared harmonisedWith from {cleared} files")
 
     # Clear old per-directive harmonisation files
@@ -946,6 +1038,10 @@ def main():
             # contributes no harmonisedWith/harmonises edge.
             continue
         if law_entry["files"]:
+            # The picked anchor is the ONLY file that receives the forward
+            # edge (#578b): writing to every Part of a multipart law put all
+            # seven VÕS directives on all nine Parts on every re-run.
+            law_entry["anchor_file"] = anchor_file
             resolved = get_law_harmonisation_target_iri(anchor_file)
             law_entry["iri"] = resolved
             if not resolved:
@@ -1108,10 +1204,16 @@ def main():
             }
             harmonisation_data.append(harmonisation_entry)
 
-            # Track which law files need harmonisation links
+            # Track which law files need harmonisation links — only the
+            # picked anchor of each row, never every file of the law.
             for law in estonian_laws:
-                for law_file in law.get("files", []):
-                    filepath_str = str(KRR_DIR / law_file)
+                for law_file in harmonisation_write_targets(law, celex_dir):
+                    # #711: regulation anchors resolve under regulations/**
+                    # (riik + kov), falling back to the _t<tid> lookup.
+                    resolved_path = resolve_harmonisation_file(law_file)
+                    if resolved_path is None:
+                        continue
+                    filepath_str = str(resolved_path)
                     if filepath_str not in law_file_harmonisation:
                         law_file_harmonisation[filepath_str] = []
                     if harmonisation_id not in law_file_harmonisation[filepath_str]:

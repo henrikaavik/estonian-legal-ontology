@@ -5,63 +5,61 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:KRA_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Kõrgemate riigiteenijate ametipalkade seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Kõrgemate riigiteenijate ametipalkade seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Kõrgemate riigiteenijate ametipalkade seadus",
-      "dcterms:title": [
-        {
-          "@value": "Kõrgemate riigiteenijate ametipalkade seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Salaries of Higher State Servants Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/104012024003.xml"
+        "@id": "https://www.riigiteataja.ee/akt/130062026128"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/130062026128/xml"
+      },
+      "estleg:globalId": "130062026128",
+      "eli:id_local": "130062026128",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
-      "estleg:hasProposedAmendment": [
-        {
-          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU20_0343_KRA"
-        },
-        {
-          "@id": "estleg:AmendmentLink_Draft_RAM23_1245_KRA"
-        },
-        {
-          "@id": "estleg:AmendmentLink_Draft_JDM24_0921_KRA"
-        }
-      ],
+      "estleg:terviktekstId": "339952",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "a0d9017295376e88875854c0db910aa0394230d8584c84fc26665c5188c9eb47",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2024-03-15",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/504032024001"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/504032024001"
       },
       "estleg:references": [
         {
           "@id": "estleg:KRA_Par_2"
+        },
+        {
+          "@id": "estleg:KRA_Par_2_1"
         },
         {
           "@id": "estleg:KRA_Par_2_Lg_1"
@@ -71,47 +69,6 @@
         },
         {
           "@id": "estleg:KRA_Par_2_Lg_2"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:KRA_Par_1"
-        },
-        {
-          "@id": "estleg:KRA_Par_1_Lg_2"
-        },
-        {
-          "@id": "estleg:KRA_Par_2_1"
-        },
-        {
-          "@id": "estleg:KRA_Par_2_1_Lg_1"
-        },
-        {
-          "@id": "estleg:Reg_1062807_Par_2"
-        },
-        {
-          "@id": "estleg:KRA_Par_4_1"
-        },
-        {
-          "@id": "estleg:KRA_Par_4_1_Lg_1"
-        },
-        {
-          "@id": "estleg:KRA_Par_17_2"
-        },
-        {
-          "@id": "estleg:KRA_Par_17_2_Lg_1"
-        },
-        {
-          "@id": "estleg:KRA_Par_17_2_Lg_4"
-        },
-        {
-          "@id": "estleg:KRA_Par_19"
-        },
-        {
-          "@id": "estleg:KRA_Par_19_Lg_1_1"
-        },
-        {
-          "@id": "estleg:KRA_Par_19_Lg_2"
         }
       ],
       "dcterms:subject": [
@@ -136,6 +93,19 @@
           "@id": "http://eurovoc.europa.eu/4050"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2012-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2024-03-15",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2026-06-30",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_RAM23_1245"
@@ -152,17 +122,137 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU20_0343"
         }
-      ]
-    },
-    {
-      "@id": "estleg:KRA_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Kõrgemate riigiteenijate ametipalkade seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_KRA_default"
+          "@id": "estleg:Amendment_KRA_bb26e052ec"
+        },
+        {
+          "@id": "estleg:Amendment_KRA_3ea83e5800"
+        },
+        {
+          "@id": "estleg:Amendment_KRA_b0494fd263"
+        },
+        {
+          "@id": "estleg:Amendment_KRA_e61ff1eace"
+        },
+        {
+          "@id": "estleg:Amendment_KRA_2e47a88f47"
+        },
+        {
+          "@id": "estleg:Amendment_KRA_a4b69463de"
+        },
+        {
+          "@id": "estleg:Amendment_KRA_49964d8b8a"
+        },
+        {
+          "@id": "estleg:Amendment_KRA_f303bbbcd0"
+        },
+        {
+          "@id": "estleg:Amendment_KRA_4a73250d47"
+        },
+        {
+          "@id": "estleg:Amendment_KRA_6661abebd8"
+        }
+      ],
+      "estleg:hasProposedAmendment": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_JDM17_0338_KRA"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_JDM17_0981_KRA"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU20_0343_KRA"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RAM23_1245_KRA"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_JDM24_0921_KRA"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KRA_Map"
+        },
+        {
+          "@id": "estleg:KRA_Par_1"
+        },
+        {
+          "@id": "estleg:KRA_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:KRA_Par_2_1"
+        },
+        {
+          "@id": "estleg:KRA_Par_2_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1062807_Map"
+        },
+        {
+          "@id": "estleg:Reg_1062807_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_1062807_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:KS_Map"
+        },
+        {
+          "@id": "estleg:KS_Par_132_7"
+        },
+        {
+          "@id": "estleg:KS_Par_132_7_Lg_2"
+        },
+        {
+          "@id": "estleg:KRA_Par_2"
+        },
+        {
+          "@id": "estleg:KRA_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:KRA_Par_17_2"
+        },
+        {
+          "@id": "estleg:KRA_Par_17_2_Lg_2"
+        },
+        {
+          "@id": "estleg:ProkS_Par_60_3_Lg_4"
+        },
+        {
+          "@id": "estleg:KRA_Par_4_1"
+        },
+        {
+          "@id": "estleg:KRA_Par_4_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KRA_Par_17_2_Lg_1"
+        },
+        {
+          "@id": "estleg:KRA_Par_17_2_Lg_4"
+        },
+        {
+          "@id": "estleg:KRA_Par_19"
+        },
+        {
+          "@id": "estleg:KRA_Par_19_Lg_1_1"
+        },
+        {
+          "@id": "estleg:KRA_Par_19_Lg_2"
+        },
+        {
+          "@id": "estleg:KORKS_Map"
+        },
+        {
+          "@id": "estleg:KORKS_Par_222"
+        },
+        {
+          "@id": "estleg:KS_Par_132_6"
+        },
+        {
+          "@id": "estleg:KS_Par_132_6_Lg_1_1"
         }
       ]
     },
@@ -173,12 +263,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–19 Kõrgemate riigiteenijate ametipalkade seadus",
-      "skos:prefLabel": "§1–19 Kõrgemate riigiteenijate ametipalkade seadus",
+      "rdfs:label": {
+        "@value": "§1–19 Kõrgemate riigiteenijate ametipalkade seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–19 Kõrgemate riigiteenijate ametipalkade seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KRA_TopicScheme"
       },
-      "estleg:provisionCount": 15
+      "estleg:provisionCount": 19
+    },
+    {
+      "@id": "estleg:KRA_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Kõrgemate riigiteenijate ametipalkade seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_KRA_default"
+        }
+      ]
     },
     {
       "@id": "estleg:KRA_Par_1",
@@ -187,12 +298,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Kõrgemate riigiteenijate ametipalk",
+      "rdfs:label": {
+        "@value": "§ 1. Kõrgemate riigiteenijate ametipalk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus reguleerib kõrgemate riigiteenijate ametipalka. (2) Kõrgemate riigiteenijate ametipalk on käesoleva seaduse §-s 2 nimetatud kõrgeima palgamäära ja §-s 3 sätestatud koefitsiendi korrutis.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus reguleerib kõrgemate riigiteenijate ametipalka. (2) Kõrgemate riigiteenijate ametipalk on käesoleva seaduse §-s 2 nimetatud kõrgeima palgamäära ja §-s 3 sätestatud koefitsiendi korrutis.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus reguleerib kõrgemate riigiteenijate ametipalka. (2) Kõrgemate riigiteenijate ametipalk on käesoleva seaduse §-s 2 nimetatud kõrgeima palgamäära ja §-s 3 sätestatud koefitsiendi korrutis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
@@ -251,6 +368,9 @@
       ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:KS_Map"
+        },
+        {
           "@id": "estleg:KS_Par_132_6"
         },
         {
@@ -268,13 +388,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kõrgemate riigiteenijate kõrgeim palgamäär",
+      "rdfs:label": {
+        "@value": "§ 2. Kõrgemate riigiteenijate kõrgeim palgamäär",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "(1) Kõrgemate riigiteenijate kõrgeim palgamäär on 5200 eurot. (2) Peale käesoleva seaduse §-s 21 sätestatud indekseerimist loetakse järgmise aasta kõrgeimaks palgamääraks eelmisel aastal indekseerimise tulemusel saadud kõrgeim palgamäär. (3) Kehtetu - (4) Kehtetu - (5) Kehtetu -",
-      "estleg:legalText": "(1) Kõrgemate riigiteenijate kõrgeim palgamäär on 5200 eurot. (2) Peale käesoleva seaduse §-s 21 sätestatud indekseerimist loetakse järgmise aasta kõrgeimaks palgamääraks eelmisel aastal indekseerimise tulemusel saadud kõrgeim palgamäär. (3) Kehtetu - (4) Kehtetu - (5) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Kõrgemate riigiteenijate kõrgeim palgamäär on 5200 eurot. (2) Peale käesoleva seaduse §-s 2¹ sätestatud indekseerimist loetakse järgmise aasta kõrgeimaks palgamääraks eelmisel aastal indekseerimise tulemusel saadud kõrgeim palgamäär.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kõrgemate riigiteenijate kõrgeim palgamäär on 5200 eurot. (2) Peale käesoleva seaduse §-s 2¹ sätestatud indekseerimist loetakse järgmise aasta kõrgeimaks palgamääraks eelmisel aastal indekseerimise tulemusel saadud kõrgeim palgamäär.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
@@ -284,18 +410,17 @@
         },
         {
           "@id": "estleg:KRA_Par_2_Lg_2"
-        },
+        }
+      ],
+      "estleg:references": [
         {
-          "@id": "estleg:KRA_Par_2_Lg_3"
-        },
-        {
-          "@id": "estleg:KRA_Par_2_Lg_4"
-        },
-        {
-          "@id": "estleg:KRA_Par_2_Lg_5"
+          "@id": "estleg:KRA_Par_2_1"
         }
       ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:KRA_Map"
+        },
         {
           "@id": "estleg:KRA_Par_1"
         },
@@ -309,7 +434,13 @@
           "@id": "estleg:KRA_Par_2_1_Lg_1"
         },
         {
+          "@id": "estleg:Reg_1062807_Map"
+        },
+        {
           "@id": "estleg:Reg_1062807_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_1062807_Par_2_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -341,6 +472,9 @@
           "@id": "estleg:ASeS_Par_5_Lg_6"
         },
         {
+          "@id": "estleg:KRA_Map"
+        },
+        {
           "@id": "estleg:KRA_Par_4"
         },
         {
@@ -355,12 +489,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Peale käesoleva seaduse §-s 21 sätestatud indekseerimist loetakse järgmise aasta kõrgeimaks palgamääraks eelmisel aastal indekseerimise tulemusel saadud kõrgeim palgamäär.",
+      "estleg:legalText": "(2) Peale käesoleva seaduse §-s 2¹ sätestatud indekseerimist loetakse järgmise aasta kõrgeimaks palgamääraks eelmisel aastal indekseerimise tulemusel saadud kõrgeim palgamäär.",
       "estleg:parentProvision": {
         "@id": "estleg:KRA_Par_2"
       },
       "rdfs:label": "§ 2 lg 2",
+      "estleg:references": [
+        {
+          "@id": "estleg:KRA_Par_2_1"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:KRA_Map"
+        },
         {
           "@id": "estleg:KRA_Par_17_1"
         },
@@ -370,57 +512,24 @@
       ]
     },
     {
-      "@id": "estleg:KRA_Par_2_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:KRA_Par_2"
-      },
-      "rdfs:label": "§ 2 lg 3"
-    },
-    {
-      "@id": "estleg:KRA_Par_2_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:KRA_Par_2"
-      },
-      "rdfs:label": "§ 2 lg 4"
-    },
-    {
-      "@id": "estleg:KRA_Par_2_Lg_5",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:KRA_Par_2"
-      },
-      "rdfs:label": "§ 2 lg 5"
-    },
-    {
       "@id": "estleg:KRA_Par_2_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2¹.",
-      "rdfs:label": "§ 2¹. Kõrgemate riigiteenijate kõrgeima palgamäära indekseerimine",
+      "rdfs:label": {
+        "@value": "§ 2¹. Kõrgemate riigiteenijate kõrgeima palgamäära indekseerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse §-s 2 nimetatud kõrgeim palgamäär indekseeritakse iga kalendriaasta 1. aprilliks kõrgeima palgamäära indeksiga, mille väärtus sõltub 20 protsenti tarbijahinnaindeksi aastasest kasvust ja 80 protsenti sotsiaalmaksu pensionikindlustuse osa laekumise aastasest kasvust. Indeksit väljendatakse täpsusega kolm kohta pärast koma. (2) Indeksi arvutamisel korrutatakse tarbijahinnaindeksi aastane kasv 0,2-ga ja sotsiaalmaksu pensionikindlustuse osa laekumise aastane kasv 0,8-ga ning",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse §-s 2 nimetatud kõrgeim palgamäär indekseeritakse iga kalendriaasta 1. aprilliks kõrgeima palgamäära indeksiga, mille väärtus sõltub 20 protsenti tarbijahinnaindeksi aastasest kasvust ja 80 protsenti sotsiaalmaksu pensionikindlustuse osa laekumise aastasest kasvust. Indeksit väljendatakse täpsusega kolm kohta pärast koma. (2) Indeksi arvutamisel korrutatakse tarbijahinnaindeksi aastane kasv 0,2-ga ja sotsiaalmaksu pensionikindlustuse osa laekumise aastane kasv 0,8-ga ning",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse §-s 2 nimetatud kõrgeim palgamäär indekseeritakse iga kalendriaasta 1. aprilliks kõrgeima palgamäära indeksiga, mille väärtus sõltub 20 protsenti tarbijahinnaindeksi aastasest kasvust ja 80 protsenti sotsiaalmaksu pensionikindlustuse osa laekumise aastasest kasvust. Indeksit väljendatakse täpsusega kolm kohta pärast koma. (2) Indeksi arvutamisel korrutatakse tarbijahinnaindeksi aastane kasv 0,2-ga ja sotsiaalmaksu pensionikindlustuse osa laekumise aastane kasv 0,8-ga ning saadud korrutised liidetakse. (3) Tarbijahinnaindeksi aastane kasv leitakse eelmise kalendriaasta tarbijahinnaindeksi väärtuse jagamisel üle-eelmise kalendriaasta tarbijahinnaindeksi väärtusega, lähtudes Statistikaameti ametlikult avaldatud tarbijahinnaindeksi väärtustest. (4) Sotsiaalmaksu pensionikindlustuse osa laekumise aastane kasv leitakse eelmise kalendriaasta sotsiaalmaksu pensionikindlustuse osa kogusumma jagamisel üle-eelmise kalendriaasta sotsiaalmaksu pensionikindlustuse osa kogusummaga, lähtudes Rahandusministeeriumi andmetest sotsiaalmaksu pensionikindlustuse osa laekumise kohta. (5) Tarbijahinnaindeksi ja sotsiaalmaksu laekumise aastast kasvu väljendatakse täpsusega kolm kohta pärast koma. (6) Käesoleva paragrahvi lõikes 1 nimetatud kõrgeima palgamäära indeksi avaldab Rahandusministeerium oma veebilehel iga kalendriaasta 15. märtsiks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
@@ -450,11 +559,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:RPKS_Par_26"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -464,17 +568,51 @@
           "@id": "estleg:KRA_Par_2"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:KRA_Par_2_1_v128122017011"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_statistikaamet"
         },
         {
           "@id": "estleg:Institution_rahandusministeerium"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RPKS_Par_26"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KS_Map"
+        },
+        {
+          "@id": "estleg:KS_Par_132_7"
+        },
+        {
+          "@id": "estleg:KS_Par_132_7_Lg_2"
+        },
+        {
+          "@id": "estleg:KRA_Map"
+        },
+        {
+          "@id": "estleg:KRA_Par_2"
+        },
+        {
+          "@id": "estleg:KRA_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:KRA_Par_17_2"
+        },
+        {
+          "@id": "estleg:KRA_Par_17_2_Lg_2"
+        },
+        {
+          "@id": "estleg:ProkS_Par_60_3_Lg_4"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:KRA_Par_2_1_v128122017011"
         }
       ]
     },
@@ -619,13 +757,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kõrgemate riigiteenijate ametipalga koefitsiendid",
+      "rdfs:label": {
+        "@value": "§ 3. Kõrgemate riigiteenijate ametipalga koefitsiendid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi ametipalga koefitsient on 1,0. (2) Riigikogu esimehe ametipalga koefitsient on 1,0. (3) Peaministri ametipalga koefitsient on 1,0. (4) Riigikohtu esimehe ametipalga koefitsient on 1,0. (5) Riigikogu aseesimehe ametipalga koefitsient on 0,85. (6) Riigikontrolöri ametipalga koefitsient on 0,85. (7) Õiguskantsleri ametipalga koefitsient on 0,85. (8) Riigikohtu liikme ametipalga koefitsient on 0,85. (8¹) Riigi peaprokuröri ametipalga koefitsient on 0,85.",
-      "estleg:legalText": "(1) Vabariigi Presidendi ametipalga koefitsient on 1,0. (2) Riigikogu esimehe ametipalga koefitsient on 1,0. (3) Peaministri ametipalga koefitsient on 1,0. (4) Riigikohtu esimehe ametipalga koefitsient on 1,0. (5) Riigikogu aseesimehe ametipalga koefitsient on 0,85. (6) Riigikontrolöri ametipalga koefitsient on 0,85. (7) Õiguskantsleri ametipalga koefitsient on 0,85. (8) Riigikohtu liikme ametipalga koefitsient on 0,85. (8¹) Riigi peaprokuröri ametipalga koefitsient on 0,85. (9) Ministri ametipalga koefitsient on 0,85. (10) Riigisekretäri ametipalga koefitsient on 0,85. (11) Riigikogu komisjoni esimehe ja fraktsiooni esimehe ametipalga koefitsient on 0,85. (12) Välja jäetud - (13) Riigikogu komisjoni aseesimehe ja fraktsiooni aseesimehe ametipalga koefitsient on 0,75. (14) Ringkonnakohtu kohtuniku ametipalga koefitsient on 0,75. (15) Riigikogu liikme ametipalga koefitsient on 0,65. (16) Maa- ja halduskohtu kohtuniku ametipalga koefitsient on 0,65. (17) Kehtetu - (18) Riikliku lepitaja ametipalga koefitsient on 0,55. (19) Soolise võrdõiguslikkuse ja võrdse kohtlemise voliniku ametipalga koefitsient on 0,55. (20) Eesti Panga nõukogu esimehe ametipalga koefitsient on 0,35. (21) Eesti Panga nõukogu liikme ametipalga koefitsient on 0,25.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi ametipalga koefitsient on 1,0. (2) Riigikogu esimehe ametipalga koefitsient on 1,0. (3) Peaministri ametipalga koefitsient on 1,0. (4) Riigikohtu esimehe ametipalga koefitsient on 1,0. (5) Riigikogu aseesimehe ametipalga koefitsient on 0,85. (6) Riigikontrolöri ametipalga koefitsient on 0,85. (7) Õiguskantsleri ametipalga koefitsient on 0,85. (8) Riigikohtu liikme ametipalga koefitsient on 0,85. (8¹) Riigi peaprokuröri ametipalga koefitsient on 0,85.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vabariigi Presidendi ametipalga koefitsient on 1,0. (2) Riigikogu esimehe ametipalga koefitsient on 1,0. (3) Peaministri ametipalga koefitsient on 1,0. (4) Riigikohtu esimehe ametipalga koefitsient on 1,0. (5) Riigikogu aseesimehe ametipalga koefitsient on 0,85. (6) Riigikontrolöri ametipalga koefitsient on 0,85. (7) Õiguskantsleri ametipalga koefitsient on 0,85. (8) Riigikohtu liikme ametipalga koefitsient on 0,85. (8¹) Riigi peaprokuröri ametipalga koefitsient on 0,85. (9) Ministri ametipalga koefitsient on 0,85. (10) Riigisekretäri ametipalga koefitsient on 0,85. (11) Riigikogu komisjoni esimehe ja fraktsiooni esimehe ametipalga koefitsient on 0,85. (13) Riigikogu komisjoni aseesimehe ja fraktsiooni aseesimehe ametipalga koefitsient on 0,75. (14) Ringkonnakohtu kohtuniku ametipalga koefitsient on 0,75. (15) Riigikogu liikme ametipalga koefitsient on 0,65. (16) Maa- ja halduskohtu kohtuniku ametipalga koefitsient on 0,65. (18) Riikliku lepitaja ametipalga koefitsient on 0,55. (19) Soolise võrdõiguslikkuse ja võrdse kohtlemise voliniku ametipalga koefitsient on 0,55. (20) Eesti Panga nõukogu esimehe ametipalga koefitsient on 0,35. (21) Eesti Panga nõukogu liikme ametipalga koefitsient on 0,25.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
@@ -667,9 +811,6 @@
           "@id": "estleg:KRA_Par_3_Lg_11"
         },
         {
-          "@id": "estleg:KRA_Par_3_Lg_12"
-        },
-        {
           "@id": "estleg:KRA_Par_3_Lg_13"
         },
         {
@@ -680,9 +821,6 @@
         },
         {
           "@id": "estleg:KRA_Par_3_Lg_16"
-        },
-        {
-          "@id": "estleg:KRA_Par_3_Lg_17"
         },
         {
           "@id": "estleg:KRA_Par_3_Lg_18"
@@ -705,22 +843,48 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:NRAPS_Par_2"
-        },
-        {
-          "@id": "estleg:NRAPS_Par_7"
-        },
-        {
-          "@id": "estleg:eesti_vabariigi_pohiseadus_Par_150"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_peaminister"
+        },
+        {
+          "@id": "estleg:Institution_riigikohus"
+        },
+        {
+          "@id": "estleg:Institution_ringkonnakohus"
+        },
+        {
+          "@id": "estleg:Institution_halduskohus"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KRIMIN_2_Par_376"
+        },
+        {
+          "@id": "estleg:KRIMIN_2_Par_377"
+        },
+        {
+          "@id": "estleg:KRIMIN_2_Par_378"
+        },
+        {
+          "@id": "estleg:KRIMIN_Par_121_137"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:KRA_Map"
+        },
         {
           "@id": "estleg:KRA_Par_4_1"
         },
@@ -755,26 +919,6 @@
         },
         {
           "@id": "estleg:KRA_Par_3_v128122017010"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigipresident"
-        },
-        {
-          "@id": "estleg:Institution_riigikogu"
-        },
-        {
-          "@id": "estleg:Institution_peaminister"
-        },
-        {
-          "@id": "estleg:Institution_riigikohus"
-        },
-        {
-          "@id": "estleg:Institution_ringkonnakohus"
-        },
-        {
-          "@id": "estleg:Institution_halduskohus"
         }
       ]
     },
@@ -997,19 +1141,6 @@
       ]
     },
     {
-      "@id": "estleg:KRA_Par_3_Lg_12",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "12",
-      "estleg:legalText": "(12) Välja jäetud -",
-      "estleg:parentProvision": {
-        "@id": "estleg:KRA_Par_3"
-      },
-      "rdfs:label": "§ 3 lg 12"
-    },
-    {
       "@id": "estleg:KRA_Par_3_Lg_13",
       "@type": [
         "estleg:Subsection",
@@ -1118,19 +1249,6 @@
       ]
     },
     {
-      "@id": "estleg:KRA_Par_3_Lg_17",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "17",
-      "estleg:legalText": "(17) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:KRA_Par_3"
-      },
-      "rdfs:label": "§ 3 lg 17"
-    },
-    {
       "@id": "estleg:KRA_Par_3_Lg_18",
       "@type": [
         "estleg:Subsection",
@@ -1189,12 +1307,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kõrgemate riigiteenijate palgamäära muutmine",
+      "rdfs:label": {
+        "@value": "§ 4. Kõrgemate riigiteenijate palgamäära muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "Käesoleva seaduse § 2 lõikes 1 sätestatud kõrgeima palgamäära muutus jõustub Riigikogu järgmise koosseisu volituste alguspäeval.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse § 2 lõikes 1 sätestatud kõrgeima palgamäära muutus jõustub Riigikogu järgmise koosseisu volituste alguspäeval.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse § 2 lõikes 1 sätestatud kõrgeima palgamäära muutus jõustub Riigikogu järgmise koosseisu volituste alguspäeval.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
@@ -1218,17 +1342,17 @@
           "@id": "estleg:KRA_Par_2_Lg_1"
         }
       ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:KRA_Par_4_v128122011047"
         },
         {
           "@id": "estleg:KRA_Par_4_v128122017010"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_riigikogu"
         }
       ]
     },
@@ -1238,10 +1362,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse § 2 lõikes 1 sätestatud kõrgeima palgamäära muutus jõustub Riigikogu järgmise koosseisu volituste alguspäeval.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 2 lõikes 1 sätestatud kõrgeima palgamäära muutus jõustub Riigikogu järgmise koosseisu volituste alguspäeval.",
       "estleg:parentProvision": {
         "@id": "estleg:KRA_Par_4"
       },
+      "rdfs:label": "§ 4 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1269,13 +1395,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4¹.",
-      "rdfs:label": "§ 4¹. Kõrgemate riigiteenijate ametipalkade koefitsientide vähendamine kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal",
+      "rdfs:label": {
+        "@value": "§ 4¹. Kõrgemate riigiteenijate ametipalkade koefitsientide vähendamine riigikaitselise kriisiolukorra ajal",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "(1) Kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal, kui riigi julgeoleku tagamise huvides on vaja riigieelarve seadusesse teha muudatus, mille tagajärjel vähendatakse riigi eelarvest makstavaid töötasusid, on Vabariigi Valitsusel õigus teha Riigikogule ettepanek käesoleva seaduse § 3 lõigetes 1, 3, 4, 6–10, 12, 14 ja 16–21 sätestatud koefitsientide ajutiseks vähendamiseks. (2) Vabariigi Valitsuse ettepanekus esitatakse koefitsientide vähendamise ulatus, võttes proportsionaalselt arvesse",
-      "estleg:legalText": "(1) Kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal, kui riigi julgeoleku tagamise huvides on vaja riigieelarve seadusesse teha muudatus, mille tagajärjel vähendatakse riigi eelarvest makstavaid töötasusid, on Vabariigi Valitsusel õigus teha Riigikogule ettepanek käesoleva seaduse § 3 lõigetes 1, 3, 4, 6–10, 12, 14 ja 16–21 sätestatud koefitsientide ajutiseks vähendamiseks. (2) Vabariigi Valitsuse ettepanekus esitatakse koefitsientide vähendamise ulatus, võttes proportsionaalselt arvesse riigieelarvest makstavate töötasude kogusumma vähenemise ulatust. (3) Riigikogu otsustab koefitsientide vähendamise, vähendamise ulatuse ja otsuse kehtivuse aja esimesel võimalusel Vabariigi Valitsuse ettepanekust arvates. (4) Riigikogu otsus jõustub otsusele järgneva kalendrikuu esimesel kuupäeval.",
+      "estleg:summary": {
+        "@value": "(1) Riigikaitselise kriisiolukorra ajal, kui riigi julgeoleku tagamise huvides on vaja riigieelarve seadusesse teha muudatus, mille tagajärjel vähendatakse riigi eelarvest makstavaid töötasusid, on Vabariigi Valitsusel õigus teha Riigikogule ettepanek käesoleva seaduse § 3 lõigetes 1, 3, 4, 6–10, 12, 14 ja 16–21 sätestatud koefitsientide ajutiseks vähendamiseks. (2) Vabariigi Valitsuse ettepanekus esitatakse koefitsientide vähendamise ulatus, võttes proportsionaalselt arvesse riigieelarvest",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Riigikaitselise kriisiolukorra ajal, kui riigi julgeoleku tagamise huvides on vaja riigieelarve seadusesse teha muudatus, mille tagajärjel vähendatakse riigi eelarvest makstavaid töötasusid, on Vabariigi Valitsusel õigus teha Riigikogule ettepanek käesoleva seaduse § 3 lõigetes 1, 3, 4, 6–10, 12, 14 ja 16–21 sätestatud koefitsientide ajutiseks vähendamiseks. (2) Vabariigi Valitsuse ettepanekus esitatakse koefitsientide vähendamise ulatus, võttes proportsionaalselt arvesse riigieelarvest makstavate töötasude kogusumma vähenemise ulatust. (3) Riigikogu otsustab koefitsientide vähendamise, vähendamise ulatuse ja otsuse kehtivuse aja esimesel võimalusel Vabariigi Valitsuse ettepanekust arvates. (4) Riigikogu otsus jõustub otsusele järgneva kalendrikuu esimesel kuupäeval.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
@@ -1307,17 +1439,25 @@
           "@id": "estleg:KRA_Par_3"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:KRA_Par_4_1_v112032015029"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         },
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KORKS_Map"
+        },
+        {
+          "@id": "estleg:KORKS_Par_222"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:KRA_Par_4_1_v112032015029"
         }
       ]
     },
@@ -1328,7 +1468,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal, kui riigi julgeoleku tagamise huvides on vaja riigieelarve seadusesse teha muudatus, mille tagajärjel vähendatakse riigi eelarvest makstavaid töötasusid, on Vabariigi Valitsusel õigus teha Riigikogule ettepanek käesoleva seaduse § 3 lõigetes 1, 3, 4, 6–10, 12, 14 ja 16–21 sätestatud koefitsientide ajutiseks vähendamiseks.",
+      "estleg:legalText": "(1) Riigikaitselise kriisiolukorra ajal, kui riigi julgeoleku tagamise huvides on vaja riigieelarve seadusesse teha muudatus, mille tagajärjel vähendatakse riigi eelarvest makstavaid töötasusid, on Vabariigi Valitsusel õigus teha Riigikogule ettepanek käesoleva seaduse § 3 lõigetes 1, 3, 4, 6–10, 12, 14 ja 16–21 sätestatud koefitsientide ajutiseks vähendamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:KRA_Par_4_1"
       },
@@ -1447,16 +1587,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. [Välja jäetud -]",
+      "rdfs:label": {
+        "@value": "§ 5.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "Välja jäetud -",
-      "estleg:legalText": "Välja jäetud -",
+      "estleg:summary": {
+        "@value": "§ 5.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
+      "estleg:provisionOmitted": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:KRA_Par_5_v128122011047"
@@ -1476,12 +1622,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 6. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
@@ -1499,16 +1651,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. [Välja jäetud -]",
+      "rdfs:label": {
+        "@value": "§ 7.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "Välja jäetud -",
-      "estleg:legalText": "Välja jäetud -",
+      "estleg:summary": {
+        "@value": "§ 7.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
+      "estleg:provisionOmitted": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:KRA_Par_7_v128122011047"
@@ -1528,15 +1686,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8.",
+      "rdfs:label": {
+        "@value": "§ 8. [–]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
+      "estleg:summary": "§ 8.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
-      "estleg:summary": "§ 8."
+      "estleg:provisionOmitted": true
     },
     {
       "@id": "estleg:KRA_Par_9",
@@ -1545,12 +1707,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 9. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
@@ -1568,16 +1736,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. [Välja jäetud -]",
+      "rdfs:label": {
+        "@value": "§ 10.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "Välja jäetud -",
-      "estleg:legalText": "Välja jäetud -",
+      "estleg:summary": {
+        "@value": "§ 10.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
+      "estleg:provisionOmitted": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:KRA_Par_10_v129122012006"
@@ -1597,15 +1771,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11.",
+      "rdfs:label": {
+        "@value": "§ 11. [–]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
+      "estleg:summary": "§ 11.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
-      "estleg:summary": "§ 11."
+      "estleg:provisionOmitted": true
     },
     {
       "@id": "estleg:KRA_Par_16",
@@ -1614,12 +1792,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 16. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
@@ -1637,16 +1821,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Kõrgemate riigiteenijate kõrgeima palgamäära indekseerimise rakendamine",
+      "rdfs:label": {
+        "@value": "§ 17. Kõrgemate riigiteenijate kõrgeima palgamäära indekseerimise rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 17. Kõrgemate riigiteenijate kõrgeima palgamäära indekseerimise rakendamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:KRA_Par_17_v128122011047"
@@ -1666,12 +1856,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17¹.",
-      "rdfs:label": "§ 17¹. Indekseerimise tulemusena saadud kõrgeima palgamäära kohaldamise erisus",
+      "rdfs:label": {
+        "@value": "§ 17¹. Indekseerimise tulemusena saadud kõrgeima palgamäära kohaldamise erisus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 2 lõikes 2 sätestatud indekseerimise tulemusel saadud kõrgeimat palgamäära rakendatakse § 3 lõigetes 1–3, 5, 9, 11, 13 ja 15 nimetatud isikute suhtes alates Riigikogu XIV koosseisu volituste alguspäevast. (2) Käesoleva paragrahvi lõikes 1 viidatud isikute ametipalga arvutamisel kuni Riigikogu XIV koosseisu volituste alguspäevani kohaldatakse käesoleva seaduse kuni 2018. aasta 1. märtsini kehtinud redaktsiooni.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 2 lõikes 2 sätestatud indekseerimise tulemusel saadud kõrgeimat palgamäära rakendatakse § 3 lõigetes 1–3, 5, 9, 11, 13 ja 15 nimetatud isikute suhtes alates Riigikogu XIV koosseisu volituste alguspäevast. (2) Käesoleva paragrahvi lõikes 1 viidatud isikute ametipalga arvutamisel kuni Riigikogu XIV koosseisu volituste alguspäevani kohaldatakse käesoleva seaduse kuni 2018. aasta 1. märtsini kehtinud redaktsiooni.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse § 2 lõikes 2 sätestatud indekseerimise tulemusel saadud kõrgeimat palgamäära rakendatakse § 3 lõigetes 1–3, 5, 9, 11, 13 ja 15 nimetatud isikute suhtes alates Riigikogu XIV koosseisu volituste alguspäevast. (2) Käesoleva paragrahvi lõikes 1 viidatud isikute ametipalga arvutamisel kuni Riigikogu XIV koosseisu volituste alguspäevani kohaldatakse käesoleva seaduse kuni 2018. aasta 1. märtsini kehtinud redaktsiooni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
@@ -1686,9 +1882,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -1701,14 +1894,14 @@
           "@id": "estleg:KRA_Par_2_Lg_2"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:KRA_Par_17_1_v128122017011"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:KRA_Par_17_1_v128122017011"
         }
       ]
     },
@@ -1778,13 +1971,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17².",
-      "rdfs:label": "§ 17². Kõrgemate riigiteenijate kõrgeima palgamäära indekseerimise erisus 2024. aasta 1. aprillist kuni 2028. aasta 31. märtsini",
+      "rdfs:label": {
+        "@value": "§ 17². Kõrgemate riigiteenijate kõrgeima palgamäära indekseerimise erisus 2024. aasta 1. aprillist kuni 2028. aasta 31. märtsini",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "(1) Alates 2024. aasta 1. aprillist kuni 2028. aasta 31. märtsini indekseeritakse käesoleva seaduse § 3 lõigetes 3, 8–10, 14 ja 16–19 nimetatud isikute §-s 2 sätestatud kõrgeim palgamäär iga kalendriaasta 1. aprilliks ajutise kõrgeima palgamäära indeksiga. (2) Ajutise kõrgeima palgamäära indeksi arvutamiseks liidetakse käesoleva seaduse § 21 kohaselt arvutatud indeksile üks ja jagatakse saadud tulemus kahega. (3) Kõrgeimaks palgamääraks loetakse käesoleva paragrahvi lõikes 1 nimetatud isikutele",
-      "estleg:legalText": "(1) Alates 2024. aasta 1. aprillist kuni 2028. aasta 31. märtsini indekseeritakse käesoleva seaduse § 3 lõigetes 3, 8–10, 14 ja 16–19 nimetatud isikute §-s 2 sätestatud kõrgeim palgamäär iga kalendriaasta 1. aprilliks ajutise kõrgeima palgamäära indeksiga. (2) Ajutise kõrgeima palgamäära indeksi arvutamiseks liidetakse käesoleva seaduse § 21 kohaselt arvutatud indeksile üks ja jagatakse saadud tulemus kahega. (3) Kõrgeimaks palgamääraks loetakse käesoleva paragrahvi lõikes 1 nimetatud isikutele arvutatud eelmise aasta kõrgeima palgamäära ja ajutise kõrgeima palgamäära indeksi korrutis. (4) Käesoleva paragrahvi lõikes 1 nimetatud isikute ametipalk on samas lõikes nimetatud kõrgeima palgamäära ja käesoleva seaduse §-s 3 sätestatud koefitsiendi korrutis.",
+      "estleg:summary": {
+        "@value": "(1) Alates 2024. aasta 1. aprillist kuni 2028. aasta 31. märtsini indekseeritakse käesoleva seaduse § 3 lõigetes 3, 8–10, 14 ja 16–19 nimetatud isikute §-s 2 sätestatud kõrgeim palgamäär iga kalendriaasta 1. aprilliks ajutise kõrgeima palgamäära indeksiga. (2) Ajutise kõrgeima palgamäära indeksi arvutamiseks liidetakse käesoleva seaduse § 2¹ kohaselt arvutatud indeksile üks ja jagatakse saadud tulemus kahega. (3) Kõrgeimaks palgamääraks loetakse käesoleva paragrahvi lõikes 1 nimetatud isikutele",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Alates 2024. aasta 1. aprillist kuni 2028. aasta 31. märtsini indekseeritakse käesoleva seaduse § 3 lõigetes 3, 8–10, 14 ja 16–19 nimetatud isikute §-s 2 sätestatud kõrgeim palgamäär iga kalendriaasta 1. aprilliks ajutise kõrgeima palgamäära indeksiga. (2) Ajutise kõrgeima palgamäära indeksi arvutamiseks liidetakse käesoleva seaduse § 2¹ kohaselt arvutatud indeksile üks ja jagatakse saadud tulemus kahega. (3) Kõrgeimaks palgamääraks loetakse käesoleva paragrahvi lõikes 1 nimetatud isikutele arvutatud eelmise aasta kõrgeima palgamäära ja ajutise kõrgeima palgamäära indeksi korrutis. (4) Käesoleva paragrahvi lõikes 1 nimetatud isikute ametipalk on samas lõikes nimetatud kõrgeima palgamäära ja käesoleva seaduse §-s 3 sätestatud koefitsiendi korrutis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
@@ -1814,6 +2013,20 @@
       "estleg:references": [
         {
           "@id": "estleg:KRA_Par_3"
+        },
+        {
+          "@id": "estleg:KRA_Par_2_1"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KS_Map"
+        },
+        {
+          "@id": "estleg:KS_Par_132_6"
+        },
+        {
+          "@id": "estleg:KS_Par_132_6_Lg_1_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1856,11 +2069,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Ajutise kõrgeima palgamäära indeksi arvutamiseks liidetakse käesoleva seaduse § 21 kohaselt arvutatud indeksile üks ja jagatakse saadud tulemus kahega.",
+      "estleg:legalText": "(2) Ajutise kõrgeima palgamäära indeksi arvutamiseks liidetakse käesoleva seaduse § 2¹ kohaselt arvutatud indeksile üks ja jagatakse saadud tulemus kahega.",
       "estleg:parentProvision": {
         "@id": "estleg:KRA_Par_17_2"
       },
-      "rdfs:label": "§ 17² lg 2"
+      "rdfs:label": "§ 17² lg 2",
+      "estleg:references": [
+        {
+          "@id": "estleg:KRA_Par_2_1"
+        }
+      ]
     },
     {
       "@id": "estleg:KRA_Par_17_2_Lg_3",
@@ -1909,16 +2127,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. [Välja jäetud -]",
+      "rdfs:label": {
+        "@value": "§ 18.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "Välja jäetud -",
-      "estleg:legalText": "Välja jäetud -",
+      "estleg:summary": {
+        "@value": "§ 18.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
       },
+      "estleg:provisionOmitted": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:KRA_Par_18_v128122011047"
@@ -1935,12 +2159,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 19. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kõrgemate riigiteenijate ametipalkade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRA_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus jõustub 2012. aasta 1. jaanuaril. (1¹) Käesoleva seaduse § 3 lõiked 4, 8, 14 ja 16 ning § 6 jõustuvad 2013. aasta 1. juulil. (2) Käesoleva seaduse § 3 lõiked 1, 3, 6, 7, 9, 10 ja 17–21 ning §-d 9 ja 11–16 jõustuvad 2014. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus jõustub 2012. aasta 1. jaanuaril. (1¹) Käesoleva seaduse § 3 lõiked 4, 8, 14 ja 16 ning § 6 jõustuvad 2013. aasta 1. juulil. (2) Käesoleva seaduse § 3 lõiked 1, 3, 6, 7, 9, 10 ja 17–21 ning §-d 9 ja 11–16 jõustuvad 2014. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus jõustub 2012. aasta 1. jaanuaril. (1¹) Käesoleva seaduse § 3 lõiked 4, 8, 14 ja 16 ning § 6 jõustuvad 2013. aasta 1. juulil. (2) Käesoleva seaduse § 3 lõiked 1, 3, 6, 7, 9, 10 ja 17–21 ning §-d 9 ja 11–16 jõustuvad 2014. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRA_default"
@@ -2020,48 +2250,20 @@
       ]
     },
     {
-      "@id": "estleg:Citation_KRA_P_2_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/504032024001",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:KRA_Par_2"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationText": "käesoleva seaduse §-s 21"
-    },
-    {
-      "@id": "estleg:Citation_KRA_P_2_Lg_2_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:KRA_Par_2_Lg_2"
+      "eli:realizes": {
+        "@id": "estleg:KRA_Map"
       },
-      "estleg:citationText": "käesoleva seaduse §-s 21"
-    },
-    {
-      "@id": "estleg:Citation_KRA_P_17_2_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:KRA_Par_17_2"
-      },
-      "estleg:citationText": "käesoleva seaduse § 21"
-    },
-    {
-      "@id": "estleg:Citation_KRA_P_17_2_Lg_2_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:KRA_Par_17_2_Lg_2"
-      },
-      "estleg:citationText": "käesoleva seaduse § 21"
+      "rdfs:label": {
+        "@value": "Salaries of Higher State Servants Act",
+        "@language": "en"
+      }
     }
   ]
 }

@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:EUFKKSPU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Euroopa ühenduste finantshuvide kaitse konventsiooniga ja selle protokollidega ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Euroopa ühenduste finantshuvide kaitse konventsiooniga ja selle protokollidega ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Euroopa ühenduste finantshuvide kaitse konventsiooniga ja selle protokollidega ühinemise seadus",
       "dcterms:title": "Euroopa ühenduste finantshuvide kaitse konventsiooniga ja selle protokollidega ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/827807.xml"
+        "@id": "https://www.riigiteataja.ee/akt/827807"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/827807/xml"
+      },
+      "estleg:globalId": "827807",
+      "eli:id_local": "827807",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "158289",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "a80fb1cb87a613c168eecd3271d9bb5a65e75bf0329cac1f256a095f61086f35",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2005-01-16",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -43,10 +55,10 @@
       "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528).",
       "dcterms:subject": [
         {
-          "@id": "http://eurovoc.europa.eu/525"
+          "@id": "http://eurovoc.europa.eu/3474"
         },
         {
-          "@id": "http://eurovoc.europa.eu/3474"
+          "@id": "http://eurovoc.europa.eu/525"
         },
         {
           "@id": "http://eurovoc.europa.eu/523"
@@ -54,27 +66,28 @@
       ],
       "eli:is_about": [
         {
-          "@id": "http://eurovoc.europa.eu/525"
+          "@id": "http://eurovoc.europa.eu/3474"
         },
         {
-          "@id": "http://eurovoc.europa.eu/3474"
+          "@id": "http://eurovoc.europa.eu/525"
         },
         {
           "@id": "http://eurovoc.europa.eu/523"
         }
-      ]
-    },
-    {
-      "@id": "estleg:EUFKKSPU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Euroopa ühenduste finantshuvide kaitse konventsiooniga ja selle protokollidega ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_EUFKKSPU_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2005-01-16",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2005-01-06",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2005-01-16",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_EUFKKSPU_default",
@@ -83,12 +96,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Lepingu sätted",
-      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EUFKKSPU_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:EUFKKSPU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Euroopa ühenduste finantshuvide kaitse konventsiooniga ja selle protokollidega ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EUFKKSPU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:EUFKKSPU_Par_1",
@@ -97,27 +131,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Euroopa ühenduste finantshuvide kaitse konventsiooniga ühinemine",
+      "rdfs:label": {
+        "@value": "§ 1. Euroopa ühenduste finantshuvide kaitse konventsiooniga ühinemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa ühenduste finantshuvide kaitse konventsiooniga ja selle protokollidega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EUFKKSPU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on koostatud 1995. aasta 26. juulil Brüsselis ja mis on välja töötatud Euroopa ühenduste finantshuve kahjustava kelmuse kriminaliseerimiseks kõikides Euroopa Liidu liikmesriikides.",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1995. aasta 26. juulil Brüsselis ja mis on välja töötatud Euroopa ühenduste finantshuve kahjustava kelmuse kriminaliseerimiseks kõikides Euroopa Liidu liikmesriikides.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud Euroopa ühenduste finantshuvide kaitse konventsiooniga , mis on koostatud 1995. aasta 26. juulil Brüsselis ja mis on välja töötatud Euroopa ühenduste finantshuve kahjustava kelmuse kriminaliseerimiseks kõikides Euroopa Liidu liikmesriikides.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud Euroopa ühenduste finantshuvide kaitse konventsiooniga , mis on koostatud 1995. aasta 26. juulil Brüsselis ja mis on välja töötatud Euroopa ühenduste finantshuve kahjustava kelmuse kriminaliseerimiseks kõikides Euroopa Liidu liikmesriikides.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EUFKKSPU_default"
       },
       "estleg:hasSubsection": [
         {
           "@id": "estleg:EUFKKSPU_Par_1_Lg_1"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_va_Par_1"
-        },
-        {
-          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -132,10 +164,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1995. aasta 26. juulil Brüsselis ja mis on välja töötatud Euroopa ühenduste finantshuve kahjustava kelmuse kriminaliseerimiseks kõikides Euroopa Liidu liikmesriikides.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud Euroopa ühenduste finantshuvide kaitse konventsiooniga , mis on koostatud 1995. aasta 26. juulil Brüsselis ja mis on välja töötatud Euroopa ühenduste finantshuve kahjustava kelmuse kriminaliseerimiseks kõikides Euroopa Liidu liikmesriikides.",
       "estleg:parentProvision": {
         "@id": "estleg:EUFKKSPU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:EUFKKSPU_Par_2",
@@ -144,13 +178,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Euroopa ühenduste finantshuvide kaitse konventsiooni protokolliga ühinemine",
+      "rdfs:label": {
+        "@value": "§ 2. Euroopa ühenduste finantshuvide kaitse konventsiooni protokolliga ühinemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa ühenduste finantshuvide kaitse konventsiooniga ja selle protokollidega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EUFKKSPU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on koostatud 1996. aasta 27. septembril Brüsselis ja mis on suunatud riigi ja ühenduse ametnikega seotud Euroopa ühenduste finantshuve kahjustavate või kahjustada võivate korruptiivsete tegude vastu.",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1996. aasta 27. septembril Brüsselis ja mis on suunatud riigi ja ühenduse ametnikega seotud Euroopa ühenduste finantshuve kahjustavate või kahjustada võivate korruptiivsete tegude vastu.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud Euroopa ühenduste finantshuvide kaitse konventsiooni protokolliga , mis on koostatud 1996. aasta 27. septembril Brüsselis ja mis on suunatud riigi ja ühenduse ametnikega seotud Euroopa ühenduste finantshuve kahjustavate või kahjustada võivate korruptiivsete tegude vastu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud Euroopa ühenduste finantshuvide kaitse konventsiooni protokolliga , mis on koostatud 1996. aasta 27. septembril Brüsselis ja mis on suunatud riigi ja ühenduse ametnikega seotud Euroopa ühenduste finantshuve kahjustavate või kahjustada võivate korruptiivsete tegude vastu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EUFKKSPU_default"
       },
@@ -180,10 +220,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1996. aasta 27. septembril Brüsselis ja mis on suunatud riigi ja ühenduse ametnikega seotud Euroopa ühenduste finantshuve kahjustavate või kahjustada võivate korruptiivsete tegude vastu.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud Euroopa ühenduste finantshuvide kaitse konventsiooni protokolliga , mis on koostatud 1996. aasta 27. septembril Brüsselis ja mis on suunatud riigi ja ühenduse ametnikega seotud Euroopa ühenduste finantshuve kahjustavate või kahjustada võivate korruptiivsete tegude vastu.",
       "estleg:parentProvision": {
         "@id": "estleg:EUFKKSPU_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -201,13 +243,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Euroopa ühenduste finantshuvide kaitse konventsiooni teise protokolliga ühinemine",
+      "rdfs:label": {
+        "@value": "§ 3. Euroopa ühenduste finantshuvide kaitse konventsiooni teise protokolliga ühinemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa ühenduste finantshuvide kaitse konventsiooniga ja selle protokollidega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EUFKKSPU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on koostatud 1997. aasta 19. juunil Luxembourgis ja mis on suunatud juriidiliste isikute vastutuse ning konfiskeerimise ja rahapesu küsimustele ning liikmesriikide ja komisjoni koostööle Euroopa ühenduste finantshuvide ja nendega seotud isikuandmete kaitsmiseks.",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1997. aasta 19. juunil Luxembourgis ja mis on suunatud juriidiliste isikute vastutuse ning konfiskeerimise ja rahapesu küsimustele ning liikmesriikide ja komisjoni koostööle Euroopa ühenduste finantshuvide ja nendega seotud isikuandmete kaitsmiseks.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud Euroopa ühenduste finantshuvide kaitse konventsiooni teise protokolliga , mis on koostatud 1997. aasta 19. juunil Luxembourgis ja mis on suunatud juriidiliste isikute vastutuse ning konfiskeerimise ja rahapesu küsimustele ning liikmesriikide ja komisjoni koostööle Euroopa ühenduste finantshuvide ja nendega seotud isikuandmete kaitsmiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud Euroopa ühenduste finantshuvide kaitse konventsiooni teise protokolliga , mis on koostatud 1997. aasta 19. juunil Luxembourgis ja mis on suunatud juriidiliste isikute vastutuse ning konfiskeerimise ja rahapesu küsimustele ning liikmesriikide ja komisjoni koostööle Euroopa ühenduste finantshuvide ja nendega seotud isikuandmete kaitsmiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EUFKKSPU_default"
       },
@@ -217,9 +265,6 @@
         }
       ],
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -240,10 +285,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1997. aasta 19. juunil Luxembourgis ja mis on suunatud juriidiliste isikute vastutuse ning konfiskeerimise ja rahapesu küsimustele ning liikmesriikide ja komisjoni koostööle Euroopa ühenduste finantshuvide ja nendega seotud isikuandmete kaitsmiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud Euroopa ühenduste finantshuvide kaitse konventsiooni teise protokolliga , mis on koostatud 1997. aasta 19. juunil Luxembourgis ja mis on suunatud juriidiliste isikute vastutuse ning konfiskeerimise ja rahapesu küsimustele ning liikmesriikide ja komisjoni koostööle Euroopa ühenduste finantshuvide ja nendega seotud isikuandmete kaitsmiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:EUFKKSPU_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"

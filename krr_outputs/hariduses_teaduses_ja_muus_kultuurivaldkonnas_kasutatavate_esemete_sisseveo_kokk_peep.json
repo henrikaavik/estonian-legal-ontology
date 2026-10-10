@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:HTMKKESKSPU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
       "dcterms:title": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/27159.xml"
+        "@id": "https://www.riigiteataja.ee/akt/27159"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/27159/xml"
+      },
+      "estleg:globalId": "27159",
+      "eli:id_local": "27159",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "153468",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "17f74ce4815cd91e7fea12807e0354aef3feb86a7bef34ef8895c719ad9556ff",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "dcterms:subject": [
         {
@@ -45,19 +57,20 @@
         {
           "@id": "http://eurovoc.europa.eu/2924"
         }
-      ]
-    },
-    {
-      "@id": "estleg:HTMKKESKSPU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_HTMKKESKSPU_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2001-07-12",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_HTMKKESKSPU_default",
@@ -66,12 +79,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
-      "skos:prefLabel": "§1–2 Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
+      "rdfs:label": {
+        "@value": "§1–2 Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:HTMKKESKSPU_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:HTMKKESKSPU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_HTMKKESKSPU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:HTMKKESKSPU_Par_1",
@@ -80,13 +114,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavat...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavat...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:HTMKKESKSPU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on vastu võetud UNESCO peakonverentsil 1950. aasta 17. juunil Firenzes.",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on vastu võetud UNESCO peakonverentsil 1950. aasta 17. juunil Firenzes.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppega , mis on vastu võetud UNESCO peakonverentsil 1950. aasta 17. juunil Firenzes.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppega , mis on vastu võetud UNESCO peakonverentsil 1950. aasta 17. juunil Firenzes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HTMKKESKSPU_default"
       },
@@ -107,10 +147,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on vastu võetud UNESCO peakonverentsil 1950. aasta 17. juunil Firenzes.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppega , mis on vastu võetud UNESCO peakonverentsil 1950. aasta 17. juunil Firenzes.",
       "estleg:parentProvision": {
         "@id": "estleg:HTMKKESKSPU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:HTMKKESKSPU_Par_2",
@@ -119,13 +161,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavat...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavat...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe ja selle protokolliga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:HTMKKESKSPU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on vastu võetud UNESCO peakonverentsil 1976. aasta 26. novembril Nairobis. Riigikogu aseesimees Tunne KELAM",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on vastu võetud UNESCO peakonverentsil 1976. aasta 26. novembril Nairobis. Riigikogu aseesimees Tunne KELAM",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe protokolliga , mis on vastu võetud UNESCO peakonverentsil 1976. aasta 26. novembril Nairobis. Riigikogu aseesimees Tunne KELAM",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe protokolliga , mis on vastu võetud UNESCO peakonverentsil 1976. aasta 26. novembril Nairobis. Riigikogu aseesimees Tunne KELAM",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HTMKKESKSPU_default"
       },
@@ -146,14 +194,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:HTMKKESKSPU_Par_2_v27159"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:HTMKKESKSPU_Par_2_v27159"
         }
       ]
     },
@@ -163,10 +211,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on vastu võetud UNESCO peakonverentsil 1976. aasta 26. novembril Nairobis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud hariduses, teaduses ja muus kultuurivaldkonnas kasutatavate esemete sisseveo kokkuleppe protokolliga , mis on vastu võetud UNESCO peakonverentsil 1976. aasta 26. novembril Nairobis.",
       "estleg:parentProvision": {
         "@id": "estleg:HTMKKESKSPU_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:HTMKKESKSPU_Par_2_Lg_2",
@@ -174,10 +224,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigikogu aseesimees Tunne KELAM",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigikogu aseesimees Tunne KELAM",
       "estleg:parentProvision": {
         "@id": "estleg:HTMKKESKSPU_Par_2"
       },
+      "rdfs:label": "§ 2 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"

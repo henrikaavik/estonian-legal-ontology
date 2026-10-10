@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:SaES_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Säilituseksemplari seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Säilituseksemplari seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Säilituseksemplari seadus",
-      "dcterms:title": [
-        {
-          "@value": "Säilituseksemplari seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Legal Deposit Copy Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Säilituseksemplari seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/107072016001.xml"
+        "@id": "https://www.riigiteataja.ee/akt/107072016001"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/107072016001/xml"
+      },
+      "estleg:globalId": "107072016001",
+      "eli:id_local": "107072016001",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "1035397",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "898ddfe41ca5432706275f478cdcada50bd514e3660c4d781a82c19069c4c030",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2017-01-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/514092016001"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/514092016001"
       },
       "estleg:references": [
@@ -74,26 +80,6 @@
           "@id": "estleg:AUTORI_Par_19"
         }
       ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:SaES_Par_7_Lg_6"
-        },
-        {
-          "@id": "estleg:SaES_Par_23"
-        },
-        {
-          "@id": "estleg:SaES_Par_23_Lg_1"
-        },
-        {
-          "@id": "estleg:SaES_Par_23_Lg_2"
-        }
-      ],
-      "estleg:implementedBy": [
-        {
-          "@id": "estleg:Reg_1037010_Map"
-        }
-      ],
-      "estleg:implementedByCount": 1,
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/317"
@@ -116,18 +102,77 @@
           "@id": "http://eurovoc.europa.eu/668"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2017-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2016-07-07",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_KUM15_1235"
         }
-      ]
+      ],
+      "estleg:lastAmendmentDate": {
+        "@value": "2017-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SaES_Map"
+        },
+        {
+          "@id": "estleg:SaES_Par_7_Lg_6"
+        },
+        {
+          "@id": "estleg:SaES_Par_23"
+        },
+        {
+          "@id": "estleg:SaES_Par_23_Lg_1"
+        },
+        {
+          "@id": "estleg:SaES_Par_23_Lg_2"
+        }
+      ],
+      "estleg:implementedBy": [
+        {
+          "@id": "estleg:Reg_1037010_Map"
+        }
+      ],
+      "estleg:implementedByCount": 1
+    },
+    {
+      "@id": "estleg:Cluster_SaES_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:SaES_TopicScheme"
+      },
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:SaES_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Säilituseksemplari seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Säilituseksemplari seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_SaES_1"
@@ -150,26 +195,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_SaES_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 Üldsätted",
-      "skos:prefLabel": "§1–4 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:SaES_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_SaES_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "1. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
@@ -189,8 +223,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–13 Väljaande ja selle algmaterjali säilituseksemplariks loovutamine",
-      "skos:prefLabel": "§5–13 Väljaande ja selle algmaterjali säilituseksemplariks loovutamine",
+      "rdfs:label": {
+        "@value": "§5–13 Väljaande ja selle algmaterjali säilituseksemplariks loovutamine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–13 Väljaande ja selle algmaterjali säilituseksemplariks loovutamine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SaES_TopicScheme"
       },
@@ -202,7 +242,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Väljaande ja selle algmaterjali säilituseksemplariks loovutamine",
+      "rdfs:label": {
+        "@value": "2. peatükk – Väljaande ja selle algmaterjali säilituseksemplariks loovutamine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
@@ -222,8 +265,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§14–16 Säilituseksemplari kättesaadavaks tegemine",
-      "skos:prefLabel": "§14–16 Säilituseksemplari kättesaadavaks tegemine",
+      "rdfs:label": {
+        "@value": "§14–16 Säilituseksemplari kättesaadavaks tegemine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§14–16 Säilituseksemplari kättesaadavaks tegemine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SaES_TopicScheme"
       },
@@ -235,7 +284,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – Säilituseksemplari kättesaadavaks tegemine",
+      "rdfs:label": {
+        "@value": "3. peatükk – Säilituseksemplari kättesaadavaks tegemine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
@@ -255,8 +307,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§17–19 Säilituseksemplari säilitamine ja statistika",
-      "skos:prefLabel": "§17–19 Säilituseksemplari säilitamine ja statistika",
+      "rdfs:label": {
+        "@value": "§17–19 Säilituseksemplari säilitamine ja statistika",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§17–19 Säilituseksemplari säilitamine ja statistika",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SaES_TopicScheme"
       },
@@ -268,7 +326,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – Säilituseksemplari säilitamine ja statistika",
+      "rdfs:label": {
+        "@value": "4. peatükk – Säilituseksemplari säilitamine ja statistika",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
@@ -288,8 +349,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§20–22 Järelevalve",
-      "skos:prefLabel": "§20–22 Järelevalve",
+      "rdfs:label": {
+        "@value": "§20–22 Järelevalve",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§20–22 Järelevalve",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SaES_TopicScheme"
       },
@@ -301,7 +368,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – Järelevalve",
+      "rdfs:label": {
+        "@value": "5. peatükk – Järelevalve",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
@@ -321,8 +391,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§23–26 Rakendussätted",
-      "skos:prefLabel": "§23–26 Rakendussätted",
+      "rdfs:label": {
+        "@value": "§23–26 Rakendussätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§23–26 Rakendussätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SaES_TopicScheme"
       },
@@ -334,7 +410,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – Rakendussätted",
+      "rdfs:label": {
+        "@value": "6. peatükk – Rakendussätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
@@ -354,12 +433,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala ja eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala ja eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Käesoleva seadusega kehtestatakse Eesti Vabariigis avaldatud, levitatud või üldsusele kättesaadavaks tehtud väljaande ja selle tootmiseks kasutatud digitaalse andmekogumi (edaspidi algmaterjal) säilituseksemplariks loovutamise ning säilituseksemplari säilitamise ja kättesaadavaks tegemise kord ja tingimused, säilituseksemplaride registreerimise ja riikliku statistika koostajad ning järelevalve seaduse täitmise üle. (2) Käesoleva seaduse eesmärk on tagada Eesti kultuurile oluliste",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seadusega kehtestatakse Eesti Vabariigis avaldatud, levitatud või üldsusele kättesaadavaks tehtud väljaande ja selle tootmiseks kasutatud digitaalse andmekogumi (edaspidi algmaterjal) säilituseksemplariks loovutamise ning säilituseksemplari säilitamise ja kättesaadavaks tegemise kord ja tingimused, säilituseksemplaride registreerimise ja riikliku statistika koostajad ning järelevalve seaduse täitmise üle. (2) Käesoleva seaduse eesmärk on tagada Eesti kultuurile oluliste",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seadusega kehtestatakse Eesti Vabariigis avaldatud, levitatud või üldsusele kättesaadavaks tehtud väljaande ja selle tootmiseks kasutatud digitaalse andmekogumi (edaspidi algmaterjal) säilituseksemplariks loovutamise ning säilituseksemplari säilitamise ja kättesaadavaks tegemise kord ja tingimused, säilituseksemplaride registreerimise ja riikliku statistika koostajad ning järelevalve seaduse täitmise üle. (2) Käesoleva seaduse eesmärk on tagada Eesti kultuurile oluliste väljaannete ja nende algmaterjali võimalikult täieliku kogu loomine, pikaajaline säilitamine ning järjepidev kättesaadavaks tegemine, kui väljaannete teisi eksemplare pole võimalik kasutada. (3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_1"
@@ -430,13 +515,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Seaduse kohaldamisala",
+      "rdfs:label": {
+        "@value": "§ 2. Seaduse kohaldamisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Käesolevat seadust kohaldatakse Eesti Vabariigi kodaniku, Eesti Vabariigis registreeritud juriidilise isiku või Eestis viibiva füüsilise isiku poolt trükitud väljaandele (edaspidi trükis) ja muule füüsilisel teabekandjal avaldatud väljaandele (edaspidi koos füüsilisel teabekandjal avaldatud väljaanne), mis vastab järgmistele tunnustele: selle eksemplaride arv on rohkem kui 50; seda levitatakse Eesti Vabariigis või seda levitatakse väljaspool Eesti Vabariiki, kuid see on oluline Eesti",
-      "estleg:legalText": "(1) Käesolevat seadust kohaldatakse Eesti Vabariigi kodaniku, Eesti Vabariigis registreeritud juriidilise isiku või Eestis viibiva füüsilise isiku poolt trükitud väljaandele (edaspidi trükis) ja muule füüsilisel teabekandjal avaldatud väljaandele (edaspidi koos füüsilisel teabekandjal avaldatud väljaanne), mis vastab järgmistele tunnustele: selle eksemplaride arv on rohkem kui 50; seda levitatakse Eesti Vabariigis või seda levitatakse väljaspool Eesti Vabariiki, kuid see on oluline Eesti kultuurile. (2) Käesolevat seadust kohaldatakse tehnilise vahendi või protsessi vahendusel üldsusele kättesaadavaks tehtud võrguväljaandele (edaspidi võrguväljaanne), mis on autoriõiguse seaduse tähenduses üldsusele kättesaadavaks tehtud: domeenil .ee või muul Eestiga geograafiliselt seotud tippdomeenil; muul tippdomeenil ja on oluline Eesti kultuurile; Eesti Vabariigi kodaniku, Eesti Vabariigis registreeritud juriidilise isiku või Eestis viibiva füüsilise isiku poolt ja on oluline Eesti kultuurile. (3) Käesolevat seadust kohaldatakse trükise algmaterjalile. (4) Käesolevat seadust kohaldatakse niisuguse filmi, mis on toodetud või kaastoodetud ja mida levitatakse või kaaslevitatakse Eesti Vabariigi kodaniku või Eestis registreeritud juriidilise isiku poolt ja mis on oluline Eesti kultuurile, esituskoopia valmistamiseks kasutatud algmaterjalile (edaspidi filmi algmaterjal). (5) Käesolevat seadust kohaldatakse ka sisult identsele, kuid vormistuselt või vormingult erinevale väljaandele.",
+      "estleg:summary": {
+        "@value": "(1) Käesolevat seadust kohaldatakse Eesti Vabariigi kodaniku, Eesti Vabariigis registreeritud juriidilise isiku või Eestis viibiva füüsilise isiku poolt trükitud väljaandele (edaspidi trükis) ja muule füüsilisel teabekandjal avaldatud väljaandele (edaspidi koos füüsilisel teabekandjal avaldatud väljaanne), mis vastab järgmistele tunnustele: 1) selle eksemplaride arv on rohkem kui 50; 2) seda levitatakse Eesti Vabariigis või seda levitatakse väljaspool Eesti Vabariiki, kuid see on oluline Eesti",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesolevat seadust kohaldatakse Eesti Vabariigi kodaniku, Eesti Vabariigis registreeritud juriidilise isiku või Eestis viibiva füüsilise isiku poolt trükitud väljaandele (edaspidi trükis) ja muule füüsilisel teabekandjal avaldatud väljaandele (edaspidi koos füüsilisel teabekandjal avaldatud väljaanne), mis vastab järgmistele tunnustele: 1) selle eksemplaride arv on rohkem kui 50; 2) seda levitatakse Eesti Vabariigis või seda levitatakse väljaspool Eesti Vabariiki, kuid see on oluline Eesti kultuurile. (2) Käesolevat seadust kohaldatakse tehnilise vahendi või protsessi vahendusel üldsusele kättesaadavaks tehtud võrguväljaandele (edaspidi võrguväljaanne), mis on autoriõiguse seaduse tähenduses üldsusele kättesaadavaks tehtud: 1) domeenil .ee või muul Eestiga geograafiliselt seotud tippdomeenil; 2) muul tippdomeenil ja on oluline Eesti kultuurile; 3) Eesti Vabariigi kodaniku, Eesti Vabariigis registreeritud juriidilise isiku või Eestis viibiva füüsilise isiku poolt ja on oluline Eesti kultuurile. (3) Käesolevat seadust kohaldatakse trükise algmaterjalile. (4) Käesolevat seadust kohaldatakse niisuguse filmi, mis on toodetud või kaastoodetud ja mida levitatakse või kaaslevitatakse Eesti Vabariigi kodaniku või Eestis registreeritud juriidilise isiku poolt ja mis on oluline Eesti kultuurile, esituskoopia valmistamiseks kasutatud algmaterjalile (edaspidi filmi algmaterjal). (5) Käesolevat seadust kohaldatakse ka sisult identsele, kuid vormistuselt või vormingult erinevale väljaandele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_1"
       },
@@ -485,11 +576,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Käesolevat seadust kohaldatakse Eesti Vabariigi kodaniku, Eesti Vabariigis registreeritud juriidilise isiku või Eestis viibiva füüsilise isiku poolt trükitud väljaandele (edaspidi trükis) ja muule füüsilisel teabekandjal avaldatud väljaandele (edaspidi koos füüsilisel teabekandjal avaldatud väljaanne), mis vastab järgmistele tunnustele: selle eksemplaride arv on rohkem kui 50; seda levitatakse Eesti Vabariigis või seda levitatakse väljaspool Eesti Vabariiki, kuid see on oluline Eesti kultuurile.",
+      "estleg:legalText": "(1) Käesolevat seadust kohaldatakse Eesti Vabariigi kodaniku, Eesti Vabariigis registreeritud juriidilise isiku või Eestis viibiva füüsilise isiku poolt trükitud väljaandele (edaspidi trükis) ja muule füüsilisel teabekandjal avaldatud väljaandele (edaspidi koos füüsilisel teabekandjal avaldatud väljaanne), mis vastab järgmistele tunnustele: 1) selle eksemplaride arv on rohkem kui 50; 2) seda levitatakse Eesti Vabariigis või seda levitatakse väljaspool Eesti Vabariiki, kuid see on oluline Eesti kultuurile.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_2"
       },
       "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -510,11 +605,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesolevat seadust kohaldatakse tehnilise vahendi või protsessi vahendusel üldsusele kättesaadavaks tehtud võrguväljaandele (edaspidi võrguväljaanne), mis on autoriõiguse seaduse tähenduses üldsusele kättesaadavaks tehtud: domeenil .ee või muul Eestiga geograafiliselt seotud tippdomeenil; muul tippdomeenil ja on oluline Eesti kultuurile; Eesti Vabariigi kodaniku, Eesti Vabariigis registreeritud juriidilise isiku või Eestis viibiva füüsilise isiku poolt ja on oluline Eesti kultuurile.",
+      "estleg:legalText": "(2) Käesolevat seadust kohaldatakse tehnilise vahendi või protsessi vahendusel üldsusele kättesaadavaks tehtud võrguväljaandele (edaspidi võrguväljaanne), mis on autoriõiguse seaduse tähenduses üldsusele kättesaadavaks tehtud: 1) domeenil .ee või muul Eestiga geograafiliselt seotud tippdomeenil; 2) muul tippdomeenil ja on oluline Eesti kultuurile; 3) Eesti Vabariigi kodaniku, Eesti Vabariigis registreeritud juriidilise isiku või Eestis viibiva füüsilise isiku poolt ja on oluline Eesti kultuurile.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_2"
       },
       "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -528,6 +628,9 @@
         "@type": "xsd:decimal"
       },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:SaES_Map"
+        },
         {
           "@id": "estleg:SaES_Par_7"
         },
@@ -600,13 +703,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Väljaanded ja nende algmaterjal, millele seadust ei kohaldata",
+      "rdfs:label": {
+        "@value": "§ 3. Väljaanded ja nende algmaterjal, millele seadust ei kohaldata",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Seadust ei kohaldata järgmistele väljaannetele ja nende algmaterjalile: hinnakiri, nimekaart, kutsekaart, blankett, üritusepääse, pakend ja etikett; muutmata juurdetrükk; andmekogu, mille säilitamine on ette nähtud teiste õigusaktidega; võrguväljaande reaalajas voogedastus; võrguväljaanne, mille säilitamiseks vajaminev andmemaht on esitatud sisu kohta ebamõistlikult suur. (2) kehtestab määrusega käesoleva paragrahvi lõikes 1 nimetatule lisaks nende Eesti kultuurile ebaolulist informatsiooni",
-      "estleg:legalText": "(1) Seadust ei kohaldata järgmistele väljaannetele ja nende algmaterjalile: hinnakiri, nimekaart, kutsekaart, blankett, üritusepääse, pakend ja etikett; muutmata juurdetrükk; andmekogu, mille säilitamine on ette nähtud teiste õigusaktidega; võrguväljaande reaalajas voogedastus; võrguväljaanne, mille säilitamiseks vajaminev andmemaht on esitatud sisu kohta ebamõistlikult suur. (2) kehtestab määrusega käesoleva paragrahvi lõikes 1 nimetatule lisaks nende Eesti kultuurile ebaolulist informatsiooni sisaldavate võrguväljaannete ning vähese teatmelise sisu ja teksti mahuga või ühekordse sündmusega seoses avaldatud ja lühiajalise tähtsusega väljaannete (edaspidi pisitrükis) kategooriad, millele käesolevat seadust ei kohaldata. (3) Eesti kultuurile ebaolulist informatsiooni sisaldavate võrguväljaannete ja pisitrükiste kategooriate määratlemiseks teeb valdkonna eest vastutavale ministrile ettepaneku Eesti Rahvusraamatukogu. Eesti Rahvusraamatukogu kaasab ettepaneku tegemisel valdkondlikke eksperte, sealhulgas mäluasutuste esindajaid.",
+      "estleg:summary": {
+        "@value": "(1) Seadust ei kohaldata järgmistele väljaannetele ja nende algmaterjalile: 1) hinnakiri, nimekaart, kutsekaart, blankett, üritusepääse, pakend ja etikett; 2) muutmata juurdetrükk; 3) andmekogu, mille säilitamine on ette nähtud teiste õigusaktidega; 4) võrguväljaande reaalajas voogedastus; 5) võrguväljaanne, mille säilitamiseks vajaminev andmemaht on esitatud sisu kohta ebamõistlikult suur. (2) Valdkonna eest vastutav minister kehtestab määrusega käesoleva paragrahvi lõikes 1 nimetatule lisaks",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Seadust ei kohaldata järgmistele väljaannetele ja nende algmaterjalile: 1) hinnakiri, nimekaart, kutsekaart, blankett, üritusepääse, pakend ja etikett; 2) muutmata juurdetrükk; 3) andmekogu, mille säilitamine on ette nähtud teiste õigusaktidega; 4) võrguväljaande reaalajas voogedastus; 5) võrguväljaanne, mille säilitamiseks vajaminev andmemaht on esitatud sisu kohta ebamõistlikult suur. (2) Valdkonna eest vastutav minister kehtestab määrusega käesoleva paragrahvi lõikes 1 nimetatule lisaks nende Eesti kultuurile ebaolulist informatsiooni sisaldavate võrguväljaannete ning vähese teatmelise sisu ja teksti mahuga või ühekordse sündmusega seoses avaldatud ja lühiajalise tähtsusega väljaannete (edaspidi pisitrükis) kategooriad, millele käesolevat seadust ei kohaldata. (3) Eesti kultuurile ebaolulist informatsiooni sisaldavate võrguväljaannete ja pisitrükiste kategooriate määratlemiseks teeb valdkonna eest vastutavale ministrile ettepaneku Eesti Rahvusraamatukogu. Eesti Rahvusraamatukogu kaasab ettepaneku tegemisel valdkondlikke eksperte, sealhulgas mäluasutuste esindajaid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_1"
       },
@@ -624,6 +733,15 @@
           "@id": "estleg:SaES_Par_3_Lg_3"
         }
       ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SaES_Par_3_v107072016001"
@@ -637,11 +755,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Seadust ei kohaldata järgmistele väljaannetele ja nende algmaterjalile: hinnakiri, nimekaart, kutsekaart, blankett, üritusepääse, pakend ja etikett; muutmata juurdetrükk; andmekogu, mille säilitamine on ette nähtud teiste õigusaktidega; võrguväljaande reaalajas voogedastus; võrguväljaanne, mille säilitamiseks vajaminev andmemaht on esitatud sisu kohta ebamõistlikult suur.",
+      "estleg:legalText": "(1) Seadust ei kohaldata järgmistele väljaannetele ja nende algmaterjalile: 1) hinnakiri, nimekaart, kutsekaart, blankett, üritusepääse, pakend ja etikett; 2) muutmata juurdetrükk; 3) andmekogu, mille säilitamine on ette nähtud teiste õigusaktidega; 4) võrguväljaande reaalajas voogedastus; 5) võrguväljaanne, mille säilitamiseks vajaminev andmemaht on esitatud sisu kohta ebamõistlikult suur.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_3"
       },
-      "rdfs:label": "§ 3 lg 1"
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
     },
     {
       "@id": "estleg:SaES_Par_3_Lg_2",
@@ -650,11 +775,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) kehtestab määrusega käesoleva paragrahvi lõikes 1 nimetatule lisaks nende Eesti kultuurile ebaolulist informatsiooni sisaldavate võrguväljaannete ning vähese teatmelise sisu ja teksti mahuga või ühekordse sündmusega seoses avaldatud ja lühiajalise tähtsusega väljaannete (edaspidi pisitrükis) kategooriad, millele käesolevat seadust ei kohaldata.",
+      "estleg:legalText": "(2) Valdkonna eest vastutav minister kehtestab määrusega käesoleva paragrahvi lõikes 1 nimetatule lisaks nende Eesti kultuurile ebaolulist informatsiooni sisaldavate võrguväljaannete ning vähese teatmelise sisu ja teksti mahuga või ühekordse sündmusega seoses avaldatud ja lühiajalise tähtsusega väljaannete (edaspidi pisitrükis) kategooriad, millele käesolevat seadust ei kohaldata.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_3"
       },
       "rdfs:label": "§ 3 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1037010_Map"
@@ -682,12 +816,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Säilituseksemplar",
+      "rdfs:label": {
+        "@value": "§ 4. Säilituseksemplar",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "Säilituseksemplar on füüsilisel teabekandjal avaldatud väljaanne ja võrguväljaanne (edaspidi koos väljaanne) ning füüsilisel teabekandjal avaldatud väljaande algmaterjal, mida säilitatakse käesoleva seaduse eesmärkide täitmiseks.",
+      "estleg:summary": {
+        "@value": "Säilituseksemplar on füüsilisel teabekandjal avaldatud väljaanne ja võrguväljaanne (edaspidi koos väljaanne) ning füüsilisel teabekandjal avaldatud väljaande algmaterjal, mida säilitatakse käesoleva seaduse eesmärkide täitmiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Säilituseksemplar on füüsilisel teabekandjal avaldatud väljaanne ja võrguväljaanne (edaspidi koos väljaanne) ning füüsilisel teabekandjal avaldatud väljaande algmaterjal, mida säilitatakse käesoleva seaduse eesmärkide täitmiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_1"
@@ -712,10 +852,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Säilituseksemplar on füüsilisel teabekandjal avaldatud väljaanne ja võrguväljaanne (edaspidi koos väljaanne) ning füüsilisel teabekandjal avaldatud väljaande algmaterjal, mida säilitatakse käesoleva seaduse eesmärkide täitmiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Säilituseksemplar on füüsilisel teabekandjal avaldatud väljaanne ja võrguväljaanne (edaspidi koos väljaanne) ning füüsilisel teabekandjal avaldatud väljaande algmaterjal, mida säilitatakse käesoleva seaduse eesmärkide täitmiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_4"
-      }
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:SaES_Par_5",
@@ -724,13 +866,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Väljaande ja selle algmaterjali säilituseksemplariks loovutaja",
+      "rdfs:label": {
+        "@value": "§ 5. Väljaande ja selle algmaterjali säilituseksemplariks loovutaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "Väljaande ja selle algmaterjali säilituseksemplariks loovutaja on: füüsilisel teabekandjal avaldatud väljaande valmistaja või kokkupanija (edaspidi tootja); kui füüsilisel teabekandjal avaldatud väljaande komplekti kuuluvad lisad ei ole tootja valmistatud, siis väljaande avaldamist korraldav isik (edaspidi väljaandja); välisriigis toodetud ja Eestis levitatava füüsilisel teabekandjal avaldatud väljaande väljaandja; võrguväljaande väljaandja või tootja, kui väljaandja on selle tootjaga kokku",
-      "estleg:legalText": "Väljaande ja selle algmaterjali säilituseksemplariks loovutaja on: füüsilisel teabekandjal avaldatud väljaande valmistaja või kokkupanija (edaspidi tootja); kui füüsilisel teabekandjal avaldatud väljaande komplekti kuuluvad lisad ei ole tootja valmistatud, siis väljaande avaldamist korraldav isik (edaspidi väljaandja); välisriigis toodetud ja Eestis levitatava füüsilisel teabekandjal avaldatud väljaande väljaandja; võrguväljaande väljaandja või tootja, kui väljaandja on selle tootjaga kokku leppinud; trükise algmaterjali väljaandja või tootja, kui väljaandja on selle tootjaga kokku leppinud; filmi algmaterjali tootja või kaastootja.",
+      "estleg:summary": {
+        "@value": "Väljaande ja selle algmaterjali säilituseksemplariks loovutaja on: 1) füüsilisel teabekandjal avaldatud väljaande valmistaja või kokkupanija (edaspidi tootja); 2) kui füüsilisel teabekandjal avaldatud väljaande komplekti kuuluvad lisad ei ole tootja valmistatud, siis väljaande avaldamist korraldav isik (edaspidi väljaandja); 3) välisriigis toodetud ja Eestis levitatava füüsilisel teabekandjal avaldatud väljaande väljaandja; 4) võrguväljaande väljaandja või tootja, kui väljaandja on selle",
+        "@language": "et"
+      },
+      "estleg:legalText": "Väljaande ja selle algmaterjali säilituseksemplariks loovutaja on: 1) füüsilisel teabekandjal avaldatud väljaande valmistaja või kokkupanija (edaspidi tootja); 2) kui füüsilisel teabekandjal avaldatud väljaande komplekti kuuluvad lisad ei ole tootja valmistatud, siis väljaande avaldamist korraldav isik (edaspidi väljaandja); 3) välisriigis toodetud ja Eestis levitatava füüsilisel teabekandjal avaldatud väljaande väljaandja; 4) võrguväljaande väljaandja või tootja, kui väljaandja on selle tootjaga kokku leppinud; 5) trükise algmaterjali väljaandja või tootja, kui väljaandja on selle tootjaga kokku leppinud; 6) filmi algmaterjali tootja või kaastootja.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_2"
       },
@@ -743,9 +891,6 @@
         }
       ],
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -766,10 +911,20 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Väljaande ja selle algmaterjali säilituseksemplariks loovutaja on: füüsilisel teabekandjal avaldatud väljaande valmistaja või kokkupanija (edaspidi tootja); kui füüsilisel teabekandjal avaldatud väljaande komplekti kuuluvad lisad ei ole tootja valmistatud, siis väljaande avaldamist korraldav isik (edaspidi väljaandja); välisriigis toodetud ja Eestis levitatava füüsilisel teabekandjal avaldatud väljaande väljaandja; võrguväljaande väljaandja või tootja, kui väljaandja on selle tootjaga kokku leppinud; trükise algmaterjali väljaandja või tootja, kui väljaandja on selle tootjaga kokku leppinud; filmi algmaterjali tootja või kaastootja.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väljaande ja selle algmaterjali säilituseksemplariks loovutaja on: 1) füüsilisel teabekandjal avaldatud väljaande valmistaja või kokkupanija (edaspidi tootja); 2) kui füüsilisel teabekandjal avaldatud väljaande komplekti kuuluvad lisad ei ole tootja valmistatud, siis väljaande avaldamist korraldav isik (edaspidi väljaandja); 3) välisriigis toodetud ja Eestis levitatava füüsilisel teabekandjal avaldatud väljaande väljaandja; 4) võrguväljaande väljaandja või tootja, kui väljaandja on selle tootjaga kokku leppinud; 5) trükise algmaterjali väljaandja või tootja, kui väljaandja on selle tootjaga kokku leppinud; 6) filmi algmaterjali tootja või kaastootja.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_5"
       },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -787,12 +942,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Nõuded säilituseksemplariks loovutatavale väljaandele ja selle algmaterjalile",
+      "rdfs:label": {
+        "@value": "§ 6. Nõuded säilituseksemplariks loovutatavale väljaandele ja selle algmaterjalile",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "Säilituseksemplariks loovutatav väljaanne ja selle algmaterjal peab olema komplektne ja sisaldama kõiki lisasid.",
+      "estleg:summary": {
+        "@value": "Säilituseksemplariks loovutatav väljaanne ja selle algmaterjal peab olema komplektne ja sisaldama kõiki lisasid.",
+        "@language": "et"
+      },
       "estleg:legalText": "Säilituseksemplariks loovutatav väljaanne ja selle algmaterjal peab olema komplektne ja sisaldama kõiki lisasid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_2"
@@ -805,12 +966,12 @@
           "@id": "estleg:SaES_Par_6_Lg_1"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -824,16 +985,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Säilituseksemplariks loovutatav väljaanne ja selle algmaterjal peab olema komplektne ja sisaldama kõiki lisasid.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Säilituseksemplariks loovutatav väljaanne ja selle algmaterjal peab olema komplektne ja sisaldama kõiki lisasid.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_6"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "rdfs:label": "§ 6 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -843,12 +1006,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Säilituseksemplariks loovutamise viis",
+      "rdfs:label": {
+        "@value": "§ 7. Säilituseksemplariks loovutamise viis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Füüsilisel teabekandjal avaldatud väljaanne loovutatakse Eesti Rahvusraamatukogule selle üleandmisega. (2) Käesoleva seaduse § 2 lõike 2 punktides 1 ja 2 nimetatud vabalt kättesaadava võrguväljaande arhiveerib Eesti Rahvusraamatukogu arhiveerimisroboti abil veebisaidi koos kuvamiseks vajalike elementidega allalaadimise ja arhiivi salvestamise teel (edaspidi veebiarhiveerimine). (3) Kui käesoleva seaduse § 2 lõike 2 punktides 1 ja 2 nimetatud võrguväljaande koopiat ei ole võimalik teha",
+      "estleg:summary": {
+        "@value": "(1) Füüsilisel teabekandjal avaldatud väljaanne loovutatakse Eesti Rahvusraamatukogule selle üleandmisega. (2) Käesoleva seaduse § 2 lõike 2 punktides 1 ja 2 nimetatud vabalt kättesaadava võrguväljaande arhiveerib Eesti Rahvusraamatukogu arhiveerimisroboti abil veebisaidi koos kuvamiseks vajalike elementidega allalaadimise ja arhiivi salvestamise teel (edaspidi veebiarhiveerimine). (3) Kui käesoleva seaduse § 2 lõike 2 punktides 1 ja 2 nimetatud võrguväljaande koopiat ei ole võimalik teha",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Füüsilisel teabekandjal avaldatud väljaanne loovutatakse Eesti Rahvusraamatukogule selle üleandmisega. (2) Käesoleva seaduse § 2 lõike 2 punktides 1 ja 2 nimetatud vabalt kättesaadava võrguväljaande arhiveerib Eesti Rahvusraamatukogu arhiveerimisroboti abil veebisaidi koos kuvamiseks vajalike elementidega allalaadimise ja arhiivi salvestamise teel (edaspidi veebiarhiveerimine). (3) Kui käesoleva seaduse § 2 lõike 2 punktides 1 ja 2 nimetatud võrguväljaande koopiat ei ole võimalik teha veebist veebiarhiveerimisel, esitab Eesti Rahvusraamatukogu loovutajale nõude koopia loovutada ning loovutaja on kohustatud võimaldama teha koopia. (4) Käesoleva seaduse § 2 lõike 2 punktis 3 nimetatud võrguväljaanne loovutatakse Eesti Rahvusraamatukogule koopia edastamisega võrguväljaande või algmaterjali edastamiseks ning arhiivi salvestamiseks loodud elektroonilise loovutussüsteemi kaudu (edaspidi elektrooniline loovutussüsteem). (5) Esmakordselt Eestis avaldatud trükise algmaterjal loovutatakse Eesti Rahvusraamatukogule trükise algmaterjali failina või samaväärse sisuga faili koopiana, mis edastatakse elektroonilise loovutussüsteemi kaudu. (6) Kui trükis on avaldatud esmakordselt välisriigis avaldatud väljaande tõlkena ja väljaandjal ei ole võimalik trükise algmaterjali loovutada tulenevalt oma lepingulistest kohustustest, kohaldatakse käesoleva seaduse § 8 lõiget 2. (7) Filmi algmaterjal loovutatakse säilituseksemplariks Rahvusarhiivile algmaterjali teabekandjana, algmaterjali failina või samaväärse sisuga faili koopiana või koopia edastamisega elektroonilise loovutussüsteemi kaudu. Filmi algmaterjali loovutamisele kohaldatakse arhiiviseaduse sätteid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_2"
@@ -879,11 +1048,18 @@
           "@id": "estleg:SaES_Par_7_Lg_7"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
       "estleg:references": [
         {
           "@id": "estleg:SaES_Par_2_Lg_2"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SaES_Par_7_v107072016001"
@@ -933,9 +1109,6 @@
         "@id": "estleg:SaES_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -945,7 +1118,13 @@
           "@id": "estleg:SaES_Par_2_Lg_2"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:SaES_Map"
+        },
         {
           "@id": "estleg:SaES_Par_9"
         },
@@ -1005,6 +1184,9 @@
       ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:SaES_Map"
+        },
+        {
           "@id": "estleg:SaES_Par_8"
         },
         {
@@ -1032,13 +1214,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Säilituseksemplariks loovutatavate väljaannete ja nende algmaterjali arv",
+      "rdfs:label": {
+        "@value": "§ 8. Säilituseksemplariks loovutatavate väljaannete ja nende algmaterjali arv",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Säilituseksemplarideks loovutatakse: neli trükist; kaks pimedate punktkirjas trükist; kaks füüsilisel teabekandjal avaldatud väljaannet, välja arvatud trükist; üks võrguväljaanne; üks algmaterjal. (2) Kui käesoleva seaduse § 7 lõike 6 alusel trükise algmaterjali ei loovutata, loovutatakse lisaks käesoleva paragrahvi lõike 1 punktis 1 nimetatule neli lisatrükist, millest kolm loovutatakse säilituseksemplarideks ja ühest valmistab Eesti Rahvusraamatukogu digitaalse säilituseksemplari.",
-      "estleg:legalText": "(1) Säilituseksemplarideks loovutatakse: neli trükist; kaks pimedate punktkirjas trükist; kaks füüsilisel teabekandjal avaldatud väljaannet, välja arvatud trükist; üks võrguväljaanne; üks algmaterjal. (2) Kui käesoleva seaduse § 7 lõike 6 alusel trükise algmaterjali ei loovutata, loovutatakse lisaks käesoleva paragrahvi lõike 1 punktis 1 nimetatule neli lisatrükist, millest kolm loovutatakse säilituseksemplarideks ja ühest valmistab Eesti Rahvusraamatukogu digitaalse säilituseksemplari.",
+      "estleg:summary": {
+        "@value": "(1) Säilituseksemplarideks loovutatakse: 1) neli trükist; 2) kaks pimedate punktkirjas trükist; 3) kaks füüsilisel teabekandjal avaldatud väljaannet, välja arvatud trükist; 4) üks võrguväljaanne; 5) üks algmaterjal. (2) Kui käesoleva seaduse § 7 lõike 6 alusel trükise algmaterjali ei loovutata, loovutatakse lisaks käesoleva paragrahvi lõike 1 punktis 1 nimetatule neli lisatrükist, millest kolm loovutatakse säilituseksemplarideks ja ühest valmistab Eesti Rahvusraamatukogu digitaalse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Säilituseksemplarideks loovutatakse: 1) neli trükist; 2) kaks pimedate punktkirjas trükist; 3) kaks füüsilisel teabekandjal avaldatud väljaannet, välja arvatud trükist; 4) üks võrguväljaanne; 5) üks algmaterjal. (2) Kui käesoleva seaduse § 7 lõike 6 alusel trükise algmaterjali ei loovutata, loovutatakse lisaks käesoleva paragrahvi lõike 1 punktis 1 nimetatule neli lisatrükist, millest kolm loovutatakse säilituseksemplarideks ja ühest valmistab Eesti Rahvusraamatukogu digitaalse säilituseksemplari.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_2"
       },
@@ -1053,17 +1241,20 @@
           "@id": "estleg:SaES_Par_8_Lg_2"
         }
       ],
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:SaES_Par_7_Lg_6"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:SaES_Par_7_Lg_6"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:SaES_Par_7_Lg_6"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:SaES_Map"
+        },
         {
           "@id": "estleg:SaES_Par_7_Lg_6"
         },
@@ -1087,11 +1278,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Säilituseksemplarideks loovutatakse: neli trükist; kaks pimedate punktkirjas trükist; kaks füüsilisel teabekandjal avaldatud väljaannet, välja arvatud trükist; üks võrguväljaanne; üks algmaterjal.",
+      "estleg:legalText": "(1) Säilituseksemplarideks loovutatakse: 1) neli trükist; 2) kaks pimedate punktkirjas trükist; 3) kaks füüsilisel teabekandjal avaldatud väljaannet, välja arvatud trükist; 4) üks võrguväljaanne; 5) üks algmaterjal.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_8"
       },
-      "rdfs:label": "§ 8 lg 1"
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
     },
     {
       "@id": "estleg:SaES_Par_8_Lg_2",
@@ -1106,12 +1304,12 @@
       },
       "rdfs:label": "§ 8 lg 2",
       "estleg:itemNumber": "1",
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SaES_Par_7_Lg_6"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SaES_Par_7_Lg_6"
         }
@@ -1129,12 +1327,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Väljaande ja selle algmaterjali säilituseksemplariks loovutamise tähtaeg",
+      "rdfs:label": {
+        "@value": "§ 9. Väljaande ja selle algmaterjali säilituseksemplariks loovutamise tähtaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Väljaanne ja selle algmaterjal loovutatakse säilituseksemplariks esimesel võimalusel 20 päeva jooksul pärast esimese tiraažiosa tootmist või esmakordset üldsusele kättesaadavaks tegemist. (2) Käesoleva seaduse § 7 lõikes 3 nimetatud juhul loovutatakse võrguväljaande säilituseksemplar 20 päeva jooksul pärast Eesti Rahvusraamatukogu sellekohase nõude esitamist. (3) Filmi algmaterjal loovutatakse säilituseksemplariks ühe aasta jooksul pärast filmi esmakordset avalikustamist Eesti Vabariigis.",
+      "estleg:summary": {
+        "@value": "(1) Väljaanne ja selle algmaterjal loovutatakse säilituseksemplariks esimesel võimalusel 20 päeva jooksul pärast esimese tiraažiosa tootmist või esmakordset üldsusele kättesaadavaks tegemist. (2) Käesoleva seaduse § 7 lõikes 3 nimetatud juhul loovutatakse võrguväljaande säilituseksemplar 20 päeva jooksul pärast Eesti Rahvusraamatukogu sellekohase nõude esitamist. (3) Filmi algmaterjal loovutatakse säilituseksemplariks ühe aasta jooksul pärast filmi esmakordset avalikustamist Eesti Vabariigis.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Väljaanne ja selle algmaterjal loovutatakse säilituseksemplariks esimesel võimalusel 20 päeva jooksul pärast esimese tiraažiosa tootmist või esmakordset üldsusele kättesaadavaks tegemist. (2) Käesoleva seaduse § 7 lõikes 3 nimetatud juhul loovutatakse võrguväljaande säilituseksemplar 20 päeva jooksul pärast Eesti Rahvusraamatukogu sellekohase nõude esitamist. (3) Filmi algmaterjal loovutatakse säilituseksemplariks ühe aasta jooksul pärast filmi esmakordset avalikustamist Eesti Vabariigis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_2"
@@ -1215,12 +1419,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Väljaande ja selle algmaterjali säilituseksemplariks loovutamise kulud",
+      "rdfs:label": {
+        "@value": "§ 10. Väljaande ja selle algmaterjali säilituseksemplariks loovutamise kulud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "Väljaande ja selle algmaterjali säilituseksemplariks loovutamisega seotud kulud tasub loovutaja ning loovutamise eest ei maksa säilituseksemplari saaja tasu ega hüvitist.",
+      "estleg:summary": {
+        "@value": "Väljaande ja selle algmaterjali säilituseksemplariks loovutamisega seotud kulud tasub loovutaja ning loovutamise eest ei maksa säilituseksemplari saaja tasu ega hüvitist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Väljaande ja selle algmaterjali säilituseksemplariks loovutamisega seotud kulud tasub loovutaja ning loovutamise eest ei maksa säilituseksemplari saaja tasu ega hüvitist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_2"
@@ -1245,10 +1455,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Väljaande ja selle algmaterjali säilituseksemplariks loovutamisega seotud kulud tasub loovutaja ning loovutamise eest ei maksa säilituseksemplari saaja tasu ega hüvitist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väljaande ja selle algmaterjali säilituseksemplariks loovutamisega seotud kulud tasub loovutaja ning loovutamise eest ei maksa säilituseksemplari saaja tasu ega hüvitist.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_10"
-      }
+      },
+      "rdfs:label": "§ 10 lg 1"
     },
     {
       "@id": "estleg:SaES_Par_11",
@@ -1257,13 +1469,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Väljaande ja selle algmaterjali säilituseksemplariks loovutamisel esitatavad andmed",
+      "rdfs:label": {
+        "@value": "§ 11. Väljaande ja selle algmaterjali säilituseksemplariks loovutamisel esitatavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Füüsilisel teabekandjal avaldatud väljaande säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule järgmised andmed: väljaandja nimi või nimetus (füüsilise isiku puhul ees- ja perekonnanimi); loovutatavate eksemplaride arv iga nimetuse kohta; tiraaži suurus või levitamiseks sissetoodud kogus. (2) Pisitrükise säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule loovutatavate eksemplaride koguarv. (3) Võrguväljaande ja algmaterjali säilituseksemplariks",
-      "estleg:legalText": "(1) Füüsilisel teabekandjal avaldatud väljaande säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule järgmised andmed: väljaandja nimi või nimetus (füüsilise isiku puhul ees- ja perekonnanimi); loovutatavate eksemplaride arv iga nimetuse kohta; tiraaži suurus või levitamiseks sissetoodud kogus. (2) Pisitrükise säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule loovutatavate eksemplaride koguarv. (3) Võrguväljaande ja algmaterjali säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule või Rahvusarhiivile väljaandja, tootja või kaastootja nimi või nimetus (füüsilise isiku puhul ees- ja perekonnanimi), kirjeldavad metaandmed, kasutusõigused, objekti struktuur, tehnilised metaandmed ja seosed. (4) Käesoleva paragrahvi lõike 1 punktis 3 nimetatud andmed ei ole avalikud.",
+      "estleg:summary": {
+        "@value": "(1) Füüsilisel teabekandjal avaldatud väljaande säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule järgmised andmed: 1) väljaandja nimi või nimetus (füüsilise isiku puhul ees- ja perekonnanimi); 2) loovutatavate eksemplaride arv iga nimetuse kohta; 3) tiraaži suurus või levitamiseks sissetoodud kogus. (2) Pisitrükise säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule loovutatavate eksemplaride koguarv.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Füüsilisel teabekandjal avaldatud väljaande säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule järgmised andmed: 1) väljaandja nimi või nimetus (füüsilise isiku puhul ees- ja perekonnanimi); 2) loovutatavate eksemplaride arv iga nimetuse kohta; 3) tiraaži suurus või levitamiseks sissetoodud kogus. (2) Pisitrükise säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule loovutatavate eksemplaride koguarv. (3) Võrguväljaande ja algmaterjali säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule või Rahvusarhiivile väljaandja, tootja või kaastootja nimi või nimetus (füüsilise isiku puhul ees- ja perekonnanimi), kirjeldavad metaandmed, kasutusõigused, objekti struktuur, tehnilised metaandmed ja seosed. (4) Käesoleva paragrahvi lõike 1 punktis 3 nimetatud andmed ei ole avalikud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_2"
       },
@@ -1286,9 +1504,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
@@ -1309,11 +1524,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Füüsilisel teabekandjal avaldatud väljaande säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule järgmised andmed: väljaandja nimi või nimetus (füüsilise isiku puhul ees- ja perekonnanimi); loovutatavate eksemplaride arv iga nimetuse kohta; tiraaži suurus või levitamiseks sissetoodud kogus.",
+      "estleg:legalText": "(1) Füüsilisel teabekandjal avaldatud väljaande säilituseksemplariks loovutamisel esitatakse Eesti Rahvusraamatukogule järgmised andmed: 1) väljaandja nimi või nimetus (füüsilise isiku puhul ees- ja perekonnanimi); 2) loovutatavate eksemplaride arv iga nimetuse kohta; 3) tiraaži suurus või levitamiseks sissetoodud kogus.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_11"
       },
       "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1380,13 +1600,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Säilituseksemplari säilitajad",
+      "rdfs:label": {
+        "@value": "§ 12. Säilituseksemplari säilitajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Trükise säilituseksemplari säilitajad on: Eesti Kirjandusmuuseumi Arhiivraamatukogu; Eesti Rahvusraamatukogu; Tallinna Ülikooli Akadeemiline Raamatukogu; Tartu Ülikooli Raamatukogu. (2) Pimedate punktkirjas trükise säilituseksemplari säilitajad on: Eesti Rahvusraamatukogu; Tartu Ülikooli Raamatukogu. (3) Füüsilisel teabekandjal avaldatud väljaande, välja arvatud trükise säilituseksemplari säilitajad on: Eesti Rahvusraamatukogu; Tartu Ülikooli Raamatukogu.",
-      "estleg:legalText": "(1) Trükise säilituseksemplari säilitajad on: Eesti Kirjandusmuuseumi Arhiivraamatukogu; Eesti Rahvusraamatukogu; Tallinna Ülikooli Akadeemiline Raamatukogu; Tartu Ülikooli Raamatukogu. (2) Pimedate punktkirjas trükise säilituseksemplari säilitajad on: Eesti Rahvusraamatukogu; Tartu Ülikooli Raamatukogu. (3) Füüsilisel teabekandjal avaldatud väljaande, välja arvatud trükise säilituseksemplari säilitajad on: Eesti Rahvusraamatukogu; Tartu Ülikooli Raamatukogu. (4) Võrguväljaande säilituseksemplari säilitaja on Eesti Rahvusraamatukogu. (5) Trükise algmaterjali säilituseksemplari säilitaja on Eesti Rahvusraamatukogu. (6) Filmi algmaterjali säilituseksemplari säilitaja on Rahvusarhiiv. (7) Käesoleva seaduse § 8 lõikes 2 nimetatud trükise lisasäilituseksemplari säilitajad on: Eesti Kirjandusmuuseumi Arhiivraamatukogu; Eesti Rahvusraamatukogu; Tartu Ülikooli Raamatukogu.",
+      "estleg:summary": {
+        "@value": "(1) Trükise säilituseksemplari säilitajad on: 1) Eesti Kirjandusmuuseumi Arhiivraamatukogu; 2) Eesti Rahvusraamatukogu; 3) Tallinna Ülikooli Akadeemiline Raamatukogu; 4) Tartu Ülikooli Raamatukogu. (2) Pimedate punktkirjas trükise säilituseksemplari säilitajad on: 1) Eesti Rahvusraamatukogu; 2) Tartu Ülikooli Raamatukogu. (3) Füüsilisel teabekandjal avaldatud väljaande, välja arvatud trükise säilituseksemplari säilitajad on: 1) Eesti Rahvusraamatukogu; 2) Tartu Ülikooli Raamatukogu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Trükise säilituseksemplari säilitajad on: 1) Eesti Kirjandusmuuseumi Arhiivraamatukogu; 2) Eesti Rahvusraamatukogu; 3) Tallinna Ülikooli Akadeemiline Raamatukogu; 4) Tartu Ülikooli Raamatukogu. (2) Pimedate punktkirjas trükise säilituseksemplari säilitajad on: 1) Eesti Rahvusraamatukogu; 2) Tartu Ülikooli Raamatukogu. (3) Füüsilisel teabekandjal avaldatud väljaande, välja arvatud trükise säilituseksemplari säilitajad on: 1) Eesti Rahvusraamatukogu; 2) Tartu Ülikooli Raamatukogu. (4) Võrguväljaande säilituseksemplari säilitaja on Eesti Rahvusraamatukogu. (5) Trükise algmaterjali säilituseksemplari säilitaja on Eesti Rahvusraamatukogu. (6) Filmi algmaterjali säilituseksemplari säilitaja on Rahvusarhiiv. (7) Käesoleva seaduse § 8 lõikes 2 nimetatud trükise lisasäilituseksemplari säilitajad on: 1) Eesti Kirjandusmuuseumi Arhiivraamatukogu; 2) Eesti Rahvusraamatukogu; 3) Tartu Ülikooli Raamatukogu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_2"
       },
@@ -1416,12 +1642,10 @@
           "@id": "estleg:SaES_Par_12_Lg_7"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:SES_Par_8"
-        }
-      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:SaES_Map"
+        },
         {
           "@id": "estleg:SaES_Par_23"
         },
@@ -1445,11 +1669,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Trükise säilituseksemplari säilitajad on: Eesti Kirjandusmuuseumi Arhiivraamatukogu; Eesti Rahvusraamatukogu; Tallinna Ülikooli Akadeemiline Raamatukogu; Tartu Ülikooli Raamatukogu.",
+      "estleg:legalText": "(1) Trükise säilituseksemplari säilitajad on: 1) Eesti Kirjandusmuuseumi Arhiivraamatukogu; 2) Eesti Rahvusraamatukogu; 3) Tallinna Ülikooli Akadeemiline Raamatukogu; 4) Tartu Ülikooli Raamatukogu.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_12"
       },
-      "rdfs:label": "§ 12 lg 1"
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
     },
     {
       "@id": "estleg:SaES_Par_12_Lg_2",
@@ -1458,11 +1688,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Pimedate punktkirjas trükise säilituseksemplari säilitajad on: Eesti Rahvusraamatukogu; Tartu Ülikooli Raamatukogu.",
+      "estleg:legalText": "(2) Pimedate punktkirjas trükise säilituseksemplari säilitajad on: 1) Eesti Rahvusraamatukogu; 2) Tartu Ülikooli Raamatukogu.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_12"
       },
-      "rdfs:label": "§ 12 lg 2"
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:SaES_Par_12_Lg_3",
@@ -1471,11 +1705,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Füüsilisel teabekandjal avaldatud väljaande, välja arvatud trükise säilituseksemplari säilitajad on: Eesti Rahvusraamatukogu; Tartu Ülikooli Raamatukogu.",
+      "estleg:legalText": "(3) Füüsilisel teabekandjal avaldatud väljaande, välja arvatud trükise säilituseksemplari säilitajad on: 1) Eesti Rahvusraamatukogu; 2) Tartu Ülikooli Raamatukogu.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_12"
       },
-      "rdfs:label": "§ 12 lg 3"
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:SaES_Par_12_Lg_4",
@@ -1523,11 +1761,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "7",
-      "estleg:legalText": "(7) Käesoleva seaduse § 8 lõikes 2 nimetatud trükise lisasäilituseksemplari säilitajad on: Eesti Kirjandusmuuseumi Arhiivraamatukogu; Eesti Rahvusraamatukogu; Tartu Ülikooli Raamatukogu.",
+      "estleg:legalText": "(7) Käesoleva seaduse § 8 lõikes 2 nimetatud trükise lisasäilituseksemplari säilitajad on: 1) Eesti Kirjandusmuuseumi Arhiivraamatukogu; 2) Eesti Rahvusraamatukogu; 3) Tartu Ülikooli Raamatukogu.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_12"
       },
       "rdfs:label": "§ 12 lg 7",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:SaES_Par_8_Lg_2"
@@ -1541,12 +1784,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Säilituseksemplari edastamine säilitajale",
+      "rdfs:label": {
+        "@value": "§ 13. Säilituseksemplari edastamine säilitajale",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Eesti Rahvusraamatukogu edastab säilituseksemplari selle säilitajale viie tööpäeva jooksul komplektse säilituseksemplari saabumisest arvates. (2) Säilituseksemplari säilitajale edastamisega seotud kulud kannab Eesti Rahvusraamatukogu.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Rahvusraamatukogu edastab säilituseksemplari selle säilitajale viie tööpäeva jooksul komplektse säilituseksemplari saabumisest arvates. (2) Säilituseksemplari säilitajale edastamisega seotud kulud kannab Eesti Rahvusraamatukogu.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Rahvusraamatukogu edastab säilituseksemplari selle säilitajale viie tööpäeva jooksul komplektse säilituseksemplari saabumisest arvates. (2) Säilituseksemplari säilitajale edastamisega seotud kulud kannab Eesti Rahvusraamatukogu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_2"
@@ -1601,12 +1850,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Säilituseksemplari kättesaadavaks tegemine ja kasutamine",
+      "rdfs:label": {
+        "@value": "§ 14. Säilituseksemplari kättesaadavaks tegemine ja kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Säilituseksemplari võib anda kasutamiseks, kui säilitaja on veendunud säilituseksemplari nõuetekohases säilimises ja kasutamine ei kahjusta säilituseksemplari. (2) Säilitaja peab tagama juurdepääsu säilituseksemplaris sisalduvale teabele esimese võimalusena säilituseksemplari digitaalse koopia vahendusel. (3) Füüsilisel teabekandjal avaldatud väljaande säilituseksemplari võib kasutada säilitaja juures kohapeal juhul, kui säilitaja kogus ei ole teisi eksemplare ning selline kasutamine ei",
+      "estleg:summary": {
+        "@value": "(1) Säilituseksemplari võib anda kasutamiseks, kui säilitaja on veendunud säilituseksemplari nõuetekohases säilimises ja kasutamine ei kahjusta säilituseksemplari. (2) Säilitaja peab tagama juurdepääsu säilituseksemplaris sisalduvale teabele esimese võimalusena säilituseksemplari digitaalse koopia vahendusel. (3) Füüsilisel teabekandjal avaldatud väljaande säilituseksemplari võib kasutada säilitaja juures kohapeal juhul, kui säilitaja kogus ei ole teisi eksemplare ning selline kasutamine ei",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Säilituseksemplari võib anda kasutamiseks, kui säilitaja on veendunud säilituseksemplari nõuetekohases säilimises ja kasutamine ei kahjusta säilituseksemplari. (2) Säilitaja peab tagama juurdepääsu säilituseksemplaris sisalduvale teabele esimese võimalusena säilituseksemplari digitaalse koopia vahendusel. (3) Füüsilisel teabekandjal avaldatud väljaande säilituseksemplari võib kasutada säilitaja juures kohapeal juhul, kui säilitaja kogus ei ole teisi eksemplare ning selline kasutamine ei kahjusta säilituseksemplari. (4) Füüsilisel teabekandjal avaldatud väljaande säilituseksemplari kojulaenutamine on keelatud. (5) Võrguväljaande ja trükise algmaterjali säilituseksemplari võib kasutada autoriseeritud töökohas. (6) Võrguväljaande ja algmaterjali autoriõiguse omaja loa alusel võib säilituseksemplari teha üldsusele kättesaadavaks. (7) Kui väljaanne või algmaterjal kuulub hävitamisele või võrguväljaanne kustutamisele kohtulahendi alusel, ei kuulu hävitamisele või kustutamisele säilituseksemplar. (8) Käesoleva paragrahvi lõikes 7 nimetatud juhul võimaldatakse ligipääs säilituseksemplarile taotluse alusel. Taotlus esitatakse säilituseksemplari säilitajale. (9) Kui kohtuotsuse alusel keelatakse väljaande või selle algmaterjali üldsusele kättesaadavaks tegemine, võib isik taotleda juurdepääsu selle säilituseksemplarile. Taotlus esitatakse säilituseksemplari säilitajale. (10) Elektroonilise loovutussüsteemi kaudu loovutatud võrguväljaande või trükise algmaterjali väljaandjal on õigus saada säilituseksemplari säilitajalt tasuta koopia loovutamisvormingus ja viie aasta jooksul loovutamisest arvates säilitusvormingus. Pärast viie aasta möödumist võrguväljaande või trükise algmaterjali loovutamisest võib säilitusvormingu eest küsida tasu. (11) Elektroonilise loovutussüsteemi kaudu loovutatud filmi algmaterjali tootjal või kaastootjal on õigus saada säilituseksemplari säilitajalt viie aasta jooksul loovutamisest arvates tasuta säilituseksemplari koopia.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_3"
@@ -1651,18 +1906,15 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasVersion": [
         {
@@ -1682,12 +1934,12 @@
         "@id": "estleg:SaES_Par_14"
       },
       "rdfs:label": "§ 14 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1702,12 +1954,12 @@
         "@id": "estleg:SaES_Par_14"
       },
       "rdfs:label": "§ 14 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1722,12 +1974,12 @@
         "@id": "estleg:SaES_Par_14"
       },
       "rdfs:label": "§ 14 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1742,12 +1994,12 @@
         "@id": "estleg:SaES_Par_14"
       },
       "rdfs:label": "§ 14 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -1762,12 +2014,12 @@
         "@id": "estleg:SaES_Par_14"
       },
       "rdfs:label": "§ 14 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1782,12 +2034,12 @@
         "@id": "estleg:SaES_Par_14"
       },
       "rdfs:label": "§ 14 lg 6",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1828,9 +2080,6 @@
         "@id": "estleg:SaES_Par_14"
       },
       "rdfs:label": "§ 14 lg 9",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1839,6 +2088,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1853,12 +2105,12 @@
         "@id": "estleg:SaES_Par_14"
       },
       "rdfs:label": "§ 14 lg 10",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -1873,9 +2125,6 @@
         "@id": "estleg:SaES_Par_14"
       },
       "rdfs:label": "§ 14 lg 11",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1884,6 +2133,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -1893,12 +2145,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Säilituseksemplaris sisalduvate isikuandmete töötlemine",
+      "rdfs:label": {
+        "@value": "§ 15. Säilituseksemplaris sisalduvate isikuandmete töötlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Kui säilituseksemplar sisaldab isikuandmeid, võib säilitaja isikuandmeid töödelda käesoleva seaduse eesmärkide täitmiseks. (2) Andmesubjekti põhjendatud nõudel lõpetatakse võrguväljaande säilituseksemplaris sisalduvate isikuandmete üldsusele kättesaadavaks tegemine. (3) Kui Eesti Rahvusraamatukogu ei ole veebiarhiveerimisel kontrollinud, kas võrguväljaanne sisaldab isikuandmeid, tehakse võrguväljaanne üldsusele kättesaadavaks, kohaldades tehnilisi piiranguid, mis ei võimalda leida",
+      "estleg:summary": {
+        "@value": "(1) Kui säilituseksemplar sisaldab isikuandmeid, võib säilitaja isikuandmeid töödelda käesoleva seaduse eesmärkide täitmiseks. (2) Andmesubjekti põhjendatud nõudel lõpetatakse võrguväljaande säilituseksemplaris sisalduvate isikuandmete üldsusele kättesaadavaks tegemine. (3) Kui Eesti Rahvusraamatukogu ei ole veebiarhiveerimisel kontrollinud, kas võrguväljaanne sisaldab isikuandmeid, tehakse võrguväljaanne üldsusele kättesaadavaks, kohaldades tehnilisi piiranguid, mis ei võimalda leida",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui säilituseksemplar sisaldab isikuandmeid, võib säilitaja isikuandmeid töödelda käesoleva seaduse eesmärkide täitmiseks. (2) Andmesubjekti põhjendatud nõudel lõpetatakse võrguväljaande säilituseksemplaris sisalduvate isikuandmete üldsusele kättesaadavaks tegemine. (3) Kui Eesti Rahvusraamatukogu ei ole veebiarhiveerimisel kontrollinud, kas võrguväljaanne sisaldab isikuandmeid, tehakse võrguväljaanne üldsusele kättesaadavaks, kohaldades tehnilisi piiranguid, mis ei võimalda leida arhiveeritud võrguväljaandeid inimese ees- või perekonnanime järgi. (4) Kui säilituseksemplari üldsusele kättesaadavaks tegemine on lõpetatud käesoleva paragrahvi lõikes 2 nimetatud juhul, võib isik teadusliku uurimistöö ja õppetöö eesmärkidel taotleda juurdepääsu säilituseksemplarile.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_3"
@@ -1925,12 +2183,12 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -1950,12 +2208,12 @@
         "@id": "estleg:SaES_Par_15"
       },
       "rdfs:label": "§ 15 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2005,9 +2263,6 @@
         "@id": "estleg:SaES_Par_15"
       },
       "rdfs:label": "§ 15 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2016,6 +2271,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2025,13 +2283,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Autoriseeritud töökoht",
+      "rdfs:label": {
+        "@value": "§ 16. Autoriseeritud töökoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Autoriseeritud töökoht on digitaalse säilituseksemplari kohalkasutuseks mõeldud arvutiterminal, mida kasutades on tehniliste ja füüsiliste vahenditega välistatud säilituseksemplari üldsusele kättesaadavaks tegemine või välistele andmekandjatele salvestamine. (2) Autoriseeritud töökohad asuvad: Eesti Kirjandusmuuseumi Arhiivraamatukogus; Eesti Rahvusraamatukogus; Tallinna Tehnikaülikooli Raamatukogus; Tallinna Ülikooli Akadeemilises Raamatukogus; Tartu Ülikooli Raamatukogus.",
-      "estleg:legalText": "(1) Autoriseeritud töökoht on digitaalse säilituseksemplari kohalkasutuseks mõeldud arvutiterminal, mida kasutades on tehniliste ja füüsiliste vahenditega välistatud säilituseksemplari üldsusele kättesaadavaks tegemine või välistele andmekandjatele salvestamine. (2) Autoriseeritud töökohad asuvad: Eesti Kirjandusmuuseumi Arhiivraamatukogus; Eesti Rahvusraamatukogus; Tallinna Tehnikaülikooli Raamatukogus; Tallinna Ülikooli Akadeemilises Raamatukogus; Tartu Ülikooli Raamatukogus.",
+      "estleg:summary": {
+        "@value": "(1) Autoriseeritud töökoht on digitaalse säilituseksemplari kohalkasutuseks mõeldud arvutiterminal, mida kasutades on tehniliste ja füüsiliste vahenditega välistatud säilituseksemplari üldsusele kättesaadavaks tegemine või välistele andmekandjatele salvestamine. (2) Autoriseeritud töökohad asuvad: 1) Eesti Kirjandusmuuseumi Arhiivraamatukogus; 2) Eesti Rahvusraamatukogus; 3) Tallinna Tehnikaülikooli Raamatukogus; 4) Tallinna Ülikooli Akadeemilises Raamatukogus; 5) Tartu Ülikooli Raamatukogus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Autoriseeritud töökoht on digitaalse säilituseksemplari kohalkasutuseks mõeldud arvutiterminal, mida kasutades on tehniliste ja füüsiliste vahenditega välistatud säilituseksemplari üldsusele kättesaadavaks tegemine või välistele andmekandjatele salvestamine. (2) Autoriseeritud töökohad asuvad: 1) Eesti Kirjandusmuuseumi Arhiivraamatukogus; 2) Eesti Rahvusraamatukogus; 3) Tallinna Tehnikaülikooli Raamatukogus; 4) Tallinna Ülikooli Akadeemilises Raamatukogus; 5) Tartu Ülikooli Raamatukogus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_3"
       },
@@ -2072,11 +2336,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Autoriseeritud töökohad asuvad: Eesti Kirjandusmuuseumi Arhiivraamatukogus; Eesti Rahvusraamatukogus; Tallinna Tehnikaülikooli Raamatukogus; Tallinna Ülikooli Akadeemilises Raamatukogus; Tartu Ülikooli Raamatukogus.",
+      "estleg:legalText": "(2) Autoriseeritud töökohad asuvad: 1) Eesti Kirjandusmuuseumi Arhiivraamatukogus; 2) Eesti Rahvusraamatukogus; 3) Tallinna Tehnikaülikooli Raamatukogus; 4) Tallinna Ülikooli Akadeemilises Raamatukogus; 5) Tartu Ülikooli Raamatukogus.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_16"
       },
-      "rdfs:label": "§ 16 lg 2"
+      "rdfs:label": "§ 16 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
     },
     {
       "@id": "estleg:SaES_Par_17",
@@ -2085,13 +2356,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Säilituseksemplari säilitamine ja säilitamisest loobumine",
+      "rdfs:label": {
+        "@value": "§ 17. Säilituseksemplari säilitamine ja säilitamisest loobumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Säilituseksemplari säilitaja peab tagama säilituseksemplari säilimise, eesmärgipärase kasutamise ja kättesaadavaks tegemise. (2) Säilituseksemplari tuleb säilitada hoidlas, mille tehnilised ja kliimatingimused tagavad säilituseksemplari säilimise ning hoiavad ära kahjustumise ja hävimise. Säilituseksemplari tuleb säilitada hoidlas, kus on elektrooniline valvesignalisatsioonisüsteem ning automaatne kliima-, tulekahjusignalisatsiooni- ja tulekustutussüsteem.",
-      "estleg:legalText": "(1) Säilituseksemplari säilitaja peab tagama säilituseksemplari säilimise, eesmärgipärase kasutamise ja kättesaadavaks tegemise. (2) Säilituseksemplari tuleb säilitada hoidlas, mille tehnilised ja kliimatingimused tagavad säilituseksemplari säilimise ning hoiavad ära kahjustumise ja hävimise. Säilituseksemplari tuleb säilitada hoidlas, kus on elektrooniline valvesignalisatsioonisüsteem ning automaatne kliima-, tulekahjusignalisatsiooni- ja tulekustutussüsteem. (3) Võrguväljaande ja algmaterjali säilituseksemplaride säilitamisel tuleb juhinduda avaliku teabe seaduse § 439 lõike 1 punkti 4 alusel kehtestatud Vabariigi Valitsuse määrusest. (4) Säilituseksemplar kirjeldatakse ja võimalusel tähistatakse selliselt, et see oleks eristatav teistest säilituseksemplari säilitaja kogus olevatest väljaannetest. (5) Säilituseksemplari säilitaja võib säilituseksemplari säilitamisest loobuda juhul, kui see ei mõjuta Eesti kultuurile väärtusliku teabe säilimist. Säilitamisest loobumise otsuse kinnitab Eesti Rahvusraamatukogu. (6) Eesti Rahvusraamatukogu teavitab väljaandjat individuaalselt rahvusbibliograafias registreeritud väljaande ja selle algmaterjali säilitamisest loobumisest. (7) Säilituseksemplar, mille säilitamisest loobutakse, hävitatakse või antakse väljaandja nõusolekul lugejatele tavapärases korras kasutamiseks.",
+      "estleg:summary": {
+        "@value": "(1) Säilituseksemplari säilitaja peab tagama säilituseksemplari säilimise, eesmärgipärase kasutamise ja kättesaadavaks tegemise. (2) Säilituseksemplari tuleb säilitada hoidlas, mille tehnilised ja kliimatingimused tagavad säilituseksemplari säilimise ning hoiavad ära kahjustumise ja hävimise. Säilituseksemplari tuleb säilitada hoidlas, kus on elektrooniline valvesignalisatsioonisüsteem ning automaatne kliima-, tulekahjusignalisatsiooni- ja tulekustutussüsteem.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Säilituseksemplari säilitaja peab tagama säilituseksemplari säilimise, eesmärgipärase kasutamise ja kättesaadavaks tegemise. (2) Säilituseksemplari tuleb säilitada hoidlas, mille tehnilised ja kliimatingimused tagavad säilituseksemplari säilimise ning hoiavad ära kahjustumise ja hävimise. Säilituseksemplari tuleb säilitada hoidlas, kus on elektrooniline valvesignalisatsioonisüsteem ning automaatne kliima-, tulekahjusignalisatsiooni- ja tulekustutussüsteem. (3) Võrguväljaande ja algmaterjali säilituseksemplaride säilitamisel tuleb juhinduda avaliku teabe seaduse § 43⁹ lõike 1 punkti 4 alusel kehtestatud Vabariigi Valitsuse määrusest. (4) Säilituseksemplar kirjeldatakse ja võimalusel tähistatakse selliselt, et see oleks eristatav teistest säilituseksemplari säilitaja kogus olevatest väljaannetest. (5) Säilituseksemplari säilitaja võib säilituseksemplari säilitamisest loobuda juhul, kui see ei mõjuta Eesti kultuurile väärtusliku teabe säilimist. Säilitamisest loobumise otsuse kinnitab Eesti Rahvusraamatukogu. (6) Eesti Rahvusraamatukogu teavitab väljaandjat individuaalselt rahvusbibliograafias registreeritud väljaande ja selle algmaterjali säilitamisest loobumisest. (7) Säilituseksemplar, mille säilitamisest loobutakse, hävitatakse või antakse väljaandja nõusolekul lugejatele tavapärases korras kasutamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_4"
       },
@@ -2129,21 +2406,21 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:SaES_Par_17_v107072016001"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:SaES_Par_17_v107072016001"
         }
       ]
     },
@@ -2159,12 +2436,12 @@
         "@id": "estleg:SaES_Par_17"
       },
       "rdfs:label": "§ 17 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -2179,12 +2456,12 @@
         "@id": "estleg:SaES_Par_17"
       },
       "rdfs:label": "§ 17 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -2194,15 +2471,12 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Võrguväljaande ja algmaterjali säilituseksemplaride säilitamisel tuleb juhinduda avaliku teabe seaduse § 439 lõike 1 punkti 4 alusel kehtestatud Vabariigi Valitsuse määrusest.",
+      "estleg:legalText": "(3) Võrguväljaande ja algmaterjali säilituseksemplaride säilitamisel tuleb juhinduda avaliku teabe seaduse § 43⁹ lõike 1 punkti 4 alusel kehtestatud Vabariigi Valitsuse määrusest.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_17"
       },
       "rdfs:label": "§ 17 lg 3",
       "estleg:itemNumber": "4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2211,6 +2485,14 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:references": [
+        {
+          "@id": "estleg:AVTS_Par_43_9_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -2243,12 +2525,12 @@
         "@id": "estleg:SaES_Par_17"
       },
       "rdfs:label": "§ 17 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2293,12 +2575,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Säilituseksemplari registreerimine ja statistika",
+      "rdfs:label": {
+        "@value": "§ 18. Säilituseksemplari registreerimine ja statistika",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Eesti Rahvusraamatukogu peab säilituseksemplari, välja arvatud filmi algmaterjal, registreerima rahvusbibliograafia andmebaasis Eesti Rahvusraamatukogu seaduse § 10 lõike 1 punkti 15 alusel kehtestatud korra kohaselt. (2) Eesti Rahvusraamatukogu koostab säilituseksemplaride alusel riiklikku väljaannete statistikat, välja arvatud filmi algmaterjali puhul. (3) Filmi algmaterjali registreerib ja statistika koostab Rahvusarhiiv.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Rahvusraamatukogu peab säilituseksemplari, välja arvatud filmi algmaterjal, registreerima rahvusbibliograafia andmebaasis Eesti Rahvusraamatukogu seaduse § 10 lõike 1 punkti 15 alusel kehtestatud korra kohaselt. (2) Eesti Rahvusraamatukogu koostab säilituseksemplaride alusel riiklikku väljaannete statistikat, välja arvatud filmi algmaterjali puhul. (3) Filmi algmaterjali registreerib ja statistika koostab Rahvusarhiiv.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Rahvusraamatukogu peab säilituseksemplari, välja arvatud filmi algmaterjal, registreerima rahvusbibliograafia andmebaasis Eesti Rahvusraamatukogu seaduse § 10 lõike 1 punkti 15 alusel kehtestatud korra kohaselt. (2) Eesti Rahvusraamatukogu koostab säilituseksemplaride alusel riiklikku väljaannete statistikat, välja arvatud filmi algmaterjali puhul. (3) Filmi algmaterjali registreerib ja statistika koostab Rahvusarhiiv.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_4"
@@ -2317,9 +2605,6 @@
           "@id": "estleg:SaES_Par_18_Lg_3"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -2329,6 +2614,9 @@
           "@id": "estleg:EESTI_3_Par_10_Lg_1"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SaES_Par_18_v107072016001"
@@ -2348,9 +2636,6 @@
       },
       "rdfs:label": "§ 18 lg 1",
       "estleg:itemNumber": "15",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -2359,7 +2644,10 @@
         {
           "@id": "estleg:EESTI_3_Par_10_Lg_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:SaES_Par_18_Lg_2",
@@ -2394,12 +2682,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Säilituseksemplaride kogu üleandmine",
+      "rdfs:label": {
+        "@value": "§ 19. Säilituseksemplaride kogu üleandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "Säilituseksemplari säilitaja ümberkorraldamise või tegevuse lõpetamise korral antakse säilituseksemplaride kogu üle teisele säilituseksemplari säilitajale kooskõlastatult Kultuuriministeeriumiga.",
+      "estleg:summary": {
+        "@value": "Säilituseksemplari säilitaja ümberkorraldamise või tegevuse lõpetamise korral antakse säilituseksemplaride kogu üle teisele säilituseksemplari säilitajale kooskõlastatult Kultuuriministeeriumiga.",
+        "@language": "et"
+      },
       "estleg:legalText": "Säilituseksemplari säilitaja ümberkorraldamise või tegevuse lõpetamise korral antakse säilituseksemplaride kogu üle teisele säilituseksemplari säilitajale kooskõlastatult Kultuuriministeeriumiga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_4"
@@ -2412,14 +2706,14 @@
           "@id": "estleg:SaES_Par_19_Lg_1"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:SaES_Par_19_v107072016001"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kultuuriministeerium"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:SaES_Par_19_v107072016001"
         }
       ]
     },
@@ -2429,10 +2723,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Säilituseksemplari säilitaja ümberkorraldamise või tegevuse lõpetamise korral antakse säilituseksemplaride kogu üle teisele säilituseksemplari säilitajale kooskõlastatult Kultuuriministeeriumiga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Säilituseksemplari säilitaja ümberkorraldamise või tegevuse lõpetamise korral antakse säilituseksemplaride kogu üle teisele säilituseksemplari säilitajale kooskõlastatult Kultuuriministeeriumiga.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_19"
       },
+      "rdfs:label": "§ 19 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kultuuriministeerium"
@@ -2446,12 +2742,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Riiklik järelevalve",
+      "rdfs:label": {
+        "@value": "§ 20. Riiklik järelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Riiklikku järelevalvet käesoleva seaduse täitmise üle teeb Eesti Rahvusraamatukogu, välja arvatud filmi algmaterjali puhul. (2) Riiklikku järelevalvet käesoleva seaduse täitmise üle seonduvalt filmi algmaterjaliga teeb Rahvusarhiiv.",
+      "estleg:summary": {
+        "@value": "(1) Riiklikku järelevalvet käesoleva seaduse täitmise üle teeb Eesti Rahvusraamatukogu, välja arvatud filmi algmaterjali puhul. (2) Riiklikku järelevalvet käesoleva seaduse täitmise üle seonduvalt filmi algmaterjaliga teeb Rahvusarhiiv.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riiklikku järelevalvet käesoleva seaduse täitmise üle teeb Eesti Rahvusraamatukogu, välja arvatud filmi algmaterjali puhul. (2) Riiklikku järelevalvet käesoleva seaduse täitmise üle seonduvalt filmi algmaterjaliga teeb Rahvusarhiiv.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_5"
@@ -2465,6 +2767,11 @@
         },
         {
           "@id": "estleg:SaES_Par_20_Lg_2"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ToMS_Par_30"
         }
       ],
       "estleg:hasVersion": [
@@ -2506,12 +2813,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Riikliku järelevalve erimeetmed ja sunniraha määr",
+      "rdfs:label": {
+        "@value": "§ 21. Riikliku järelevalve erimeetmed ja sunniraha määr",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve tegemiseks rakendada korrakaitseseaduse §-s 30 sätestatud riikliku järelevalve erimeedet korrakaitseseaduses sätestatud alusel ja korras. (2) Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 1500 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve tegemiseks rakendada korrakaitseseaduse §-s 30 sätestatud riikliku järelevalve erimeedet korrakaitseseaduses sätestatud alusel ja korras. (2) Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 1500 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve tegemiseks rakendada korrakaitseseaduse §-s 30 sätestatud riikliku järelevalve erimeedet korrakaitseseaduses sätestatud alusel ja korras. (2) Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 1500 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_5"
@@ -2532,29 +2845,17 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:references": [
         {
-          "@id": "estleg:EUTS_Par_23"
-        },
-        {
-          "@id": "estleg:HADAOL_Par_46"
-        },
-        {
-          "@id": "estleg:KEMIKA_Par_39"
-        },
-        {
-          "@id": "estleg:KTTS_Par_4_1"
-        },
-        {
-          "@id": "estleg:MUINSU_Par_81"
+          "@id": "estleg:KORS_Par_30"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
       },
       "estleg:hasSanction": [
         {
@@ -2562,9 +2863,21 @@
         }
       ],
       "estleg:enforcedAtLevel": "state",
-      "estleg:references": [
+      "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:KORS_Par_30"
+          "@id": "estleg:ATMOSF_Par_226"
+        },
+        {
+          "@id": "estleg:BIOTSI_Par_46"
+        },
+        {
+          "@id": "estleg:KTTS_Par_4_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_23"
+        },
+        {
+          "@id": "estleg:STRATE_Par_89"
         }
       ],
       "estleg:hasVersion": [
@@ -2585,9 +2898,6 @@
         "@id": "estleg:SaES_Par_21"
       },
       "rdfs:label": "§ 21 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -2596,7 +2906,10 @@
         {
           "@id": "estleg:KORS_Par_30"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:SaES_Par_21_Lg_2",
@@ -2633,12 +2946,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Haldusjärelevalve",
+      "rdfs:label": {
+        "@value": "§ 22. Haldusjärelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Haldusjärelevalvet käesoleva seaduse täitmise üle teeb Eesti Rahvusraamatukogu, välja arvatud filmi algmaterjali puhul. (2) Haldusjärelevalvet käesoleva seaduse täitmise üle Eesti Rahvusraamatukogu poolt teeb Kultuuriministeerium.",
+      "estleg:summary": {
+        "@value": "(1) Haldusjärelevalvet käesoleva seaduse täitmise üle teeb Eesti Rahvusraamatukogu, välja arvatud filmi algmaterjali puhul. (2) Haldusjärelevalvet käesoleva seaduse täitmise üle Eesti Rahvusraamatukogu poolt teeb Kultuuriministeerium.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Haldusjärelevalvet käesoleva seaduse täitmise üle teeb Eesti Rahvusraamatukogu, välja arvatud filmi algmaterjali puhul. (2) Haldusjärelevalvet käesoleva seaduse täitmise üle Eesti Rahvusraamatukogu poolt teeb Kultuuriministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_5"
@@ -2654,6 +2973,11 @@
           "@id": "estleg:SaES_Par_22_Lg_2"
         }
       ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kultuuriministeerium"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KTTS_Par_4"
@@ -2662,11 +2986,6 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:SaES_Par_22_v107072016001"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kultuuriministeerium"
         }
       ]
     },
@@ -2708,12 +3027,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Senise säilituseksemplari kättesaadavaks tegemine",
+      "rdfs:label": {
+        "@value": "§ 23. Senise säilituseksemplari kättesaadavaks tegemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "(1) Enne käesoleva seaduse jõustumist loovutatud käesoleva seaduse §-s 8 nimetatud arvu ületavad säilituseksemplarid antakse viie aasta möödumisel käesoleva seaduse jõustumisest neid säilitavas raamatukogus lugejatele tavapärases korras kasutamiseks juhul, kui neid ei ole vaja mõne teise käesoleva seaduse §-s 12 nimetatud säilitaja kogu täiendamiseks. (2) Raamatukogudes, millele säilituseksemplare käesoleva seaduse kohaselt enam ei loovutata, antakse varem kogutud säilituseksemplarid viie aasta",
+      "estleg:summary": {
+        "@value": "(1) Enne käesoleva seaduse jõustumist loovutatud käesoleva seaduse §-s 8 nimetatud arvu ületavad säilituseksemplarid antakse viie aasta möödumisel käesoleva seaduse jõustumisest neid säilitavas raamatukogus lugejatele tavapärases korras kasutamiseks juhul, kui neid ei ole vaja mõne teise käesoleva seaduse §-s 12 nimetatud säilitaja kogu täiendamiseks. (2) Raamatukogudes, millele säilituseksemplare käesoleva seaduse kohaselt enam ei loovutata, antakse varem kogutud säilituseksemplarid viie aasta",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Enne käesoleva seaduse jõustumist loovutatud käesoleva seaduse §-s 8 nimetatud arvu ületavad säilituseksemplarid antakse viie aasta möödumisel käesoleva seaduse jõustumisest neid säilitavas raamatukogus lugejatele tavapärases korras kasutamiseks juhul, kui neid ei ole vaja mõne teise käesoleva seaduse §-s 12 nimetatud säilitaja kogu täiendamiseks. (2) Raamatukogudes, millele säilituseksemplare käesoleva seaduse kohaselt enam ei loovutata, antakse varem kogutud säilituseksemplarid viie aasta möödumisel käesoleva seaduse jõustumisest lugejatele tavapärases korras kasutamiseks juhul, kui neid ei ole vaja mõne teise käesoleva seaduse §-s 12 nimetatud säilitaja kogu täiendamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_6"
@@ -2816,13 +3141,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Autoriõiguse seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 24. Autoriõiguse seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "Autoriõiguse seaduse § 19 täiendatakse punktiga 31 järgmises sõnastuses: „31) õiguste objekti töötlemine teksti- ja andmekaeve eesmärkidel ning tingimusel, et selline kasutamine ei taotle ärilisi eesmärke;”.",
-      "estleg:legalText": "Autoriõiguse seaduse § 19 täiendatakse punktiga 31 järgmises sõnastuses: „31) õiguste objekti töötlemine teksti- ja andmekaeve eesmärkidel ning tingimusel, et selline kasutamine ei taotle ärilisi eesmärke;”.",
+      "estleg:summary": {
+        "@value": "Autoriõiguse seaduse § 19 täiendatakse punktiga 3¹ järgmises sõnastuses: „3¹) õiguste objekti töötlemine teksti- ja andmekaeve eesmärkidel ning tingimusel, et selline kasutamine ei taotle ärilisi eesmärke;”.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Autoriõiguse seaduse § 19 täiendatakse punktiga 3¹ järgmises sõnastuses: „3¹) õiguste objekti töötlemine teksti- ja andmekaeve eesmärkidel ning tingimusel, et selline kasutamine ei taotle ärilisi eesmärke;”.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_6"
       },
@@ -2847,12 +3178,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Sundeksemplari seaduse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 25. Sundeksemplari seaduse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "Sundeksemplari seadus tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Sundeksemplari seadus tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Sundeksemplari seadus tunnistatakse kehtetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_6"
@@ -2877,10 +3214,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Sundeksemplari seadus tunnistatakse kehtetuks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sundeksemplari seadus tunnistatakse kehtetuks.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_25"
-      }
+      },
+      "rdfs:label": "§ 25 lg 1"
     },
     {
       "@id": "estleg:SaES_Par_26",
@@ -2889,12 +3228,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 26. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Säilituseksemplari seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SaES_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2017. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2017. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2017. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SaES_6"
@@ -2919,22 +3264,28 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2017. aasta 1. jaanuaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2017. aasta 1. jaanuaril.",
       "estleg:parentProvision": {
         "@id": "estleg:SaES_Par_26"
-      }
+      },
+      "rdfs:label": "§ 26 lg 1"
     },
     {
-      "@id": "estleg:Citation_SaES_P_17_Lg_3_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/514092016001",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:SaES_Par_17_Lg_3"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationDetail": "AVTS",
-      "estleg:citationText": "avaliku teabe seaduse § 439 lõike 1"
+      "eli:realizes": {
+        "@id": "estleg:SaES_Map"
+      },
+      "rdfs:label": {
+        "@value": "Legal Deposit Copy Act",
+        "@language": "en"
+      }
     }
   ]
 }

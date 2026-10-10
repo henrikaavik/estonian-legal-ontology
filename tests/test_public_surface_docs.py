@@ -134,7 +134,8 @@ def test_public_file_counts_match_metadata_and_generated_report() -> None:
         text = _normalise_spaces(_read(path))
         assert _et_number(total) in text, f"{path.name}: total file count is stale"
         assert _et_number(validated) in text, f"{path.name}: validated file count is stale"
-    assert f"**{errors} errors / {warnings} warnings**" in _read(README)
+    noun = "warning" if warnings == 1 else "warnings"
+    assert f"**{errors} errors / {warnings} {noun}**" in _read(README)
     assert f"<td>JSON/JSON-LD vead</td><td>{errors}</td>" in _read(OVERVIEW)
 
 

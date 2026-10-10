@@ -31,11 +31,10 @@ def test_legislation_node_emits_dcterms_title() -> None:
         "authors": [],
     }
     node = mod.legislation_to_node(item, "Regulation")
-    assert node["dcterms:title"] == {
-        "@value": "Isikuandmete kaitse üldmäärus",
-        "@language": "et",
-    }
-    assert node["rdfs:label"]["@value"] == node["dcterms:title"]["@value"]
+    # #697: an Estonian-only title is the plain string every published node
+    # carries; language tags appear with an English title (#510).
+    assert node["dcterms:title"] == "Isikuandmete kaitse üldmäärus"
+    assert node["rdfs:label"] == node["dcterms:title"]
 
 
 def test_decision_node_never_gets_transposition_deadline() -> None:

@@ -2049,11 +2049,14 @@ def test_closure_stub_kov_provision_without_asserted_legalprovision_gets_trio():
 
 
 def test_closure_stub_subsection_is_waived_from_provision_trio():
-    """The #741 shapes excuse a lõige via sh:or ([sh:class estleg:Subsection] …):
-    a Subsection stub (rolled up to LegalProvision) stays a lean leaf."""
+    """The #741 shapes excuse a lõige via sh:or ([sh:class estleg:Subsection] …),
+    so a Subsection stub (rolled up to LegalProvision) never copies the
+    paragrahv/summary/partOfAct trio. It does carry what SubsectionShape itself
+    requires — legalText and parentProvision — since regulation lõiged became
+    stub targets in the 2026-10-09 refresh (the standalone combined gate)."""
     assert estleg_common.required_closure_props(
         ["estleg:Subsection", "estleg:LegalProvision"]
-    ) == ()
+    ) == ("estleg:legalText", "estleg:parentProvision")
     assert estleg_common.required_closure_props(["estleg:LegalProvision"]) == (
         "estleg:paragrahv",
         "estleg:summary",
@@ -2067,9 +2070,14 @@ def test_closure_stub_subsection_is_waived_from_provision_trio():
         "estleg:summary": "Lõike tekst.",
         "estleg:partOfAct": {"@id": "estleg:X_Map"},
         "estleg:parentProvision": {"@id": "estleg:X_Par_1"},
+        "estleg:legalText": "(1) Lõike tekst.",
     }
     stub = fix_all_issues._make_closure_stub(source)
-    assert set(stub) == {"@id", "@type", "rdfs:label", "estleg:isStubNode"}
+    assert set(stub) == {
+        "@id", "@type", "rdfs:label", "estleg:isStubNode",
+        "estleg:legalText", "estleg:parentProvision",
+    }
+    assert stub["estleg:parentProvision"] == {"@id": "estleg:X_Par_1"}
 
 
 def test_combined_stubs_carry_only_allowlisted_edges_after_inverse_pass(tmp_path):
@@ -2262,3 +2270,142 @@ def test_closure_stub_is_folded_into_an_untyped_overlay_join_node(tmp_path):
     assert root["dcterms:subject"] == [{"@id": "http://eurovoc.europa.eu/68"}]
     provision = next(n for n in combined["@graph"] if n.get("@id") == "estleg:Reg_9_Par_1")
     assert provision["estleg:partOfAct"] == {"@id": "estleg:Reg_9_Map"}
+
+
+# ---------------------------------------------------------------------------
+# #711: regulation act stubs keep their estleg:harmonisedWith forward edge
+# ---------------------------------------------------------------------------
+
+
+def test_stub_edge_allowlist_adds_harmonised_with_to_shaped_edges():
+    assert "estleg:harmonisedWith" in fix_all_issues.STUB_EDGE_ALLOWLIST
+    assert estleg_common.STUB_SEMANTIC_EDGE_PREDICATES <= fix_all_issues.STUB_EDGE_ALLOWLIST
+    # the validator's leaky-stub rule mirrors the builder's allowlist
+    from estleg import validate_all
+
+    assert validate_all.STUB_EDGE_ALLOWLIST == fix_all_issues.STUB_EDGE_ALLOWLIST
+
+
+def test_closure_stub_copies_harmonised_with_from_regulation_root():
+    source = {
+        "@id": "estleg:Reg_1000061_Map",
+        "@type": ["estleg:Act", "estleg:MinisterialRegulation", "estleg:NationalRegulation"],
+        "rdfs:label": "Kaevandamisjäätmete käitlemise kord",
+        "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_32006L0021"}],
+        "estleg:competentAuthority": [{"@id": "estleg:Institution_x"}],
+    }
+    stub = fix_all_issues._make_closure_stub(source)
+    assert stub["estleg:harmonisedWith"] == [{"@id": "estleg:Harmonisation_32006L0021"}]
+    assert stub["estleg:harmonisedWith"] is not source["estleg:harmonisedWith"]
+    assert "estleg:competentAuthority" not in stub
+    assert _stub_estleg_predicates(stub) <= fix_all_issues.STUB_EDGE_ALLOWLIST
+
+
+def test_combined_regulation_stub_carries_harmonised_with_and_stays_closed(tmp_path):
+    """End to end: a law anchors directive A; A's link also harmonises a riik
+    regulation, whose root additionally anchors directive B (regulation only).
+    The regulation stub carries both forward edges, B's link is closed as a stub,
+    and the combined graph passes validate_all's closure + leaky-stub rules."""
+    from estleg import validate_all
+
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:law_a_Map",
+                    "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                    "rdfs:label": "Law A",
+                    "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_32000L0001"}],
+                }
+            ]
+        },
+    )
+    by_dir = tmp_path / "harmonisation" / "harmonisation_by_directive"
+    for celex, targets in (
+        ("32000L0001", ["estleg:law_a_Map", "estleg:Reg_1001_Map"]),
+        ("32000L0002", ["estleg:Reg_1001_Map"]),
+    ):
+        write_json(
+            by_dir / f"harm_{celex}.json",
+            {
+                "@graph": [
+                    {
+                        "@id": f"estleg:Harmonisation_{celex}",
+                        "@type": ["owl:NamedIndividual", "estleg:HarmonisationLink"],
+                        "rdfs:label": celex,
+                        "estleg:sharedDirective": {"@id": f"estleg:EU_{celex}"},
+                        "estleg:harmonises": [{"@id": t} for t in targets],
+                    }
+                ]
+            },
+        )
+    write_json(
+        tmp_path / "eurlex" / "eu.json",
+        {
+            "@graph": [
+                {"@id": f"estleg:EU_{c}", "@type": ["estleg:EULegislation"], "rdfs:label": c}
+                for c in ("32000L0001", "32000L0002")
+            ]
+        },
+    )
+    write_json(
+        tmp_path / "regulations" / "riik" / "riik_reg_t1001_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:Reg_1001_Map",
+                    "@type": ["estleg:Act", "estleg:MinisterialRegulation", "estleg:NationalRegulation"],
+                    "rdfs:label": "Riik reg",
+                    "estleg:harmonisedWith": [
+                        {"@id": "estleg:Harmonisation_32000L0001"},
+                        {"@id": "estleg:Harmonisation_32000L0002"},
+                    ],
+                    "estleg:competentAuthority": [{"@id": "estleg:Institution_x"}],
+                }
+            ]
+        },
+    )
+
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    nodes = {n["@id"]: n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]}
+
+    reg = nodes["estleg:Reg_1001_Map"]
+    assert reg["estleg:isStubNode"] is True
+    assert {r["@id"] for r in reg["estleg:harmonisedWith"]} == {
+        "estleg:Harmonisation_32000L0001",
+        "estleg:Harmonisation_32000L0002",
+    }
+    assert "estleg:competentAuthority" not in reg
+    # the regulation-only link is reached through the copied edge and stubbed
+    assert nodes["estleg:Harmonisation_32000L0002"]["estleg:isStubNode"] is True
+
+    present = {estleg_common.canonical_estleg_ref(k) or k for k in nodes}
+    for nid, node in nodes.items():
+        if node.get(estleg_common.STUB_NODE_MARKER) is not True:
+            continue
+        refs = list(estleg_common.iter_node_estleg_refs(node))
+        assert {p for p, _ in refs} <= fix_all_issues.STUB_EDGE_ALLOWLIST, nid
+        assert [t for _, t in refs if t not in present] == [], nid
+
+    validate_all.reset()
+    try:
+        validate_all.validate_combined_graph_closure(tmp_path)
+        assert validate_all.errors == [], validate_all.errors
+    finally:
+        validate_all.reset()
+
+
+
+def test_subsection_closure_stub_carries_text_and_parent():
+    """A regulation lõige stub must satisfy SubsectionShape (legalText +
+    parentProvision), and its parent § must be reachable via an allowed edge."""
+    required = estleg_common.required_closure_props(
+        ["estleg:Subsection", "owl:NamedIndividual", "estleg:LegalProvision"]
+    )
+    assert "estleg:legalText" in required
+    assert "estleg:parentProvision" in required
+    # The #741 provision trio stays waived for a lõige.
+    assert "estleg:paragrahv" not in required
+    assert "estleg:parentProvision" in estleg_common.STUB_SEMANTIC_EDGE_PREDICATES
+    assert "estleg:parentProvision" in fix_all_issues.STUB_EDGE_ALLOWLIST

@@ -94,8 +94,30 @@ def test_parser_on_committed_karistusseadustik_xml():
     ]
 
 
-def test_karistusseadustik_peeps_carry_the_asserted_set():
-    """Shipped data: every KarS root carries the five NTM directives."""
+def test_karistusseadustik_peeps_carry_the_asserted_set(tmp_path):
+    """Shipped data: every KarS root (map + both parts) carries exactly the
+    directives the NTM of the attested current redaction lists, as far as
+    the EUR-Lex directives peep knows them. The stale 2014 redaction
+    (five directives) must not leak onto any part."""
+    hashes = json.loads(
+        (REPO_ROOT / "krr_outputs" / "fetch_content_hashes.json").read_text(encoding="utf-8")
+    )
+    row = hashes["karistusseadustik"]
+    # The operator cache is ignored. Ship the exact attested bytes as a
+    # compressed fixture so this invariant also runs in a fresh CI checkout.
+    import gzip
+    import hashlib
+
+    payload = gzip.decompress((REPO_ROOT / "tests/fixtures/rt_xml/karistusseadustik_2026-10-09.xml.gz").read_bytes())
+    assert hashlib.sha256(payload).hexdigest() == row["sha256"]
+    source = tmp_path / "karistusseadustik.xml"
+    source.write_bytes(payload)
+    parsed = ntm.parse_ntm_xml(source)
+    known = ntm.directive_iris(REPO_ROOT / "krr_outputs" / "eurlex" / "eurlex_directives_peep.json")
+    expected = sorted(known[celex] for celex in parsed["celexes"] if celex in known)
+    stale = {f"estleg:EU_{c}" for c in ntm.parse_ntm_xml(KARS_XML)["celexes"]}
+    assert stale < set(expected), "current NTM is a superset of the 2014 one"
+    assert len(expected) > len(stale)
     for name in (
         "karistusseadustik_map_peep.json",
         "karistusseadustik_osa1_peep.json",
@@ -103,13 +125,8 @@ def test_karistusseadustik_peeps_carry_the_asserted_set():
     ):
         doc = json.loads((REPO_ROOT / "krr_outputs" / name).read_text(encoding="utf-8"))
         root = ntm.act_root_node(doc)
-        assert sorted(item["@id"] for item in root[ntm.PROPERTY]) == [
-            "estleg:EU_32001L0029",
-            "estleg:EU_32005L0035",
-            "estleg:EU_32008L0099",
-            "estleg:EU_32009L0123",
-            "estleg:EU_32011L0093",
-        ], name
+        assert root["estleg:globalId"] == row["globalId"], name
+        assert sorted(item["@id"] for item in root[ntm.PROPERTY]) == expected, name
 
 
 def _write(path: Path, doc: dict) -> None:
@@ -206,6 +223,71 @@ def test_reprocessing_an_act_replaces_its_asserted_set(tmp_path):
         (krr / "regulations" / "riik" / "kord_t42_peep.json").read_text(encoding="utf-8")
     )
     assert ntm.PROPERTY not in reg["@graph"][0]
+
+
+def test_stale_cached_redaction_never_overwrites_the_current_one(tmp_path):
+    """A stale ``<slug>.xml`` and the current ``<slug>__tid<N>.xml`` both
+    resolve to the multipart act's peeps by stem; only the XML whose
+    globaalID matches the roots' estleg:globalId writes, in either order."""
+    krr = tmp_path / "krr"
+    for name in ("seadus_map_peep.json", "seadus_osa1_peep.json"):
+        _write(krr / name, {"@graph": [{"@id": f"estleg:{name}", "@type": ["estleg:Part"],
+                                        "estleg:globalId": "222"}]})
+    _write(krr / "INDEX.json", {"laws": [{"name": "seadus",
+                                          "files": ["seadus_map_peep.json", "seadus_osa1_peep.json"]}]})
+    _write(krr / "eurlex" / "eurlex_directives_peep.json", {"@graph": [
+        {"@id": "estleg:EU_32001L0029", "estleg:celexNumber": "32001L0029"},
+        {"@id": "estleg:EU_32014L0062", "estleg:celexNumber": "32014L0062"},
+    ]})
+    rt = tmp_path / "rt"
+    rt.mkdir()
+
+    def xml(gid: str, text: str) -> str:
+        return (f"<akt><metaandmed><globaalID>{gid}</globaalID></metaandmed>"
+                f"<normtehnmarkus><normtehnmarkusTekst>{text}</normtehnmarkusTekst>"
+                "</normtehnmarkus></akt>")
+
+    stale = rt / "seadus.xml"
+    current = rt / "seadus__tid9.xml"
+    stale.write_text(xml("111", "Euroopa Parlamendi ja nõukogu direktiiv 2001/29/EÜ"), encoding="utf-8")
+    current.write_text(
+        xml("222", "Euroopa Parlamendi ja nõukogu direktiiv 2001/29/EÜ; "
+                   "Euroopa Parlamendi ja nõukogu direktiiv 2014/62/EL"),
+        encoding="utf-8",
+    )
+    expected = [{"@id": "estleg:EU_32001L0029"}, {"@id": "estleg:EU_32014L0062"}]
+    for order in ([stale, current], [current, stale]):
+        stats = ntm.apply_ntm(order, krr_dir=krr)
+        assert stats["xml_other_redaction"] == ["seadus.xml"]
+        for name in ("seadus_map_peep.json", "seadus_osa1_peep.json"):
+            root = json.loads((krr / name).read_text(encoding="utf-8"))["@graph"][0]
+            assert root[ntm.PROPERTY] == expected, (order, name)
+
+
+def test_attested_cache_file_writes_despite_uuid_globaalid(tmp_path):
+    """Some RT XML carries a UUID globaalID while the root has the numeric
+    API id; the fetch_content_hashes.json attestation bridges the two."""
+    krr = tmp_path / "krr"
+    _write(krr / "leping_peep.json", {"@graph": [{"@id": "estleg:L", "@type": ["estleg:Law"],
+                                                  "estleg:globalId": "204112010005"}]})
+    _write(krr / "INDEX.json", {"laws": [{"name": "leping", "files": ["leping_peep.json"]}]})
+    _write(krr / "eurlex" / "eurlex_directives_peep.json", {"@graph": [
+        {"@id": "estleg:EU_32001L0029", "estleg:celexNumber": "32001L0029"}]})
+    _write(krr / "fetch_content_hashes.json", {"leping": {
+        "globalId": "204112010005", "cacheFile": "data/riigiteataja/leping__tid5.xml"}})
+    rt = tmp_path / "rt"
+    rt.mkdir()
+    (rt / "leping__tid5.xml").write_text(
+        "<akt><metaandmed><globaalID>0e73a759-a614-450b-a625-7a963d785e78</globaalID>"
+        "</metaandmed><normtehnmarkus><normtehnmarkusTekst>"
+        "Euroopa Parlamendi ja nõukogu direktiiv 2001/29/EÜ"
+        "</normtehnmarkusTekst></normtehnmarkus></akt>",
+        encoding="utf-8",
+    )
+    stats = ntm.apply_ntm([rt], krr_dir=krr)
+    assert stats["xml_other_redaction"] == []
+    root = json.loads((krr / "leping_peep.json").read_text(encoding="utf-8"))["@graph"][0]
+    assert root[ntm.PROPERTY] == [{"@id": "estleg:EU_32001L0029"}]
 
 
 def test_old_cached_redaction_cannot_replace_current_assertions(tmp_path):

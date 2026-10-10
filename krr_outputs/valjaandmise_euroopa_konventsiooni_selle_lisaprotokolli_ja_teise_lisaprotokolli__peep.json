@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Väljaandmise Euroopa konventsiooni, selle lisaprotokolli ja teise lisaprotokolli ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Väljaandmise Euroopa konventsiooni, selle lisaprotokolli ja teise lisaprotokolli ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Väljaandmise Euroopa konventsiooni, selle lisaprotokolli ja teise lisaprotokolli ratifitseerimise seadus",
       "dcterms:title": "Väljaandmise Euroopa konventsiooni, selle lisaprotokolli ja teise lisaprotokolli ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/78647.xml"
+        "@id": "https://www.riigiteataja.ee/akt/78647"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/78647/xml"
+      },
+      "estleg:globalId": "78647",
+      "eli:id_local": "78647",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "118588",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "73114c1b014c2deaf190eb1397a78ed347f91287840e635295641aaa3d99fa9a",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -56,19 +68,20 @@
         {
           "@id": "http://eurovoc.europa.eu/217"
         }
-      ]
-    },
-    {
-      "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Väljaandmise Euroopa konventsiooni, selle lisaprotokolli ja teise lisaprotokolli ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_valjaandmise_euroopa_konventsiooni_selle_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1997-03-17",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_valjaandmise_euroopa_konventsiooni_selle_default",
@@ -77,12 +90,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Lepingu sätted",
-      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Väljaandmise Euroopa konventsiooni, selle lisaprotokolli ja teise lisaprotokolli ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_valjaandmise_euroopa_konventsiooni_selle_default"
+        }
+      ]
     },
     {
       "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Par_1",
@@ -91,13 +125,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [1 (1) Ratifitseerida juurdelisatud väljaandmise Euroopa konventsioon 78643 , mis...]",
+      "rdfs:label": {
+        "@value": "§ 1. [(1) Ratifitseerida juurdelisatud väljaandmise Euroopa konventsioon , mis on koos...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väljaandmise Euroopa konventsiooni, selle lisaprotokolli ja teise lisaprotokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Map"
       },
-      "estleg:summary": "(1) Ratifitseerida juurdelisatud , mis on koostatud 1957. aasta 13. detsembril Pariisis ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is. (2) Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid: vastavalt konventsiooni artikli 6 lõike 1 punktile (b) deklareerib Eesti Vabariik, et mõiste «kodanik» käesoleva konventsiooni tähenduses hõlmab Eesti kodanikke; vastavalt konventsiooni artikli 6 lõike 1 punktile (a) reserveerib Eesti Vabariik õiguse",
-      "estleg:legalText": "(1) Ratifitseerida juurdelisatud , mis on koostatud 1957. aasta 13. detsembril Pariisis ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is. (2) Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid: vastavalt konventsiooni artikli 6 lõike 1 punktile (b) deklareerib Eesti Vabariik, et mõiste «kodanik» käesoleva konventsiooni tähenduses hõlmab Eesti kodanikke; vastavalt konventsiooni artikli 6 lõike 1 punktile (a) reserveerib Eesti Vabariik õiguse keelduda kodaniku väljaandmisest, kui kodanik ei ole väljaandmisega nõus; vastavalt konventsiooni artiklile 23 deklareerib Eesti Vabariik, et Eesti Vabariigile esitatakse taotlused ja nende lisad koos ingliskeelse tõlkega.",
+      "estleg:summary": {
+        "@value": "(1) Ratifitseerida juurdelisatud väljaandmise Euroopa konventsioon , mis on koostatud 1957. aasta 13. detsembril Pariisis ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is. (2) Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid: 1) vastavalt konventsiooni artikli 6 lõike 1 punktile (b) deklareerib Eesti Vabariik, et mõiste «kodanik» käesoleva konventsiooni tähenduses hõlmab Eesti kodanikke; 2) vastavalt konventsiooni artikli 6 lõike 1 punktile (a)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud väljaandmise Euroopa konventsioon , mis on koostatud 1957. aasta 13. detsembril Pariisis ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is. (2) Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid: 1) vastavalt konventsiooni artikli 6 lõike 1 punktile (b) deklareerib Eesti Vabariik, et mõiste «kodanik» käesoleva konventsiooni tähenduses hõlmab Eesti kodanikke; 2) vastavalt konventsiooni artikli 6 lõike 1 punktile (a) reserveerib Eesti Vabariik õiguse keelduda kodaniku väljaandmisest, kui kodanik ei ole väljaandmisega nõus; 3) vastavalt konventsiooni artiklile 23 deklareerib Eesti Vabariik, et Eesti Vabariigile esitatakse taotlused ja nende lisad koos ingliskeelse tõlkega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_valjaandmise_euroopa_konventsiooni_selle_default"
       },
@@ -114,27 +154,27 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KVAEKSLR_Par_1"
         },
         {
-          "@id": "estleg:TTEKR_Par_1"
-        },
-        {
           "@id": "estleg:VOEKSLR_Par_1"
         },
         {
-          "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Par_1"
+          "@id": "estleg:VOEKSLR_Par_2"
         },
         {
-          "@id": "estleg:kriminaalmenetluse_ulevotmise_euroopa_ko_Par_1"
+          "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_4"
+        },
+        {
+          "@id": "estleg:kohtulikult_karistatud_isikute_uleandmise_euroopa_Par_1"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Par_1_v78647"
@@ -148,7 +188,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Ratifitseerida juurdelisatud , mis on koostatud 1957. aasta 13. detsembril Pariisis ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is.",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud väljaandmise Euroopa konventsioon , mis on koostatud 1957. aasta 13. detsembril Pariisis ja alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is.",
       "estleg:parentProvision": {
         "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Par_1"
       },
@@ -161,11 +201,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid: vastavalt konventsiooni artikli 6 lõike 1 punktile (b) deklareerib Eesti Vabariik, et mõiste «kodanik» käesoleva konventsiooni tähenduses hõlmab Eesti kodanikke; vastavalt konventsiooni artikli 6 lõike 1 punktile (a) reserveerib Eesti Vabariik õiguse keelduda kodaniku väljaandmisest, kui kodanik ei ole väljaandmisega nõus; vastavalt konventsiooni artiklile 23 deklareerib Eesti Vabariik, et Eesti Vabariigile esitatakse taotlused ja nende lisad koos ingliskeelse tõlkega.",
+      "estleg:legalText": "(2) Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid: 1) vastavalt konventsiooni artikli 6 lõike 1 punktile (b) deklareerib Eesti Vabariik, et mõiste «kodanik» käesoleva konventsiooni tähenduses hõlmab Eesti kodanikke; 2) vastavalt konventsiooni artikli 6 lõike 1 punktile (a) reserveerib Eesti Vabariik õiguse keelduda kodaniku väljaandmisest, kui kodanik ei ole väljaandmisega nõus; 3) vastavalt konventsiooni artiklile 23 deklareerib Eesti Vabariik, et Eesti Vabariigile esitatakse taotlused ja nende lisad koos ingliskeelse tõlkega.",
       "estleg:parentProvision": {
         "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Par_1"
       },
       "rdfs:label": "§ 1 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -183,13 +228,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ratifitseerida väljaandmise Euroopa konventsiooni lisaprotokoll 78644 , mis on k...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ratifitseerida väljaandmise Euroopa konventsiooni lisaprotokoll , mis on koostat...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väljaandmise Euroopa konventsiooni, selle lisaprotokolli ja teise lisaprotokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Map"
       },
-      "estleg:summary": "Ratifitseerida , mis on koostatud 1975. aasta 15. oktoobril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
-      "estleg:legalText": "Ratifitseerida , mis on koostatud 1975. aasta 15. oktoobril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida väljaandmise Euroopa konventsiooni lisaprotokoll , mis on koostatud 1975. aasta 15. oktoobril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida väljaandmise Euroopa konventsiooni lisaprotokoll , mis on koostatud 1975. aasta 15. oktoobril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_valjaandmise_euroopa_konventsiooni_selle_default"
       },
@@ -200,13 +251,13 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:KVAEKSLR_Par_2"
-        },
-        {
           "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_3"
         },
         {
           "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_4"
+        },
+        {
+          "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_5"
         },
         {
           "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konv_Par_6"
@@ -227,10 +278,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida , mis on koostatud 1975. aasta 15. oktoobril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida väljaandmise Euroopa konventsiooni lisaprotokoll , mis on koostatud 1975. aasta 15. oktoobril Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
       "estleg:parentProvision": {
         "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Par_3",
@@ -239,13 +292,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Ratifitseerida väljaandmise Euroopa konventsiooni teine lisaprotokoll 78645 , mi...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Ratifitseerida väljaandmise Euroopa konventsiooni teine lisaprotokoll , mis on k...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väljaandmise Euroopa konventsiooni, selle lisaprotokolli ja teise lisaprotokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Map"
       },
-      "estleg:summary": "Ratifitseerida , mis on koostatud 1978. aasta 17. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
-      "estleg:legalText": "Ratifitseerida , mis on koostatud 1978. aasta 17. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida väljaandmise Euroopa konventsiooni teine lisaprotokoll , mis on koostatud 1978. aasta 17. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida väljaandmise Euroopa konventsiooni teine lisaprotokoll , mis on koostatud 1978. aasta 17. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_valjaandmise_euroopa_konventsiooni_selle_default"
       },
@@ -283,10 +342,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida , mis on koostatud 1978. aasta 17. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida väljaandmise Euroopa konventsiooni teine lisaprotokoll , mis on koostatud 1978. aasta 17. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is.",
       "estleg:parentProvision": {
         "@id": "estleg:valjaandmise_euroopa_konventsiooni_selle_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     }
   ]
 }

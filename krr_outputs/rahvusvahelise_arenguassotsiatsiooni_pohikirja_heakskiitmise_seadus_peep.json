@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:RAPH_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus",
       "dcterms:title": "Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13037267.xml"
+        "@id": "https://www.riigiteataja.ee/akt/13037267"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/13037267/xml"
+      },
+      "estleg:globalId": "13037267",
+      "eli:id_local": "13037267",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "326116",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "96dc6c8f3cff2a03a9231b0228eb57781ef70684449526f931f3dc13af1cb515",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2008-10-08",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -50,19 +62,20 @@
         {
           "@id": "http://eurovoc.europa.eu/3474"
         }
-      ]
-    },
-    {
-      "@id": "estleg:RAPH_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_RAPH_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2008-10-08",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2008-10-07",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2008-10-08",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_RAPH_default",
@@ -71,12 +84,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–4 Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus",
-      "skos:prefLabel": "§1–4 Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus",
+      "rdfs:label": {
+        "@value": "§1–4 Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RAPH_TopicScheme"
       },
       "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:RAPH_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RAPH_default"
+        }
+      ]
     },
     {
       "@id": "estleg:RAPH_Par_1",
@@ -85,12 +119,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda Rahvusvahelise Arenguassotsiatsiooniga. Ühineda Rahvusvahelise Arenguass...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda Rahvusvahelise Arenguassotsiatsiooniga.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RAPH_Map"
       },
-      "estleg:summary": "Ühineda Rahvusvahelise Arenguassotsiatsiooniga.",
+      "estleg:summary": {
+        "@value": "Ühineda Rahvusvahelise Arenguassotsiatsiooniga.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühineda Rahvusvahelise Arenguassotsiatsiooniga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPH_default"
@@ -112,10 +152,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda Rahvusvahelise Arenguassotsiatsiooniga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda Rahvusvahelise Arenguassotsiatsiooniga.",
       "estleg:parentProvision": {
         "@id": "estleg:RAPH_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:RAPH_Par_2",
@@ -124,13 +166,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Kiita heaks juurdelisatud Rahvusvahelise Arenguassotsiatsiooni põhikiri./1303754...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Kiita heaks juurdelisatud Rahvusvahelise Arenguassotsiatsiooni põhikiri , mis on...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RAPH_Map"
       },
-      "estleg:summary": "Kiita heaks juurdelisatud , mis on koostatud 1960. aasta 24. septembril Washingtonis.",
-      "estleg:legalText": "Kiita heaks juurdelisatud , mis on koostatud 1960. aasta 24. septembril Washingtonis.",
+      "estleg:summary": {
+        "@value": "Kiita heaks juurdelisatud Rahvusvahelise Arenguassotsiatsiooni põhikiri , mis on koostatud 1960. aasta 24. septembril Washingtonis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kiita heaks juurdelisatud Rahvusvahelise Arenguassotsiatsiooni põhikiri , mis on koostatud 1960. aasta 24. septembril Washingtonis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPH_default"
       },
@@ -145,9 +193,6 @@
         },
         {
           "@id": "estleg:RAPSMH_Par_1"
-        },
-        {
-          "@id": "estleg:RTKMPR_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -162,10 +207,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kiita heaks juurdelisatud , mis on koostatud 1960. aasta 24. septembril Washingtonis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kiita heaks juurdelisatud Rahvusvahelise Arenguassotsiatsiooni põhikiri , mis on koostatud 1960. aasta 24. septembril Washingtonis.",
       "estleg:parentProvision": {
         "@id": "estleg:RAPH_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:RAPH_Par_3",
@@ -174,12 +221,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Kohaldada alates Rahvusvahelise Arenguassotsiatsiooni põhikirja jõustumisest Ees...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Kohaldada alates Rahvusvahelise Arenguassotsiatsiooni põhikirja jõustumisest Ees...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RAPH_Map"
       },
-      "estleg:summary": "Kohaldada alates Rahvusvahelise Arenguassotsiatsiooni põhikirja jõustumisest Eesti Vabariigi suhtes Ühinenud Rahvaste Organisatsiooni eriorganisatsioonide eesõiguste ja puutumatuse konventsiooni Rahvusvahelist Arenguassotsiatsiooni käsitlevat lisa.",
+      "estleg:summary": {
+        "@value": "Kohaldada alates Rahvusvahelise Arenguassotsiatsiooni põhikirja jõustumisest Eesti Vabariigi suhtes Ühinenud Rahvaste Organisatsiooni eriorganisatsioonide eesõiguste ja puutumatuse konventsiooni Rahvusvahelist Arenguassotsiatsiooni käsitlevat lisa.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kohaldada alates Rahvusvahelise Arenguassotsiatsiooni põhikirja jõustumisest Eesti Vabariigi suhtes Ühinenud Rahvaste Organisatsiooni eriorganisatsioonide eesõiguste ja puutumatuse konventsiooni Rahvusvahelist Arenguassotsiatsiooni käsitlevat lisa.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPH_default"
@@ -201,10 +254,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kohaldada alates Rahvusvahelise Arenguassotsiatsiooni põhikirja jõustumisest Eesti Vabariigi suhtes Ühinenud Rahvaste Organisatsiooni eriorganisatsioonide eesõiguste ja puutumatuse konventsiooni Rahvusvahelist Arenguassotsiatsiooni käsitlevat lisa.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaldada alates Rahvusvahelise Arenguassotsiatsiooni põhikirja jõustumisest Eesti Vabariigi suhtes Ühinenud Rahvaste Organisatsiooni eriorganisatsioonide eesõiguste ja puutumatuse konventsiooni Rahvusvahelist Arenguassotsiatsiooni käsitlevat lisa.",
       "estleg:parentProvision": {
         "@id": "estleg:RAPH_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:RAPH_Par_4",
@@ -213,12 +268,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. [Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.<table summ...]",
+      "rdfs:label": {
+        "@value": "§ 4. [Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise Arenguassotsiatsiooni põhikirja heakskiitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RAPH_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RAPH_default"
@@ -240,10 +301,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:parentProvision": {
         "@id": "estleg:RAPH_Par_4"
-      }
+      },
+      "rdfs:label": "§ 4 lg 1"
     }
   ]
 }

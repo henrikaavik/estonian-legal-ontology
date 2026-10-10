@@ -5,61 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:MSMS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Mootorsõidukimaksu seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Mootorsõidukimaksu seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Mootorsõidukimaksu seadus",
-      "dcterms:title": [
-        {
-          "@value": "Mootorsõidukimaksu seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Motor Vehicle Tax Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Mootorsõidukimaksu seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/114112025027.xml"
+        "@id": "https://www.riigiteataja.ee/akt/114112025027"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/114112025027/xml"
+      },
+      "estleg:globalId": "114112025027",
+      "eli:id_local": "114112025027",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
-      "estleg:hasProposedAmendment": [
-        {
-          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU25_0397_MSMS"
-        },
-        {
-          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU25_0396_MSMS"
-        },
-        {
-          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU25_0677_MSMS"
-        },
-        {
-          "@id": "estleg:AmendmentLink_Draft_RAM25_0814_MSMS"
-        }
-      ],
+      "estleg:terviktekstId": "1059281",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "70c2121e9486518349e773a74a406920719247a43ad0b78980246b5cbe7d14ea",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2026-01-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/506012026004"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/506012026004"
       },
       "estleg:references": [
@@ -79,7 +71,13 @@
           "@id": "estleg:LIIKLU_2_Par_77_Lg_8"
         },
         {
-          "@id": "estleg:MSMS_Par_7"
+          "@id": "estleg:MSMS_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:MSMS_Par_15_2_Lg_1"
+        },
+        {
+          "@id": "estleg:MSMS_Par_7_1"
         },
         {
           "@id": "estleg:MSMS_Par_11"
@@ -106,56 +104,6 @@
           "@id": "estleg:MSMS_Par_3"
         }
       ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MSMS_Par_25"
-        },
-        {
-          "@id": "estleg:MSMS_Par_25_Lg_5"
-        },
-        {
-          "@id": "estleg:MSMS_Par_6"
-        },
-        {
-          "@id": "estleg:MSMS_Par_6_Lg_1"
-        },
-        {
-          "@id": "estleg:MSMS_Par_6_Lg_2"
-        },
-        {
-          "@id": "estleg:MSMS_Par_15_1"
-        },
-        {
-          "@id": "estleg:MSMS_Par_15_1_Lg_1"
-        },
-        {
-          "@id": "estleg:MSMS_Par_9"
-        },
-        {
-          "@id": "estleg:MSMS_Par_9_Lg_2"
-        },
-        {
-          "@id": "estleg:MSMS_Par_17_Lg_3"
-        },
-        {
-          "@id": "estleg:MSMS_Par_7"
-        },
-        {
-          "@id": "estleg:MSMS_Par_7_Lg_3"
-        },
-        {
-          "@id": "estleg:MSMS_Par_7_Lg_3_1"
-        },
-        {
-          "@id": "estleg:MSMS_Par_16"
-        },
-        {
-          "@id": "estleg:MSMS_Par_16_Lg_3"
-        },
-        {
-          "@id": "estleg:MSMS_Par_25_Lg_3"
-        }
-      ],
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/1021"
@@ -178,6 +126,23 @@
           "@id": "http://eurovoc.europa.eu/523"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2025-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2026-12-31",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2026-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2024-08-17",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
@@ -199,14 +164,115 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU25_0396"
         }
+      ],
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_MSMS_10a3398c26"
+        },
+        {
+          "@id": "estleg:Amendment_MSMS_273048f8c3"
+        },
+        {
+          "@id": "estleg:Amendment_MSMS_4a97e11276"
+        }
+      ],
+      "estleg:hasProposedAmendment": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU25_0397_MSMS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU25_0396_MSMS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU25_0677_MSMS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RAM25_0814_MSMS"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Map"
+        },
+        {
+          "@id": "estleg:MSMS_Par_25"
+        },
+        {
+          "@id": "estleg:MSMS_Par_25_Lg_5"
+        },
+        {
+          "@id": "estleg:MSMS_Par_6"
+        },
+        {
+          "@id": "estleg:MSMS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:MSMS_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:MSMS_Par_15_1"
+        },
+        {
+          "@id": "estleg:MSMS_Par_15_1_Lg_1"
+        },
+        {
+          "@id": "estleg:MSMS_Par_10"
+        },
+        {
+          "@id": "estleg:MSMS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1046428_Par_36_47_Lg_2"
+        },
+        {
+          "@id": "estleg:MSMS_Par_7"
+        },
+        {
+          "@id": "estleg:MSMS_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:MSMS_Par_7_Lg_3_1"
+        },
+        {
+          "@id": "estleg:MSMS_Par_16"
+        },
+        {
+          "@id": "estleg:MSMS_Par_16_Lg_3"
+        },
+        {
+          "@id": "estleg:MSMS_Par_25_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Cluster_MSMS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:MSMS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:MSMS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Mootorsõidukimaksu seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Mootorsõidukimaksu seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_MSMS_1"
@@ -226,26 +292,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_MSMS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 Üldsätted",
-      "skos:prefLabel": "§1–4 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:MSMS_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_MSMS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "1. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
@@ -265,12 +320,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–10 Mootorsõidukimaksu tasumise kord",
-      "skos:prefLabel": "§5–10 Mootorsõidukimaksu tasumise kord",
+      "rdfs:label": {
+        "@value": "§5–10 Mootorsõidukimaksu tasumise kord",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–10 Mootorsõidukimaksu tasumise kord",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MSMS_TopicScheme"
       },
-      "estleg:provisionCount": 6
+      "estleg:provisionCount": 7
     },
     {
       "@id": "estleg:Chapter_MSMS_2",
@@ -278,7 +339,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Mootorsõidukimaksu tasumise kord",
+      "rdfs:label": {
+        "@value": "2. peatükk – Mootorsõidukimaksu tasumise kord",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
@@ -298,12 +362,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§11–15 Mootorsõidukimaksu määrad",
-      "skos:prefLabel": "§11–15 Mootorsõidukimaksu määrad",
+      "rdfs:label": {
+        "@value": "§11–15 Mootorsõidukimaksu määrad",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§11–15 Mootorsõidukimaksu määrad",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MSMS_TopicScheme"
       },
-      "estleg:provisionCount": 5
+      "estleg:provisionCount": 7
     },
     {
       "@id": "estleg:Chapter_MSMS_3",
@@ -311,7 +381,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – Mootorsõidukimaksu määrad",
+      "rdfs:label": {
+        "@value": "3. peatükk – Mootorsõidukimaksu määrad",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
@@ -331,8 +404,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§16–16 Mootorsõidukimaksu register",
-      "skos:prefLabel": "§16–16 Mootorsõidukimaksu register",
+      "rdfs:label": {
+        "@value": "§16–16 Mootorsõidukimaksu register",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§16–16 Mootorsõidukimaksu register",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MSMS_TopicScheme"
       },
@@ -344,7 +423,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – Mootorsõidukimaksu register",
+      "rdfs:label": {
+        "@value": "4. peatükk – Mootorsõidukimaksu register",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
@@ -364,12 +446,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "Rakendussätted",
-      "skos:prefLabel": "Rakendussätted",
+      "rdfs:label": {
+        "@value": "Rakendussätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Rakendussätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MSMS_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 6
     },
     {
       "@id": "estleg:Division_MSMS_5_1",
@@ -377,7 +465,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – Üleminekusätted",
+      "rdfs:label": {
+        "@value": "1. jagu – Üleminekusätted",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_MSMS_5"
       }
@@ -388,7 +479,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Seaduste muutmine",
+      "rdfs:label": {
+        "@value": "2. jagu – Seaduste muutmine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_MSMS_5"
       }
@@ -399,7 +493,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "3. jagu – Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "3. jagu – Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_MSMS_5"
       }
@@ -410,7 +507,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – Rakendussätted",
+      "rdfs:label": {
+        "@value": "5. peatükk – Rakendussätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
@@ -441,12 +541,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "Käesolevas seaduses sätestatakse mootorsõidukimaks, millega maksustatakse mootorsõiduk lähtuvalt selle omadustest.",
+      "estleg:summary": {
+        "@value": "Käesolevas seaduses sätestatakse mootorsõidukimaks, millega maksustatakse mootorsõiduk lähtuvalt selle omadustest.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevas seaduses sätestatakse mootorsõidukimaks, millega maksustatakse mootorsõiduk lähtuvalt selle omadustest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_1"
@@ -471,10 +577,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas seaduses sätestatakse mootorsõidukimaks, millega maksustatakse mootorsõiduk lähtuvalt selle omadustest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatakse mootorsõidukimaks, millega maksustatakse mootorsõiduk lähtuvalt selle omadustest.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:MSMS_Par_2",
@@ -483,13 +591,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Mootorsõiduk",
+      "rdfs:label": {
+        "@value": "§ 2. Mootorsõiduk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Mootorsõiduk käesoleva seaduse tähenduses on liiklusregistris registreeritud: mootorratas (edaspidi L3e-, L4e- ja L5e-kategooria mootorsõiduk); neljarattaline mopeed (edaspidi L6e-kategooria mootorsõiduk); neljarattaline mootorsõiduk, mille tühimass sõitjateveoks ettenähtud sõiduki puhul on kuni 450 kilogrammi ja veoseveoks ettenähtud sõiduki puhul kuni 600 kilogrammi ning mis ei ole mopeed, traktor ega liikurmasin (edaspidi L7e-kategooria mootorsõiduk); ratasmaastikusõiduk (edaspidi",
-      "estleg:legalText": "(1) Mootorsõiduk käesoleva seaduse tähenduses on liiklusregistris registreeritud: mootorratas (edaspidi L3e-, L4e- ja L5e-kategooria mootorsõiduk); neljarattaline mopeed (edaspidi L6e-kategooria mootorsõiduk); neljarattaline mootorsõiduk, mille tühimass sõitjateveoks ettenähtud sõiduki puhul on kuni 450 kilogrammi ja veoseveoks ettenähtud sõiduki puhul kuni 600 kilogrammi ning mis ei ole mopeed, traktor ega liikurmasin (edaspidi L7e-kategooria mootorsõiduk); ratasmaastikusõiduk (edaspidi MS2-kategooria mootorsõiduk); ratastraktor, mille valmistajakiirus on üle 40 kilomeetri tunnis ja mille juhile lähima telje minimaalne rööbe on vähemalt 1150 millimeetrit ning mille tühimass töökorras olekus on üle 600 kilogrammi ja mille kliirens ei ole üle 1000 millimeetri ning mis ei ole eriotstarbeline ratastraktor; pööratava sõiduasendiga traktori puhul on juhile lähim telg see, millele on paigaldatud suurima läbimõõduga rehvid (nimetatud ratastraktor edaspidi T1b-kategooria mootorsõiduk); ratastraktor, mille tühimass töökorras olekus ei ole üle 600 kilogrammi ja mis ei ole eriotstarbeline ratastraktor (edaspidi T3-kategooria mootorsõiduk); ratastraktor, mille valmistajakiirus on üle 40 kilomeetri tunnis ja mis ei ole eriotstarbeline ratastraktor (edaspidi T5-kategooria mootorsõiduk); sõiduauto (edaspidi M1-kategooria mootorsõiduk); kuni 3500-kilogrammise täismassiga veoauto (edaspidi N1-kategooria mootorsõiduk). (2) Käesoleva paragrahvi lõike 1 punktides 1–3, 6, 8 ja 9 nimetatud sõidukite kategooriatega hõlmatakse ka nende alamkategooriad.",
+      "estleg:summary": {
+        "@value": "(1) Mootorsõiduk käesoleva seaduse tähenduses on liiklusregistris registreeritud: 1) mootorratas (edaspidi L3e-, L4e- ja L5e-kategooria mootorsõiduk); 2) neljarattaline mopeed (edaspidi L6e-kategooria mootorsõiduk); 3) neljarattaline mootorsõiduk, mille tühimass sõitjateveoks ettenähtud sõiduki puhul on kuni 450 kilogrammi ja veoseveoks ettenähtud sõiduki puhul kuni 600 kilogrammi ning mis ei ole mopeed, traktor ega liikurmasin (edaspidi L7e-kategooria mootorsõiduk); 4) ratasmaastikusõiduk",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Mootorsõiduk käesoleva seaduse tähenduses on liiklusregistris registreeritud: 1) mootorratas (edaspidi L3e-, L4e- ja L5e-kategooria mootorsõiduk); 2) neljarattaline mopeed (edaspidi L6e-kategooria mootorsõiduk); 3) neljarattaline mootorsõiduk, mille tühimass sõitjateveoks ettenähtud sõiduki puhul on kuni 450 kilogrammi ja veoseveoks ettenähtud sõiduki puhul kuni 600 kilogrammi ning mis ei ole mopeed, traktor ega liikurmasin (edaspidi L7e-kategooria mootorsõiduk); 4) ratasmaastikusõiduk (edaspidi MS2-kategooria mootorsõiduk); 5) ratastraktor, mille valmistajakiirus on üle 40 kilomeetri tunnis ja mille juhile lähima telje minimaalne rööbe on vähemalt 1150 millimeetrit ning mille tühimass töökorras olekus on üle 600 kilogrammi ja mille kliirens ei ole üle 1000 millimeetri ning mis ei ole eriotstarbeline ratastraktor; pööratava sõiduasendiga traktori puhul on juhile lähim telg see, millele on paigaldatud suurima läbimõõduga rehvid (nimetatud ratastraktor edaspidi T1b-kategooria mootorsõiduk); 6) ratastraktor, mille tühimass töökorras olekus ei ole üle 600 kilogrammi ja mis ei ole eriotstarbeline ratastraktor (edaspidi T3-kategooria mootorsõiduk); 7) ratastraktor, mille valmistajakiirus on üle 40 kilomeetri tunnis ja mis ei ole eriotstarbeline ratastraktor (edaspidi T5-kategooria mootorsõiduk); 8) sõiduauto (edaspidi M1-kategooria mootorsõiduk); 9) kuni 3500-kilogrammise täismassiga veoauto (edaspidi N1-kategooria mootorsõiduk). (2) Käesoleva paragrahvi lõike 1 punktides 1–3, 6, 8 ja 9 nimetatud sõidukite kategooriatega hõlmatakse ka nende alamkategooriad.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_1"
       },
@@ -526,11 +640,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Mootorsõiduk käesoleva seaduse tähenduses on liiklusregistris registreeritud: mootorratas (edaspidi L3e-, L4e- ja L5e-kategooria mootorsõiduk); neljarattaline mopeed (edaspidi L6e-kategooria mootorsõiduk); neljarattaline mootorsõiduk, mille tühimass sõitjateveoks ettenähtud sõiduki puhul on kuni 450 kilogrammi ja veoseveoks ettenähtud sõiduki puhul kuni 600 kilogrammi ning mis ei ole mopeed, traktor ega liikurmasin (edaspidi L7e-kategooria mootorsõiduk); ratasmaastikusõiduk (edaspidi MS2-kategooria mootorsõiduk); ratastraktor, mille valmistajakiirus on üle 40 kilomeetri tunnis ja mille juhile lähima telje minimaalne rööbe on vähemalt 1150 millimeetrit ning mille tühimass töökorras olekus on üle 600 kilogrammi ja mille kliirens ei ole üle 1000 millimeetri ning mis ei ole eriotstarbeline ratastraktor; pööratava sõiduasendiga traktori puhul on juhile lähim telg see, millele on paigaldatud suurima läbimõõduga rehvid (nimetatud ratastraktor edaspidi T1b-kategooria mootorsõiduk); ratastraktor, mille tühimass töökorras olekus ei ole üle 600 kilogrammi ja mis ei ole eriotstarbeline ratastraktor (edaspidi T3-kategooria mootorsõiduk); ratastraktor, mille valmistajakiirus on üle 40 kilomeetri tunnis ja mis ei ole eriotstarbeline ratastraktor (edaspidi T5-kategooria mootorsõiduk); sõiduauto (edaspidi M1-kategooria mootorsõiduk); kuni 3500-kilogrammise täismassiga veoauto (edaspidi N1-kategooria mootorsõiduk).",
+      "estleg:legalText": "(1) Mootorsõiduk käesoleva seaduse tähenduses on liiklusregistris registreeritud: 1) mootorratas (edaspidi L3e-, L4e- ja L5e-kategooria mootorsõiduk); 2) neljarattaline mopeed (edaspidi L6e-kategooria mootorsõiduk); 3) neljarattaline mootorsõiduk, mille tühimass sõitjateveoks ettenähtud sõiduki puhul on kuni 450 kilogrammi ja veoseveoks ettenähtud sõiduki puhul kuni 600 kilogrammi ning mis ei ole mopeed, traktor ega liikurmasin (edaspidi L7e-kategooria mootorsõiduk); 4) ratasmaastikusõiduk (edaspidi MS2-kategooria mootorsõiduk); 5) ratastraktor, mille valmistajakiirus on üle 40 kilomeetri tunnis ja mille juhile lähima telje minimaalne rööbe on vähemalt 1150 millimeetrit ning mille tühimass töökorras olekus on üle 600 kilogrammi ja mille kliirens ei ole üle 1000 millimeetri ning mis ei ole eriotstarbeline ratastraktor; pööratava sõiduasendiga traktori puhul on juhile lähim telg see, millele on paigaldatud suurima läbimõõduga rehvid (nimetatud ratastraktor edaspidi T1b-kategooria mootorsõiduk); 6) ratastraktor, mille tühimass töökorras olekus ei ole üle 600 kilogrammi ja mis ei ole eriotstarbeline ratastraktor (edaspidi T3-kategooria mootorsõiduk); 7) ratastraktor, mille valmistajakiirus on üle 40 kilomeetri tunnis ja mis ei ole eriotstarbeline ratastraktor (edaspidi T5-kategooria mootorsõiduk); 8) sõiduauto (edaspidi M1-kategooria mootorsõiduk); 9) kuni 3500-kilogrammise täismassiga veoauto (edaspidi N1-kategooria mootorsõiduk).",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_2"
       },
       "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -561,13 +686,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Maksu objekt",
+      "rdfs:label": {
+        "@value": "§ 3. Maksu objekt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "Mootorsõidukimaksu objekt on: liiklusregistris registreeritud mootorsõiduk; liiklusregistrist ajutiselt kustutatud või peatatud registrikandega mootorsõiduk. , punkt 2 jõustub 2027. aasta 1. jaanuaril.",
-      "estleg:legalText": "Mootorsõidukimaksu objekt on: liiklusregistris registreeritud mootorsõiduk; liiklusregistrist ajutiselt kustutatud või peatatud registrikandega mootorsõiduk. , punkt 2 jõustub 2027. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "Mootorsõidukimaksu objekt on: 1) liiklusregistris registreeritud mootorsõiduk; 2) liiklusregistrist ajutiselt kustutatud või peatatud registrikandega mootorsõiduk.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Mootorsõidukimaksu objekt on: 1) liiklusregistris registreeritud mootorsõiduk; 2) liiklusregistrist ajutiselt kustutatud või peatatud registrikandega mootorsõiduk.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_1"
       },
@@ -580,6 +711,9 @@
         }
       ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Map"
+        },
         {
           "@id": "estleg:MSMS_Par_25"
         },
@@ -599,11 +733,16 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Mootorsõidukimaksu objekt on: liiklusregistris registreeritud mootorsõiduk; liiklusregistrist ajutiselt kustutatud või peatatud registrikandega mootorsõiduk. , punkt 2 jõustub 2027. aasta 1. jaanuaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mootorsõidukimaksu objekt on: 1) liiklusregistris registreeritud mootorsõiduk; 2) liiklusregistrist ajutiselt kustutatud või peatatud registrikandega mootorsõiduk.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_3"
       },
-      "estleg:itemNumber": "2"
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_4",
@@ -612,12 +751,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Maksu laekumine",
+      "rdfs:label": {
+        "@value": "§ 4. Maksu laekumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "Mootorsõidukimaks laekub riigieelarvesse.",
+      "estleg:summary": {
+        "@value": "Mootorsõidukimaks laekub riigieelarvesse.",
+        "@language": "et"
+      },
       "estleg:legalText": "Mootorsõidukimaks laekub riigieelarvesse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_1"
@@ -642,10 +787,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Mootorsõidukimaks laekub riigieelarvesse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mootorsõidukimaks laekub riigieelarvesse.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_4"
-      }
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:MSMS_Par_4_1",
@@ -654,12 +801,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4¹.",
-      "rdfs:label": "§ 4¹. Mootorsõidukimaksu teade",
+      "rdfs:label": {
+        "@value": "§ 4¹. Mootorsõidukimaksu teade",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "Mootorsõidukimaksu teade (edaspidi maksuteade) on haldusakt, millele rakendatakse maksukorralduse seaduses maksuotsuse kohta sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
+      "estleg:summary": {
+        "@value": "Mootorsõidukimaksu teade (edaspidi maksuteade) on haldusakt, millele rakendatakse maksukorralduse seaduses maksuotsuse kohta sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
+        "@language": "et"
+      },
       "estleg:legalText": "Mootorsõidukimaksu teade (edaspidi maksuteade) on haldusakt, millele rakendatakse maksukorralduse seaduses maksuotsuse kohta sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_1"
@@ -689,10 +842,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Mootorsõidukimaksu teade (edaspidi maksuteade) on haldusakt, millele rakendatakse maksukorralduse seaduses maksuotsuse kohta sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mootorsõidukimaksu teade (edaspidi maksuteade) on haldusakt, millele rakendatakse maksukorralduse seaduses maksuotsuse kohta sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_4_1"
-      }
+      },
+      "rdfs:label": "§ 4¹ lg 1"
     },
     {
       "@id": "estleg:MSMS_Par_5",
@@ -701,13 +856,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Maksumaksja",
+      "rdfs:label": {
+        "@value": "§ 5. Maksumaksja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "Mootorsõidukimaksu maksab: mootorsõiduki omanik või liiklusseaduse § 2 punkti 93 tähenduses vastutava kasutaja olemasolul vastutav kasutaja, kui sõiduki omanik on liisinguandja, mitteresidendist füüsiline isik või juriidiline isik, kes ei ole Eestis registreeritud.",
-      "estleg:legalText": "Mootorsõidukimaksu maksab: mootorsõiduki omanik või liiklusseaduse § 2 punkti 93 tähenduses vastutava kasutaja olemasolul vastutav kasutaja, kui sõiduki omanik on liisinguandja, mitteresidendist füüsiline isik või juriidiline isik, kes ei ole Eestis registreeritud.",
+      "estleg:summary": {
+        "@value": "Mootorsõidukimaksu maksab: 1) mootorsõiduki omanik või 2) liiklusseaduse § 2 punkti 93 tähenduses vastutava kasutaja olemasolul vastutav kasutaja, kui sõiduki omanik on liisinguandja, mitteresidendist füüsiline isik või juriidiline isik, kes ei ole Eestis registreeritud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Mootorsõidukimaksu maksab: 1) mootorsõiduki omanik või 2) liiklusseaduse § 2 punkti 93 tähenduses vastutava kasutaja olemasolul vastutav kasutaja, kui sõiduki omanik on liisinguandja, mitteresidendist füüsiline isik või juriidiline isik, kes ei ole Eestis registreeritud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_2"
       },
@@ -738,6 +899,9 @@
       ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:MSMS_Map"
+        },
+        {
           "@id": "estleg:MSMS_Par_6"
         },
         {
@@ -765,11 +929,16 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Mootorsõidukimaksu maksab: mootorsõiduki omanik või liiklusseaduse § 2 punkti 93 tähenduses vastutava kasutaja olemasolul vastutav kasutaja, kui sõiduki omanik on liisinguandja, mitteresidendist füüsiline isik või juriidiline isik, kes ei ole Eestis registreeritud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mootorsõidukimaksu maksab: 1) mootorsõiduki omanik või 2) liiklusseaduse § 2 punkti 93 tähenduses vastutava kasutaja olemasolul vastutav kasutaja, kui sõiduki omanik on liisinguandja, mitteresidendist füüsiline isik või juriidiline isik, kes ei ole Eestis registreeritud.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_5"
       },
-      "estleg:itemNumber": "93",
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -795,13 +964,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Maksukohustus",
+      "rdfs:label": {
+        "@value": "§ 6. Maksukohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Mootorsõidukimaksu kohustus on isikul, kes: on maksustamisperioodi 1. jaanuari seisuga liiklusregistri andmete kohaselt sõiduki omanik või käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja või on kantud maksustamisperioodi kestel mootorsõiduki Eesti liiklusregistris esmakordsel registreerimisel mootorsõiduki omanikuks või käesoleva seaduse § 5 punktis 2 nimetatud vastutavaks kasutajaks; on maksustamisperioodi kestel mootorsõiduki ajutise kustutamise lõpetamisel, ajutise",
-      "estleg:legalText": "(1) Mootorsõidukimaksu kohustus on isikul, kes: on maksustamisperioodi 1. jaanuari seisuga liiklusregistri andmete kohaselt sõiduki omanik või käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja või on kantud maksustamisperioodi kestel mootorsõiduki Eesti liiklusregistris esmakordsel registreerimisel mootorsõiduki omanikuks või käesoleva seaduse § 5 punktis 2 nimetatud vastutavaks kasutajaks; on maksustamisperioodi kestel mootorsõiduki ajutise kustutamise lõpetamisel, ajutise kustutamise tähtaja saabumisel või registrikande taastumisel liiklusregistri andmete kohaselt mootorsõiduki omanik või käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja. (2) Kui käesoleva paragrahvi lõikes 1 nimetatud ajal on liiklusregistri andmetel sõidukil käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja, siis on maksukohustus temal. (3) Maksukohustus arvutatakse sõiduki 1. jaanuari või Eesti liiklusregistris esmakordse registreerimise kuupäeva seisuga liiklusregistri andmete alusel.",
+      "estleg:summary": {
+        "@value": "(1) Mootorsõidukimaksu kohustus on isikul, kes: 1) on maksustamisperioodi 1. jaanuari seisuga liiklusregistri andmete kohaselt sõiduki omanik või käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja või 2) on kantud maksustamisperioodi kestel mootorsõiduki Eesti liiklusregistris esmakordsel registreerimisel mootorsõiduki omanikuks või käesoleva seaduse § 5 punktis 2 nimetatud vastutavaks kasutajaks; 3) on maksustamisperioodi kestel mootorsõiduki ajutise kustutamise lõpetamisel, ajutise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Mootorsõidukimaksu kohustus on isikul, kes: 1) on maksustamisperioodi 1. jaanuari seisuga liiklusregistri andmete kohaselt sõiduki omanik või käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja või 2) on kantud maksustamisperioodi kestel mootorsõiduki Eesti liiklusregistris esmakordsel registreerimisel mootorsõiduki omanikuks või käesoleva seaduse § 5 punktis 2 nimetatud vastutavaks kasutajaks; 3) on maksustamisperioodi kestel mootorsõiduki ajutise kustutamise lõpetamisel, ajutise kustutamise tähtaja saabumisel või registrikande taastumisel liiklusregistri andmete kohaselt mootorsõiduki omanik või käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja. (2) Kui käesoleva paragrahvi lõikes 1 nimetatud ajal on liiklusregistri andmetel sõidukil käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja, siis on maksukohustus temal. (3) Maksukohustus arvutatakse sõiduki 1. jaanuari või Eesti liiklusregistris esmakordse registreerimise kuupäeva seisuga liiklusregistri andmete alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_2"
       },
@@ -849,12 +1024,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Mootorsõidukimaksu kohustus on isikul, kes: on maksustamisperioodi 1. jaanuari seisuga liiklusregistri andmete kohaselt sõiduki omanik või käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja või on kantud maksustamisperioodi kestel mootorsõiduki Eesti liiklusregistris esmakordsel registreerimisel mootorsõiduki omanikuks või käesoleva seaduse § 5 punktis 2 nimetatud vastutavaks kasutajaks; on maksustamisperioodi kestel mootorsõiduki ajutise kustutamise lõpetamisel, ajutise kustutamise tähtaja saabumisel või registrikande taastumisel liiklusregistri andmete kohaselt mootorsõiduki omanik või käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja.",
+      "estleg:legalText": "(1) Mootorsõidukimaksu kohustus on isikul, kes: 1) on maksustamisperioodi 1. jaanuari seisuga liiklusregistri andmete kohaselt sõiduki omanik või käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja või 2) on kantud maksustamisperioodi kestel mootorsõiduki Eesti liiklusregistris esmakordsel registreerimisel mootorsõiduki omanikuks või käesoleva seaduse § 5 punktis 2 nimetatud vastutavaks kasutajaks; 3) on maksustamisperioodi kestel mootorsõiduki ajutise kustutamise lõpetamisel, ajutise kustutamise tähtaja saabumisel või registrikande taastumisel liiklusregistri andmete kohaselt mootorsõiduki omanik või käesoleva seaduse § 5 punktis 2 nimetatud vastutav kasutaja.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_6"
       },
       "rdfs:label": "§ 6 lg 1",
-      "estleg:itemNumber": "2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -918,12 +1097,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Maksustamisperiood ja maksu tasumine",
+      "rdfs:label": {
+        "@value": "§ 7. Maksustamisperiood ja maksu tasumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Mootorsõidukimaksuga maksustamise periood on üks kalendriaasta. (2) Mootorsõiduki tähtajalisel registreerimisel tasutakse mootorsõidukimaksu tähtajalise registreerimise perioodi eest. (3) Kui mootorsõiduk registreeritakse liiklusregistris esmakordselt maksustamisperioodi kestel, arvutatakse mootorsõidukimaks käesoleva seaduse §-s 8 sätestatud korras. (3¹) Kui mootorsõiduki ajutine kustutamine lõpetatakse, ajutise kustutamise tähtaeg saabub või registrikanne taastub maksustamisperioodi",
+      "estleg:summary": {
+        "@value": "(1) Mootorsõidukimaksuga maksustamise periood on üks kalendriaasta. (2) Mootorsõiduki tähtajalisel registreerimisel tasutakse mootorsõidukimaksu tähtajalise registreerimise perioodi eest. (3) Kui mootorsõiduk registreeritakse liiklusregistris esmakordselt maksustamisperioodi kestel, arvutatakse mootorsõidukimaks käesoleva seaduse §-s 8 sätestatud korras. (3¹) Kui mootorsõiduki ajutine kustutamine lõpetatakse, ajutise kustutamise tähtaeg saabub või registrikanne taastub maksustamisperioodi",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Mootorsõidukimaksuga maksustamise periood on üks kalendriaasta. (2) Mootorsõiduki tähtajalisel registreerimisel tasutakse mootorsõidukimaksu tähtajalise registreerimise perioodi eest. (3) Kui mootorsõiduk registreeritakse liiklusregistris esmakordselt maksustamisperioodi kestel, arvutatakse mootorsõidukimaks käesoleva seaduse §-s 8 sätestatud korras. (3¹) Kui mootorsõiduki ajutine kustutamine lõpetatakse, ajutise kustutamise tähtaeg saabub või registrikanne taastub maksustamisperioodi kestel, arvutatakse mootorsõidukimaks käesoleva seaduse §-s 8 sätestatud korras. (4) Mootorsõidukimaksust tasutakse 50 protsenti 15. juuniks ja 50 protsenti 15. detsembriks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_2"
@@ -951,17 +1136,6 @@
       "estleg:references": [
         {
           "@id": "estleg:MSMS_Par_8"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MSMS_Par_9"
-        },
-        {
-          "@id": "estleg:MSMS_Par_9_Lg_2"
-        },
-        {
-          "@id": "estleg:MSMS_Par_17_Lg_3"
         }
       ],
       "estleg:hasVersion": [
@@ -1012,6 +1186,20 @@
         {
           "@id": "estleg:MSMS_Par_8"
         }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Map"
+        },
+        {
+          "@id": "estleg:MSMS_Par_9"
+        },
+        {
+          "@id": "estleg:MSMS_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:MSMS_Par_17_Lg_3"
+        }
       ]
     },
     {
@@ -1052,13 +1240,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7¹.",
-      "rdfs:label": "§ 7¹. Maksustamisperioodi lühendamine",
+      "rdfs:label": {
+        "@value": "§ 7¹. Maksustamisperioodi lühendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Mootorsõidukimaksu maksustamisperioodi lühendatakse, kui maksustamisperioodi kestel on tehtud liiklusregistris järgmine kanne: sõiduk kustutatakse liiklusregistrist liiklusseaduse § 77 lõike 5 tähenduses või sõiduk kustutatakse ajutiselt registrist tagaotsitavaks kuulutamise tõttu liiklusseaduse § 77 lõike 8 punkti 2 alusel. (2) Maksustamisperioodi lühendatakse proportsionaalselt päevade arvuga, mis on jäänud jooksva maksustamisperioodi lõpuni, arvates käesoleva paragrahvi lõikes 1",
-      "estleg:legalText": "(1) Mootorsõidukimaksu maksustamisperioodi lühendatakse, kui maksustamisperioodi kestel on tehtud liiklusregistris järgmine kanne: sõiduk kustutatakse liiklusregistrist liiklusseaduse § 77 lõike 5 tähenduses või sõiduk kustutatakse ajutiselt registrist tagaotsitavaks kuulutamise tõttu liiklusseaduse § 77 lõike 8 punkti 2 alusel. (2) Maksustamisperioodi lühendatakse proportsionaalselt päevade arvuga, mis on jäänud jooksva maksustamisperioodi lõpuni, arvates käesoleva paragrahvi lõikes 1 nimetatud liiklusregistri kandele järgnevast päevast. , lõikeid 1 ja 2 rakendatakse tagasiulatuvalt alates 2025. aasta 1. jaanuarist. (3) Maksu- ja Tolliamet teeb maksustamisperioodi lühendamise otsuse 15 tööpäeva jooksul arvates käesoleva paragrahvi lõikes 1 nimetatud liiklusregistri kandest.",
+      "estleg:summary": {
+        "@value": "(1) Mootorsõidukimaksu maksustamisperioodi lühendatakse, kui maksustamisperioodi kestel on tehtud liiklusregistris järgmine kanne: 1) sõiduk kustutatakse liiklusregistrist liiklusseaduse § 77 lõike 5 tähenduses või 2) sõiduk kustutatakse ajutiselt registrist tagaotsitavaks kuulutamise tõttu liiklusseaduse § 77 lõike 8 punkti 2 alusel. (2) Maksustamisperioodi lühendatakse proportsionaalselt päevade arvuga, mis on jäänud jooksva maksustamisperioodi lõpuni, arvates käesoleva paragrahvi lõikes 1",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Mootorsõidukimaksu maksustamisperioodi lühendatakse, kui maksustamisperioodi kestel on tehtud liiklusregistris järgmine kanne: 1) sõiduk kustutatakse liiklusregistrist liiklusseaduse § 77 lõike 5 tähenduses või 2) sõiduk kustutatakse ajutiselt registrist tagaotsitavaks kuulutamise tõttu liiklusseaduse § 77 lõike 8 punkti 2 alusel. (2) Maksustamisperioodi lühendatakse proportsionaalselt päevade arvuga, mis on jäänud jooksva maksustamisperioodi lõpuni, arvates käesoleva paragrahvi lõikes 1 nimetatud liiklusregistri kandele järgnevast päevast. (3) Maksu- ja Tolliamet teeb maksustamisperioodi lühendamise otsuse 15 tööpäeva jooksul arvates käesoleva paragrahvi lõikes 1 nimetatud liiklusregistri kandest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_2"
       },
@@ -1093,17 +1287,31 @@
           "@id": "estleg:LIIKLU_2_Par_77_Lg_8"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MSMS_Par_7_1_v114112025026"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Map"
+        },
+        {
+          "@id": "estleg:MSMS_Par_10"
+        },
+        {
+          "@id": "estleg:MSMS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1046428_Par_36_47_Lg_2"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MSMS_Par_7_1_v114112025026"
+        }
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_7_1_Lg_1",
@@ -1112,18 +1320,26 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Mootorsõidukimaksu maksustamisperioodi lühendatakse, kui maksustamisperioodi kestel on tehtud liiklusregistris järgmine kanne: sõiduk kustutatakse liiklusregistrist liiklusseaduse § 77 lõike 5 tähenduses või sõiduk kustutatakse ajutiselt registrist tagaotsitavaks kuulutamise tõttu liiklusseaduse § 77 lõike 8 punkti 2 alusel.",
+      "estleg:legalText": "(1) Mootorsõidukimaksu maksustamisperioodi lühendatakse, kui maksustamisperioodi kestel on tehtud liiklusregistris järgmine kanne: 1) sõiduk kustutatakse liiklusregistrist liiklusseaduse § 77 lõike 5 tähenduses või 2) sõiduk kustutatakse ajutiselt registrist tagaotsitavaks kuulutamise tõttu liiklusseaduse § 77 lõike 8 punkti 2 alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_7_1"
       },
       "rdfs:label": "§ 7¹ lg 1",
-      "estleg:itemNumber": "2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:LIIKLU_2_Par_77_Lg_5"
         },
         {
           "@id": "estleg:LIIKLU_2_Par_77_Lg_8"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Par_17_Lg_4"
         }
       ]
     },
@@ -1134,7 +1350,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Maksustamisperioodi lühendatakse proportsionaalselt päevade arvuga, mis on jäänud jooksva maksustamisperioodi lõpuni, arvates käesoleva paragrahvi lõikes 1 nimetatud liiklusregistri kandele järgnevast päevast. , lõikeid 1 ja 2 rakendatakse tagasiulatuvalt alates 2025. aasta 1. jaanuarist.",
+      "estleg:legalText": "(2) Maksustamisperioodi lühendatakse proportsionaalselt päevade arvuga, mis on jäänud jooksva maksustamisperioodi lõpuni, arvates käesoleva paragrahvi lõikes 1 nimetatud liiklusregistri kandele järgnevast päevast.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_7_1"
       },
@@ -1175,12 +1391,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Maksustamisperioodi kestel registreeritud mootorsõiduki kohta mootorsõidukimaksu arvutamine",
+      "rdfs:label": {
+        "@value": "§ 8. Maksustamisperioodi kestel registreeritud mootorsõiduki kohta mootorsõidukimaksu arvutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Maksustamisperioodi kestel kuni 30. septembrini liiklusregistris esmakordselt registreeritud mootorsõiduki eest tasutakse mootorsõidukimaks 15. detsembriks. (2) Maksustamisperioodi kestel pärast 30. septembrit liiklusregistris esmakordselt registreeritud mootorsõiduki eest tasutakse mootorsõidukimaks järgmise aasta 15. juuniks. (3) Mootorsõidukimaks arvutatakse proportsionaalselt päevade arvuga, mis on jäänud jooksva maksustamisperioodi lõpuni, arvates registreerimisele järgnevast päevast.",
+      "estleg:summary": {
+        "@value": "(1) Maksustamisperioodi kestel kuni 30. septembrini liiklusregistris esmakordselt registreeritud mootorsõiduki eest tasutakse mootorsõidukimaks 15. detsembriks. (2) Maksustamisperioodi kestel pärast 30. septembrit liiklusregistris esmakordselt registreeritud mootorsõiduki eest tasutakse mootorsõidukimaks järgmise aasta 15. juuniks. (3) Mootorsõidukimaks arvutatakse proportsionaalselt päevade arvuga, mis on jäänud jooksva maksustamisperioodi lõpuni, arvates registreerimisele järgnevast päevast.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maksustamisperioodi kestel kuni 30. septembrini liiklusregistris esmakordselt registreeritud mootorsõiduki eest tasutakse mootorsõidukimaks 15. detsembriks. (2) Maksustamisperioodi kestel pärast 30. septembrit liiklusregistris esmakordselt registreeritud mootorsõiduki eest tasutakse mootorsõidukimaks järgmise aasta 15. juuniks. (3) Mootorsõidukimaks arvutatakse proportsionaalselt päevade arvuga, mis on jäänud jooksva maksustamisperioodi lõpuni, arvates registreerimisele järgnevast päevast.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_2"
@@ -1200,6 +1422,9 @@
         }
       ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Map"
+        },
         {
           "@id": "estleg:MSMS_Par_7"
         },
@@ -1262,13 +1487,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Maksu tasumise kord",
+      "rdfs:label": {
+        "@value": "§ 9. Maksu tasumise kord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Maksu- ja Tolliamet väljastab liiklusregistrist saadud andmete alusel maksumaksjale maksuteate tasumisele kuuluva mootorsõidukimaksu summa kohta hiljemalt 15. veebruaril. (2) Maksuteade väljastatakse 15 tööpäeva jooksul pärast registrikande tegemist järgmistel asjaoludel: mootorsõiduk registreeritakse liiklusregistris esmakordselt maksustamisperioodi kestel; käesoleva seaduse § 7 lõikes 31 nimetatud juhul; käesoleva seaduse § 152 lõike 1 punktis 3 nimetatud juhul.",
-      "estleg:legalText": "(1) Maksu- ja Tolliamet väljastab liiklusregistrist saadud andmete alusel maksumaksjale maksuteate tasumisele kuuluva mootorsõidukimaksu summa kohta hiljemalt 15. veebruaril. (2) Maksuteade väljastatakse 15 tööpäeva jooksul pärast registrikande tegemist järgmistel asjaoludel: mootorsõiduk registreeritakse liiklusregistris esmakordselt maksustamisperioodi kestel; käesoleva seaduse § 7 lõikes 31 nimetatud juhul; käesoleva seaduse § 152 lõike 1 punktis 3 nimetatud juhul. (3) Valdkonna eest vastutav minister võib Vabariigi Valitsuse volitusel sõlmida vastavalt halduskoostöö seadusele eraõigusliku juriidilise isikuga lepingu maksuteadete kättetoimetamisega seotud tööde tegemiseks.",
+      "estleg:summary": {
+        "@value": "(1) Maksu- ja Tolliamet väljastab liiklusregistrist saadud andmete alusel maksumaksjale maksuteate tasumisele kuuluva mootorsõidukimaksu summa kohta hiljemalt 15. veebruaril. (2) Maksuteade väljastatakse 15 tööpäeva jooksul pärast registrikande tegemist järgmistel asjaoludel: 1) mootorsõiduk registreeritakse liiklusregistris esmakordselt maksustamisperioodi kestel; 2) käesoleva seaduse § 7 lõikes 3¹ nimetatud juhul; 3) käesoleva seaduse § 15² lõike 1 punktis 3 nimetatud juhul.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Maksu- ja Tolliamet väljastab liiklusregistrist saadud andmete alusel maksumaksjale maksuteate tasumisele kuuluva mootorsõidukimaksu summa kohta hiljemalt 15. veebruaril. (2) Maksuteade väljastatakse 15 tööpäeva jooksul pärast registrikande tegemist järgmistel asjaoludel: 1) mootorsõiduk registreeritakse liiklusregistris esmakordselt maksustamisperioodi kestel; 2) käesoleva seaduse § 7 lõikes 3¹ nimetatud juhul; 3) käesoleva seaduse § 15² lõike 1 punktis 3 nimetatud juhul. (3) Valdkonna eest vastutav minister võib Vabariigi Valitsuse volitusel sõlmida vastavalt halduskoostöö seadusele eraõigusliku juriidilise isikuga lepingu maksuteadete kättetoimetamisega seotud tööde tegemiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_2"
       },
@@ -1300,9 +1531,21 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:MSMS_Par_7"
+          "@id": "estleg:MSMS_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:MSMS_Par_15_2_Lg_1"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:hasVersion": [
         {
           "@id": "estleg:MSMS_Par_9_v131122024017"
@@ -1310,13 +1553,7 @@
         {
           "@id": "estleg:MSMS_Par_9_v114112025026"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_maksu_ja_tolliamet"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_9_Lg_1",
@@ -1356,15 +1593,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Maksuteade väljastatakse 15 tööpäeva jooksul pärast registrikande tegemist järgmistel asjaoludel: mootorsõiduk registreeritakse liiklusregistris esmakordselt maksustamisperioodi kestel; käesoleva seaduse § 7 lõikes 31 nimetatud juhul; käesoleva seaduse § 152 lõike 1 punktis 3 nimetatud juhul.",
+      "estleg:legalText": "(2) Maksuteade väljastatakse 15 tööpäeva jooksul pärast registrikande tegemist järgmistel asjaoludel: 1) mootorsõiduk registreeritakse liiklusregistris esmakordselt maksustamisperioodi kestel; 2) käesoleva seaduse § 7 lõikes 3¹ nimetatud juhul; 3) käesoleva seaduse § 15² lõike 1 punktis 3 nimetatud juhul.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_9"
       },
       "rdfs:label": "§ 9 lg 2",
-      "estleg:itemNumber": "3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:references": [
         {
-          "@id": "estleg:MSMS_Par_7"
+          "@id": "estleg:MSMS_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:MSMS_Par_15_2_Lg_1"
         }
       ]
     },
@@ -1380,9 +1624,6 @@
         "@id": "estleg:MSMS_Par_9"
       },
       "rdfs:label": "§ 9 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1394,6 +1635,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1403,13 +1647,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Maksu tagastamine",
+      "rdfs:label": {
+        "@value": "§ 10. Maksu tagastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Mootorsõidukimaksu osa, mis on tasutud käesoleva seaduse §-s 71 nimetatud maksustamisperioodi lühendamise tõttu enam, tagastatakse maksumaksja ettemaksukontole. (2) Mootorsõiduki võõrandamise või kasutusõiguse ülemineku korral maksustamisperioodi kestel maksustamisperioodi ei lühendata ja maksusummat ei tagastata.",
-      "estleg:legalText": "(1) Mootorsõidukimaksu osa, mis on tasutud käesoleva seaduse §-s 71 nimetatud maksustamisperioodi lühendamise tõttu enam, tagastatakse maksumaksja ettemaksukontole. (2) Mootorsõiduki võõrandamise või kasutusõiguse ülemineku korral maksustamisperioodi kestel maksustamisperioodi ei lühendata ja maksusummat ei tagastata.",
+      "estleg:summary": {
+        "@value": "(1) Mootorsõidukimaksu osa, mis on tasutud käesoleva seaduse §-s 7¹ nimetatud maksustamisperioodi lühendamise tõttu enam, tagastatakse maksumaksja ettemaksukontole. (2) Mootorsõiduki võõrandamise või kasutusõiguse ülemineku korral maksustamisperioodi kestel maksustamisperioodi ei lühendata ja maksusummat ei tagastata.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Mootorsõidukimaksu osa, mis on tasutud käesoleva seaduse §-s 7¹ nimetatud maksustamisperioodi lühendamise tõttu enam, tagastatakse maksumaksja ettemaksukontole. (2) Mootorsõiduki võõrandamise või kasutusõiguse ülemineku korral maksustamisperioodi kestel maksustamisperioodi ei lühendata ja maksusummat ei tagastata.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_2"
       },
@@ -1436,6 +1686,11 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:references": [
+        {
+          "@id": "estleg:MSMS_Par_7_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MSMS_Par_10_v131122024017"
@@ -1452,7 +1707,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Mootorsõidukimaksu osa, mis on tasutud käesoleva seaduse §-s 71 nimetatud maksustamisperioodi lühendamise tõttu enam, tagastatakse maksumaksja ettemaksukontole.",
+      "estleg:legalText": "(1) Mootorsõidukimaksu osa, mis on tasutud käesoleva seaduse §-s 7¹ nimetatud maksustamisperioodi lühendamise tõttu enam, tagastatakse maksumaksja ettemaksukontole.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_10"
       },
@@ -1465,7 +1720,12 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:references": [
+        {
+          "@id": "estleg:MSMS_Par_7_1"
+        }
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_10_Lg_2",
@@ -1496,13 +1756,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. L-kategooria, MS2-kategooria, T1b-kategooria, T3-kategooria ja T5-kategooria mootorsõidukite maksumäärad",
+      "rdfs:label": {
+        "@value": "§ 11. L-kategooria, MS2-kategooria, T1b-kategooria, T3-kategooria ja T5-kategooria mootorsõidukite maksumäärad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Sellise L3e-, L4e-, L5e-, L6e- ja L7e-kategooria mootorsõiduki, kuni 1000-kilogrammise tühimassiga MS2-kategooria mootorsõiduki, T3-kategooria mootorsõiduki ning kuni 1000-kilogrammise tühimassiga T1b- ja T5-kategooria mootorsõiduki, mille esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud kuni kümme aastat, mootorsõidukimaks on: 30 eurot, kui mootorsõiduki mootori töömaht on 51–125 kuupsentimeetrit; 45 eurot, kui mootorsõiduki mootori töömaht on 126–500",
-      "estleg:legalText": "(1) Sellise L3e-, L4e-, L5e-, L6e- ja L7e-kategooria mootorsõiduki, kuni 1000-kilogrammise tühimassiga MS2-kategooria mootorsõiduki, T3-kategooria mootorsõiduki ning kuni 1000-kilogrammise tühimassiga T1b- ja T5-kategooria mootorsõiduki, mille esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud kuni kümme aastat, mootorsõidukimaks on: 30 eurot, kui mootorsõiduki mootori töömaht on 51–125 kuupsentimeetrit; 45 eurot, kui mootorsõiduki mootori töömaht on 126–500 kuupsentimeetrit; 60 eurot, kui mootorsõiduki mootori töömaht on 501–1000 kuupsentimeetrit; 75 eurot, kui mootorsõiduki mootori töömaht on 1001–1500 kuupsentimeetrit; 90 eurot, kui mootorsõiduki mootori töömaht ületab 1500 kuupsentimeetrit. (2) Sellise L3e-, L4e-, L5e-, L6e- ja L7e-kategooria mootorsõiduki, kuni 1000-kilogrammise tühimassiga MS2-kategooria mootorsõiduki, T3-kategooria mootorsõiduki ning kuni 1000-kilogrammise tühimassiga T1b- ja T5-kategooria mootorsõiduki, mille esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud üle kümne aasta, kuid mitte rohkem kui 20 aastat, mootorsõidukimaks on: 30 eurot, kui mootorsõiduki mootori töömaht on 126–500 kuupsentimeetrit; 45 eurot, kui mootorsõiduki mootori töömaht on 501–1000 kuupsentimeetrit; 60 eurot, kui mootorsõiduki mootori töömaht on 1001–1500 kuupsentimeetrit; 75 eurot, kui mootorsõiduki mootori töömaht ületab 1500 kuupsentimeetrit.",
+      "estleg:summary": {
+        "@value": "(1) Sellise L3e-, L4e-, L5e-, L6e- ja L7e-kategooria mootorsõiduki, kuni 1000-kilogrammise tühimassiga MS2-kategooria mootorsõiduki, T3-kategooria mootorsõiduki ning kuni 1000-kilogrammise tühimassiga T1b- ja T5-kategooria mootorsõiduki, mille esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud kuni kümme aastat, mootorsõidukimaks on: 1) 30 eurot, kui mootorsõiduki mootori töömaht on 51–125 kuupsentimeetrit; 2) 45 eurot, kui mootorsõiduki mootori töömaht on",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Sellise L3e-, L4e-, L5e-, L6e- ja L7e-kategooria mootorsõiduki, kuni 1000-kilogrammise tühimassiga MS2-kategooria mootorsõiduki, T3-kategooria mootorsõiduki ning kuni 1000-kilogrammise tühimassiga T1b- ja T5-kategooria mootorsõiduki, mille esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud kuni kümme aastat, mootorsõidukimaks on: 1) 30 eurot, kui mootorsõiduki mootori töömaht on 51–125 kuupsentimeetrit; 2) 45 eurot, kui mootorsõiduki mootori töömaht on 126–500 kuupsentimeetrit; 3) 60 eurot, kui mootorsõiduki mootori töömaht on 501–1000 kuupsentimeetrit; 4) 75 eurot, kui mootorsõiduki mootori töömaht on 1001–1500 kuupsentimeetrit; 5) 90 eurot, kui mootorsõiduki mootori töömaht ületab 1500 kuupsentimeetrit. (2) Sellise L3e-, L4e-, L5e-, L6e- ja L7e-kategooria mootorsõiduki, kuni 1000-kilogrammise tühimassiga MS2-kategooria mootorsõiduki, T3-kategooria mootorsõiduki ning kuni 1000-kilogrammise tühimassiga T1b- ja T5-kategooria mootorsõiduki, mille esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud üle kümne aasta, kuid mitte rohkem kui 20 aastat, mootorsõidukimaks on: 1) 30 eurot, kui mootorsõiduki mootori töömaht on 126–500 kuupsentimeetrit; 2) 45 eurot, kui mootorsõiduki mootori töömaht on 501–1000 kuupsentimeetrit; 3) 60 eurot, kui mootorsõiduki mootori töömaht on 1001–1500 kuupsentimeetrit; 4) 75 eurot, kui mootorsõiduki mootori töömaht ületab 1500 kuupsentimeetrit.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_3"
       },
@@ -1518,6 +1784,9 @@
         }
       ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Map"
+        },
         {
           "@id": "estleg:MSMS_Par_16"
         },
@@ -1538,11 +1807,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Sellise L3e-, L4e-, L5e-, L6e- ja L7e-kategooria mootorsõiduki, kuni 1000-kilogrammise tühimassiga MS2-kategooria mootorsõiduki, T3-kategooria mootorsõiduki ning kuni 1000-kilogrammise tühimassiga T1b- ja T5-kategooria mootorsõiduki, mille esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud kuni kümme aastat, mootorsõidukimaks on: 30 eurot, kui mootorsõiduki mootori töömaht on 51–125 kuupsentimeetrit; 45 eurot, kui mootorsõiduki mootori töömaht on 126–500 kuupsentimeetrit; 60 eurot, kui mootorsõiduki mootori töömaht on 501–1000 kuupsentimeetrit; 75 eurot, kui mootorsõiduki mootori töömaht on 1001–1500 kuupsentimeetrit; 90 eurot, kui mootorsõiduki mootori töömaht ületab 1500 kuupsentimeetrit.",
+      "estleg:legalText": "(1) Sellise L3e-, L4e-, L5e-, L6e- ja L7e-kategooria mootorsõiduki, kuni 1000-kilogrammise tühimassiga MS2-kategooria mootorsõiduki, T3-kategooria mootorsõiduki ning kuni 1000-kilogrammise tühimassiga T1b- ja T5-kategooria mootorsõiduki, mille esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud kuni kümme aastat, mootorsõidukimaks on: 1) 30 eurot, kui mootorsõiduki mootori töömaht on 51–125 kuupsentimeetrit; 2) 45 eurot, kui mootorsõiduki mootori töömaht on 126–500 kuupsentimeetrit; 3) 60 eurot, kui mootorsõiduki mootori töömaht on 501–1000 kuupsentimeetrit; 4) 75 eurot, kui mootorsõiduki mootori töömaht on 1001–1500 kuupsentimeetrit; 5) 90 eurot, kui mootorsõiduki mootori töömaht ületab 1500 kuupsentimeetrit.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 1"
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_11_Lg_2",
@@ -1551,11 +1827,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Sellise L3e-, L4e-, L5e-, L6e- ja L7e-kategooria mootorsõiduki, kuni 1000-kilogrammise tühimassiga MS2-kategooria mootorsõiduki, T3-kategooria mootorsõiduki ning kuni 1000-kilogrammise tühimassiga T1b- ja T5-kategooria mootorsõiduki, mille esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud üle kümne aasta, kuid mitte rohkem kui 20 aastat, mootorsõidukimaks on: 30 eurot, kui mootorsõiduki mootori töömaht on 126–500 kuupsentimeetrit; 45 eurot, kui mootorsõiduki mootori töömaht on 501–1000 kuupsentimeetrit; 60 eurot, kui mootorsõiduki mootori töömaht on 1001–1500 kuupsentimeetrit; 75 eurot, kui mootorsõiduki mootori töömaht ületab 1500 kuupsentimeetrit.",
+      "estleg:legalText": "(2) Sellise L3e-, L4e-, L5e-, L6e- ja L7e-kategooria mootorsõiduki, kuni 1000-kilogrammise tühimassiga MS2-kategooria mootorsõiduki, T3-kategooria mootorsõiduki ning kuni 1000-kilogrammise tühimassiga T1b- ja T5-kategooria mootorsõiduki, mille esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud üle kümne aasta, kuid mitte rohkem kui 20 aastat, mootorsõidukimaks on: 1) 30 eurot, kui mootorsõiduki mootori töömaht on 126–500 kuupsentimeetrit; 2) 45 eurot, kui mootorsõiduki mootori töömaht on 501–1000 kuupsentimeetrit; 3) 60 eurot, kui mootorsõiduki mootori töömaht on 1001–1500 kuupsentimeetrit; 4) 75 eurot, kui mootorsõiduki mootori töömaht ületab 1500 kuupsentimeetrit.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_11"
       },
-      "rdfs:label": "§ 11 lg 2"
+      "rdfs:label": "§ 11 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_12",
@@ -1564,13 +1846,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. M1-kategooria mootorsõidukite maksumäärad",
+      "rdfs:label": {
+        "@value": "§ 12. M1-kategooria mootorsõidukite maksumäärad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) M1-kategooria mootorsõiduki, mis ei ole liiklusseaduse § 2 punkti 881 tähenduses täiselektriline ja mille kohta on liiklusregistris olemas andmed ühtlustatud ülemaailmse kergsõidukite katsetamise meetodiga (edaspidi WLTP-meetod) arvutatud süsinikdioksiidi (edaspidi CO2 ) eriheite kohta, maksumäär leitakse järgmise kolme komponendi summana: baasosa 50 eurot mootorsõiduki kohta; CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 118–150 grammi kilomeetri kohta korrutatakse 3 euroga,",
-      "estleg:legalText": "(1) M1-kategooria mootorsõiduki, mis ei ole liiklusseaduse § 2 punkti 881 tähenduses täiselektriline ja mille kohta on liiklusregistris olemas andmed ühtlustatud ülemaailmse kergsõidukite katsetamise meetodiga (edaspidi WLTP-meetod) arvutatud süsinikdioksiidi (edaspidi CO2 ) eriheite kohta, maksumäär leitakse järgmise kolme komponendi summana: baasosa 50 eurot mootorsõiduki kohta; CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 118–150 grammi kilomeetri kohta korrutatakse 3 euroga, vahemikus 151–200 grammi kilomeetri kohta korrutatakse 3,5 euroga ning vahemikus 201 ja enam grammi kilomeetri kohta korrutatakse 4 euroga; massiosa selliselt, et mootorsõiduki 2000-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 400 eurot või välise laadimisvõimalusega mootorsõiduki puhul, millel on liiklusregistris märge „OVC-HEV”, selliselt, et mootorsõiduki 2200-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 400 eurot. (2) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta on liiklusregistris olemas andmed üksnes uue Euroopa sõidutsükli järgi (edaspidi NEDC-meetod) arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kolme komponendi summana: käesoleva paragrahvi lõikes 1 nimetatud baasosa; käesoleva paragrahvi lõikes 1 nimetatud massiosa; CO2 eriheite osa selliselt, et esmalt korrutatakse CO2 eriheite näit koefitsiendiga 1,21 ja seejärel iga CO2 gramm vastavalt käesoleva paragrahvi lõike 1 punktis 2 sätestatule. (3) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta puuduvad liiklusregistris andmed CO2 eriheite kohta, CO2 eriheite WLTP-meetodi referentsväärtus grammides kilomeetri kohta leitakse järgmise kolme komponendi summana, mis ümardatakse täisarvuni: sisepõlemismootori võimsus kilovattides korrutatakse 0,29-ga; mootorsõiduki tühimass kilogrammides korrutatakse 0,07-ga; mootorsõiduki vanus aastates maksustamisperioodi alguse kuupäevaks alates esmase registreerimise kuupäevast korrutatakse 4,92-ga. (4) Käesoleva paragrahvi lõike 3 punktides 1–3 ettenähtud summade liitmisel saadud summast lahutatakse: diiselmootoriga sõiduki puhul 35 CO2 grammi kilomeetri kohta; välise laadimisvõimaluseta diiselmootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, 52 CO2 grammi kilomeetri kohta; välise laadimisvõimaluseta bensiinimootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, 39 CO2 grammi kilomeetri kohta. (5) Käesoleva paragrahvi lõikes 3 nimetatud CO2 eriheite WLTP-meetodi suurim referentsväärtus on 350 CO2 grammi kilomeetri kohta. (6) Käesoleva paragrahvi lõigetes 3 ja 4 nimetatud mootorsõiduki maksumäär leitakse järgmise kolme komponendi summana: käesoleva paragrahvi lõikes 1 nimetatud baasosa; käesoleva paragrahvi lõikes 1 nimetatud massiosa; CO2 eriheite osa, mis leitakse WLTP-meetodi referentsväärtuse järgi. (7) Käesoleva paragrahvi lõikes 3 nimetatud mootorsõiduki, millel on liiklusregistris märge „OVC-HEV”, maksumäär leitakse järgmise kahe komponendi summana: käesoleva paragrahvi lõikes 1 nimetatud baasosa; käesoleva paragrahvi lõikes 1 nimetatud massiosa. (8) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mis on täiselektriline, maksumäär leitakse järgmise kahe komponendi summana: baasosa 50 eurot mootorsõiduki kohta; massiosa selliselt, et mootorsõiduki 2400-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 440 eurot. (9) M1-kategooria mootorsõiduk, mis on liiklusregistri andmetel kerenimetusega „elamu”, maksustatakse N1-kategooria mootorsõiduki maksumääraga. (10) M1-kategooria mootorsõiduk, millel on rohkem kui seitse istekohta, maksustatakse N1-kategooria mootorsõiduki maksumääraga.",
+      "estleg:summary": {
+        "@value": "(1) M1-kategooria mootorsõiduki, mis ei ole liiklusseaduse § 2 punkti 88¹ tähenduses täiselektriline ja mille kohta on liiklusregistris olemas andmed ühtlustatud ülemaailmse kergsõidukite katsetamise meetodiga (edaspidi WLTP-meetod) arvutatud süsinikdioksiidi (edaspidi CO2 ) eriheite kohta, maksumäär leitakse järgmise kolme komponendi summana: 1) baasosa 50 eurot mootorsõiduki kohta; 2) CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 118–150 grammi kilomeetri kohta korrutatakse 3 euroga,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) M1-kategooria mootorsõiduki, mis ei ole liiklusseaduse § 2 punkti 88¹ tähenduses täiselektriline ja mille kohta on liiklusregistris olemas andmed ühtlustatud ülemaailmse kergsõidukite katsetamise meetodiga (edaspidi WLTP-meetod) arvutatud süsinikdioksiidi (edaspidi CO2 ) eriheite kohta, maksumäär leitakse järgmise kolme komponendi summana: 1) baasosa 50 eurot mootorsõiduki kohta; 2) CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 118–150 grammi kilomeetri kohta korrutatakse 3 euroga, vahemikus 151–200 grammi kilomeetri kohta korrutatakse 3,5 euroga ning vahemikus 201 ja enam grammi kilomeetri kohta korrutatakse 4 euroga; 3) massiosa selliselt, et mootorsõiduki 2000-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 400 eurot või välise laadimisvõimalusega mootorsõiduki puhul, millel on liiklusregistris märge „OVC-HEV”, selliselt, et mootorsõiduki 2200-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 400 eurot. (2) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta on liiklusregistris olemas andmed üksnes uue Euroopa sõidutsükli järgi (edaspidi NEDC-meetod) arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kolme komponendi summana: 1) käesoleva paragrahvi lõikes 1 nimetatud baasosa; 2) käesoleva paragrahvi lõikes 1 nimetatud massiosa; 3) CO2 eriheite osa selliselt, et esmalt korrutatakse CO2 eriheite näit koefitsiendiga 1,21 ja seejärel iga CO2 gramm vastavalt käesoleva paragrahvi lõike 1 punktis 2 sätestatule. (3) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta puuduvad liiklusregistris andmed CO2 eriheite kohta, CO2 eriheite WLTP-meetodi referentsväärtus grammides kilomeetri kohta leitakse järgmise kolme komponendi summana, mis ümardatakse täisarvuni: 1) sisepõlemismootori võimsus kilovattides korrutatakse 0,29-ga; 2) mootorsõiduki tühimass kilogrammides korrutatakse 0,07-ga; 3) mootorsõiduki vanus aastates maksustamisperioodi alguse kuupäevaks alates esmase registreerimise kuupäevast korrutatakse 4,92-ga. (4) Käesoleva paragrahvi lõike 3 punktides 1–3 ettenähtud summade liitmisel saadud summast lahutatakse: 1) diiselmootoriga sõiduki puhul 35 CO2 grammi kilomeetri kohta; 2) välise laadimisvõimaluseta diiselmootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, 52 CO2 grammi kilomeetri kohta; 3) välise laadimisvõimaluseta bensiinimootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, 39 CO2 grammi kilomeetri kohta. (5) Käesoleva paragrahvi lõikes 3 nimetatud CO2 eriheite WLTP-meetodi suurim referentsväärtus on 350 CO2 grammi kilomeetri kohta. (6) Käesoleva paragrahvi lõigetes 3 ja 4 nimetatud mootorsõiduki maksumäär leitakse järgmise kolme komponendi summana: 1) käesoleva paragrahvi lõikes 1 nimetatud baasosa; 2) käesoleva paragrahvi lõikes 1 nimetatud massiosa; 3) CO2 eriheite osa, mis leitakse WLTP-meetodi referentsväärtuse järgi. (7) Käesoleva paragrahvi lõikes 3 nimetatud mootorsõiduki, millel on liiklusregistris märge „OVC-HEV”, maksumäär leitakse järgmise kahe komponendi summana: 1) käesoleva paragrahvi lõikes 1 nimetatud baasosa; 2) käesoleva paragrahvi lõikes 1 nimetatud massiosa. (8) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mis on täiselektriline, maksumäär leitakse järgmise kahe komponendi summana: 1) baasosa 50 eurot mootorsõiduki kohta; 2) massiosa selliselt, et mootorsõiduki 2400-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 440 eurot. (9) M1-kategooria mootorsõiduk, mis on liiklusregistri andmetel kerenimetusega „elamu”, maksustatakse N1-kategooria mootorsõiduki maksumääraga. (10) M1-kategooria mootorsõiduk, millel on rohkem kui seitse istekohta, maksustatakse N1-kategooria mootorsõiduki maksumääraga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_3"
       },
@@ -1614,14 +1902,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:LIIKLU_2_Par_190_22"
-        },
-        {
-          "@id": "estleg:LIIKLU_2_Par_190_23"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1631,7 +1911,18 @@
           "@id": "estleg:LIIKLU_2_Par_2"
         }
       ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:LIIKLU_2_Par_190_22"
+        },
+        {
+          "@id": "estleg:LIIKLU_2_Par_190_23"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Map"
+        },
         {
           "@id": "estleg:MSMS_Par_16"
         },
@@ -1655,12 +1946,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) M1-kategooria mootorsõiduki, mis ei ole liiklusseaduse § 2 punkti 881 tähenduses täiselektriline ja mille kohta on liiklusregistris olemas andmed ühtlustatud ülemaailmse kergsõidukite katsetamise meetodiga (edaspidi WLTP-meetod) arvutatud süsinikdioksiidi (edaspidi CO2 ) eriheite kohta, maksumäär leitakse järgmise kolme komponendi summana: baasosa 50 eurot mootorsõiduki kohta; CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 118–150 grammi kilomeetri kohta korrutatakse 3 euroga, vahemikus 151–200 grammi kilomeetri kohta korrutatakse 3,5 euroga ning vahemikus 201 ja enam grammi kilomeetri kohta korrutatakse 4 euroga; massiosa selliselt, et mootorsõiduki 2000-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 400 eurot või välise laadimisvõimalusega mootorsõiduki puhul, millel on liiklusregistris märge „OVC-HEV”, selliselt, et mootorsõiduki 2200-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 400 eurot.",
+      "estleg:legalText": "(1) M1-kategooria mootorsõiduki, mis ei ole liiklusseaduse § 2 punkti 88¹ tähenduses täiselektriline ja mille kohta on liiklusregistris olemas andmed ühtlustatud ülemaailmse kergsõidukite katsetamise meetodiga (edaspidi WLTP-meetod) arvutatud süsinikdioksiidi (edaspidi CO2 ) eriheite kohta, maksumäär leitakse järgmise kolme komponendi summana: 1) baasosa 50 eurot mootorsõiduki kohta; 2) CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 118–150 grammi kilomeetri kohta korrutatakse 3 euroga, vahemikus 151–200 grammi kilomeetri kohta korrutatakse 3,5 euroga ning vahemikus 201 ja enam grammi kilomeetri kohta korrutatakse 4 euroga; 3) massiosa selliselt, et mootorsõiduki 2000-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 400 eurot või välise laadimisvõimalusega mootorsõiduki puhul, millel on liiklusregistris märge „OVC-HEV”, selliselt, et mootorsõiduki 2200-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 400 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_12"
       },
       "rdfs:label": "§ 12 lg 1",
-      "estleg:itemNumber": "881",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -1683,12 +1978,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta on liiklusregistris olemas andmed üksnes uue Euroopa sõidutsükli järgi (edaspidi NEDC-meetod) arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kolme komponendi summana: käesoleva paragrahvi lõikes 1 nimetatud baasosa; käesoleva paragrahvi lõikes 1 nimetatud massiosa; CO2 eriheite osa selliselt, et esmalt korrutatakse CO2 eriheite näit koefitsiendiga 1,21 ja seejärel iga CO2 gramm vastavalt käesoleva paragrahvi lõike 1 punktis 2 sätestatule.",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta on liiklusregistris olemas andmed üksnes uue Euroopa sõidutsükli järgi (edaspidi NEDC-meetod) arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kolme komponendi summana: 1) käesoleva paragrahvi lõikes 1 nimetatud baasosa; 2) käesoleva paragrahvi lõikes 1 nimetatud massiosa; 3) CO2 eriheite osa selliselt, et esmalt korrutatakse CO2 eriheite näit koefitsiendiga 1,21 ja seejärel iga CO2 gramm vastavalt käesoleva paragrahvi lõike 1 punktis 2 sätestatule.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_12"
       },
       "rdfs:label": "§ 12 lg 2",
-      "estleg:itemNumber": "2"
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_12_Lg_3",
@@ -1697,11 +1996,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta puuduvad liiklusregistris andmed CO2 eriheite kohta, CO2 eriheite WLTP-meetodi referentsväärtus grammides kilomeetri kohta leitakse järgmise kolme komponendi summana, mis ümardatakse täisarvuni: sisepõlemismootori võimsus kilovattides korrutatakse 0,29-ga; mootorsõiduki tühimass kilogrammides korrutatakse 0,07-ga; mootorsõiduki vanus aastates maksustamisperioodi alguse kuupäevaks alates esmase registreerimise kuupäevast korrutatakse 4,92-ga.",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta puuduvad liiklusregistris andmed CO2 eriheite kohta, CO2 eriheite WLTP-meetodi referentsväärtus grammides kilomeetri kohta leitakse järgmise kolme komponendi summana, mis ümardatakse täisarvuni: 1) sisepõlemismootori võimsus kilovattides korrutatakse 0,29-ga; 2) mootorsõiduki tühimass kilogrammides korrutatakse 0,07-ga; 3) mootorsõiduki vanus aastates maksustamisperioodi alguse kuupäevaks alates esmase registreerimise kuupäevast korrutatakse 4,92-ga.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 3"
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_12_Lg_4",
@@ -1710,11 +2014,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Käesoleva paragrahvi lõike 3 punktides 1–3 ettenähtud summade liitmisel saadud summast lahutatakse: diiselmootoriga sõiduki puhul 35 CO2 grammi kilomeetri kohta; välise laadimisvõimaluseta diiselmootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, 52 CO2 grammi kilomeetri kohta; välise laadimisvõimaluseta bensiinimootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, 39 CO2 grammi kilomeetri kohta.",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõike 3 punktides 1–3 ettenähtud summade liitmisel saadud summast lahutatakse: 1) diiselmootoriga sõiduki puhul 35 CO2 grammi kilomeetri kohta; 2) välise laadimisvõimaluseta diiselmootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, 52 CO2 grammi kilomeetri kohta; 3) välise laadimisvõimaluseta bensiinimootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, 39 CO2 grammi kilomeetri kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 4"
+      "rdfs:label": "§ 12 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_12_Lg_5",
@@ -1736,11 +2045,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Käesoleva paragrahvi lõigetes 3 ja 4 nimetatud mootorsõiduki maksumäär leitakse järgmise kolme komponendi summana: käesoleva paragrahvi lõikes 1 nimetatud baasosa; käesoleva paragrahvi lõikes 1 nimetatud massiosa; CO2 eriheite osa, mis leitakse WLTP-meetodi referentsväärtuse järgi.",
+      "estleg:legalText": "(6) Käesoleva paragrahvi lõigetes 3 ja 4 nimetatud mootorsõiduki maksumäär leitakse järgmise kolme komponendi summana: 1) käesoleva paragrahvi lõikes 1 nimetatud baasosa; 2) käesoleva paragrahvi lõikes 1 nimetatud massiosa; 3) CO2 eriheite osa, mis leitakse WLTP-meetodi referentsväärtuse järgi.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 6"
+      "rdfs:label": "§ 12 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_12_Lg_7",
@@ -1749,11 +2063,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "7",
-      "estleg:legalText": "(7) Käesoleva paragrahvi lõikes 3 nimetatud mootorsõiduki, millel on liiklusregistris märge „OVC-HEV”, maksumäär leitakse järgmise kahe komponendi summana: käesoleva paragrahvi lõikes 1 nimetatud baasosa; käesoleva paragrahvi lõikes 1 nimetatud massiosa.",
+      "estleg:legalText": "(7) Käesoleva paragrahvi lõikes 3 nimetatud mootorsõiduki, millel on liiklusregistris märge „OVC-HEV”, maksumäär leitakse järgmise kahe komponendi summana: 1) käesoleva paragrahvi lõikes 1 nimetatud baasosa; 2) käesoleva paragrahvi lõikes 1 nimetatud massiosa.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 7"
+      "rdfs:label": "§ 12 lg 7",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_12_Lg_8",
@@ -1762,11 +2080,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "8",
-      "estleg:legalText": "(8) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mis on täiselektriline, maksumäär leitakse järgmise kahe komponendi summana: baasosa 50 eurot mootorsõiduki kohta; massiosa selliselt, et mootorsõiduki 2400-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 440 eurot.",
+      "estleg:legalText": "(8) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mis on täiselektriline, maksumäär leitakse järgmise kahe komponendi summana: 1) baasosa 50 eurot mootorsõiduki kohta; 2) massiosa selliselt, et mootorsõiduki 2400-kilogrammist täismassi ületav iga kilogramm korrutatakse 0,40 euroga kuni summani 440 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 8"
+      "rdfs:label": "§ 12 lg 8",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_12_Lg_9",
@@ -1801,13 +2123,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. N1-kategooria mootorsõidukite maksumäärad",
+      "rdfs:label": {
+        "@value": "§ 13. N1-kategooria mootorsõidukite maksumäärad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) N1-kategooria mootorsõiduki, mis ei ole täiselektriline ja mille kohta on liiklusregistris olemas andmed WLTP-meetodiga arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kahe komponendi summana: baasosa 50 eurot mootorsõiduki kohta; CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 205–250 grammi kilomeetri kohta korrutatakse 3 euroga, vahemikus 251–300 grammi kilomeetri kohta korrutatakse 3,5 euroga ning vahemikus 301 ja enam grammi kilomeetri kohta korrutatakse 4 euroga.",
-      "estleg:legalText": "(1) N1-kategooria mootorsõiduki, mis ei ole täiselektriline ja mille kohta on liiklusregistris olemas andmed WLTP-meetodiga arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kahe komponendi summana: baasosa 50 eurot mootorsõiduki kohta; CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 205–250 grammi kilomeetri kohta korrutatakse 3 euroga, vahemikus 251–300 grammi kilomeetri kohta korrutatakse 3,5 euroga ning vahemikus 301 ja enam grammi kilomeetri kohta korrutatakse 4 euroga. (2) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta on liiklusregistris olemas andmed üksnes NEDC-meetodiga arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kahe komponendi summana: käesoleva paragrahvi lõikes 1 nimetatud baasosa; CO2 eriheite osa selliselt, et esmalt korrutatakse CO2 eriheite näit koefitsiendiga 1,3 ja seejärel iga CO2 gramm vastavalt käesoleva paragrahvi lõike 1 punktis 2 sätestatule. (3) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta puuduvad liiklusregistris andmed CO2 eriheite kohta, CO2 eriheite WLTP-meetodi referentsväärtus grammides kilomeetri kohta leitakse järgmise kolme komponendi summana, mis ümardatakse täisarvuni: sisepõlemismootori võimsus kilovattides korrutatakse 0,4-ga; mootorsõiduki tühimass kilogrammides korrutatakse 0,07-ga; mootorsõiduki vanus aastates maksustamisperioodi alguse kuupäevaks alates esmase registreerimise kuupäevast korrutatakse 5,16-ga. (4) Käesoleva paragrahvi lõike 3 punktides 1–3 ettenähtud summade liitmisel saadud summale liidetakse bensiinimootoriga sõiduki puhul 22 CO2 grammi kilomeetri kohta. (5) Käesoleva paragrahvi lõike 3 punktides 1–3 ettenähtud summade liitmisel saadud summast lahutatakse välise laadimisvõimaluseta diiselmootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, ja välise laadimisvõimaluseta bensiinimootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, 20 CO2 grammi kilomeetri kohta. (6) Käesoleva paragrahvi lõikes 3 nimetatud CO2 eriheite WLTP-meetodi suurim referentsväärtus on 350 CO2 grammi kilomeetri kohta. (7) Käesoleva paragrahvi lõigetes 3–5 nimetatud mootorsõiduki maksumäär leitakse järgmise kahe komponendi summana: käesoleva paragrahvi lõikes 1 nimetatud baasosa; CO2 eriheite osa, mis leitakse WLTP-meetodi referentsväärtuse järgi. (8) Käesoleva paragrahvi lõikes 3 nimetatud mootorsõiduki, millel on liiklusregistris märge „OVC-HEV”, maksumäär on käesoleva paragrahvi lõikes 1 nimetatud baasosa. (9) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mis on täiselektriline, mootorsõidukimaksu määr koosneb baasosast, mis on 30 eurot mootorsõiduki kohta. (10) N1-kategooria mootorsõiduk, mille erivõimsus ületab liiklusregistri andmetel 0,20 kilovatti kandevõime ühe kilogrammi kohta, maksustatakse M1-kategooria mootorsõiduki maksumääraga.",
+      "estleg:summary": {
+        "@value": "(1) N1-kategooria mootorsõiduki, mis ei ole täiselektriline ja mille kohta on liiklusregistris olemas andmed WLTP-meetodiga arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kahe komponendi summana: 1) baasosa 50 eurot mootorsõiduki kohta; 2) CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 205–250 grammi kilomeetri kohta korrutatakse 3 euroga, vahemikus 251–300 grammi kilomeetri kohta korrutatakse 3,5 euroga ning vahemikus 301 ja enam grammi kilomeetri kohta korrutatakse 4 euroga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) N1-kategooria mootorsõiduki, mis ei ole täiselektriline ja mille kohta on liiklusregistris olemas andmed WLTP-meetodiga arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kahe komponendi summana: 1) baasosa 50 eurot mootorsõiduki kohta; 2) CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 205–250 grammi kilomeetri kohta korrutatakse 3 euroga, vahemikus 251–300 grammi kilomeetri kohta korrutatakse 3,5 euroga ning vahemikus 301 ja enam grammi kilomeetri kohta korrutatakse 4 euroga. (2) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta on liiklusregistris olemas andmed üksnes NEDC-meetodiga arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kahe komponendi summana: 1) käesoleva paragrahvi lõikes 1 nimetatud baasosa; 2) CO2 eriheite osa selliselt, et esmalt korrutatakse CO2 eriheite näit koefitsiendiga 1,3 ja seejärel iga CO2 gramm vastavalt käesoleva paragrahvi lõike 1 punktis 2 sätestatule. (3) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta puuduvad liiklusregistris andmed CO2 eriheite kohta, CO2 eriheite WLTP-meetodi referentsväärtus grammides kilomeetri kohta leitakse järgmise kolme komponendi summana, mis ümardatakse täisarvuni: 1) sisepõlemismootori võimsus kilovattides korrutatakse 0,4-ga; 2) mootorsõiduki tühimass kilogrammides korrutatakse 0,07-ga; 3) mootorsõiduki vanus aastates maksustamisperioodi alguse kuupäevaks alates esmase registreerimise kuupäevast korrutatakse 5,16-ga. (4) Käesoleva paragrahvi lõike 3 punktides 1–3 ettenähtud summade liitmisel saadud summale liidetakse bensiinimootoriga sõiduki puhul 22 CO2 grammi kilomeetri kohta. (5) Käesoleva paragrahvi lõike 3 punktides 1–3 ettenähtud summade liitmisel saadud summast lahutatakse välise laadimisvõimaluseta diiselmootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, ja välise laadimisvõimaluseta bensiinimootoriga mootorsõiduki puhul, millel on liiklusregistris märge „NOVC-HEV”, 20 CO2 grammi kilomeetri kohta. (6) Käesoleva paragrahvi lõikes 3 nimetatud CO2 eriheite WLTP-meetodi suurim referentsväärtus on 350 CO2 grammi kilomeetri kohta. (7) Käesoleva paragrahvi lõigetes 3–5 nimetatud mootorsõiduki maksumäär leitakse järgmise kahe komponendi summana: 1) käesoleva paragrahvi lõikes 1 nimetatud baasosa; 2) CO2 eriheite osa, mis leitakse WLTP-meetodi referentsväärtuse järgi. (8) Käesoleva paragrahvi lõikes 3 nimetatud mootorsõiduki, millel on liiklusregistris märge „OVC-HEV”, maksumäär on käesoleva paragrahvi lõikes 1 nimetatud baasosa. (9) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mis on täiselektriline, mootorsõidukimaksu määr koosneb baasosast, mis on 30 eurot mootorsõiduki kohta. (10) N1-kategooria mootorsõiduk, mille erivõimsus ületab liiklusregistri andmetel 0,20 kilovatti kandevõime ühe kilogrammi kohta, maksustatakse M1-kategooria mootorsõiduki maksumääraga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_3"
       },
@@ -1856,6 +2184,9 @@
       ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:MSMS_Map"
+        },
+        {
           "@id": "estleg:MSMS_Par_16"
         },
         {
@@ -1875,11 +2206,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) N1-kategooria mootorsõiduki, mis ei ole täiselektriline ja mille kohta on liiklusregistris olemas andmed WLTP-meetodiga arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kahe komponendi summana: baasosa 50 eurot mootorsõiduki kohta; CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 205–250 grammi kilomeetri kohta korrutatakse 3 euroga, vahemikus 251–300 grammi kilomeetri kohta korrutatakse 3,5 euroga ning vahemikus 301 ja enam grammi kilomeetri kohta korrutatakse 4 euroga.",
+      "estleg:legalText": "(1) N1-kategooria mootorsõiduki, mis ei ole täiselektriline ja mille kohta on liiklusregistris olemas andmed WLTP-meetodiga arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kahe komponendi summana: 1) baasosa 50 eurot mootorsõiduki kohta; 2) CO2 eriheite osa selliselt, et iga CO2 gramm vahemikus 205–250 grammi kilomeetri kohta korrutatakse 3 euroga, vahemikus 251–300 grammi kilomeetri kohta korrutatakse 3,5 euroga ning vahemikus 301 ja enam grammi kilomeetri kohta korrutatakse 4 euroga.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 1"
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_13_Lg_2",
@@ -1888,12 +2223,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta on liiklusregistris olemas andmed üksnes NEDC-meetodiga arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kahe komponendi summana: käesoleva paragrahvi lõikes 1 nimetatud baasosa; CO2 eriheite osa selliselt, et esmalt korrutatakse CO2 eriheite näit koefitsiendiga 1,3 ja seejärel iga CO2 gramm vastavalt käesoleva paragrahvi lõike 1 punktis 2 sätestatule.",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta on liiklusregistris olemas andmed üksnes NEDC-meetodiga arvutatud CO2 eriheite kohta, maksumäär leitakse järgmise kahe komponendi summana: 1) käesoleva paragrahvi lõikes 1 nimetatud baasosa; 2) CO2 eriheite osa selliselt, et esmalt korrutatakse CO2 eriheite näit koefitsiendiga 1,3 ja seejärel iga CO2 gramm vastavalt käesoleva paragrahvi lõike 1 punktis 2 sätestatule.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_13"
       },
       "rdfs:label": "§ 13 lg 2",
-      "estleg:itemNumber": "2"
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_13_Lg_3",
@@ -1902,11 +2240,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta puuduvad liiklusregistris andmed CO2 eriheite kohta, CO2 eriheite WLTP-meetodi referentsväärtus grammides kilomeetri kohta leitakse järgmise kolme komponendi summana, mis ümardatakse täisarvuni: sisepõlemismootori võimsus kilovattides korrutatakse 0,4-ga; mootorsõiduki tühimass kilogrammides korrutatakse 0,07-ga; mootorsõiduki vanus aastates maksustamisperioodi alguse kuupäevaks alates esmase registreerimise kuupäevast korrutatakse 5,16-ga.",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 nimetatud mootorsõiduki, mille kohta puuduvad liiklusregistris andmed CO2 eriheite kohta, CO2 eriheite WLTP-meetodi referentsväärtus grammides kilomeetri kohta leitakse järgmise kolme komponendi summana, mis ümardatakse täisarvuni: 1) sisepõlemismootori võimsus kilovattides korrutatakse 0,4-ga; 2) mootorsõiduki tühimass kilogrammides korrutatakse 0,07-ga; 3) mootorsõiduki vanus aastates maksustamisperioodi alguse kuupäevaks alates esmase registreerimise kuupäevast korrutatakse 5,16-ga.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 3"
+      "rdfs:label": "§ 13 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_13_Lg_4",
@@ -1954,11 +2297,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "7",
-      "estleg:legalText": "(7) Käesoleva paragrahvi lõigetes 3–5 nimetatud mootorsõiduki maksumäär leitakse järgmise kahe komponendi summana: käesoleva paragrahvi lõikes 1 nimetatud baasosa; CO2 eriheite osa, mis leitakse WLTP-meetodi referentsväärtuse järgi.",
+      "estleg:legalText": "(7) Käesoleva paragrahvi lõigetes 3–5 nimetatud mootorsõiduki maksumäär leitakse järgmise kahe komponendi summana: 1) käesoleva paragrahvi lõikes 1 nimetatud baasosa; 2) CO2 eriheite osa, mis leitakse WLTP-meetodi referentsväärtuse järgi.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_13"
       },
-      "rdfs:label": "§ 13 lg 7"
+      "rdfs:label": "§ 13 lg 7",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_13_Lg_8",
@@ -2006,13 +2353,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Mootorsõiduki vanusest sõltuv kordaja",
+      "rdfs:label": {
+        "@value": "§ 14. Mootorsõiduki vanusest sõltuv kordaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) M1-kategooria ja N1-kategooria mootorsõiduki maksumäär korrutatakse mootorsõiduki vanusest sõltuva kordajaga, mis on: 0,92, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 5 aastat; 0,84, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 6 aastat; 0,75, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 7",
-      "estleg:legalText": "(1) M1-kategooria ja N1-kategooria mootorsõiduki maksumäär korrutatakse mootorsõiduki vanusest sõltuva kordajaga, mis on: 0,92, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 5 aastat; 0,84, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 6 aastat; 0,75, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 7 aastat; 0,67, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 8 aastat; 0,59, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 9 aastat; 0,51, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 10 aastat; 0,43, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 11 aastat; 0,35, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 12 aastat; 0,26, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 13 aastat; 0,18, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 14 aastat; 0,1, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 15 aastat; 0, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 20 aastat. (2) Mootorsõidukimaksu määra kordajat rakendatakse mootorsõidukimaksu summale, millest on lahutatud baasosa.",
+      "estleg:summary": {
+        "@value": "(1) M1-kategooria ja N1-kategooria mootorsõiduki maksumäär korrutatakse mootorsõiduki vanusest sõltuva kordajaga, mis on: 1) 0,92, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 5 aastat; 2) 0,84, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 6 aastat; 3) 0,75, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) M1-kategooria ja N1-kategooria mootorsõiduki maksumäär korrutatakse mootorsõiduki vanusest sõltuva kordajaga, mis on: 1) 0,92, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 5 aastat; 2) 0,84, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 6 aastat; 3) 0,75, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 7 aastat; 4) 0,67, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 8 aastat; 5) 0,59, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 9 aastat; 6) 0,51, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 10 aastat; 7) 0,43, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 11 aastat; 8) 0,35, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 12 aastat; 9) 0,26, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 13 aastat; 10) 0,18, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 14 aastat; 11) 0,1, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 15 aastat; 12) 0, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 20 aastat. (2) Mootorsõidukimaksu määra kordajat rakendatakse mootorsõidukimaksu summale, millest on lahutatud baasosa.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_3"
       },
@@ -2034,6 +2387,9 @@
       ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:MSMS_Map"
+        },
+        {
           "@id": "estleg:MSMS_Par_16"
         },
         {
@@ -2053,11 +2409,25 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) M1-kategooria ja N1-kategooria mootorsõiduki maksumäär korrutatakse mootorsõiduki vanusest sõltuva kordajaga, mis on: 0,92, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 5 aastat; 0,84, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 6 aastat; 0,75, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 7 aastat; 0,67, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 8 aastat; 0,59, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 9 aastat; 0,51, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 10 aastat; 0,43, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 11 aastat; 0,35, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 12 aastat; 0,26, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 13 aastat; 0,18, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 14 aastat; 0,1, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 15 aastat; 0, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 20 aastat.",
+      "estleg:legalText": "(1) M1-kategooria ja N1-kategooria mootorsõiduki maksumäär korrutatakse mootorsõiduki vanusest sõltuva kordajaga, mis on: 1) 0,92, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 5 aastat; 2) 0,84, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 6 aastat; 3) 0,75, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 7 aastat; 4) 0,67, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 8 aastat; 5) 0,59, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 9 aastat; 6) 0,51, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 10 aastat; 7) 0,43, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 11 aastat; 8) 0,35, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 12 aastat; 9) 0,26, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 13 aastat; 10) 0,18, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 14 aastat; 11) 0,1, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 15 aastat; 12) 0, kui mootorsõiduki esmase registreerimise kuupäevast on maksustamisperioodi alguse kuupäevaks möödunud vähemalt 20 aastat.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_14"
       },
-      "rdfs:label": "§ 14 lg 1"
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_14_Lg_2",
@@ -2079,13 +2449,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Mootorsõidukimaksu vabastus",
+      "rdfs:label": {
+        "@value": "§ 15. Mootorsõidukimaksu vabastus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "Mootorsõidukimaksuga ei maksustata: liiklusregistris alarmsõidukiks registreeritud mootorsõidukit; välisriigi diplomaatilisele esindusele ja konsulaarasutusele, erimissioonile, Välisministeeriumi tunnustatud rahvusvahelise organisatsiooni esindusele või peakorterile, Euroopa Liidu institutsioonile või Euroopa Liidu õiguse alusel asutatud ametile või asutusele, Eestisse akrediteeritud välisriigi diplomaatilisele esindajale ja konsulaarametnikule, välja arvatud aukonsul, erimissiooni ja",
-      "estleg:legalText": "Mootorsõidukimaksuga ei maksustata: liiklusregistris alarmsõidukiks registreeritud mootorsõidukit; välisriigi diplomaatilisele esindusele ja konsulaarasutusele, erimissioonile, Välisministeeriumi tunnustatud rahvusvahelise organisatsiooni esindusele või peakorterile, Euroopa Liidu institutsioonile või Euroopa Liidu õiguse alusel asutatud ametile või asutusele, Eestisse akrediteeritud välisriigi diplomaatilisele esindajale ja konsulaarametnikule, välja arvatud aukonsul, erimissiooni ja rahvusvahelise organisatsiooni esindajale, samuti diplomaatilise esinduse, konsulaarasutuse ja erimissiooni haldustöötajale kuuluvaid mootorsõidukeid; välislepingus sätestatud maksusoodustuse rakendamisel Põhja-Atlandi Lepingu Organisatsioonile (edaspidi NATO) ja selle allorganitele, sõjalisele peakorterile, ühises kaitsetegevuses osalevale NATO liikmesriigi või ühise julgeoleku- ja kaitsepoliitika raames Euroopa Liidu meetmete rakendamiseks ellu viidavas kaitsetegevuses osaleva Euroopa Liidu liikmesriigi relvajõududele ja nendega kaasas olevale tsiviilkoosseisule ning nende liikmetele, välisriigi relvajõudude ja tsiviilkoosseisu liikmetele ning nende ülalpeetavatele, välisriigi relvajõudude lepingupartneri töötajatele, rahvusvahelise sõjalise peakorteri liikmetele ja nende ülalpeetavatele ning peakorteri lepingupartneri töötajatele ja nende ülalpeetavatele ning välisriigi, mis ei ole Euroopa Liidu liikmesriik ega NATO liikmesriik, relvajõududele ja tsiviilkoosseisule ning rahvusvahelisele sõjalisele õppeasutusele kuuluvaid mootorsõidukeid.",
+      "estleg:summary": {
+        "@value": "Mootorsõidukimaksuga ei maksustata: 1) liiklusregistris alarmsõidukiks registreeritud mootorsõidukit; 2) välisriigi diplomaatilisele esindusele ja konsulaarasutusele, erimissioonile, Välisministeeriumi tunnustatud rahvusvahelise organisatsiooni esindusele või peakorterile, Euroopa Liidu institutsioonile või Euroopa Liidu õiguse alusel asutatud ametile või asutusele, Eestisse akrediteeritud välisriigi diplomaatilisele esindajale ja konsulaarametnikule, välja arvatud aukonsul, erimissiooni ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "Mootorsõidukimaksuga ei maksustata: 1) liiklusregistris alarmsõidukiks registreeritud mootorsõidukit; 2) välisriigi diplomaatilisele esindusele ja konsulaarasutusele, erimissioonile, Välisministeeriumi tunnustatud rahvusvahelise organisatsiooni esindusele või peakorterile, Euroopa Liidu institutsioonile või Euroopa Liidu õiguse alusel asutatud ametile või asutusele, Eestisse akrediteeritud välisriigi diplomaatilisele esindajale ja konsulaarametnikule, välja arvatud aukonsul, erimissiooni ja rahvusvahelise organisatsiooni esindajale, samuti diplomaatilise esinduse, konsulaarasutuse ja erimissiooni haldustöötajale kuuluvaid mootorsõidukeid; 3) välislepingus sätestatud maksusoodustuse rakendamisel Põhja-Atlandi Lepingu Organisatsioonile (edaspidi NATO) ja selle allorganitele, sõjalisele peakorterile, ühises kaitsetegevuses osalevale NATO liikmesriigi või ühise julgeoleku- ja kaitsepoliitika raames Euroopa Liidu meetmete rakendamiseks ellu viidavas kaitsetegevuses osaleva Euroopa Liidu liikmesriigi relvajõududele ja nendega kaasas olevale tsiviilkoosseisule ning nende liikmetele, välisriigi relvajõudude ja tsiviilkoosseisu liikmetele ning nende ülalpeetavatele, välisriigi relvajõudude lepingupartneri töötajatele, rahvusvahelise sõjalise peakorteri liikmetele ja nende ülalpeetavatele ning peakorteri lepingupartneri töötajatele ja nende ülalpeetavatele ning välisriigi, mis ei ole Euroopa Liidu liikmesriik ega NATO liikmesriik, relvajõududele ja tsiviilkoosseisule ning rahvusvahelisele sõjalisele õppeasutusele kuuluvaid mootorsõidukeid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_3"
       },
@@ -2105,6 +2481,15 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_valisministeerium"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KMS_Par_39"
@@ -2119,26 +2504,23 @@
           "@id": "estleg:Reg_1039361_Par_1"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Map"
+        },
         {
           "@id": "estleg:MSMS_Par_16"
         },
         {
           "@id": "estleg:MSMS_Par_16_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1046428_Par_36_47_Lg_2"
         }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MSMS_Par_15_v131122024017"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
         }
       ]
     },
@@ -2148,10 +2530,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Mootorsõidukimaksuga ei maksustata: liiklusregistris alarmsõidukiks registreeritud mootorsõidukit; välisriigi diplomaatilisele esindusele ja konsulaarasutusele, erimissioonile, Välisministeeriumi tunnustatud rahvusvahelise organisatsiooni esindusele või peakorterile, Euroopa Liidu institutsioonile või Euroopa Liidu õiguse alusel asutatud ametile või asutusele, Eestisse akrediteeritud välisriigi diplomaatilisele esindajale ja konsulaarametnikule, välja arvatud aukonsul, erimissiooni ja rahvusvahelise organisatsiooni esindajale, samuti diplomaatilise esinduse, konsulaarasutuse ja erimissiooni haldustöötajale kuuluvaid mootorsõidukeid; välislepingus sätestatud maksusoodustuse rakendamisel Põhja-Atlandi Lepingu Organisatsioonile (edaspidi NATO) ja selle allorganitele, sõjalisele peakorterile, ühises kaitsetegevuses osalevale NATO liikmesriigi või ühise julgeoleku- ja kaitsepoliitika raames Euroopa Liidu meetmete rakendamiseks ellu viidavas kaitsetegevuses osaleva Euroopa Liidu liikmesriigi relvajõududele ja nendega kaasas olevale tsiviilkoosseisule ning nende liikmetele, välisriigi relvajõudude ja tsiviilkoosseisu liikmetele ning nende ülalpeetavatele, välisriigi relvajõudude lepingupartneri töötajatele, rahvusvahelise sõjalise peakorteri liikmetele ja nende ülalpeetavatele ning peakorteri lepingupartneri töötajatele ja nende ülalpeetavatele ning välisriigi, mis ei ole Euroopa Liidu liikmesriik ega NATO liikmesriik, relvajõududele ja tsiviilkoosseisule ning rahvusvahelisele sõjalisele õppeasutusele kuuluvaid mootorsõidukeid.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mootorsõidukimaksuga ei maksustata: 1) liiklusregistris alarmsõidukiks registreeritud mootorsõidukit; 2) välisriigi diplomaatilisele esindusele ja konsulaarasutusele, erimissioonile, Välisministeeriumi tunnustatud rahvusvahelise organisatsiooni esindusele või peakorterile, Euroopa Liidu institutsioonile või Euroopa Liidu õiguse alusel asutatud ametile või asutusele, Eestisse akrediteeritud välisriigi diplomaatilisele esindajale ja konsulaarametnikule, välja arvatud aukonsul, erimissiooni ja rahvusvahelise organisatsiooni esindajale, samuti diplomaatilise esinduse, konsulaarasutuse ja erimissiooni haldustöötajale kuuluvaid mootorsõidukeid; 3) välislepingus sätestatud maksusoodustuse rakendamisel Põhja-Atlandi Lepingu Organisatsioonile (edaspidi NATO) ja selle allorganitele, sõjalisele peakorterile, ühises kaitsetegevuses osalevale NATO liikmesriigi või ühise julgeoleku- ja kaitsepoliitika raames Euroopa Liidu meetmete rakendamiseks ellu viidavas kaitsetegevuses osaleva Euroopa Liidu liikmesriigi relvajõududele ja nendega kaasas olevale tsiviilkoosseisule ning nende liikmetele, välisriigi relvajõudude ja tsiviilkoosseisu liikmetele ning nende ülalpeetavatele, välisriigi relvajõudude lepingupartneri töötajatele, rahvusvahelise sõjalise peakorteri liikmetele ja nende ülalpeetavatele ning peakorteri lepingupartneri töötajatele ja nende ülalpeetavatele ning välisriigi, mis ei ole Euroopa Liidu liikmesriik ega NATO liikmesriik, relvajõududele ja tsiviilkoosseisule ning rahvusvahelisele sõjalisele õppeasutusele kuuluvaid mootorsõidukeid.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_15"
       },
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2177,12 +2566,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15¹.",
-      "rdfs:label": "§ 15¹. Lapse eest mootorsõidukimaksu kohustuse vähendamine",
+      "rdfs:label": {
+        "@value": "§ 15¹. Lapse eest mootorsõidukimaksu kohustuse vähendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Vanema või füüsilisest isikust eestkostja, kellel on lapse hooldusõigus (edaspidi vanem), mootorsõidukimaksu kohustust vähendatakse, kui ta on vähemalt ühe mootorsõidukimaksu kohustusega liiklusregistris registreeritud M1- või N1-kategooria mootorsõiduki omanik või käesoleva seaduse § 5 punkti 2 kohane vastutav kasutaja. (2) Iga lapse eest vähendatakse vanema maksukohustust maksustamisperioodi jooksul kuni 100 euro võrra, kuid mitte rohkem kui vanema maksukohustus M1- ja N1-kategooria",
+      "estleg:summary": {
+        "@value": "(1) Vanema või füüsilisest isikust eestkostja, kellel on lapse hooldusõigus (edaspidi vanem), mootorsõidukimaksu kohustust vähendatakse, kui ta on vähemalt ühe mootorsõidukimaksu kohustusega liiklusregistris registreeritud M1- või N1-kategooria mootorsõiduki omanik või käesoleva seaduse § 5 punkti 2 kohane vastutav kasutaja. (2) Iga lapse eest vähendatakse vanema maksukohustust maksustamisperioodi jooksul kuni 100 euro võrra, kuid mitte rohkem kui vanema maksukohustus M1- ja N1-kategooria",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vanema või füüsilisest isikust eestkostja, kellel on lapse hooldusõigus (edaspidi vanem), mootorsõidukimaksu kohustust vähendatakse, kui ta on vähemalt ühe mootorsõidukimaksu kohustusega liiklusregistris registreeritud M1- või N1-kategooria mootorsõiduki omanik või käesoleva seaduse § 5 punkti 2 kohane vastutav kasutaja. (2) Iga lapse eest vähendatakse vanema maksukohustust maksustamisperioodi jooksul kuni 100 euro võrra, kuid mitte rohkem kui vanema maksukohustus M1- ja N1-kategooria mootorsõidukite eest kokku. (3) Kui lapse vanemaid on mitu, jagatakse maksukohustust vähendav summa vanemate vahel võrdselt. Kui vanema maksukohustus on väiksem kui tema maksukohustust vähendav summa, jagatakse ülejäänud maksukohustust vähendav summa teiste vanemate vahel. (4) Käesoleva paragrahvi lõigete 2 ja 3 alusel määratud maksukohustuse aluseks olnud andmed lisatakse maksuteatele. (5) Maksukohustust vähendatakse isikul, kellel oli lapse täisealiseks saamise päevale eelneval päeval hooldusõigus käesoleva seaduse tähenduses. (6) Laps käesoleva seaduse tähenduses on kuni 18-aastane (kaasa arvatud) isik. (7) Hooldusõigus käesoleva seaduse tähenduses on lapse ainuhooldusõigus või ühine hooldusõigus, mida ei ole peatatud, piiratud, üle antud ega ära võetud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_3"
@@ -2225,6 +2620,11 @@
       "estleg:references": [
         {
           "@id": "estleg:MSMS_Par_5"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Reg_1046428_Par_36_47_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -2382,13 +2782,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15².",
-      "rdfs:label": "§ 15². Lapse eest mootorsõidukimaksu kohustuse vähendamise arvutamine",
+      "rdfs:label": {
+        "@value": "§ 15². Lapse eest mootorsõidukimaksu kohustuse vähendamise arvutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Mootorsõidukimaksu kohustuse vähendamine arvutatakse: 1. jaanuari seisuga; mootorsõiduki Eesti liiklusregistris esmakordse registreerimise seisuga; maksustamisperioodi kestel rahvastikuregistris lapse hooldusõiguse kande tekkimise seisuga. (2) Maksu- ja Tolliamet peab arvestust maksukohustuse vähendamise suuruse ja jäägi üle. (3) Maksustamisperioodi kestel võetakse mootorsõidukimaksu arvutamisel iga kord arvesse maksukohustuse vähenduse suurus ja jääk.",
-      "estleg:legalText": "(1) Mootorsõidukimaksu kohustuse vähendamine arvutatakse: 1. jaanuari seisuga; mootorsõiduki Eesti liiklusregistris esmakordse registreerimise seisuga; maksustamisperioodi kestel rahvastikuregistris lapse hooldusõiguse kande tekkimise seisuga. (2) Maksu- ja Tolliamet peab arvestust maksukohustuse vähendamise suuruse ja jäägi üle. (3) Maksustamisperioodi kestel võetakse mootorsõidukimaksu arvutamisel iga kord arvesse maksukohustuse vähenduse suurus ja jääk. (4) Maksustamisperioodi kestel mootorsõidukimaksu kohustuse ümberarvutamisel tekkiv jääk võetakse arvesse käesoleva paragrahvi lõike 1 punktides 2 ja 3 nimetatud juhtudel. (5) Lapse hooldusõiguse muutumise korral maksustamisperioodi kestel maksukohustuse vähendamist ümber ei arvutata ja jääki ei suurendata. (6) Mootorsõidukimaksu see osa, mis on maksukohustuse vähendamise tulemusel enam tasutud, tagastatakse maksukohustuslase ettemaksukontole.",
+      "estleg:summary": {
+        "@value": "(1) Mootorsõidukimaksu kohustuse vähendamine arvutatakse: 1) 1. jaanuari seisuga; 2) mootorsõiduki Eesti liiklusregistris esmakordse registreerimise seisuga; 3) maksustamisperioodi kestel rahvastikuregistris lapse hooldusõiguse kande tekkimise seisuga. (2) Maksu- ja Tolliamet peab arvestust maksukohustuse vähendamise suuruse ja jäägi üle. (3) Maksustamisperioodi kestel võetakse mootorsõidukimaksu arvutamisel iga kord arvesse maksukohustuse vähenduse suurus ja jääk.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Mootorsõidukimaksu kohustuse vähendamine arvutatakse: 1) 1. jaanuari seisuga; 2) mootorsõiduki Eesti liiklusregistris esmakordse registreerimise seisuga; 3) maksustamisperioodi kestel rahvastikuregistris lapse hooldusõiguse kande tekkimise seisuga. (2) Maksu- ja Tolliamet peab arvestust maksukohustuse vähendamise suuruse ja jäägi üle. (3) Maksustamisperioodi kestel võetakse mootorsõidukimaksu arvutamisel iga kord arvesse maksukohustuse vähenduse suurus ja jääk. (4) Maksustamisperioodi kestel mootorsõidukimaksu kohustuse ümberarvutamisel tekkiv jääk võetakse arvesse käesoleva paragrahvi lõike 1 punktides 2 ja 3 nimetatud juhtudel. (5) Lapse hooldusõiguse muutumise korral maksustamisperioodi kestel maksukohustuse vähendamist ümber ei arvutata ja jääki ei suurendata. (6) Mootorsõidukimaksu see osa, mis on maksukohustuse vähendamise tulemusel enam tasutud, tagastatakse maksukohustuslase ettemaksukontole.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_3"
       },
@@ -2420,23 +2826,23 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:dutyHolder": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MSMS_Par_15_2_v114112025026"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MSMS_Par_15_2_v114112025026"
         }
       ]
     },
@@ -2447,11 +2853,27 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Mootorsõidukimaksu kohustuse vähendamine arvutatakse: 1. jaanuari seisuga; mootorsõiduki Eesti liiklusregistris esmakordse registreerimise seisuga; maksustamisperioodi kestel rahvastikuregistris lapse hooldusõiguse kande tekkimise seisuga.",
+      "estleg:legalText": "(1) Mootorsõidukimaksu kohustuse vähendamine arvutatakse: 1) 1. jaanuari seisuga; 2) mootorsõiduki Eesti liiklusregistris esmakordse registreerimise seisuga; 3) maksustamisperioodi kestel rahvastikuregistris lapse hooldusõiguse kande tekkimise seisuga.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_15_2"
       },
-      "rdfs:label": "§ 15² lg 1"
+      "rdfs:label": "§ 15² lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Map"
+        },
+        {
+          "@id": "estleg:MSMS_Par_9"
+        },
+        {
+          "@id": "estleg:MSMS_Par_9_Lg_2"
+        }
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_15_2_Lg_2",
@@ -2474,6 +2896,11 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
@@ -2539,13 +2966,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Mootorsõidukimaksu register",
+      "rdfs:label": {
+        "@value": "§ 16. Mootorsõidukimaksu register",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Mootorsõidukimaksu register on maksukorralduse seaduse § 17 lõike 1 alusel asutatud maksukohustuslaste registri alamregister, mille pidamise kord sätestatakse maksukohustuslaste registri põhimääruses. (2) Mootorsõidukimaksu registri eesmärk on töödelda mootorsõidukimaksu haldamiseks vajalikku teavet. (3) Transpordiamet esitab Maksu- ja Tolliametile mootorsõidukimaksu arvutamiseks vajalikud alusandmed käesoleva seaduse §-des 11–15 sätestatud maksumäärade ja -vabastuste arvestamiseks,",
-      "estleg:legalText": "(1) Mootorsõidukimaksu register on maksukorralduse seaduse § 17 lõike 1 alusel asutatud maksukohustuslaste registri alamregister, mille pidamise kord sätestatakse maksukohustuslaste registri põhimääruses. (2) Mootorsõidukimaksu registri eesmärk on töödelda mootorsõidukimaksu haldamiseks vajalikku teavet. (3) Transpordiamet esitab Maksu- ja Tolliametile mootorsõidukimaksu arvutamiseks vajalikud alusandmed käesoleva seaduse §-des 11–15 sätestatud maksumäärade ja -vabastuste arvestamiseks, sealhulgas: mootorsõiduki omaniku ja vastutava kasutaja üldandmed; andmed mootorsõiduki tuvastamiseks; mootorsõiduki tehnilised andmed. (4) Lapse eest mootorsõidukimaksu kohustuse vähendamise arvutamiseks vajalikud andmed, sealhulgas üldandmed ning andmed lapse, vanema ja hooldusõiguse kohta, saab Maksu- ja Tolliamet rahvastikuregistrist.",
+      "estleg:summary": {
+        "@value": "(1) Mootorsõidukimaksu register on maksukorralduse seaduse § 17 lõike 1 alusel asutatud maksukohustuslaste registri alamregister, mille pidamise kord sätestatakse maksukohustuslaste registri põhimääruses. (2) Mootorsõidukimaksu registri eesmärk on töödelda mootorsõidukimaksu haldamiseks vajalikku teavet. (3) Transpordiamet esitab Maksu- ja Tolliametile mootorsõidukimaksu arvutamiseks vajalikud alusandmed käesoleva seaduse §-des 11–15 sätestatud maksumäärade ja -vabastuste arvestamiseks,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Mootorsõidukimaksu register on maksukorralduse seaduse § 17 lõike 1 alusel asutatud maksukohustuslaste registri alamregister, mille pidamise kord sätestatakse maksukohustuslaste registri põhimääruses. (2) Mootorsõidukimaksu registri eesmärk on töödelda mootorsõidukimaksu haldamiseks vajalikku teavet. (3) Transpordiamet esitab Maksu- ja Tolliametile mootorsõidukimaksu arvutamiseks vajalikud alusandmed käesoleva seaduse §-des 11–15 sätestatud maksumäärade ja -vabastuste arvestamiseks, sealhulgas: 1) mootorsõiduki omaniku ja vastutava kasutaja üldandmed; 2) andmed mootorsõiduki tuvastamiseks; 3) mootorsõiduki tehnilised andmed. (4) Lapse eest mootorsõidukimaksu kohustuse vähendamise arvutamiseks vajalikud andmed, sealhulgas üldandmed ning andmed lapse, vanema ja hooldusõiguse kohta, saab Maksu- ja Tolliamet rahvastikuregistrist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSMS_4"
       },
@@ -2574,17 +3007,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:ELMS_Par_7_1"
-        },
-        {
-          "@id": "estleg:HASART_Par_39"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_5_1"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2609,20 +3031,28 @@
           "@id": "estleg:MKS_Par_17_Lg_1"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MSMS_Par_16_v131122024017"
-        },
-        {
-          "@id": "estleg:MSMS_Par_16_v114112025026"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_transpordiamet"
         },
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ELMS_Par_7_1"
+        },
+        {
+          "@id": "estleg:MAAMAK_Par_5_1"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MSMS_Par_16_v131122024017"
+        },
+        {
+          "@id": "estleg:MSMS_Par_16_v114112025026"
         }
       ]
     },
@@ -2664,11 +3094,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Transpordiamet esitab Maksu- ja Tolliametile mootorsõidukimaksu arvutamiseks vajalikud alusandmed käesoleva seaduse §-des 11–15 sätestatud maksumäärade ja -vabastuste arvestamiseks, sealhulgas: mootorsõiduki omaniku ja vastutava kasutaja üldandmed; andmed mootorsõiduki tuvastamiseks; mootorsõiduki tehnilised andmed.",
+      "estleg:legalText": "(3) Transpordiamet esitab Maksu- ja Tolliametile mootorsõidukimaksu arvutamiseks vajalikud alusandmed käesoleva seaduse §-des 11–15 sätestatud maksumäärade ja -vabastuste arvestamiseks, sealhulgas: 1) mootorsõiduki omaniku ja vastutava kasutaja üldandmed; 2) andmed mootorsõiduki tuvastamiseks; 3) mootorsõiduki tehnilised andmed.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_16"
       },
       "rdfs:label": "§ 16 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2701,6 +3136,11 @@
         },
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Reg_1046549_Par_9_Lg_1"
         }
       ]
     },
@@ -2741,13 +3181,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Maksuteate väljastamise erisus",
+      "rdfs:label": {
+        "@value": "§ 17. Maksuteate väljastamise erisus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Kui mootorsõiduk registreeritakse liiklusregistris esmakordselt ajavahemikus 2025. aasta 1.–31. jaanuarini, väljastatakse mootorsõiduki eest tekkinud maksukohustuse kohta maksuteade hiljemalt 2025. aasta 15. veebruaril. (2) 2025. ja 2026. aastal elektrooniliselt kättesaadavaks tehtud maksuteade toimetatakse kätte ka posti teel, kui: maksumaksja seda soovib, välja arvatud juhul, kui talle on maksuteade juba kätte toimetatud; maksuteadet ei ole avatud e-maksuametis 55 tööpäeva jooksul selle",
-      "estleg:legalText": "(1) Kui mootorsõiduk registreeritakse liiklusregistris esmakordselt ajavahemikus 2025. aasta 1.–31. jaanuarini, väljastatakse mootorsõiduki eest tekkinud maksukohustuse kohta maksuteade hiljemalt 2025. aasta 15. veebruaril. (2) 2025. ja 2026. aastal elektrooniliselt kättesaadavaks tehtud maksuteade toimetatakse kätte ka posti teel, kui: maksumaksja seda soovib, välja arvatud juhul, kui talle on maksuteade juba kätte toimetatud; maksuteadet ei ole avatud e-maksuametis 55 tööpäeva jooksul selle kättesaadavaks tegemisest arvates. (3) Kui maksukohustus tekib käesoleva seaduse § 7 lõikes 31 nimetatud juhul ajavahemikul 2025. aasta 1. jaanuarist kuni 30. juunini, väljastatakse maksuteade tagasiulatuvalt alates 2025. aasta 15. juulist. (4) Kui mootorsõiduki kohta tehakse käesoleva seaduse § 71 lõikes 1 nimetatud registrikanne ajavahemikul 2025. aasta 1. jaanuarist kuni 30. novembrini, teeb Maksu- ja Tolliamet selle sõiduki maksustamisperioodi lühendamise otsuse, tunnistab maksuteate kehtetuks ja väljastab uue maksuteate hiljemalt 2025. aasta 14. detsembril.",
+      "estleg:summary": {
+        "@value": "(1) Kui mootorsõiduk registreeritakse liiklusregistris esmakordselt ajavahemikus 2025. aasta 1.–31. jaanuarini, väljastatakse mootorsõiduki eest tekkinud maksukohustuse kohta maksuteade hiljemalt 2025. aasta 15. veebruaril. (2) 2025. ja 2026. aastal elektrooniliselt kättesaadavaks tehtud maksuteade toimetatakse kätte ka posti teel, kui: 1) maksumaksja seda soovib, välja arvatud juhul, kui talle on maksuteade juba kätte toimetatud; 2) maksuteadet ei ole avatud e-maksuametis 55 tööpäeva jooksul",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui mootorsõiduk registreeritakse liiklusregistris esmakordselt ajavahemikus 2025. aasta 1.–31. jaanuarini, väljastatakse mootorsõiduki eest tekkinud maksukohustuse kohta maksuteade hiljemalt 2025. aasta 15. veebruaril. (2) 2025. ja 2026. aastal elektrooniliselt kättesaadavaks tehtud maksuteade toimetatakse kätte ka posti teel, kui: 1) maksumaksja seda soovib, välja arvatud juhul, kui talle on maksuteade juba kätte toimetatud; 2) maksuteadet ei ole avatud e-maksuametis 55 tööpäeva jooksul selle kättesaadavaks tegemisest arvates. (3) Kui maksukohustus tekib käesoleva seaduse § 7 lõikes 3¹ nimetatud juhul ajavahemikul 2025. aasta 1. jaanuarist kuni 30. juunini, väljastatakse maksuteade tagasiulatuvalt alates 2025. aasta 15. juulist. (4) Kui mootorsõiduki kohta tehakse käesoleva seaduse § 7¹ lõikes 1 nimetatud registrikanne ajavahemikul 2025. aasta 1. jaanuarist kuni 30. novembrini, teeb Maksu- ja Tolliamet selle sõiduki maksustamisperioodi lühendamise otsuse, tunnistab maksuteate kehtetuks ja väljastab uue maksuteate hiljemalt 2025. aasta 14. detsembril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MSMS_5"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_MSMS_5_1"
       },
@@ -2777,20 +3226,20 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MSMS_Par_17_v131122024017"
-        },
-        {
-          "@id": "estleg:MSMS_Par_17_v114112025026"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
         },
         {
           "@id": "estleg:Institution_maksuamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MSMS_Par_17_v131122024017"
+        },
+        {
+          "@id": "estleg:MSMS_Par_17_v114112025026"
         }
       ]
     },
@@ -2814,11 +3263,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) 2025. ja 2026. aastal elektrooniliselt kättesaadavaks tehtud maksuteade toimetatakse kätte ka posti teel, kui: maksumaksja seda soovib, välja arvatud juhul, kui talle on maksuteade juba kätte toimetatud; maksuteadet ei ole avatud e-maksuametis 55 tööpäeva jooksul selle kättesaadavaks tegemisest arvates.",
+      "estleg:legalText": "(2) 2025. ja 2026. aastal elektrooniliselt kättesaadavaks tehtud maksuteade toimetatakse kätte ka posti teel, kui: 1) maksumaksja seda soovib, välja arvatud juhul, kui talle on maksuteade juba kätte toimetatud; 2) maksuteadet ei ole avatud e-maksuametis 55 tööpäeva jooksul selle kättesaadavaks tegemisest arvates.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_17"
       },
       "rdfs:label": "§ 17 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2841,14 +3294,14 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kui maksukohustus tekib käesoleva seaduse § 7 lõikes 31 nimetatud juhul ajavahemikul 2025. aasta 1. jaanuarist kuni 30. juunini, väljastatakse maksuteade tagasiulatuvalt alates 2025. aasta 15. juulist.",
+      "estleg:legalText": "(3) Kui maksukohustus tekib käesoleva seaduse § 7 lõikes 3¹ nimetatud juhul ajavahemikul 2025. aasta 1. jaanuarist kuni 30. juunini, väljastatakse maksuteade tagasiulatuvalt alates 2025. aasta 15. juulist.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_17"
       },
       "rdfs:label": "§ 17 lg 3",
       "estleg:references": [
         {
-          "@id": "estleg:MSMS_Par_7"
+          "@id": "estleg:MSMS_Par_7_Lg_3"
         }
       ]
     },
@@ -2859,7 +3312,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kui mootorsõiduki kohta tehakse käesoleva seaduse § 71 lõikes 1 nimetatud registrikanne ajavahemikul 2025. aasta 1. jaanuarist kuni 30. novembrini, teeb Maksu- ja Tolliamet selle sõiduki maksustamisperioodi lühendamise otsuse, tunnistab maksuteate kehtetuks ja väljastab uue maksuteate hiljemalt 2025. aasta 14. detsembril.",
+      "estleg:legalText": "(4) Kui mootorsõiduki kohta tehakse käesoleva seaduse § 7¹ lõikes 1 nimetatud registrikanne ajavahemikul 2025. aasta 1. jaanuarist kuni 30. novembrini, teeb Maksu- ja Tolliamet selle sõiduki maksustamisperioodi lühendamise otsuse, tunnistab maksuteate kehtetuks ja väljastab uue maksuteate hiljemalt 2025. aasta 14. detsembril.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_17"
       },
@@ -2873,6 +3326,11 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:references": [
+        {
+          "@id": "estleg:MSMS_Par_7_1_Lg_1"
+        }
+      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
@@ -2886,13 +3344,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17¹.",
-      "rdfs:label": "§ 17¹. Lapse eest mootorsõidukimaksu kohustuse vähendamise erikord",
+      "rdfs:label": {
+        "@value": "§ 17¹. Lapse eest mootorsõidukimaksu kohustuse vähendamise erikord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "Maksu- ja Tolliamet kontrollib 2025. aastal mootorsõidukimaksu teate saanud isikute õigust saada lapse eest maksukohustuse vähendamist ning tunnistab maksuteate kehtetuks ja vajaduse korral väljastab õigustatud isikule uue maksuteate.",
+      "estleg:summary": {
+        "@value": "Maksu- ja Tolliamet kontrollib 2025. aastal mootorsõidukimaksu teate saanud isikute õigust saada lapse eest maksukohustuse vähendamist ning tunnistab maksuteate kehtetuks ja vajaduse korral väljastab õigustatud isikule uue maksuteate.",
+        "@language": "et"
+      },
       "estleg:legalText": "Maksu- ja Tolliamet kontrollib 2025. aastal mootorsõidukimaksu teate saanud isikute õigust saada lapse eest maksukohustuse vähendamist ning tunnistab maksuteate kehtetuks ja vajaduse korral väljastab õigustatud isikule uue maksuteate.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MSMS_5"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_MSMS_5_1"
       },
@@ -2903,9 +3370,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -2913,17 +3377,17 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MSMS_Par_17_1_v114112025026"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
         }
       ],
-      "estleg:competenceType": "enforcement"
+      "estleg:competenceType": "enforcement",
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MSMS_Par_17_1_v114112025026"
+        }
+      ]
     },
     {
       "@id": "estleg:MSMS_Par_17_1_Lg_1",
@@ -2931,10 +3395,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Maksu- ja Tolliamet kontrollib 2025. aastal mootorsõidukimaksu teate saanud isikute õigust saada lapse eest maksukohustuse vähendamist ning tunnistab maksuteate kehtetuks ja vajaduse korral väljastab õigustatud isikule uue maksuteate.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maksu- ja Tolliamet kontrollib 2025. aastal mootorsõidukimaksu teate saanud isikute õigust saada lapse eest maksukohustuse vähendamist ning tunnistab maksuteate kehtetuks ja vajaduse korral väljastab õigustatud isikule uue maksuteate.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_17_1"
       },
+      "rdfs:label": "§ 17¹ lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2958,13 +3424,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Järelhindamine",
+      "rdfs:label": {
+        "@value": "§ 18. Järelhindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "Rahandusministeerium analüüsib hiljemalt 2030. aastal mootorsõidukimaksu ja liiklusseaduse 123. peatükis sätestatud registreerimistasu rakendamise eesmärgi saavutamist, kaasnenud mõju ja regulatsiooni tulemuslikkust.",
-      "estleg:legalText": "Rahandusministeerium analüüsib hiljemalt 2030. aastal mootorsõidukimaksu ja liiklusseaduse 123. peatükis sätestatud registreerimistasu rakendamise eesmärgi saavutamist, kaasnenud mõju ja regulatsiooni tulemuslikkust.",
+      "estleg:summary": {
+        "@value": "Rahandusministeerium analüüsib hiljemalt 2030. aastal mootorsõidukimaksu ja liiklusseaduse 12³. peatükis sätestatud registreerimistasu rakendamise eesmärgi saavutamist, kaasnenud mõju ja regulatsiooni tulemuslikkust.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Rahandusministeerium analüüsib hiljemalt 2030. aastal mootorsõidukimaksu ja liiklusseaduse 12³. peatükis sätestatud registreerimistasu rakendamise eesmärgi saavutamist, kaasnenud mõju ja regulatsiooni tulemuslikkust.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MSMS_5"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_MSMS_5_1"
       },
@@ -2973,9 +3448,17 @@
           "@id": "estleg:MSMS_Par_18_Lg_1"
         }
       ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_rahandusministeerium"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:SOTSIA_Par_160_1"
+        },
+        {
+          "@id": "estleg:TTKS_Par_72_8"
         },
         {
           "@id": "estleg:toodete_ja_teenuste_ligipaasetavuse_sead_Par_23"
@@ -2985,11 +3468,6 @@
         {
           "@id": "estleg:MSMS_Par_18_v131122024017"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_rahandusministeerium"
-        }
       ]
     },
     {
@@ -2998,10 +3476,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahandusministeerium analüüsib hiljemalt 2030. aastal mootorsõidukimaksu ja liiklusseaduse 123. peatükis sätestatud registreerimistasu rakendamise eesmärgi saavutamist, kaasnenud mõju ja regulatsiooni tulemuslikkust.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahandusministeerium analüüsib hiljemalt 2030. aastal mootorsõidukimaksu ja liiklusseaduse 12³. peatükis sätestatud registreerimistasu rakendamise eesmärgi saavutamist, kaasnenud mõju ja regulatsiooni tulemuslikkust.",
       "estleg:parentProvision": {
         "@id": "estleg:MSMS_Par_18"
       },
+      "rdfs:label": "§ 18 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_rahandusministeerium"
@@ -3015,15 +3495,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19.",
+      "rdfs:label": {
+        "@value": "§ 19. [–]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
+      "estleg:summary": "§ 19.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MSMS_5"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_MSMS_5_2"
       },
-      "estleg:summary": "§ 19."
+      "estleg:provisionOmitted": true
     },
     {
       "@id": "estleg:MSMS_Par_24",
@@ -3032,17 +3519,29 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 24. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MSMS_5"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_MSMS_5_2"
       },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSMS_Map"
+        },
         {
           "@id": "estleg:MSMS_Par_25"
         },
@@ -3063,13 +3562,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 25. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mootorsõidukimaksu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSMS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus jõustub 2025. aasta 1. jaanuaril. (2) Käesoleva seaduse § 22 punktid 1–10 jõustuvad 2025. aasta 1. juunil. (3) Käesoleva seaduse § 24 punktid 1–4, 8, 11 ja 12 jõustuvad 2025. aasta 1. septembril. (4) Käesoleva seaduse § 22 punkt 12 jõustub 2026. aasta 1. jaanuaril. (5) Käesoleva seaduse § 3 punkt 2 jõustub 2027. aasta 1. jaanuaril. (6) Käesoleva seaduse § 20 punktid 7, 9, 11 ja 13 jõustuvad 2028. aasta 1. jaanuaril. (7) Käesoleva seaduse § 20 punktid 8, 10, 12 ja 14",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus jõustub 2025. aasta 1. jaanuaril. (2) Käesoleva seaduse § 22 punktid 1–10 jõustuvad 2025. aasta 1. juunil. (3) Käesoleva seaduse § 24 punktid 1–4, 8, 11 ja 12 jõustuvad 2025. aasta 1. septembril. (4) Käesoleva seaduse § 22 punkt 12 jõustub 2026. aasta 1. jaanuaril. (5) Käesoleva seaduse § 3 punkt 2 jõustub 2027. aasta 1. jaanuaril. (6) Käesoleva seaduse § 20 punktid 7, 9, 11 ja 13 jõustuvad 2028. aasta 1. jaanuaril. (7) Käesoleva seaduse § 20 punktid 8, 10, 12 ja 14",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus jõustub 2025. aasta 1. jaanuaril. (2) Käesoleva seaduse § 22 punktid 1–10 jõustuvad 2025. aasta 1. juunil. (3) Käesoleva seaduse § 24 punktid 1–4, 8, 11 ja 12 jõustuvad 2025. aasta 1. septembril. (4) Käesoleva seaduse § 22 punkt 12 jõustub 2026. aasta 1. jaanuaril. (5) Käesoleva seaduse § 3 punkt 2 jõustub 2027. aasta 1. jaanuaril. (6) Käesoleva seaduse § 20 punktid 7, 9, 11 ja 13 jõustuvad 2028. aasta 1. jaanuaril. (7) Käesoleva seaduse § 20 punktid 8, 10, 12 ja 14 jõustuvad 2031. aasta 1. jaanuaril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MSMS_5"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_MSMS_5_3"
       },
@@ -3218,62 +3726,23 @@
       "estleg:itemNumber": "8"
     },
     {
-      "@id": "estleg:Citation_MSMS_P_9_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/506012026004",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:MSMS_Par_9"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationText": "käesoleva seaduse § 152 lõike 1"
+      "eli:realizes": {
+        "@id": "estleg:MSMS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Motor Vehicle Tax Act",
+        "@language": "en"
+      }
     },
     {
-      "@id": "estleg:Citation_MSMS_P_9_Lg_2_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MSMS_Par_9_Lg_2"
-      },
-      "estleg:citationText": "käesoleva seaduse § 152 lõike 1"
-    },
-    {
-      "@id": "estleg:Citation_MSMS_P_10_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MSMS_Par_10"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 71"
-    },
-    {
-      "@id": "estleg:Citation_MSMS_P_10_Lg_1_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MSMS_Par_10_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 71"
-    },
-    {
-      "@id": "estleg:Citation_MSMS_P_17_Lg_4_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MSMS_Par_17_Lg_4"
-      },
-      "estleg:citationText": "käesoleva seaduse § 71 lõikes 1"
-    },
-    {
-      "@id": "estleg:Citation_MSMS_P_25_6",
+      "@id": "estleg:Citation_MSMS_P_25_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -3284,7 +3753,7 @@
       "estleg:citationText": "Käesoleva seaduse § 22"
     },
     {
-      "@id": "estleg:Citation_MSMS_P_25_7",
+      "@id": "estleg:Citation_MSMS_P_25_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -3295,7 +3764,7 @@
       "estleg:citationText": "Käesoleva seaduse § 22"
     },
     {
-      "@id": "estleg:Citation_MSMS_P_25_8",
+      "@id": "estleg:Citation_MSMS_P_25_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -3306,7 +3775,7 @@
       "estleg:citationText": "Käesoleva seaduse § 20"
     },
     {
-      "@id": "estleg:Citation_MSMS_P_25_9",
+      "@id": "estleg:Citation_MSMS_P_25_4",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -3317,7 +3786,7 @@
       "estleg:citationText": "Käesoleva seaduse § 20"
     },
     {
-      "@id": "estleg:Citation_MSMS_P_25_Lg_2_10",
+      "@id": "estleg:Citation_MSMS_P_25_Lg_2_5",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -3328,7 +3797,7 @@
       "estleg:citationText": "Käesoleva seaduse § 22"
     },
     {
-      "@id": "estleg:Citation_MSMS_P_25_Lg_4_11",
+      "@id": "estleg:Citation_MSMS_P_25_Lg_4_6",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -3339,7 +3808,7 @@
       "estleg:citationText": "Käesoleva seaduse § 22"
     },
     {
-      "@id": "estleg:Citation_MSMS_P_25_Lg_6_12",
+      "@id": "estleg:Citation_MSMS_P_25_Lg_6_7",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"
@@ -3350,7 +3819,7 @@
       "estleg:citationText": "Käesoleva seaduse § 20"
     },
     {
-      "@id": "estleg:Citation_MSMS_P_25_Lg_7_13",
+      "@id": "estleg:Citation_MSMS_P_25_Lg_7_8",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Citation"

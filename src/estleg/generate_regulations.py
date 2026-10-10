@@ -43,6 +43,12 @@ from estleg.law_structure import (
     paragraph_display,
 )
 from estleg import riigiteataja_common
+from estleg.ingest_overlay import (
+    IngestLayer,
+    add_replace_overlays_argument,
+    log_replace_overlays_mode,
+    prepare_write,
+)
 from estleg.riigiteataja_common import (
     BASE_URL,
     CONTEXT,
@@ -324,6 +330,94 @@ def html_paragraph_id_suffix(nr: str) -> str:
     return base
 
 
+_SUP_GLYPH_DIGITS = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")
+_SUP_GLYPH_RUN_RE = re.compile(r"[⁰¹²³⁴⁵⁶⁷⁸⁹]+")
+_SUP_TAG_RE = re.compile(r"<sup>\s*([^<]*?)\s*</sup>", re.IGNORECASE)
+_PRIME_SUP_RE = re.compile(r"(?<=\d)\s*[′'·]\s*(?=\d)")
+
+
+def provision_display_key(display: str) -> str:
+    """Normalise an ``estleg:paragrahv`` display for IRI pinning.
+
+    ``§ 10¹.`` (pre-#694 glyphs), ``§ 10<sup>1</sup>.`` (#694 markup) and
+    ``§ 10′1`` (HTMLKonteiner prime) all map to ``§10^1``.
+    """
+    s = _SUP_TAG_RE.sub(lambda m: "^" + m.group(1), display or "")
+    s = _SUP_GLYPH_RUN_RE.sub(lambda m: "^" + m.group(0).translate(_SUP_GLYPH_DIGITS), s)
+    s = _PRIME_SUP_RE.sub("^", s)
+    return re.sub(r"\s+", "", s).rstrip(".").lower()
+
+
+class ProvisionIriPins:
+    """Committed provision IRI suffixes for one act, keyed by display.
+
+    The legacy scheme's collision suffix is positional (``_{len(seen_ids)}``),
+    so when RT inserts § 9¹ into an act, the committed § 10¹ moves from
+    ``Par_10_11`` to ``Par_10_12``. A position can even be handed to a
+    different provision. ``--iri-scheme auto`` promises that a refresh never
+    renames a published IRI, so for an act with a committed peep each
+    provision reuses the suffix that the committed peep gave the same
+    display (n-th occurrence for repeated displays). A provision new to the
+    act keeps its minted suffix unless a committed provision owns it; then
+    it gets ``<minted>_<k>``, the first free ``k >= 2``.
+    """
+
+    def __init__(self, pins: dict[tuple[str, int], str]):
+        self._pins = dict(pins)
+        self._reserved = set(self._pins.values())
+        self._occurrences: Counter[str] = Counter()
+        self._used: set[str] = set()
+
+    @classmethod
+    def from_doc(cls, doc: dict, prefix: str) -> ProvisionIriPins:
+        head = f"estleg:{prefix}_Par_"
+        pins: dict[tuple[str, int], str] = {}
+        seen: Counter[str] = Counter()
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            node_id = node.get("@id")
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if (
+                not isinstance(node_id, str)
+                or not node_id.startswith(head)
+                or "estleg:LegalProvision" not in types
+            ):
+                continue
+            display = node.get("estleg:paragrahv")
+            if not isinstance(display, str):
+                continue
+            key = provision_display_key(display)
+            pins[(key, seen[key])] = node_id[len(head):]
+            seen[key] += 1
+        return cls(pins)
+
+    @classmethod
+    def from_path(cls, path: Path, prefix: str) -> ProvisionIriPins | None:
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return None
+        return cls.from_doc(doc, prefix) if isinstance(doc, dict) else None
+
+    def resolve(self, display: str, minted: str) -> str:
+        key = provision_display_key(display)
+        occurrence = self._occurrences[key]
+        self._occurrences[key] += 1
+        pinned = self._pins.get((key, occurrence))
+        if pinned is not None and pinned not in self._used:
+            self._used.add(pinned)
+            return pinned
+        candidate, k = minted, 2
+        while candidate in self._reserved or candidate in self._used:
+            candidate, k = f"{minted}_{k}", k + 1
+        self._used.add(candidate)
+        return candidate
+
+
 def collect_structured_paragraphs(
     root: ET.Element,
     prefix: str,
@@ -333,6 +427,7 @@ def collect_structured_paragraphs(
     *,
     iri_scheme: str = IRI_SCHEME_LAW,
     with_subsections: bool = True,
+    pins: ProvisionIriPins | None = None,
 ) -> list[dict]:
     """Build provision nodes from `<paragrahv>` elements (modern XML).
 
@@ -361,6 +456,8 @@ def collect_structured_paragraphs(
             )
         else:
             par_suffix = _legacy_paragraph_suffix(nr, seen_ids, prefix)
+        if pins is not None:
+            par_suffix = pins.resolve(display, par_suffix)
         p_id = f"estleg:{prefix}_Par_{par_suffix}"
 
         if ptitle:
@@ -419,6 +516,7 @@ def collect_html_paragraphs(
     act_iri: str,
     *,
     iri_scheme: str = IRI_SCHEME_LAW,
+    pins: ProvisionIriPins | None = None,
 ) -> tuple[str, list[dict]]:
     """Build provision nodes from the legacy HTMLKonteiner CDATA body.
 
@@ -453,6 +551,8 @@ def collect_html_paragraphs(
             )
         else:
             par_suffix = _legacy_paragraph_suffix(nr, seen_ids, prefix)
+        if pins is not None:
+            par_suffix = pins.resolve(display, par_suffix)
         p_id = f"estleg:{prefix}_Par_{par_suffix}"
 
         if ptitle:
@@ -617,6 +717,7 @@ def build_regulation_jsonld(
     temporal_status: str | None = None,
     evaluation_date: str | None = None,
     iri_scheme: str = IRI_SCHEME_LAW,
+    pins: ProvisionIriPins | None = None,
 ) -> tuple[dict, dict[str, int]]:
     """Generate the JSON-LD document for one regulation.
 
@@ -629,7 +730,8 @@ def build_regulation_jsonld(
     ``--regen-state`` re-runs) compare it against the current run.
 
     ``iri_scheme`` selects provision IRI minting (``IRI_SCHEMES``); the
-    default is the law scheme. Structured acts also get one
+    default is the law scheme. ``pins`` (optional) keeps the provision IRIs
+    of the act's committed peep (see :class:`ProvisionIriPins`). Structured acts also get one
     ``estleg:Subsection`` per lõige (``law_structure.build_subsections``).
 
     ``temporal_status`` (optional) is the already-derived
@@ -686,14 +788,14 @@ def build_regulation_jsonld(
         # Provisions: try structured first, fall back to HTMLKonteiner
         provisions = collect_structured_paragraphs(
             root, prefix, title, provision_type, ontology_id,
-            iri_scheme=iri_scheme,
+            iri_scheme=iri_scheme, pins=pins,
         )
         parse_mode = "structured"
         preamble_html = ""
         if not provisions:
             preamble_html, provisions = collect_html_paragraphs(
                 root, prefix, title, provision_type, ontology_id,
-                iri_scheme=iri_scheme,
+                iri_scheme=iri_scheme, pins=pins,
             )
             parse_mode = "html_fallback" if provisions else "no_paragraphs"
 
@@ -1090,12 +1192,75 @@ def existing_is_stale(
     return False
 
 
+# #697: what the regulation ingest owns. Keys read from the RT XML; enrichers
+# (EuroVoc, deontic, targetGroup, KOV layer-1, amendment / staleness passes,
+# similarity …) own every other key and are preserved on rewrite.
+# The act temporal keys are raw too: extract_temporal_data clears and
+# re-derives exactly this set from the same RT XML, so a refreshed XML
+# invalidates them. Keeping them would leave e.g. a stale
+# ``temporalStatus: "repealed"`` on an act the new XML shows in force (#374).
+REGULATION_INGEST_LAYER = IngestLayer(
+    name="generate_regulations",
+    raw_keys=frozenset(
+        {
+            # act root
+            "rdfs:label",
+            "dc:source",
+            "dcterms:source",
+            "dcterms:title",
+            "estleg:actNumber",
+            "estleg:documentType",
+            "estleg:globalId",
+            "estleg:hasAnnex",
+            "estleg:isKov",
+            "estleg:issuer",
+            "estleg:kehtiv",
+            "estleg:parseMode",
+            "estleg:preambleText",
+            "estleg:terviktekstId",
+            "estleg:contentStatus",
+            "estleg:contentStatusReason",
+            # act temporal keys (= extract_temporal_data.TEMPORAL_KEYS_TO_CLEAR)
+            "estleg:entryIntoForce",
+            "estleg:repealDate",
+            "estleg:lastAmendmentDate",
+            "estleg:publicationDate",
+            "estleg:publicationYear",
+            "estleg:temporalStatus",
+            "estleg:adoptionDate",
+            # provisions / subsections / annexes
+            "estleg:paragrahv",
+            "estleg:sourceAct",
+            "estleg:partOfAct",
+            "estleg:summary",
+            "estleg:legalText",
+            "estleg:hasSubsection",
+            "estleg:subsectionNumber",
+            "estleg:itemNumber",
+            "estleg:parentProvision",
+            "estleg:annexNumber",
+        }
+    ),
+    raw_node_types=frozenset(
+        {
+            "estleg:Act",
+            "estleg:LegalProvision",
+            "estleg:Subsection",
+            "estleg:Annex",
+        }
+    ),
+    # backfill_kov_regulation_typing / enrich_kov_layer1 add these.
+    overlay_types=frozenset({"estleg:KovProvision"}),
+)
+
+
 def write_regulation_output(
     out_path: Path,
     doc: dict,
     *,
     mode: str,
     expected_kehtiv: str | None = None,
+    replace_overlays: bool = False,
 ) -> str:
     """Write one regulation artifact and return a run-stat status key.
 
@@ -1103,6 +1268,10 @@ def write_regulation_output(
     missing-only mode: when the on-disk file's stored kehtiv or
     terviktekstId differs from the current run, the output is
     refreshed in place rather than skipped silently.
+
+    #697: an existing peep's enrichment overlay (every key / node not owned
+    by :data:`REGULATION_INGEST_LAYER`) is merged onto ``doc`` before it is
+    compared or written. ``replace_overlays=True`` writes ``doc`` as-is.
     """
     if mode not in GENERATION_MODES:
         raise ValueError(f"Unsupported generation mode: {mode}")
@@ -1119,9 +1288,12 @@ def write_regulation_output(
             expected_tid=new_tid if new_tid else None,
             expected_kehtiv=expected_kehtiv,
         ):
+            doc = _with_existing_overlay(out_path, doc, replace_overlays=replace_overlays)
             save_json(out_path, doc)
             return "refreshedStale"
         return "existingSkipped"
+    if existed:
+        doc = _with_existing_overlay(out_path, doc, replace_overlays=replace_overlays)
     if existed and mode == "refresh" and existing_doc_matches(out_path, doc):
         return "unchanged"
 
@@ -1131,6 +1303,15 @@ def write_regulation_output(
     if mode == "force":
         return "forceRewritten"
     return "refreshed"
+
+
+def _with_existing_overlay(out_path: Path, doc: dict, *, replace_overlays: bool) -> dict:
+    if not out_path.exists():
+        return doc
+    merged, _report = prepare_write(
+        out_path, doc, REGULATION_INGEST_LAYER, replace_overlays=replace_overlays
+    )
+    return merged
 
 
 def regulation_file_tid(
@@ -1721,17 +1902,29 @@ def existing_regulation_schemes(out_dir: Path) -> dict[str, str]:
     return schemes
 
 
-def existing_regulation_tids(out_dir: Path) -> set[str]:
-    """terviktekstIds that already have a committed peep, read from the
-    ``*_t<tid>_peep.json`` filename (no JSON parse). Drives
-    ``--iri-scheme auto``: those acts keep their published legacy IRIs even
-    when the title (hence the slug/filename) changed."""
-    tids: set[str] = set()
+def existing_regulation_paths(out_dir: Path) -> dict[str, Path]:
+    """Map each terviktekstId that already has a committed peep to that
+    peep's path, read from the ``*_t<tid>_peep.json`` filename (no JSON
+    parse). The first path in sorted order wins if a tid appears twice.
+
+    A refresh writes an act back to this path rather than to
+    ``make_filename``'s current spelling. Otherwise a slug change (an RT
+    title edit, or the #346 ``slugify`` fix that dropped the trailing ``_``
+    before ``_t<tid>`` on 546 committed filenames) writes a second peep for
+    the same act and strands the old one, both carrying the same IRIs."""
+    paths: dict[str, Path] = {}
     for path in regulation_files(out_dir):
         m = _TID_FROM_FILENAME_RE.search(path.name)
         if m:
-            tids.add(m.group(1))
-    return tids
+            paths.setdefault(m.group(1), path)
+    return paths
+
+
+def existing_regulation_tids(out_dir: Path) -> set[str]:
+    """terviktekstIds that already have a committed peep. Drives
+    ``--iri-scheme auto``: those acts keep their published legacy IRIs even
+    when the title (hence the slug/filename) changed."""
+    return set(existing_regulation_paths(out_dir))
 
 
 def resolve_iri_scheme(requested: str, *, has_committed_peep: bool, existing_scheme: str | None = None) -> str:
@@ -1822,7 +2015,9 @@ def main():
         action="store_true",
         help="Allow a source-list fetch failure to produce a visibly partial exploratory run.",
     )
+    add_replace_overlays_argument(parser)
     args = parser.parse_args()
+    log_replace_overlays_mode(REGULATION_INGEST_LAYER, args.replace_overlays)
 
     if args.workers < 1:
         parser.error("--workers must be >= 1")
@@ -1913,7 +2108,8 @@ def main():
     # missing-only-skip path). Threaded into the index builder so it
     # doesn't re-read every file we just wrote.
     built_docs: dict[Path, dict] = {}
-    committed_tids = existing_regulation_tids(out_dir)
+    committed_paths = existing_regulation_paths(out_dir)
+    committed_tids = set(committed_paths)
     existing_schemes = existing_regulation_schemes(out_dir) if args.iri_scheme == IRI_SCHEME_AUTO else {}
 
     # Plan serially (cheap, deterministic), fetch through the bounded pool,
@@ -1923,7 +2119,9 @@ def main():
     for i, (tid, info) in enumerate(ordered, 1):
         title = info["pealkiri"]
         issuer = info.get("valjaandja", "")
-        out_path, _slug = make_filename(title, tid, is_kov, issuer)
+        out_path = committed_paths.get(tid)
+        if out_path is None:
+            out_path, _slug = make_filename(title, tid, is_kov, issuer)
 
         if tid in resume_tids and out_path.exists():
             run_counts["regenStateSkipped"] += 1
@@ -1984,9 +2182,17 @@ def main():
                 )
             else:
                 try:
+                    # Pin the committed peep's provision IRIs (legacy scheme
+                    # = act already published), so a redaction that inserts
+                    # a § cannot shift a positional suffix.
+                    pins = (
+                        ProvisionIriPins.from_path(out_path, f"Reg_{tid}")
+                        if task["iri_scheme"] == IRI_SCHEME_LEGACY and out_path.exists()
+                        else None
+                    )
                     doc, stats = build_regulation_jsonld(
                         title, info, root, is_kov=is_kov, kehtiv=args.kehtiv,
-                        iri_scheme=task["iri_scheme"],
+                        iri_scheme=task["iri_scheme"], pins=pins,
                     )
                 except Exception as e:
                     print(f"    FAIL: {e}")
@@ -1998,7 +2204,8 @@ def main():
                     )
                 else:
                     status = write_regulation_output(
-                        out_path, doc, mode=mode, expected_kehtiv=args.kehtiv
+                        out_path, doc, mode=mode, expected_kehtiv=args.kehtiv,
+                        replace_overlays=args.replace_overlays,
                     )
                     run_counts[status] += 1
                     scheme_counts[task["iri_scheme"]] += 1

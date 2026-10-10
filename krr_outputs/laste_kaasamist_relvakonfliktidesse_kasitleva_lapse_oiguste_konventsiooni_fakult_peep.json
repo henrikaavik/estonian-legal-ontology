@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:LKRKLOKFR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli ratifitseerimise seadus",
       "dcterms:title": "Laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/208012014001.xml"
+        "@id": "https://www.riigiteataja.ee/akt/208012014001"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/208012014001/xml"
+      },
+      "estleg:globalId": "208012014001",
+      "eli:id_local": "208012014001",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "1020686",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "b65f406eb2170081719c12ba398837824119f7aa9be8517bc1c6d63393ece7f7",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2014-01-18",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -51,6 +63,15 @@
           "@id": "http://eurovoc.europa.eu/3474"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2014-01-18",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2014-01-08",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_SOM12_1379"
@@ -58,19 +79,11 @@
         {
           "@id": "estleg:Draft_VM13_0690"
         }
-      ]
-    },
-    {
-      "@id": "estleg:LKRKLOKFR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_LKRKLOKFR_default"
-        }
-      ]
+      "estleg:lastAmendmentDate": {
+        "@value": "2014-01-18",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_LKRKLOKFR_default",
@@ -79,12 +92,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:LKRKLOKFR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:LKRKLOKFR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_LKRKLOKFR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:LKRKLOKFR_Par_1",
@@ -93,22 +127,28 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud , mis on vastu võetud Ühinenud Rahvaste Organisatsi...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud laste kaasamist relvakonfliktidesse käsitlev lapse...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:LKRKLOKFR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on vastu võetud Ühinenud Rahvaste Organisatsiooni Peaassamblee 2000. aasta 25. mai resolutsiooniga A/RES/54/263 ja millele Eesti Vabariik kirjutas alla 2003. aasta 24. septembril.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud Ühinenud Rahvaste Organisatsiooni Peaassamblee 2000. aasta 25. mai resolutsiooniga A/RES/54/263 ja millele Eesti Vabariik kirjutas alla 2003. aasta 24. septembril.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud laste kaasamist relvakonfliktidesse käsitlev lapse õiguste konventsiooni fakultatiivprotokoll , mis on vastu võetud Ühinenud Rahvaste Organisatsiooni Peaassamblee 2000. aasta 25. mai resolutsiooniga A/RES/54/263 ja millele Eesti Vabariik kirjutas alla 2003. aasta 24. septembril.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud laste kaasamist relvakonfliktidesse käsitlev lapse õiguste konventsiooni fakultatiivprotokoll , mis on vastu võetud Ühinenud Rahvaste Organisatsiooni Peaassamblee 2000. aasta 25. mai resolutsiooniga A/RES/54/263 ja millele Eesti Vabariik kirjutas alla 2003. aasta 24. septembril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_LKRKLOKFR_default"
       },
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:PVKR_Par_1"
+          "@id": "estleg:TRTRKR_Par_1"
         },
         {
-          "@id": "estleg:TRTRKR_Par_1"
+          "@id": "estleg:kaebemenetlust_kasitleva_lapse_oiguste_k_Par_1"
         },
         {
           "@id": "estleg:puuetega_inimeste_oiguste_konventsiooni_Par_1"
@@ -133,12 +173,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Vastavalt laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsio...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Vastavalt laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsio...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:LKRKLOKFR_Map"
       },
-      "estleg:summary": "Vastavalt laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli artikli 3 lõikele 2 deklareerib Eesti Vabariik, et vanuse alampiir isikute vabatahtlikul värbamisel riiklikesse relvajõududesse on 18 eluaastat.",
+      "estleg:summary": {
+        "@value": "Vastavalt laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli artikli 3 lõikele 2 deklareerib Eesti Vabariik, et vanuse alampiir isikute vabatahtlikul värbamisel riiklikesse relvajõududesse on 18 eluaastat.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vastavalt laste kaasamist relvakonfliktidesse käsitleva lapse õiguste konventsiooni fakultatiivprotokolli artikli 3 lõikele 2 deklareerib Eesti Vabariik, et vanuse alampiir isikute vabatahtlikul värbamisel riiklikesse relvajõududesse on 18 eluaastat.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_LKRKLOKFR_default"

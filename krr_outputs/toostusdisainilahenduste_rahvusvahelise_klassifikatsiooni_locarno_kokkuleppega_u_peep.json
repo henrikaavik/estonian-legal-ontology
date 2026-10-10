@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:TRKLKU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus",
       "dcterms:title": "Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/25128.xml"
+        "@id": "https://www.riigiteataja.ee/akt/25128"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/25128/xml"
+      },
+      "estleg:globalId": "25128",
+      "eli:id_local": "25128",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "151861",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "c39defde8578b73054ef45f36ab5090bea8e40c630a2626da24360cfe32ae492",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -50,19 +62,20 @@
         {
           "@id": "http://eurovoc.europa.eu/2817"
         }
-      ]
-    },
-    {
-      "@id": "estleg:TRKLKU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_TRKLKU_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1996-07-05",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_TRKLKU_default",
@@ -71,12 +84,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus",
-      "skos:prefLabel": "§1–2 Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus",
+      "rdfs:label": {
+        "@value": "§1–2 Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TRKLKU_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:TRKLKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_TRKLKU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:TRKLKU_Par_1",
@@ -85,13 +119,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud tööstusdisainilahenduste rahvusvahelise klassifikatsiooni...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud tööstusdisainilahenduste rahvusvahelise klassifikatsiooni...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TRKLKU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on alla kirjutatud 1968. aasta 8. oktoobril ning parandatud 1979. aasta 28. septembril Locarnos.",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on alla kirjutatud 1968. aasta 8. oktoobril ning parandatud 1979. aasta 28. septembril Locarnos.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega , mis on alla kirjutatud 1968. aasta 8. oktoobril ning parandatud 1979. aasta 28. septembril Locarnos.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega , mis on alla kirjutatud 1968. aasta 8. oktoobril ning parandatud 1979. aasta 28. septembril Locarnos.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TRKLKU_default"
       },
@@ -101,12 +141,6 @@
         }
       ],
       "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:EVVBKVTTVMHT_Par_1"
-        },
-        {
-          "@id": "estleg:EVVTKVTTVMHT_Par_1"
-        },
         {
           "@id": "estleg:MRKKTRKNKU_Par_1"
         },
@@ -129,10 +163,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on alla kirjutatud 1968. aasta 8. oktoobril ning parandatud 1979. aasta 28. septembril Locarnos.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega , mis on alla kirjutatud 1968. aasta 8. oktoobril ning parandatud 1979. aasta 28. septembril Locarnos.",
       "estleg:parentProvision": {
         "@id": "estleg:TRKLKU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:TRKLKU_Par_2",
@@ -141,12 +177,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ühineda käesoleva seaduse paragrahvis 1 nimetatud kokkuleppe alusel moodustatud...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ühineda käesoleva seaduse paragrahvis 1 nimetatud kokkuleppe alusel moodustatud...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tööstusdisainilahenduste rahvusvahelise klassifikatsiooni Locarno kokkuleppega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TRKLKU_Map"
       },
-      "estleg:summary": "Ühineda käesoleva seaduse paragrahvis 1 nimetatud kokkuleppe alusel moodustatud Tööstusdisainilahenduste Rahvusvahelise Klassifikatsiooni Spetsiaalse Liiduga (Locarno Liit).",
+      "estleg:summary": {
+        "@value": "Ühineda käesoleva seaduse paragrahvis 1 nimetatud kokkuleppe alusel moodustatud Tööstusdisainilahenduste Rahvusvahelise Klassifikatsiooni Spetsiaalse Liiduga (Locarno Liit).",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühineda käesoleva seaduse paragrahvis 1 nimetatud kokkuleppe alusel moodustatud Tööstusdisainilahenduste Rahvusvahelise Klassifikatsiooni Spetsiaalse Liiduga (Locarno Liit).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TRKLKU_default"
@@ -161,16 +203,10 @@
           "@id": "estleg:MRKKTRKNKU_Par_2"
         },
         {
-          "@id": "estleg:PPR_Par_2"
-        },
-        {
           "@id": "estleg:RPSIKU_Par_2"
         },
         {
           "@id": "estleg:mikroorganismide_patendiekspertiisiks_de_Par_2"
-        },
-        {
-          "@id": "estleg:rahvusvahelise_uute_taimesortide_kaitse_Par_2"
         }
       ],
       "estleg:hasVersion": [
@@ -185,10 +221,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda käesoleva seaduse paragrahvis 1 nimetatud kokkuleppe alusel moodustatud Tööstusdisainilahenduste Rahvusvahelise Klassifikatsiooni Spetsiaalse Liiduga (Locarno Liit).",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda käesoleva seaduse paragrahvis 1 nimetatud kokkuleppe alusel moodustatud Tööstusdisainilahenduste Rahvusvahelise Klassifikatsiooni Spetsiaalse Liiduga (Locarno Liit).",
       "estleg:parentProvision": {
         "@id": "estleg:TRKLKU_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Toorsuhkru meritsi veo hügieeninõuded (määrus)",
+      "rdfs:label": {
+        "@value": "Toorsuhkru meritsi veo hügieeninõuded (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Toorsuhkru meritsi veo hügieeninõuded",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,15 +39,17 @@
       "estleg:globalId": "124042015010",
       "estleg:terviktekstId": "1029305",
       "estleg:preambleText": "Määrus kehtestatakse toiduseaduse § 26 lõike 3 alusel.",
-      "estleg:entryIntoForce": {
-        "@value": "2015-04-27",
+      "dcterms:title": "Toorsuhkru meritsi veo hügieeninõuded",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2015-04-24",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
+      "estleg:transposesDirectiveAsserted": [
+        {
+          "@id": "estleg:EU_31998L0028"
+        }
+      ],
       "estleg:issuedUnder": [
         {
           "@id": "estleg:ToiduS_Map"
@@ -51,6 +60,10 @@
           "@id": "estleg:Citation_Reg_1029305_Map_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/525"
@@ -60,7 +73,16 @@
         {
           "@id": "http://eurovoc.europa.eu/525"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2015-04-27",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2015-04-24",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1029305_Par_1",
@@ -69,18 +91,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Toorsuhkru meritsi veo hügieeninõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1029305_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse toorsuhkru, mida kavatsetakse pärast täielikku rafineerimist kasutada toiduks või toidu koostisosaks, mahtlastina meritsi veo nõuded erandina Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 852/2004 toiduainete hügieeni kohta (ELT L 139, 30.04.2004, lk 1–54) II lisa IV peatüki lõikes 4 sätestatud nõuetest vedelate, granuleeritud või pulbriliste toiduainete veo kohta.",
-      "estleg:legalText": "Määrusega kehtestatakse toorsuhkru, mida kavatsetakse pärast täielikku rafineerimist kasutada toiduks või toidu koostisosaks, mahtlastina meritsi veo nõuded erandina Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 852/2004 toiduainete hügieeni kohta (ELT L 139, 30.04.2004, lk 1–54) II lisa IV peatüki lõikes 4 sätestatud nõuetest vedelate, granuleeritud või pulbriliste toiduainete veo kohta. Määrusega kehtestatakse toorsuhkru, mida kavatsetakse pärast täielikku rafineerimist kasutada toiduks või toidu koostisosaks, mahtlastina meritsi veo nõuded erandina Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 852/2004 toiduainete hügieeni kohta (ELT L 139, 30.04.2004, lk 1–54) II lisa IV peatüki lõikes 4 sätestatud nõuetest vedelate, granuleeritud või pulbriliste toiduainete veo kohta.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse toorsuhkru, mida kavatsetakse pärast täielikku rafineerimist kasutada toiduks või toidu koostisosaks, mahtlastina meritsi veo nõuded erandina Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 852/2004 toiduainete hügieeni kohta (ELT L 139, 30.04.2004, lk 1–54) II lisa IV peatüki lõikes 4 sätestatud nõuetest vedelate, granuleeritud või pulbriliste toiduainete veo kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse toorsuhkru, mida kavatsetakse pärast täielikku rafineerimist kasutada toiduks või toidu koostisosaks, mahtlastina meritsi veo nõuded erandina Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 852/2004 toiduainete hügieeni kohta (ELT L 139, 30.04.2004, lk 1–54) II lisa IV peatüki lõikes 4 sätestatud nõuetest vedelate, granuleeritud või pulbriliste toiduainete veo kohta.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1029305_Par_1_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1029305_Par_1_v1029305"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1029305_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse toorsuhkru, mida kavatsetakse pärast täielikku rafineerimist kasutada toiduks või toidu koostisosaks, mahtlastina meritsi veo nõuded erandina Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 852/2004 toiduainete hügieeni kohta (ELT L 139, 30.04.2004, lk 1–54) II lisa IV peatüki lõikes 4 sätestatud nõuetest vedelate, granuleeritud või pulbriliste toiduainete veo kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029305_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1029305_Par_2",
@@ -89,24 +135,47 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Toorsuhkru mahtlastina meritsi veo hügieeninõuded",
+      "rdfs:label": {
+        "@value": "§ 2. Toorsuhkru mahtlastina meritsi veo hügieeninõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Toorsuhkru meritsi veo hügieeninõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1029305_Map"
       },
-      "estleg:summary": "1 (1) Toorsuhkrut võib vedada mahtlastina merelaeva mahutis, konteineris või tankeris (edaspidi mahuti), mis ei ole ette nähtud üksnes toidu veoks, kui mahuti puhastatakse enne toorsuhkru laadimist eelmise veose jääkidest või muust saastest ja kontrollitakse puhastamise tõhusust ning kui mahutis on vahetult enne toorsuhkrut veetud mittevedelat veost. Toorsuhkrut võib vedada mahtlastina merelaeva mahutis, konteineris või tankeris (edaspidi mahuti), mis ei ole ette nähtud üksnes toidu veoks, kui m",
-      "estleg:legalText": "1 (1) Toorsuhkrut võib vedada mahtlastina merelaeva mahutis, konteineris või tankeris (edaspidi mahuti), mis ei ole ette nähtud üksnes toidu veoks, kui mahuti puhastatakse enne toorsuhkru laadimist eelmise veose jääkidest või muust saastest ja kontrollitakse puhastamise tõhusust ning kui mahutis on vahetult enne toorsuhkrut veetud mittevedelat veost. Toorsuhkrut võib vedada mahtlastina merelaeva mahutis, konteineris või tankeris (edaspidi mahuti), mis ei ole ette nähtud üksnes toidu veoks, kui mahuti puhastatakse enne toorsuhkru laadimist eelmise veose jääkidest või muust saastest ja kontrollitakse puhastamise tõhusust ning kui mahutis on vahetult enne toorsuhkrut veetud mittevedelat veost. 2 (2) Toorsuhkru veoga tegelev käitleja säilitab mahuti viimase veose dokumendid, samuti dokumendid, mis tõendavad mahuti tõhusat puhastamist veose järel. Toorsuhkru veoga tegelev käitleja säilitab mahuti viimase veose dokumendid, samuti dokumendid, mis tõendavad mahuti tõhusat puhastamist veose järel. 3 (3) Dokumendid on toorsuhkruga kaasas kõikides veoetappides kuni toorsuhkru rafineerimiseni ja dokumentide koopiad esitatakse rafineerimisega tegelevale käitlejale. Dokumentidel on selgesti loetavalt ja püsikindlalt Euroopa Liidu ühe või mitme liikmesriigi keeles tekst: „Toodet peab enne toiduks tarvitamist rafineerima”. Dokumendid on toorsuhkruga kaasas kõikides veoetappides kuni toorsuhkru rafineerimiseni ja dokumentide koopiad esitatakse rafineerimisega tegelevale käitlejale. Dokumentidel on selgesti loetavalt ja püsikindlalt Euroopa Liidu ühe või mitme liikmesriigi keeles tekst: „Toodet peab enne toiduks tarvitamist rafineerima”. 4 (4) Lõike 1 kohaselt veetud toorsuhkur tuleb enne toiduks või toidu koostisosaks kasutamist täielikult rafineerida. Lõike 1 kohaselt veetud toorsuhkur tuleb enne toiduks või toidu koostisosaks kasutamist täielikult rafineerida. 5 (5) Toorsuhkru veo ja rafineerimisega tegelev käitleja käsitab enne toorsuhkru laadimist toimuvat mahuti puhastamist kriitilise punktina Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 852/2004 artikli 5 kohaselt ning arvestab mahutis varem veetud veose liiki. Toorsuhkru veo ja rafineerimisega tegelev käitleja käsitab enne toorsuhkru laadimist toimuvat mahuti puhastamist kriitilise punktina Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 852/2004 artikli 5 kohaselt ning arvestab mahutis varem veetud veose liiki.",
+      "estleg:summary": {
+        "@value": "1 (1) Toorsuhkrut võib vedada mahtlastina merelaeva mahutis, konteineris või tankeris (edaspidi mahuti), mis ei ole ette nähtud üksnes toidu veoks, kui mahuti puhastatakse enne toorsuhkru laadimist eelmise veose jääkidest või muust saastest ja kontrollitakse puhastamise tõhusust ning kui mahutis on vahetult enne toorsuhkrut veetud mittevedelat veost.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Toorsuhkrut võib vedada mahtlastina merelaeva mahutis, konteineris või tankeris (edaspidi mahuti), mis ei ole ette nähtud üksnes toidu veoks, kui mahuti puhastatakse enne toorsuhkru laadimist eelmise veose jääkidest või muust saastest ja kontrollitakse puhastamise tõhusust ning kui mahutis on vahetult enne toorsuhkrut veetud mittevedelat veost. 2 (2) Toorsuhkru veoga tegelev käitleja säilitab mahuti viimase veose dokumendid, samuti dokumendid, mis tõendavad mahuti tõhusat puhastamist veose järel. 3 (3) Dokumendid on toorsuhkruga kaasas kõikides veoetappides kuni toorsuhkru rafineerimiseni ja dokumentide koopiad esitatakse rafineerimisega tegelevale käitlejale. Dokumentidel on selgesti loetavalt ja püsikindlalt Euroopa Liidu ühe või mitme liikmesriigi keeles tekst: „Toodet peab enne toiduks tarvitamist rafineerima”. 4 (4) Lõike 1 kohaselt veetud toorsuhkur tuleb enne toiduks või toidu koostisosaks kasutamist täielikult rafineerida. 5 (5) Toorsuhkru veo ja rafineerimisega tegelev käitleja käsitab enne toorsuhkru laadimist toimuvat mahuti puhastamist kriitilise punktina Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 852/2004 artikli 5 kohaselt ning arvestab mahutis varem veetud veose liiki.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1029305_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1029305_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1029305_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1029305_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1029305_Par_2_Lg_5"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -115,24 +184,162 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1029305_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Toorsuhkrut võib vedada mahtlastina merelaeva mahutis, konteineris või tankeris (edaspidi mahuti), mis ei ole ette nähtud üksnes toidu veoks, kui mahuti puhastatakse enne toorsuhkru laadimist eelmise veose jääkidest või muust saastest ja kontrollitakse puhastamise tõhusust ning kui mahutis on vahetult enne toorsuhkrut veetud mittevedelat veost.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029305_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1029305_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Toorsuhkru veoga tegelev käitleja säilitab mahuti viimase veose dokumendid, samuti dokumendid, mis tõendavad mahuti tõhusat puhastamist veose järel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029305_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1029305_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Dokumendid on toorsuhkruga kaasas kõikides veoetappides kuni toorsuhkru rafineerimiseni ja dokumentide koopiad esitatakse rafineerimisega tegelevale käitlejale. Dokumentidel on selgesti loetavalt ja püsikindlalt Euroopa Liidu ühe või mitme liikmesriigi keeles tekst: „Toodet peab enne toiduks tarvitamist rafineerima”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029305_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1029305_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Lõike 1 kohaselt veetud toorsuhkur tuleb enne toiduks või toidu koostisosaks kasutamist täielikult rafineerida.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029305_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1029305_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Toorsuhkru veo ja rafineerimisega tegelev käitleja käsitab enne toorsuhkru laadimist toimuvat mahuti puhastamist kriitilise punktina Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 852/2004 artikli 5 kohaselt ning arvestab mahutis varem veetud veose liiki.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029305_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
       "@id": "estleg:Reg_1029305_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 3. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Toorsuhkru meritsi veo hügieeninõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1029305_Map"
       },
-      "estleg:summary": "Põllumajandusministri 20. detsembri 2000. a määrus nr 71 „Vedela õli ja rasva ning toorsuhkru meritsi veo hügieeninõuded” tunnistatakse kehtetuks.",
-      "estleg:legalText": "Põllumajandusministri 20. detsembri 2000. a määrus nr 71 „Vedela õli ja rasva ning toorsuhkru meritsi veo hügieeninõuded” tunnistatakse kehtetuks. Põllumajandusministri 20. detsembri 2000. a määrus nr 71 „Vedela õli ja rasva ning toorsuhkru meritsi veo hügieeninõuded” tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Põllumajandusministri 20. detsembri 2000. a määrus nr 71 „Vedela õli ja rasva ning toorsuhkru meritsi veo hügieeninõuded” tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Põllumajandusministri 20. detsembri 2000. a määrus nr 71 „Vedela õli ja rasva ning toorsuhkru meritsi veo hügieeninõuded” tunnistatakse kehtetuks.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1029305_Par_3_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_pollumajandusminister"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1029305_Par_3_v1029305"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1029305_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Põllumajandusministri 20. detsembri 2000. a määrus nr 71 „Vedela õli ja rasva ning toorsuhkru meritsi veo hügieeninõuded” tunnistatakse kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029305_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_pollumajandusminister"

@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:EVVLVVLNLKAR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vahelise lepingu NSV Liidu kindlustusperioodide arvessevõtmise kohta ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vahelise lepingu NSV Liidu kindlustusperioodide arvessevõtmise kohta ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vahelise lepingu NSV Liidu kindlustusperioodide arvessevõtmise kohta ratifitseerimise seadus",
       "dcterms:title": "Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vahelise lepingu NSV Liidu kindlustusperioodide arvessevõtmise kohta ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/12978668.xml"
+        "@id": "https://www.riigiteataja.ee/akt/12978668"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/12978668/xml"
+      },
+      "estleg:globalId": "12978668",
+      "eli:id_local": "12978668",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "322373",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "005302062f2fb5f6b8a2ea5172872b84bb39f0bb0031c5b4c6f51151b30fbc4a",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2008-07-11",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -51,23 +63,24 @@
           "@id": "http://eurovoc.europa.eu/3151"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2008-07-11",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2008-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_KAM14_1548"
         }
-      ]
-    },
-    {
-      "@id": "estleg:EVVLVVLNLKAR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vahelise lepingu NSV Liidu kindlustusperioodide arvessevõtmise kohta ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_EVVLVVLNLKAR_default"
-        }
-      ]
+      "estleg:lastAmendmentDate": {
+        "@value": "2008-07-11",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_EVVLVVLNLKAR_default",
@@ -76,12 +89,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EVVLVVLNLKAR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:EVVLVVLNLKAR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vahelise lepingu NSV Liidu kindlustusperioodide arvessevõtmise kohta ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EVVLVVLNLKAR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:EVVLVVLNLKAR_Par_1",
@@ -90,13 +124,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud Eesti Vabariigi valitsuse ja Leedu Vabariigi valits...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud Eesti Vabariigi valitsuse ja Leedu Vabariigi valits...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vahelise lepingu NSV Liidu kindlustusperioodide arvessevõtmise kohta ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EVVLVVLNLKAR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 2007. aasta 24. augustil Tallinnas.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 2007. aasta 24. augustil Tallinnas.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vaheline leping NSV Liidu kindlustusperioodide arvessevõtmise kohta , mis on alla kirjutatud 2007. aasta 24. augustil Tallinnas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vaheline leping NSV Liidu kindlustusperioodide arvessevõtmise kohta , mis on alla kirjutatud 2007. aasta 24. augustil Tallinnas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EVVLVVLNLKAR_default"
       },
@@ -105,32 +145,37 @@
           "@id": "estleg:EVVLVVLNLKAR_Par_1_Lg_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:EVSVTTVLSPR_Par_1"
+          "@id": "estleg:EVVAUVRMPFKR_Par_1"
         },
         {
           "@id": "estleg:EVVLVVENLTTK_Par_1"
+        },
+        {
+          "@id": "estleg:EVVLVVLVVRBR_Par_1"
         },
         {
           "@id": "estleg:EVVUVVVVKLR_Par_1"
         },
         {
           "@id": "estleg:eesti_vabariigi_ja_poola_vabariigi_vahelise_konsul_Par_1"
-        },
-        {
-          "@id": "estleg:eesti_vabariigi_valitsuse_ja_suurbritann_Par_1"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:EVVLVVLNLKAR_Par_1_v12978668"
@@ -143,10 +188,26 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 2007. aasta 24. augustil Tallinnas.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vaheline leping NSV Liidu kindlustusperioodide arvessevõtmise kohta , mis on alla kirjutatud 2007. aasta 24. augustil Tallinnas.",
       "estleg:parentProvision": {
         "@id": "estleg:EVVLVVLNLKAR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ]
     },
     {
       "@id": "estleg:EVVLVVLNLKAR_Par_2",
@@ -155,12 +216,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Tunnistada kehtetuks Eesti Vabariigi ja Leedu Vabariigi vahelise sotsiaalkindlus...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Tunnistada kehtetuks Eesti Vabariigi ja Leedu Vabariigi vahelise sotsiaalkindlus...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi valitsuse ja Leedu Vabariigi valitsuse vahelise lepingu NSV Liidu kindlustusperioodide arvessevõtmise kohta ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EVVLVVLNLKAR_Map"
       },
-      "estleg:summary": "Tunnistada kehtetuks Eesti Vabariigi ja Leedu Vabariigi vahelise sotsiaalkindlustuslepingu ratifitseerimise seadus (RT II 1997, 1, 2).",
+      "estleg:summary": {
+        "@value": "Tunnistada kehtetuks Eesti Vabariigi ja Leedu Vabariigi vahelise sotsiaalkindlustuslepingu ratifitseerimise seadus (RT II 1997, 1, 2).",
+        "@language": "et"
+      },
       "estleg:legalText": "Tunnistada kehtetuks Eesti Vabariigi ja Leedu Vabariigi vahelise sotsiaalkindlustuslepingu ratifitseerimise seadus (RT II 1997, 1, 2).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EVVLVVLNLKAR_default"
@@ -172,19 +239,10 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
+          "@id": "estleg:EKAKUEVVEKEU_Par_3"
+        },
+        {
           "@id": "estleg:EVVLVVENLTTK_Par_2"
-        },
-        {
-          "@id": "estleg:FMAKLTAETEOL_Par_2"
-        },
-        {
-          "@id": "estleg:MTWTTLVRR_Par_3"
-        },
-        {
-          "@id": "estleg:POKKPOSP1979_Par_3"
-        },
-        {
-          "@id": "estleg:VOHMEKR_Par_2"
         }
       ],
       "estleg:hasVersion": [
@@ -199,10 +257,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tunnistada kehtetuks Eesti Vabariigi ja Leedu Vabariigi vahelise sotsiaalkindlustuslepingu ratifitseerimise seadus (RT II 1997, 1, 2).",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tunnistada kehtetuks Eesti Vabariigi ja Leedu Vabariigi vahelise sotsiaalkindlustuslepingu ratifitseerimise seadus (RT II 1997, 1, 2).",
       "estleg:parentProvision": {
         "@id": "estleg:EVVLVVLNLKAR_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

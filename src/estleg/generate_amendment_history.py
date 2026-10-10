@@ -136,11 +136,37 @@ sanitize_id = partial(_shared_sanitize_id, max_len=80, replace_dash=True)
 # title→slug ambiguity check (#595) so genuine multipart siblings are NOT
 # mistaken for distinct co-named acts.
 _OSA_SUFFIX_RE = re.compile(r"_osa\d+$")
+# A multipart law also has a whole-act map peep (``<base>_map_peep.json``)
+# whose act root carries the same Riigi Teataja identity as the parts. It is a
+# member of the SAME base-slug group: it must never mint its own
+# ``amendments_<base>_map.json`` chain (the ids are derived from the shared
+# act prefix, so a second file is a duplicate, not a second chain).
+_MAP_SUFFIX = "_map"
+_MULTIPART_SUFFIX_RE = re.compile(r"_(?:osa\d+|map)$")
+# Sort position of the map member: after every ``_osaN`` part, so
+# ``members[0]`` stays the lowest-numbered part (issue #606).
+_MAP_ORDER = 1_000_000
 
 
 def base_slug_of(slug: str) -> str:
-    """Strip a trailing ``_osaN`` multipart suffix to the law's base slug."""
-    return _OSA_SUFFIX_RE.sub("", slug)
+    """Strip a trailing ``_osaN`` / ``_map`` multipart suffix to the base slug."""
+    return _MULTIPART_SUFFIX_RE.sub("", slug)
+
+
+def is_whole_act_map_slug(slug: str) -> bool:
+    """True for a multipart law's whole-act map peep slug (``<base>_map``)."""
+    return slug.endswith(_MAP_SUFFIX)
+
+
+def chain_target_members(members: list[tuple[str, dict]]) -> list[tuple[str, dict]]:
+    """The members a chain amends and stamps: the parts, not the whole-act map.
+
+    The map root is an aggregate over the ``_osaN`` parts, so the chain's
+    ``estleg:amends`` targets and the ``estleg:amendedBy`` stamps stay on the
+    parts. A group made only of a map (no parts on disk) keeps the map.
+    """
+    parts = [m for m in members if not is_whole_act_map_slug(m[0])]
+    return parts or list(members)
 
 
 def _osa_order_key(slug: str) -> tuple[int, str]:
@@ -156,6 +182,8 @@ def _osa_order_key(slug: str) -> tuple[int, str]:
     m = _OSA_SUFFIX_RE.search(slug)
     if m:
         return (int(m.group(0).removeprefix("_osa")), slug)
+    if is_whole_act_map_slug(slug):
+        return (_MAP_ORDER, slug)
     return (0, slug)
 
 
@@ -319,9 +347,13 @@ def amends_value_from_ids(act_ids: list[str]) -> AmendsValue | None:
 
 
 def act_root_ids_for_members(members: list[tuple[str, dict]]) -> list[str]:
-    """Order-preserving, de-duplicated act-root IRIs of a base_slug group."""
+    """Order-preserving, de-duplicated act-root IRIs of a base_slug group.
+
+    The whole-act map member is skipped when the group has parts
+    (:func:`chain_target_members`).
+    """
     ids: list[str] = []
-    for _slug, info in members:
+    for _slug, info in chain_target_members(members):
         node = act_root_node(info["doc"])
         if node is None:
             continue
@@ -2008,7 +2040,7 @@ def main(*, emit_amendment_kind: bool = EMIT_AMENDMENT_KIND_DEFAULT) -> int:
             if is_kov:
                 _files_processed_kov += 1
 
-    # Group paired laws by base_slug (drop trailing _osaN suffix).
+    # Group paired laws by base_slug (drop trailing _osaN / _map suffix).
     groups: dict[str, list[tuple[str, dict]]] = {}
     for slug, info in laws.items():
         base_slug = base_slug_of(slug)
@@ -2023,13 +2055,23 @@ def main(*, emit_amendment_kind: bool = EMIT_AMENDMENT_KIND_DEFAULT) -> int:
         # Order parts by natural osa number so members[0] is deterministically
         # the lowest-numbered part (osa1), not whatever lexical/glob order put
         # first — osa10/osa11 must NOT win the canonical slot (issue #606).
-        members = sorted(groups[base_slug], key=lambda m: _osa_order_key(m[0]))
+        group_members = sorted(
+            groups[base_slug], key=lambda m: _osa_order_key(m[0])
+        )
+        # The chain amends and stamps the parts; the whole-act map member
+        # only contributes its XML amendments and drafts.
+        members = chain_target_members(group_members)
 
         # Pull XML amendments / drafts for the group. All parts of a
         # multipart law share the same canonical XML so any member's
-        # entry is canonical; pick the first non-empty one.
+        # entry is canonical; pick the first non-empty one. The whole-act
+        # map is tried first: it pairs to the act's current XML by globalId,
+        # whereas parts may only reach a legacy ``<base>.xml`` by slug.
         xml_amendments: list[dict] = []
-        for slug, _info in members:
+        xml_order = [m for m in group_members if is_whole_act_map_slug(m[0])] + [
+            m for m in group_members if not is_whole_act_map_slug(m[0])
+        ]
+        for slug, _info in xml_order:
             cand = amendments_by_slug.get(slug)
             if cand:
                 xml_amendments = cand
@@ -2039,7 +2081,7 @@ def main(*, emit_amendment_kind: bool = EMIT_AMENDMENT_KIND_DEFAULT) -> int:
 
         drafts: list[dict] = []
         seen_draft_ids: set[str] = set()
-        for slug, _info in members:
+        for slug, _info in group_members:
             for da in draft_matches.get(slug, []):
                 if da["draft_id"] in seen_draft_ids:
                     continue
@@ -2053,7 +2095,7 @@ def main(*, emit_amendment_kind: bool = EMIT_AMENDMENT_KIND_DEFAULT) -> int:
 
         if not xml_amendments and not drafts:
             has_paired_member = False
-            for slug, _info in members:
+            for slug, _info in group_members:
                 if slug in paired_slugs:
                     has_paired_member = True
                     _skip_reasons["no_amendments_found"] = (
@@ -2131,7 +2173,7 @@ def main(*, emit_amendment_kind: bool = EMIT_AMENDMENT_KIND_DEFAULT) -> int:
         # longer drop them. Regulation sidecars (#431) are snapshot-only and
         # are never joined, exactly as in link_amendment_versions.
         versions_by_date: dict[str, list[str]] = {}
-        if all(info["path"].parent == KRR_DIR for _slug, info in members):
+        if all(info["path"].parent == KRR_DIR for _slug, info in group_members):
             versions_by_date = load_versions_by_date(
                 KRR_DIR / PROVISION_VERSIONS_DIRNAME, base_slug
             )
@@ -2148,7 +2190,7 @@ def main(*, emit_amendment_kind: bool = EMIT_AMENDMENT_KIND_DEFAULT) -> int:
         if versions_by_date:
             # Mutates chain_doc (``_vf_`` events, resultedInVersion) and the
             # member peeps (act-root lastAmendmentDate) before either is saved.
-            apply_version_join(chain_doc, members, versions_by_date)
+            apply_version_join(chain_doc, group_members, versions_by_date)
             _laws_version_joined += 1
 
         # Stamp the act-root amendment links on every member's ontology node so

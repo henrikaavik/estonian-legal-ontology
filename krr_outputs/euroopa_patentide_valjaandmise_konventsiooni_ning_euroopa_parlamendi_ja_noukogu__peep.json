@@ -5,45 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:EPVKS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Implementation of the Convention on the Grant of European Patents and of Regulation (EU) No 1257/2012 of the European Parliament and of the Council Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/104072017128.xml"
+        "@id": "https://www.riigiteataja.ee/akt/104072017128"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/104072017128/xml"
+      },
+      "estleg:globalId": "104072017128",
+      "eli:id_local": "104072017128",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "155041",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "0d7c5d626fc5466339dad3053b9a14bb210dd0a002b11ae124cf72ba86ebf984",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-06-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/524072017003"
@@ -53,6 +56,9 @@
         "@type": "xsd:boolean"
       },
       "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528).",
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/524072017003"
+      },
       "estleg:references": [
         {
           "@id": "estleg:EPVKS_Par_13_Lg_3"
@@ -62,32 +68,6 @@
         },
         {
           "@id": "estleg:EPVKS_Par_6"
-        },
-        {
-          "@id": "estleg:VABARI_Par_107_3_Lg_4"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:EPVKS_Par_20"
-        },
-        {
-          "@id": "estleg:EPVKS_Par_20_Lg_1"
-        },
-        {
-          "@id": "estleg:EPVKS_Par_12_Lg_4"
-        },
-        {
-          "@id": "estleg:EPVKS_Par_13_Lg_2"
-        },
-        {
-          "@id": "estleg:EPVKS_Par_14"
-        },
-        {
-          "@id": "estleg:EPVKS_Par_14_Lg_2"
-        },
-        {
-          "@id": "estleg:EPVKS_Par_7_Lg_1_3"
         }
       ],
       "dcterms:subject": [
@@ -112,21 +92,68 @@
           "@id": "http://eurovoc.europa.eu/523"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2023-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2017-07-04",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_patendiamet"
         }
-      ]
-    },
-    {
-      "@id": "estleg:EPVKS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_EPVKS_default"
+          "@id": "estleg:Amendment_EPVKS_22f6efa1d4"
+        },
+        {
+          "@id": "estleg:Amendment_EPVKS_b9b2fa6af5"
+        },
+        {
+          "@id": "estleg:Amendment_EPVKS_5328f97625"
+        },
+        {
+          "@id": "estleg:Amendment_EPVKS_e61ff1eace"
+        },
+        {
+          "@id": "estleg:Amendment_EPVKS_a4b69463de"
+        },
+        {
+          "@id": "estleg:Amendment_EPVKS_25a083c074"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:EPVKS_Map"
+        },
+        {
+          "@id": "estleg:EPVKS_Par_20"
+        },
+        {
+          "@id": "estleg:EPVKS_Par_20_Lg_1"
+        },
+        {
+          "@id": "estleg:EPVKS_Par_12_Lg_4"
+        },
+        {
+          "@id": "estleg:EPVKS_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:EPVKS_Par_14"
+        },
+        {
+          "@id": "estleg:EPVKS_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:EPVKS_Par_7_Lg_1_3"
         }
       ]
     },
@@ -137,12 +164,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–21 Lepingu sätted",
-      "skos:prefLabel": "§1–21 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–21 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–21 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EPVKS_TopicScheme"
       },
-      "estleg:provisionCount": 21
+      "estleg:provisionCount": 24
+    },
+    {
+      "@id": "estleg:EPVKS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EPVKS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:EPVKS_Par_1",
@@ -151,13 +199,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Käesolev seadus sätestab Euroopa patentide ja patenditaotluste õigusliku seisundi Eestis ning reguleerib õigussuhteid, mis tulenevad Eesti Vabariigi ühinemisest Euroopa patentide väljaandmise konventsiooniga (Euroopa patendikonventsioon) ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 tõhustatud koostöö rakendamise kohta ühtse patendikaitse loomise valdkonnas (ELT L 361, 31.12.2012, lk 1–8) kohaldamisest. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse",
-      "estleg:legalText": "Käesolev seadus sätestab Euroopa patentide ja patenditaotluste õigusliku seisundi Eestis ning reguleerib õigussuhteid, mis tulenevad Eesti Vabariigi ühinemisest Euroopa patentide väljaandmise konventsiooniga (Euroopa patendikonventsioon) ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 tõhustatud koostöö rakendamise kohta ühtse patendikaitse loomise valdkonnas (ELT L 361, 31.12.2012, lk 1–8) kohaldamisest. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:summary": {
+        "@value": "Käesolev seadus sätestab Euroopa patentide ja patenditaotluste õigusliku seisundi Eestis ning reguleerib õigussuhteid, mis tulenevad Eesti Vabariigi ühinemisest Euroopa patentide väljaandmise konventsiooniga (Euroopa patendikonventsioon) ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 tõhustatud koostöö rakendamise kohta ühtse patendikaitse loomise valdkonnas (ELT L 361, 31.12.2012, lk 1–8) kohaldamisest.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolev seadus sätestab Euroopa patentide ja patenditaotluste õigusliku seisundi Eestis ning reguleerib õigussuhteid, mis tulenevad Eesti Vabariigi ühinemisest Euroopa patentide väljaandmise konventsiooniga (Euroopa patendikonventsioon) ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 tõhustatud koostöö rakendamise kohta ühtse patendikaitse loomise valdkonnas (ELT L 361, 31.12.2012, lk 1–8) kohaldamisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
       },
@@ -170,11 +224,6 @@
         {
           "@id": "estleg:EPVKS_Par_1_v104072017128"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
       ]
     },
     {
@@ -183,15 +232,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus sätestab Euroopa patentide ja patenditaotluste õigusliku seisundi Eestis ning reguleerib õigussuhteid, mis tulenevad Eesti Vabariigi ühinemisest Euroopa patentide väljaandmise konventsiooniga (Euroopa patendikonventsioon) ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 tõhustatud koostöö rakendamise kohta ühtse patendikaitse loomise valdkonnas (ELT L 361, 31.12.2012, lk 1–8) kohaldamisest. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab Euroopa patentide ja patenditaotluste õigusliku seisundi Eestis ning reguleerib õigussuhteid, mis tulenevad Eesti Vabariigi ühinemisest Euroopa patentide väljaandmise konventsiooniga (Euroopa patendikonventsioon) ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 tõhustatud koostöö rakendamise kohta ühtse patendikaitse loomise valdkonnas (ELT L 361, 31.12.2012, lk 1–8) kohaldamisest.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_1"
       },
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
-      ]
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:EPVKS_Par_2",
@@ -200,13 +246,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Mõisted",
+      "rdfs:label": {
+        "@value": "§ 2. Mõisted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse tähenduses on: konventsioon – 1973. aasta 5. oktoobril Münchenis koostatud Euroopa patentide väljaandmise konventsioon (Euroopa patendikonventsioon); organisatsioon – konventsiooni kohaselt asutatud Euroopa Patendiorganisatsioon; Euroopa Patendiamet – organisatsiooni institutsioon, kes täidab Euroopa patentide väljaandmisega seotud kohustusi; osalisriik – konventsiooni osalisriik; Eesti Patendiamet – konventsiooni tähenduses tööstusomandi keskamet Eestis; Euroopa patent –",
-      "estleg:legalText": "Käesoleva seaduse tähenduses on: konventsioon – 1973. aasta 5. oktoobril Münchenis koostatud Euroopa patentide väljaandmise konventsioon (Euroopa patendikonventsioon); organisatsioon – konventsiooni kohaselt asutatud Euroopa Patendiorganisatsioon; Euroopa Patendiamet – organisatsiooni institutsioon, kes täidab Euroopa patentide väljaandmisega seotud kohustusi; osalisriik – konventsiooni osalisriik; Eesti Patendiamet – konventsiooni tähenduses tööstusomandi keskamet Eestis; Euroopa patent – Euroopa patent Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti b tähenduses; - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) ühtse toimega Euroopa patent – ühtse toimega Euroopa patent Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti c tähenduses; - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) Euroopa patenditaotlus – Euroopa patendi saamiseks konventsiooni kohaselt esitatud patenditaotlus; patenditaotleja – füüsiline või juriidiline isik, kes taotleb Euroopa patenti; patendiomanik – Euroopa patendi omanik; siseriiklik patent – patendiseaduse kohaselt väljaantud patent; siseriiklik patenditaotlus – patendiseaduse kohaselt siseriikliku patendi saamiseks esitatud patenditaotlus; kasulik mudel – kasuliku mudeli seaduse kohaselt registreeritud leiutis; Euroopa patendiregister – Euroopa patendiregister Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti d tähenduses; - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) ühtse patendikaitse register – ühtse patendikaitse register Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti e tähenduses. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse tähenduses on: 1) konventsioon – 1973. aasta 5. oktoobril Münchenis koostatud Euroopa patentide väljaandmise konventsioon (Euroopa patendikonventsioon); 2) organisatsioon – konventsiooni kohaselt asutatud Euroopa Patendiorganisatsioon; 3) Euroopa Patendiamet – organisatsiooni institutsioon, kes täidab Euroopa patentide väljaandmisega seotud kohustusi; 4) osalisriik – konventsiooni osalisriik; 5) Eesti Patendiamet – konventsiooni tähenduses tööstusomandi keskamet Eestis; 6)",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva seaduse tähenduses on: 1) konventsioon – 1973. aasta 5. oktoobril Münchenis koostatud Euroopa patentide väljaandmise konventsioon (Euroopa patendikonventsioon); 2) organisatsioon – konventsiooni kohaselt asutatud Euroopa Patendiorganisatsioon; 3) Euroopa Patendiamet – organisatsiooni institutsioon, kes täidab Euroopa patentide väljaandmisega seotud kohustusi; 4) osalisriik – konventsiooni osalisriik; 5) Eesti Patendiamet – konventsiooni tähenduses tööstusomandi keskamet Eestis; 6) Euroopa patent – Euroopa patent Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti b tähenduses; 6¹) ühtse toimega Euroopa patent – ühtse toimega Euroopa patent Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti c tähenduses; 7) Euroopa patenditaotlus – Euroopa patendi saamiseks konventsiooni kohaselt esitatud patenditaotlus; 8) patenditaotleja – füüsiline või juriidiline isik, kes taotleb Euroopa patenti; 9) patendiomanik – Euroopa patendi omanik; 10) siseriiklik patent – patendiseaduse kohaselt väljaantud patent; 11) siseriiklik patenditaotlus – patendiseaduse kohaselt siseriikliku patendi saamiseks esitatud patenditaotlus; 12) kasulik mudel – kasuliku mudeli seaduse kohaselt registreeritud leiutis; 13) Euroopa patendiregister – Euroopa patendiregister Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti d tähenduses; 14) ühtse patendikaitse register – ühtse patendikaitse register Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti e tähenduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
       },
@@ -217,9 +269,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
@@ -227,17 +276,17 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_2_v104072017128"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
-        },
+        }
+      ],
+      "estleg:hasVersion": [
         {
-          "@id": "estleg:Institution_valisministeerium"
+          "@id": "estleg:EPVKS_Par_2_v104072017128"
         }
       ]
     },
@@ -247,10 +296,29 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse tähenduses on: konventsioon – 1973. aasta 5. oktoobril Münchenis koostatud Euroopa patentide väljaandmise konventsioon (Euroopa patendikonventsioon); organisatsioon – konventsiooni kohaselt asutatud Euroopa Patendiorganisatsioon; Euroopa Patendiamet – organisatsiooni institutsioon, kes täidab Euroopa patentide väljaandmisega seotud kohustusi; osalisriik – konventsiooni osalisriik; Eesti Patendiamet – konventsiooni tähenduses tööstusomandi keskamet Eestis; Euroopa patent – Euroopa patent Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti b tähenduses; - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) ühtse toimega Euroopa patent – ühtse toimega Euroopa patent Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti c tähenduses; - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) Euroopa patenditaotlus – Euroopa patendi saamiseks konventsiooni kohaselt esitatud patenditaotlus; patenditaotleja – füüsiline või juriidiline isik, kes taotleb Euroopa patenti; patendiomanik – Euroopa patendi omanik; siseriiklik patent – patendiseaduse kohaselt väljaantud patent; siseriiklik patenditaotlus – patendiseaduse kohaselt siseriikliku patendi saamiseks esitatud patenditaotlus; kasulik mudel – kasuliku mudeli seaduse kohaselt registreeritud leiutis; Euroopa patendiregister – Euroopa patendiregister Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti d tähenduses; - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) ühtse patendikaitse register – ühtse patendikaitse register Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti e tähenduses. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse tähenduses on: 1) konventsioon – 1973. aasta 5. oktoobril Münchenis koostatud Euroopa patentide väljaandmise konventsioon (Euroopa patendikonventsioon); 2) organisatsioon – konventsiooni kohaselt asutatud Euroopa Patendiorganisatsioon; 3) Euroopa Patendiamet – organisatsiooni institutsioon, kes täidab Euroopa patentide väljaandmisega seotud kohustusi; 4) osalisriik – konventsiooni osalisriik; 5) Eesti Patendiamet – konventsiooni tähenduses tööstusomandi keskamet Eestis; 6) Euroopa patent – Euroopa patent Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti b tähenduses; 6¹) ühtse toimega Euroopa patent – ühtse toimega Euroopa patent Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti c tähenduses; 7) Euroopa patenditaotlus – Euroopa patendi saamiseks konventsiooni kohaselt esitatud patenditaotlus; 8) patenditaotleja – füüsiline või juriidiline isik, kes taotleb Euroopa patenti; 9) patendiomanik – Euroopa patendi omanik; 10) siseriiklik patent – patendiseaduse kohaselt väljaantud patent; 11) siseriiklik patenditaotlus – patendiseaduse kohaselt siseriikliku patendi saamiseks esitatud patenditaotlus; 12) kasulik mudel – kasuliku mudeli seaduse kohaselt registreeritud leiutis; 13) Euroopa patendiregister – Euroopa patendiregister Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti d tähenduses; 14) ühtse patendikaitse register – ühtse patendikaitse register Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 2 punkti e tähenduses.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "6¹",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -263,9 +331,6 @@
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
-        },
-        {
-          "@id": "estleg:Institution_valisministeerium"
         }
       ]
     },
@@ -276,12 +341,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Euroopa patenditaotluse esitamine",
+      "rdfs:label": {
+        "@value": "§ 3. Euroopa patenditaotluse esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Euroopa patenditaotluse võib esitada Euroopa Patendiametile või Eesti Patendiametile, kes edastab selle Euroopa Patendiametile. (2) Euroopa eraldatud taotluse peab esitama vahetult Euroopa Patendiametile. Euroopa eraldatud taotlus käesoleva seaduse tähenduses on Euroopa patenditaotlusest eraldatud patenditaotlus.",
+      "estleg:summary": {
+        "@value": "(1) Euroopa patenditaotluse võib esitada Euroopa Patendiametile või Eesti Patendiametile, kes edastab selle Euroopa Patendiametile. (2) Euroopa eraldatud taotluse peab esitama vahetult Euroopa Patendiametile. Euroopa eraldatud taotlus käesoleva seaduse tähenduses on Euroopa patenditaotlusest eraldatud patenditaotlus.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Euroopa patenditaotluse võib esitada Euroopa Patendiametile või Eesti Patendiametile, kes edastab selle Euroopa Patendiametile. (2) Euroopa eraldatud taotluse peab esitama vahetult Euroopa Patendiametile. Euroopa eraldatud taotlus käesoleva seaduse tähenduses on Euroopa patenditaotlusest eraldatud patenditaotlus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -294,29 +365,21 @@
           "@id": "estleg:EPVKS_Par_3_Lg_2"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1002187_Par_4"
-        },
-        {
-          "@id": "estleg:Reg_1002187_Par_5"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_3_v104072017128"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EPVKS_Par_3_v104072017128"
         }
       ]
     },
@@ -332,12 +395,12 @@
         "@id": "estleg:EPVKS_Par_3"
       },
       "rdfs:label": "§ 3 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -357,12 +420,12 @@
         "@id": "estleg:EPVKS_Par_3"
       },
       "rdfs:label": "§ 3 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -377,12 +440,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Euroopa patenditaotluse keel",
+      "rdfs:label": {
+        "@value": "§ 4. Euroopa patenditaotluse keel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Euroopa patenditaotlus esitatakse kas ühes Euroopa Patendiameti ametlikus keeles (inglise, prantsuse ja saksa keel) või konventsioonis sätestatud tingimustel mis tahes muus keeles.",
+      "estleg:summary": {
+        "@value": "Euroopa patenditaotlus esitatakse kas ühes Euroopa Patendiameti ametlikus keeles (inglise, prantsuse ja saksa keel) või konventsioonis sätestatud tingimustel mis tahes muus keeles.",
+        "@language": "et"
+      },
       "estleg:legalText": "Euroopa patenditaotlus esitatakse kas ühes Euroopa Patendiameti ametlikus keeles (inglise, prantsuse ja saksa keel) või konventsioonis sätestatud tingimustel mis tahes muus keeles.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -392,14 +461,14 @@
           "@id": "estleg:EPVKS_Par_4_Lg_1"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_4_v104072017128"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EPVKS_Par_4_v104072017128"
         }
       ]
     },
@@ -409,10 +478,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Euroopa patenditaotlus esitatakse kas ühes Euroopa Patendiameti ametlikus keeles (inglise, prantsuse ja saksa keel) või konventsioonis sätestatud tingimustel mis tahes muus keeles.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Euroopa patenditaotlus esitatakse kas ühes Euroopa Patendiameti ametlikus keeles (inglise, prantsuse ja saksa keel) või konventsioonis sätestatud tingimustel mis tahes muus keeles.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_4"
       },
+      "rdfs:label": "§ 4 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
@@ -426,12 +497,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Euroopa patenditaotluse õiguslik seisund",
+      "rdfs:label": {
+        "@value": "§ 5. Euroopa patenditaotluse õiguslik seisund",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Euroopa patenditaotlus, milles Eesti Vabariik on märgitud riik ja millele konventsiooni kohaselt on antud esitamise kuupäev, on menetluse lõpptulemusest sõltumata õiguslikult võrdne samal päeval esitatud siseriikliku patenditaotlusega. Kui Euroopa patenditaotlusel on esitamise kuupäevaga võrreldes prioriteet varasemast kuupäevast, kehtib nimetatud prioriteet ka Eestis.",
+      "estleg:summary": {
+        "@value": "Euroopa patenditaotlus, milles Eesti Vabariik on märgitud riik ja millele konventsiooni kohaselt on antud esitamise kuupäev, on menetluse lõpptulemusest sõltumata õiguslikult võrdne samal päeval esitatud siseriikliku patenditaotlusega. Kui Euroopa patenditaotlusel on esitamise kuupäevaga võrreldes prioriteet varasemast kuupäevast, kehtib nimetatud prioriteet ka Eestis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Euroopa patenditaotlus, milles Eesti Vabariik on märgitud riik ja millele konventsiooni kohaselt on antud esitamise kuupäev, on menetluse lõpptulemusest sõltumata õiguslikult võrdne samal päeval esitatud siseriikliku patenditaotlusega. Kui Euroopa patenditaotlusel on esitamise kuupäevaga võrreldes prioriteet varasemast kuupäevast, kehtib nimetatud prioriteet ka Eestis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -453,10 +530,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Euroopa patenditaotlus, milles Eesti Vabariik on märgitud riik ja millele konventsiooni kohaselt on antud esitamise kuupäev, on menetluse lõpptulemusest sõltumata õiguslikult võrdne samal päeval esitatud siseriikliku patenditaotlusega. Kui Euroopa patenditaotlusel on esitamise kuupäevaga võrreldes prioriteet varasemast kuupäevast, kehtib nimetatud prioriteet ka Eestis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Euroopa patenditaotlus, milles Eesti Vabariik on märgitud riik ja millele konventsiooni kohaselt on antud esitamise kuupäev, on menetluse lõpptulemusest sõltumata õiguslikult võrdne samal päeval esitatud siseriikliku patenditaotlusega. Kui Euroopa patenditaotlusel on esitamise kuupäevaga võrreldes prioriteet varasemast kuupäevast, kehtib nimetatud prioriteet ka Eestis.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_5"
-      }
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:EPVKS_Par_6",
@@ -465,12 +544,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Euroopa patenditaotlusel põhinev ajutine kaitse",
+      "rdfs:label": {
+        "@value": "§ 6. Euroopa patenditaotlusel põhinev ajutine kaitse",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Avaldatud Euroopa patenditaotluses, milles Eesti Vabariik on märgitud riik, sisalduv leiutis saab patendiseaduse kohase ajutise kaitse päevast, millal patenditaotleja edastab Eestis leiutist kasutavale isikule avaldatud Euroopa patenditaotluse patendinõudluse tõlke eesti keeles, või päevast, millal Eesti Patendiamet avalikustab nimetatud tõlke, kui tõlge edastati Eesti Patendiametile ja tasuti tõlke avalikustamise eest ettenähtud riigilõiv.",
+      "estleg:summary": {
+        "@value": "Avaldatud Euroopa patenditaotluses, milles Eesti Vabariik on märgitud riik, sisalduv leiutis saab patendiseaduse kohase ajutise kaitse päevast, millal patenditaotleja edastab Eestis leiutist kasutavale isikule avaldatud Euroopa patenditaotluse patendinõudluse tõlke eesti keeles, või päevast, millal Eesti Patendiamet avalikustab nimetatud tõlke, kui tõlge edastati Eesti Patendiametile ja tasuti tõlke avalikustamise eest ettenähtud riigilõiv.",
+        "@language": "et"
+      },
       "estleg:legalText": "Avaldatud Euroopa patenditaotluses, milles Eesti Vabariik on märgitud riik, sisalduv leiutis saab patendiseaduse kohase ajutise kaitse päevast, millal patenditaotleja edastab Eestis leiutist kasutavale isikule avaldatud Euroopa patenditaotluse patendinõudluse tõlke eesti keeles, või päevast, millal Eesti Patendiamet avalikustab nimetatud tõlke, kui tõlge edastati Eesti Patendiametile ja tasuti tõlke avalikustamise eest ettenähtud riigilõiv.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -489,7 +574,15 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_patendiamet"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:EPVKS_Map"
+        },
         {
           "@id": "estleg:EPVKS_Par_20"
         },
@@ -501,11 +594,6 @@
         {
           "@id": "estleg:EPVKS_Par_6_v104072017128"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_patendiamet"
-        }
       ]
     },
     {
@@ -514,10 +602,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Avaldatud Euroopa patenditaotluses, milles Eesti Vabariik on märgitud riik, sisalduv leiutis saab patendiseaduse kohase ajutise kaitse päevast, millal patenditaotleja edastab Eestis leiutist kasutavale isikule avaldatud Euroopa patenditaotluse patendinõudluse tõlke eesti keeles, või päevast, millal Eesti Patendiamet avalikustab nimetatud tõlke, kui tõlge edastati Eesti Patendiametile ja tasuti tõlke avalikustamise eest ettenähtud riigilõiv.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Avaldatud Euroopa patenditaotluses, milles Eesti Vabariik on märgitud riik, sisalduv leiutis saab patendiseaduse kohase ajutise kaitse päevast, millal patenditaotleja edastab Eestis leiutist kasutavale isikule avaldatud Euroopa patenditaotluse patendinõudluse tõlke eesti keeles, või päevast, millal Eesti Patendiamet avalikustab nimetatud tõlke, kui tõlge edastati Eesti Patendiametile ja tasuti tõlke avalikustamise eest ettenähtud riigilõiv.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_6"
       },
+      "rdfs:label": "§ 6 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -540,13 +630,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Euroopa patendi õiguslik seisund",
+      "rdfs:label": {
+        "@value": "§ 7. Euroopa patendi õiguslik seisund",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Euroopa patent, milles Eesti Vabariik on märgitud riik, on Euroopa Patendiameti poolt selle väljaandmisest teatamise päevast arvates õiguslikult võrdne siseriikliku patendiga, kui patendiomanik esitab kolme kuu jooksul teatamise päevast arvates Eesti Patendiametile Euroopa patendikirjelduse tõlke eesti keeles ja tasub tõlke avalikustamise eest ettenähtud riigilõivu. Tõlke esitamise tähtaega võib pikendada kahe kuu võrra, tasudes pikendamise eest täiendava riigilõivu.",
-      "estleg:legalText": "(1) Euroopa patent, milles Eesti Vabariik on märgitud riik, on Euroopa Patendiameti poolt selle väljaandmisest teatamise päevast arvates õiguslikult võrdne siseriikliku patendiga, kui patendiomanik esitab kolme kuu jooksul teatamise päevast arvates Eesti Patendiametile Euroopa patendikirjelduse tõlke eesti keeles ja tasub tõlke avalikustamise eest ettenähtud riigilõivu. Tõlke esitamise tähtaega võib pikendada kahe kuu võrra, tasudes pikendamise eest täiendava riigilõivu. (1¹) Kui vastavalt Euroopa Parlamendi ja nõukogu määrusele (EL) nr 1257/2012 registreeritakse Euroopa patendi ühtne toime ning see laieneb Eesti territooriumile, siis kaotab kõnealune Euroopa patent arvates Euroopa Patendibülletäänis patendi väljaandmise teate avaldamisest Eesti territooriumil kehtivuse siseriikliku patendina. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) (1²) Kui Euroopa Patendiamet keeldub Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaselt Euroopa patendile, milles Eesti Vabariik on märgitud riik, ühtse toime registreerimisest ja selline ühtse toime registreerimise taotlus oli Euroopa Patendiametile esitatud õigeks ajaks, on selle Euroopa patendi omanikul käesolevas paragrahvis sätestatud õigused. Sellisel juhul arvutatakse käesoleva paragrahvi lõikes 1 sätestatud tähtaega Euroopa patendile ühtse toime andmisest keeldumise otsuse jõustumisest arvates. Koos patendikirjelduse tõlkega tuleb esitada jõustunud otsus Euroopa patendile ühtse toime andmisest keeldumise kohta. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) (1³) Kui käesoleva paragrahvi lõikes 12 sätestatud juhul on patendikirjelduse tõlke esitamise ajaks muutunud sissenõutavaks jõushoidmise riigilõiv vastavalt käesoleva seaduse § 10 lõikele 3, tasub patendiomanik sissenõutavaks muutunud jõushoidmise riigilõivu koos lõikes 12 sätestatud patendikirjelduse tõlke esitamise ja tõlke avalikustamise eest ettenähtud riigilõivuga. Kui pikendatakse käesoleva paragrahvi lõike 1 teises lauses sätestatud tõlke esitamise tähtaega, pikeneb sama aja võrra ka käesolevas lõikes sätestatud sissenõutavaks muutunud jõushoidmise riigilõivu tasumise tähtaeg. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) (2) Kui patendiomanik jätab käesoleva paragrahvi lõikes 1 nimetatud tõlke tähtaegselt esitamata või jätab tõlke esitamisel tõlke avalikustamise eest ettenähtud riigilõivu või tõlke esitamise tähtaja pikendamise korral ettenähtud täiendava riigilõivu tasumata, loetakse Euroopa patent Eesti suhtes õigustühiseks Euroopa patendi kehtivuse algusest arvates. (2¹) Kui patendiomanik ei ole käesoleva paragrahvi lõikes 13 nimetatud sissenõutavaks muutunud jõushoidmise riigilõivu tähtajaks tasunud, loetakse Euroopa patent Eesti suhtes õigustühiseks Euroopa patendi kehtivuse algusest arvates. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) (3) Kui osalisriigid on kokku leppinud patendikirjelduse tõlke esitamise nõude asendamises patendinõudluse tõlkega, peab patendiomanik esitama patendinõudluse tõlke käesoleva paragrahvi lõikes 1 sätestatud korras. Sellisel juhul kohaldatakse ka lõikes 2 sätestatut. (4) Kui osalisriigid on kokku leppinud patendikirjelduse või patendinõudluse tõlke esitamise nõudest loobumises, peab patendiomanik Euroopa patenti puudutava haldus- või kohtuvaidluse korral esitama vaidlust lahendava haldusorgani, kohtu või oletatava patendiõiguse rikkuja nõudel kolme kuu jooksul nõude saamisest arvates oma kulul patendikirjelduse tõlke eesti keeles. Tõlke esitamata jätmise korral võib kohus tunnistada Euroopa patendi Eesti suhtes õigustühiseks Euroopa patendi kehtivuse algusest arvates.",
+      "estleg:summary": {
+        "@value": "(1) Euroopa patent, milles Eesti Vabariik on märgitud riik, on Euroopa Patendiameti poolt selle väljaandmisest teatamise päevast arvates õiguslikult võrdne siseriikliku patendiga, kui patendiomanik esitab kolme kuu jooksul teatamise päevast arvates Eesti Patendiametile Euroopa patendikirjelduse tõlke eesti keeles ja tasub tõlke avalikustamise eest ettenähtud riigilõivu. Tõlke esitamise tähtaega võib pikendada kahe kuu võrra, tasudes pikendamise eest täiendava riigilõivu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Euroopa patent, milles Eesti Vabariik on märgitud riik, on Euroopa Patendiameti poolt selle väljaandmisest teatamise päevast arvates õiguslikult võrdne siseriikliku patendiga, kui patendiomanik esitab kolme kuu jooksul teatamise päevast arvates Eesti Patendiametile Euroopa patendikirjelduse tõlke eesti keeles ja tasub tõlke avalikustamise eest ettenähtud riigilõivu. Tõlke esitamise tähtaega võib pikendada kahe kuu võrra, tasudes pikendamise eest täiendava riigilõivu. (1¹) Kui vastavalt Euroopa Parlamendi ja nõukogu määrusele (EL) nr 1257/2012 registreeritakse Euroopa patendi ühtne toime ning see laieneb Eesti territooriumile, siis kaotab kõnealune Euroopa patent arvates Euroopa Patendibülletäänis patendi väljaandmise teate avaldamisest Eesti territooriumil kehtivuse siseriikliku patendina. (1²) Kui Euroopa Patendiamet keeldub Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaselt Euroopa patendile, milles Eesti Vabariik on märgitud riik, ühtse toime registreerimisest ja selline ühtse toime registreerimise taotlus oli Euroopa Patendiametile esitatud õigeks ajaks, on selle Euroopa patendi omanikul käesolevas paragrahvis sätestatud õigused. Sellisel juhul arvutatakse käesoleva paragrahvi lõikes 1 sätestatud tähtaega Euroopa patendile ühtse toime andmisest keeldumise otsuse jõustumisest arvates. Koos patendikirjelduse tõlkega tuleb esitada jõustunud otsus Euroopa patendile ühtse toime andmisest keeldumise kohta. (1³) Kui käesoleva paragrahvi lõikes 1² sätestatud juhul on patendikirjelduse tõlke esitamise ajaks muutunud sissenõutavaks jõushoidmise riigilõiv vastavalt käesoleva seaduse § 10 lõikele 3, tasub patendiomanik sissenõutavaks muutunud jõushoidmise riigilõivu koos lõikes 1² sätestatud patendikirjelduse tõlke esitamise ja tõlke avalikustamise eest ettenähtud riigilõivuga. Kui pikendatakse käesoleva paragrahvi lõike 1 teises lauses sätestatud tõlke esitamise tähtaega, pikeneb sama aja võrra ka käesolevas lõikes sätestatud sissenõutavaks muutunud jõushoidmise riigilõivu tasumise tähtaeg. (2) Kui patendiomanik jätab käesoleva paragrahvi lõikes 1 nimetatud tõlke tähtaegselt esitamata või jätab tõlke esitamisel tõlke avalikustamise eest ettenähtud riigilõivu või tõlke esitamise tähtaja pikendamise korral ettenähtud täiendava riigilõivu tasumata, loetakse Euroopa patent Eesti suhtes õigustühiseks Euroopa patendi kehtivuse algusest arvates. (2¹) Kui patendiomanik ei ole käesoleva paragrahvi lõikes 13 nimetatud sissenõutavaks muutunud jõushoidmise riigilõivu tähtajaks tasunud, loetakse Euroopa patent Eesti suhtes õigustühiseks Euroopa patendi kehtivuse algusest arvates. (3) Kui osalisriigid on kokku leppinud patendikirjelduse tõlke esitamise nõude asendamises patendinõudluse tõlkega, peab patendiomanik esitama patendinõudluse tõlke käesoleva paragrahvi lõikes 1 sätestatud korras. Sellisel juhul kohaldatakse ka lõikes 2 sätestatut. (4) Kui osalisriigid on kokku leppinud patendikirjelduse või patendinõudluse tõlke esitamise nõudest loobumises, peab patendiomanik Euroopa patenti puudutava haldus- või kohtuvaidluse korral esitama vaidlust lahendava haldusorgani, kohtu või oletatava patendiõiguse rikkuja nõudel kolme kuu jooksul nõude saamisest arvates oma kulul patendikirjelduse tõlke eesti keeles. Tõlke esitamata jätmise korral võib kohus tunnistada Euroopa patendi Eesti suhtes õigustühiseks Euroopa patendi kehtivuse algusest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
       },
@@ -578,20 +674,31 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:EPVKS_Map"
+        },
         {
           "@id": "estleg:EPVKS_Par_12_Lg_4"
         },
@@ -609,20 +716,6 @@
         {
           "@id": "estleg:EPVKS_Par_7_v104072017128"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_patendiamet"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        },
-        {
-          "@id": "estleg:Institution_kohus"
-        }
       ]
     },
     {
@@ -637,12 +730,12 @@
         "@id": "estleg:EPVKS_Par_7"
       },
       "rdfs:label": "§ 7 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -657,16 +750,11 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1¹",
-      "estleg:legalText": "(1¹) Kui vastavalt Euroopa Parlamendi ja nõukogu määrusele (EL) nr 1257/2012 registreeritakse Euroopa patendi ühtne toime ning see laieneb Eesti territooriumile, siis kaotab kõnealune Euroopa patent arvates Euroopa Patendibülletäänis patendi väljaandmise teate avaldamisest Eesti territooriumil kehtivuse siseriikliku patendina. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:legalText": "(1¹) Kui vastavalt Euroopa Parlamendi ja nõukogu määrusele (EL) nr 1257/2012 registreeritakse Euroopa patendi ühtne toime ning see laieneb Eesti territooriumile, siis kaotab kõnealune Euroopa patent arvates Euroopa Patendibülletäänis patendi väljaandmise teate avaldamisest Eesti territooriumil kehtivuse siseriikliku patendina.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 1¹",
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
-      ]
+      "rdfs:label": "§ 7 lg 1¹"
     },
     {
       "@id": "estleg:EPVKS_Par_7_Lg_1_2",
@@ -675,14 +763,11 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1²",
-      "estleg:legalText": "(1²) Kui Euroopa Patendiamet keeldub Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaselt Euroopa patendile, milles Eesti Vabariik on märgitud riik, ühtse toime registreerimisest ja selline ühtse toime registreerimise taotlus oli Euroopa Patendiametile esitatud õigeks ajaks, on selle Euroopa patendi omanikul käesolevas paragrahvis sätestatud õigused. Sellisel juhul arvutatakse käesoleva paragrahvi lõikes 1 sätestatud tähtaega Euroopa patendile ühtse toime andmisest keeldumise otsuse jõustumisest arvates. Koos patendikirjelduse tõlkega tuleb esitada jõustunud otsus Euroopa patendile ühtse toime andmisest keeldumise kohta. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:legalText": "(1²) Kui Euroopa Patendiamet keeldub Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaselt Euroopa patendile, milles Eesti Vabariik on märgitud riik, ühtse toime registreerimisest ja selline ühtse toime registreerimise taotlus oli Euroopa Patendiametile esitatud õigeks ajaks, on selle Euroopa patendi omanikul käesolevas paragrahvis sätestatud õigused. Sellisel juhul arvutatakse käesoleva paragrahvi lõikes 1 sätestatud tähtaega Euroopa patendile ühtse toime andmisest keeldumise otsuse jõustumisest arvates. Koos patendikirjelduse tõlkega tuleb esitada jõustunud otsus Euroopa patendile ühtse toime andmisest keeldumise kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_7"
       },
       "rdfs:label": "§ 7 lg 1²",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -692,17 +777,15 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_patendiamet"
         }
       ],
-      "estleg:competenceType": "general",
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
-      ]
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EPVKS_Par_7_Lg_1_3",
@@ -711,7 +794,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1³",
-      "estleg:legalText": "(1³) Kui käesoleva paragrahvi lõikes 12 sätestatud juhul on patendikirjelduse tõlke esitamise ajaks muutunud sissenõutavaks jõushoidmise riigilõiv vastavalt käesoleva seaduse § 10 lõikele 3, tasub patendiomanik sissenõutavaks muutunud jõushoidmise riigilõivu koos lõikes 12 sätestatud patendikirjelduse tõlke esitamise ja tõlke avalikustamise eest ettenähtud riigilõivuga. Kui pikendatakse käesoleva paragrahvi lõike 1 teises lauses sätestatud tõlke esitamise tähtaega, pikeneb sama aja võrra ka käesolevas lõikes sätestatud sissenõutavaks muutunud jõushoidmise riigilõivu tasumise tähtaeg. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:legalText": "(1³) Kui käesoleva paragrahvi lõikes 1² sätestatud juhul on patendikirjelduse tõlke esitamise ajaks muutunud sissenõutavaks jõushoidmise riigilõiv vastavalt käesoleva seaduse § 10 lõikele 3, tasub patendiomanik sissenõutavaks muutunud jõushoidmise riigilõivu koos lõikes 1² sätestatud patendikirjelduse tõlke esitamise ja tõlke avalikustamise eest ettenähtud riigilõivuga. Kui pikendatakse käesoleva paragrahvi lõike 1 teises lauses sätestatud tõlke esitamise tähtaega, pikeneb sama aja võrra ka käesolevas lõikes sätestatud sissenõutavaks muutunud jõushoidmise riigilõivu tasumise tähtaeg.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_7"
       },
@@ -719,11 +802,6 @@
       "estleg:references": [
         {
           "@id": "estleg:EPVKS_Par_10"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
         }
       ]
     },
@@ -747,16 +825,11 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2¹",
-      "estleg:legalText": "(2¹) Kui patendiomanik ei ole käesoleva paragrahvi lõikes 13 nimetatud sissenõutavaks muutunud jõushoidmise riigilõivu tähtajaks tasunud, loetakse Euroopa patent Eesti suhtes õigustühiseks Euroopa patendi kehtivuse algusest arvates. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:legalText": "(2¹) Kui patendiomanik ei ole käesoleva paragrahvi lõikes 13 nimetatud sissenõutavaks muutunud jõushoidmise riigilõivu tähtajaks tasunud, loetakse Euroopa patent Eesti suhtes õigustühiseks Euroopa patendi kehtivuse algusest arvates.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 2¹",
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
-      ]
+      "rdfs:label": "§ 7 lg 2¹"
     },
     {
       "@id": "estleg:EPVKS_Par_7_Lg_3",
@@ -770,12 +843,12 @@
         "@id": "estleg:EPVKS_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -790,9 +863,6 @@
         "@id": "estleg:EPVKS_Par_7"
       },
       "rdfs:label": "§ 7 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -801,6 +871,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -815,13 +888,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7¹.",
-      "rdfs:label": "§ 7¹. Ühtse toimega Euroopa patent kui varaese",
+      "rdfs:label": {
+        "@value": "§ 7¹. Ühtse toimega Euroopa patent kui varaese",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Kui ühtse toimega Euroopa patenti kui varaeset käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 7 lõikest 1 tulenevalt Eesti siseriikliku patendina, kohaldatakse siseriikliku patendi kohta sätestatut niivõrd, kuivõrd määruses (EL) nr 1257/2012 ja ühtset patendikohut käsitlevas lepingus (ELT C 175, 20.06.2013, lk 1–40) ei ole sätestatud teisiti. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku",
-      "estleg:legalText": "Kui ühtse toimega Euroopa patenti kui varaeset käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 7 lõikest 1 tulenevalt Eesti siseriikliku patendina, kohaldatakse siseriikliku patendi kohta sätestatut niivõrd, kuivõrd määruses (EL) nr 1257/2012 ja ühtset patendikohut käsitlevas lepingus (ELT C 175, 20.06.2013, lk 1–40) ei ole sätestatud teisiti. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:summary": {
+        "@value": "Kui ühtse toimega Euroopa patenti kui varaeset käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 7 lõikest 1 tulenevalt Eesti siseriikliku patendina, kohaldatakse siseriikliku patendi kohta sätestatut niivõrd, kuivõrd määruses (EL) nr 1257/2012 ja ühtset patendikohut käsitlevas lepingus (ELT C 175, 20.06.2013, lk 1–40) ei ole sätestatud teisiti.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kui ühtse toimega Euroopa patenti kui varaeset käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 7 lõikest 1 tulenevalt Eesti siseriikliku patendina, kohaldatakse siseriikliku patendi kohta sätestatut niivõrd, kuivõrd määruses (EL) nr 1257/2012 ja ühtset patendikohut käsitlevas lepingus (ELT C 175, 20.06.2013, lk 1–40) ei ole sätestatud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
       },
@@ -834,11 +913,6 @@
         {
           "@id": "estleg:EPVKS_Par_7_1_v104072017128"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
       ]
     },
     {
@@ -847,15 +921,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui ühtse toimega Euroopa patenti kui varaeset käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 7 lõikest 1 tulenevalt Eesti siseriikliku patendina, kohaldatakse siseriikliku patendi kohta sätestatut niivõrd, kuivõrd määruses (EL) nr 1257/2012 ja ühtset patendikohut käsitlevas lepingus (ELT C 175, 20.06.2013, lk 1–40) ei ole sätestatud teisiti. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui ühtse toimega Euroopa patenti kui varaeset käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 artikli 7 lõikest 1 tulenevalt Eesti siseriikliku patendina, kohaldatakse siseriikliku patendi kohta sätestatut niivõrd, kuivõrd määruses (EL) nr 1257/2012 ja ühtset patendikohut käsitlevas lepingus (ELT C 175, 20.06.2013, lk 1–40) ei ole sätestatud teisiti.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_7_1"
       },
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
-      ]
+      "rdfs:label": "§ 7¹ lg 1"
     },
     {
       "@id": "estleg:EPVKS_Par_8",
@@ -864,12 +935,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Euroopa patenditaotluse ja Euroopa patendikirjelduse autentne tekst",
+      "rdfs:label": {
+        "@value": "§ 8. Euroopa patenditaotluse ja Euroopa patendikirjelduse autentne tekst",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Euroopa patenditaotluse või Euroopa patendikirjelduse tekst Euroopa Patendiametis kasutatud menetluskeeles on autentne tekst. (2) Kui leiutise õiguskaitse ulatus on Euroopa patenditaotluse või Euroopa patendikirjelduse eestikeelse tõlke kohaselt kitsam leiutise õiguskaitse ulatusest Euroopa Patendiametis kasutatud menetluskeeles, loetakse autentseks tekstiks eestikeelne tõlge, välja arvatud patendi tühistamise menetlemisel kohtus. Patendi tühistamise menetlemisel võib kohus asja",
+      "estleg:summary": {
+        "@value": "(1) Euroopa patenditaotluse või Euroopa patendikirjelduse tekst Euroopa Patendiametis kasutatud menetluskeeles on autentne tekst. (2) Kui leiutise õiguskaitse ulatus on Euroopa patenditaotluse või Euroopa patendikirjelduse eestikeelse tõlke kohaselt kitsam leiutise õiguskaitse ulatusest Euroopa Patendiametis kasutatud menetluskeeles, loetakse autentseks tekstiks eestikeelne tõlge, välja arvatud patendi tühistamise menetlemisel kohtus. Patendi tühistamise menetlemisel võib kohus asja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Euroopa patenditaotluse või Euroopa patendikirjelduse tekst Euroopa Patendiametis kasutatud menetluskeeles on autentne tekst. (2) Kui leiutise õiguskaitse ulatus on Euroopa patenditaotluse või Euroopa patendikirjelduse eestikeelse tõlke kohaselt kitsam leiutise õiguskaitse ulatusest Euroopa Patendiametis kasutatud menetluskeeles, loetakse autentseks tekstiks eestikeelne tõlge, välja arvatud patendi tühistamise menetlemisel kohtus. Patendi tühistamise menetlemisel võib kohus asja menetlemiseks nõuda eestikeelset tõlget, mis on autentne Euroopa Patendiametis kasutatud menetluskeelse tekstiga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -887,24 +964,24 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_8_v104072017128"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
         },
         {
           "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EPVKS_Par_8_v104072017128"
         }
       ]
     },
@@ -938,9 +1015,6 @@
         "@id": "estleg:EPVKS_Par_8"
       },
       "rdfs:label": "§ 8 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -949,6 +1023,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -966,12 +1043,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Euroopa patenditaotluse ja Euroopa patendikirjelduse tõlke parandamine",
+      "rdfs:label": {
+        "@value": "§ 9. Euroopa patenditaotluse ja Euroopa patendikirjelduse tõlke parandamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Patenditaotleja või patendiomanik võib igal ajal parandada Euroopa patenditaotluse või Euroopa patendikirjelduse tõlget. (2) Parandatud tõlge kehtib päevast, millal see edastatakse isikule, kes kasutab leiutist Eestis, või päevast, millal Eesti Patendiamet teatab oma ametlikus väljaandes parandatud tõlke avalikustamisest. (3) Iga isik, kes heauskselt kasutab Euroopa patenditaotluses või Euroopa patendis sisalduvat leiutist või on teinud tõsiseltvõetavaid ja tulemuslikke ettevalmistusi selle",
+      "estleg:summary": {
+        "@value": "(1) Patenditaotleja või patendiomanik võib igal ajal parandada Euroopa patenditaotluse või Euroopa patendikirjelduse tõlget. (2) Parandatud tõlge kehtib päevast, millal see edastatakse isikule, kes kasutab leiutist Eestis, või päevast, millal Eesti Patendiamet teatab oma ametlikus väljaandes parandatud tõlke avalikustamisest. (3) Iga isik, kes heauskselt kasutab Euroopa patenditaotluses või Euroopa patendis sisalduvat leiutist või on teinud tõsiseltvõetavaid ja tulemuslikke ettevalmistusi selle",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Patenditaotleja või patendiomanik võib igal ajal parandada Euroopa patenditaotluse või Euroopa patendikirjelduse tõlget. (2) Parandatud tõlge kehtib päevast, millal see edastatakse isikule, kes kasutab leiutist Eestis, või päevast, millal Eesti Patendiamet teatab oma ametlikus väljaandes parandatud tõlke avalikustamisest. (3) Iga isik, kes heauskselt kasutab Euroopa patenditaotluses või Euroopa patendis sisalduvat leiutist või on teinud tõsiseltvõetavaid ja tulemuslikke ettevalmistusi selle kasutamiseks, rikkumata seejuures esialgse tõlke põhjal patendiõigusi, võib pärast parandatud tõlke kehtima hakkamist tasuta jätkata leiutise endisel viisil kasutamist. (4) Käesoleva paragrahvi lõike 3 kohane leiutise kasutusõigus võib üle minna teisele isikule ainult koos ettevõtte või selle osaga, mida nimetatud kasutusõigus hõlmab.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -995,21 +1078,21 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_9_v104072017128"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EPVKS_Par_9_v104072017128"
         }
       ]
     },
@@ -1025,12 +1108,12 @@
         "@id": "estleg:EPVKS_Par_9"
       },
       "rdfs:label": "§ 9 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1072,9 +1155,6 @@
         "@id": "estleg:EPVKS_Par_9"
       },
       "rdfs:label": "§ 9 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1083,6 +1163,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1097,9 +1180,6 @@
         "@id": "estleg:EPVKS_Par_9"
       },
       "rdfs:label": "§ 9 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1108,6 +1188,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1117,12 +1200,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Euroopa patendi jõushoidmine",
+      "rdfs:label": {
+        "@value": "§ 10. Euroopa patendi jõushoidmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Eestis kehtiva Euroopa patendi jõushoidmiseks peab patendiomanik tasuma iga kehtivusaasta eest jõushoidmise riigilõivu. (2) Jõushoidmise riigilõiv tasutakse Eesti Patendiametile alates Euroopa Patendiameti poolt Euroopa patendi väljaandmisest teatamisele järgnevast kehtivusaastast. (3) Jõushoidmise riigilõivu peab tasuma tasumistähtpäeval või kuue kuu jooksul enne tasumistähtpäeva. Tasumistähtpäevaks loetakse selle kalendrikuu viimane päev, millal kehtivusaasta algab.",
+      "estleg:summary": {
+        "@value": "(1) Eestis kehtiva Euroopa patendi jõushoidmiseks peab patendiomanik tasuma iga kehtivusaasta eest jõushoidmise riigilõivu. (2) Jõushoidmise riigilõiv tasutakse Eesti Patendiametile alates Euroopa Patendiameti poolt Euroopa patendi väljaandmisest teatamisele järgnevast kehtivusaastast. (3) Jõushoidmise riigilõivu peab tasuma tasumistähtpäeval või kuue kuu jooksul enne tasumistähtpäeva. Tasumistähtpäevaks loetakse selle kalendrikuu viimane päev, millal kehtivusaasta algab.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eestis kehtiva Euroopa patendi jõushoidmiseks peab patendiomanik tasuma iga kehtivusaasta eest jõushoidmise riigilõivu. (2) Jõushoidmise riigilõiv tasutakse Eesti Patendiametile alates Euroopa Patendiameti poolt Euroopa patendi väljaandmisest teatamisele järgnevast kehtivusaastast. (3) Jõushoidmise riigilõivu peab tasuma tasumistähtpäeval või kuue kuu jooksul enne tasumistähtpäeva. Tasumistähtpäevaks loetakse selle kalendrikuu viimane päev, millal kehtivusaasta algab. Kehtivusaasta alguskuupäevaks loetakse Euroopa patenditaotluse esitamise kuupäev. (4) Jõushoidmise riigilõivu võib tasuda ka kuni kuus kuud pärast tasumistähtpäeva möödumist, tasudes täiendava riigilõivu. (5) Kui Euroopa Patendiameti poolt Euroopa patendi väljaandmisest teatamise päeva ja sellele järgneva kehtivusaasta eest jõushoidmise riigilõivu tasumistähtpäeva vaheline periood on lühem kui kaks kuud, on patendiomanikul õigus kahe kuu jooksul Euroopa patendi väljaandmisest teatamise päevast arvates tasuda jõushoidmise riigilõivu järgneva kehtivusaasta eest ilma käesoleva paragrahvi lõikes 4 nimetatud täiendava riigilõivuta. (6) Kui jõushoidmise riigilõiv jäetakse käesoleva paragrahvi lõikes 3 või 4 sätestatud tähtaja jooksul kehtestatud määras tasumata, kaotab Euroopa patent lõikes 3 nimetatud tasumistähtpäevast Eestis kehtivuse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -1147,13 +1236,24 @@
           "@id": "estleg:EPVKS_Par_10_Lg_6"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:PatS_Par_42"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:EPVKS_Par_7_Lg_1_3"
@@ -1163,13 +1263,7 @@
         {
           "@id": "estleg:EPVKS_Par_10_v104072017128"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_patendiamet"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:EPVKS_Par_10_Lg_1",
@@ -1183,12 +1277,12 @@
         "@id": "estleg:EPVKS_Par_10"
       },
       "rdfs:label": "§ 10 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1222,12 +1316,12 @@
         "@id": "estleg:EPVKS_Par_10"
       },
       "rdfs:label": "§ 10 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1242,12 +1336,12 @@
         "@id": "estleg:EPVKS_Par_10"
       },
       "rdfs:label": "§ 10 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1288,12 +1382,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Euroopa patenditaotluse muutmine siseriiklikuks patenditaotluseks ja kasuliku mudeli registreerimise taotluseks",
+      "rdfs:label": {
+        "@value": "§ 11. Euroopa patenditaotluse muutmine siseriiklikuks patenditaotluseks ja kasuliku mudeli registreerimise taotluseks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Patenditaotleja võib nõuda Euroopa patenditaotluse, milles Eesti Vabariik on märgitud riik, muutmist siseriiklikuks patenditaotluseks, kasuliku mudeli registreerimise taotluseks või mõlemaks, kui Euroopa patenditaotlus on loetud tagasivõetuks põhjusel, et Euroopa patenditaotlus või selle tõlge menetluskeeles ei saabunud õigeaegselt Euroopa Patendiametisse. (2) Patenditaotleja või patendiomanik võib nõuda Euroopa patenditaotluse, milles Eesti Vabariik on märgitud riik, muutmist kasuliku",
+      "estleg:summary": {
+        "@value": "(1) Patenditaotleja võib nõuda Euroopa patenditaotluse, milles Eesti Vabariik on märgitud riik, muutmist siseriiklikuks patenditaotluseks, kasuliku mudeli registreerimise taotluseks või mõlemaks, kui Euroopa patenditaotlus on loetud tagasivõetuks põhjusel, et Euroopa patenditaotlus või selle tõlge menetluskeeles ei saabunud õigeaegselt Euroopa Patendiametisse. (2) Patenditaotleja või patendiomanik võib nõuda Euroopa patenditaotluse, milles Eesti Vabariik on märgitud riik, muutmist kasuliku",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Patenditaotleja võib nõuda Euroopa patenditaotluse, milles Eesti Vabariik on märgitud riik, muutmist siseriiklikuks patenditaotluseks, kasuliku mudeli registreerimise taotluseks või mõlemaks, kui Euroopa patenditaotlus on loetud tagasivõetuks põhjusel, et Euroopa patenditaotlus või selle tõlge menetluskeeles ei saabunud õigeaegselt Euroopa Patendiametisse. (2) Patenditaotleja või patendiomanik võib nõuda Euroopa patenditaotluse, milles Eesti Vabariik on märgitud riik, muutmist kasuliku mudeli registreerimise taotluseks, kui Euroopa patenditaotlus on Euroopa Patendiameti poolt loetud tagasivõetuks või patenditaotleja on selle tagasi võtnud või Euroopa Patendiamet on Euroopa patenditaotluse tagasi lükanud või Euroopa patendi tühistanud. (3) Euroopa patenditaotlust ei saa muuta kasuliku mudeli registreerimise taotluseks, kui selles sisalduv leiutis kuulub kasuliku mudeli seaduse §-s 6 sätestatud mittekaitstavate leiutiste hulka. (4) Euroopa patenditaotluse, mis sisaldab ühtse leiundusliku mõttega seotud leiutiste kombinatsiooni, võib muuta mitmeks iseseisvaks kasuliku mudeli registreerimise taotluseks. (5) Eesti Patendiamet teatab patenditaotlejale Euroopa Patendiameti poolt edastatud Euroopa patenditaotluse siseriiklikuks patenditaotluseks või kasuliku mudeli registreerimise taotluseks muutmise nõude ja Euroopa patenditaotluse ärakirja saabumisest ning määrab kolmekuulise tähtaja Euroopa patenditaotluse eestikeelse tõlke esitamiseks. Tõlke esitamise tähtaega võib patenditaotleja nõudel pikendada veel kahe kuu võrra. (6) Patenditaotleja peab käesoleva paragrahvi lõikes 5 nimetatud tõlke esitamisel tasuma Eesti Patendiametile Euroopa patenditaotluse siseriikliku patenditaotlusena või kasuliku mudeli registreerimise taotlusena siseriiklikku menetlusse võtmise riigilõivu. (7) Kui patenditaotleja jätab käesoleva paragrahvi lõikes 5 nimetatud tõlke tähtaegselt esitamata või lõikes 6 nimetatud riigilõivu tõlke esitamisel või ühe kuu jooksul tõlke esitamisest tasumata, loetakse Euroopa patenditaotluse siseriiklikuks patenditaotluseks või kasuliku mudeli registreerimise taotluseks muutmise nõue tagasivõetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -1321,21 +1421,21 @@
           "@id": "estleg:EPVKS_Par_11_Lg_7"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_11_v104072017128"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EPVKS_Par_11_v104072017128"
         }
       ]
     },
@@ -1351,12 +1451,12 @@
         "@id": "estleg:EPVKS_Par_11"
       },
       "rdfs:label": "§ 11 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1376,12 +1476,12 @@
         "@id": "estleg:EPVKS_Par_11"
       },
       "rdfs:label": "§ 11 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1419,12 +1519,12 @@
         "@id": "estleg:EPVKS_Par_11"
       },
       "rdfs:label": "§ 11 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1439,12 +1539,12 @@
         "@id": "estleg:EPVKS_Par_11"
       },
       "rdfs:label": "§ 11 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1464,12 +1564,12 @@
         "@id": "estleg:EPVKS_Par_11"
       },
       "rdfs:label": "§ 11 lg 6",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1497,13 +1597,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Topeltkaitse keeld",
+      "rdfs:label": {
+        "@value": "§ 12. Topeltkaitse keeld",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Kui samale isikule või tema õigusjärglasele on välja antud nii Euroopa patent, milles Eesti Vabariik on märgitud riik, kui ka siseriiklik patent ning neil on sama esitamise kuupäev või prioriteedinõude korral prioriteedikuupäev, lakkab siseriikliku patendi õiguslik toime ulatuses, milles leiutis on kaetud Euroopa patendiga, päevast, millal: lõpeb Euroopa patendi vaidlustamise tähtaeg, ilma et Euroopa patenti oleks vaidlustatud, või jõustub vaidlustusavalduse menetlemise tulemusena tehtud",
-      "estleg:legalText": "(1) Kui samale isikule või tema õigusjärglasele on välja antud nii Euroopa patent, milles Eesti Vabariik on märgitud riik, kui ka siseriiklik patent ning neil on sama esitamise kuupäev või prioriteedinõude korral prioriteedikuupäev, lakkab siseriikliku patendi õiguslik toime ulatuses, milles leiutis on kaetud Euroopa patendiga, päevast, millal: lõpeb Euroopa patendi vaidlustamise tähtaeg, ilma et Euroopa patenti oleks vaidlustatud, või jõustub vaidlustusavalduse menetlemise tulemusena tehtud lõppotsus, mis jätab Euroopa patendi kehtima. (2) Kui Eesti Patendiametis on menetluses siseriiklik patenditaotlus, mis kuulub isikule või tema õigusjärglasele, kellele on välja antud Euroopa patent, milles Eesti Vabariik on märgitud riik, ja millel on sama esitamise kuupäev või prioriteedinõude korral sama prioriteedikuupäev, lükatakse siseriiklik patenditaotlus tagasi ulatuses, milles leiutis on kaetud Euroopa patendiga. (3) Topeltkaitse keeld ei kehti kasulike mudelite suhtes. (4) Kui Euroopa patendi kohta, millele on ühtse patendikaitse registri kohaselt registreeritud ühtne toime, esitatakse Eesti Patendiametile vastavalt käesoleva seaduse §-le 7 Euroopa patendikirjelduse tõlge, keeldub Eesti Patendiamet kõnealuse Euroopa patendi kandmisest Eestis kehtivate Euroopa patentide registrisse (edaspidi register). - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) (5) Kui registrisse kantud Euroopa patendile on ühtse patendikaitse registri kohaselt registreeritud ühtne toime, kustutatakse kõnealuse Euroopa patendi kirje asjast huvitatud isiku taotlusel või Eesti Patendiameti algatusel registrist. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:summary": {
+        "@value": "(1) Kui samale isikule või tema õigusjärglasele on välja antud nii Euroopa patent, milles Eesti Vabariik on märgitud riik, kui ka siseriiklik patent ning neil on sama esitamise kuupäev või prioriteedinõude korral prioriteedikuupäev, lakkab siseriikliku patendi õiguslik toime ulatuses, milles leiutis on kaetud Euroopa patendiga, päevast, millal: 1) lõpeb Euroopa patendi vaidlustamise tähtaeg, ilma et Euroopa patenti oleks vaidlustatud, või 2) jõustub vaidlustusavalduse menetlemise tulemusena",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui samale isikule või tema õigusjärglasele on välja antud nii Euroopa patent, milles Eesti Vabariik on märgitud riik, kui ka siseriiklik patent ning neil on sama esitamise kuupäev või prioriteedinõude korral prioriteedikuupäev, lakkab siseriikliku patendi õiguslik toime ulatuses, milles leiutis on kaetud Euroopa patendiga, päevast, millal: 1) lõpeb Euroopa patendi vaidlustamise tähtaeg, ilma et Euroopa patenti oleks vaidlustatud, või 2) jõustub vaidlustusavalduse menetlemise tulemusena tehtud lõppotsus, mis jätab Euroopa patendi kehtima. (2) Kui Eesti Patendiametis on menetluses siseriiklik patenditaotlus, mis kuulub isikule või tema õigusjärglasele, kellele on välja antud Euroopa patent, milles Eesti Vabariik on märgitud riik, ja millel on sama esitamise kuupäev või prioriteedinõude korral sama prioriteedikuupäev, lükatakse siseriiklik patenditaotlus tagasi ulatuses, milles leiutis on kaetud Euroopa patendiga. (3) Topeltkaitse keeld ei kehti kasulike mudelite suhtes. (4) Kui Euroopa patendi kohta, millele on ühtse patendikaitse registri kohaselt registreeritud ühtne toime, esitatakse Eesti Patendiametile vastavalt käesoleva seaduse §-le 7 Euroopa patendikirjelduse tõlge, keeldub Eesti Patendiamet kõnealuse Euroopa patendi kandmisest Eestis kehtivate Euroopa patentide registrisse (edaspidi register). (5) Kui registrisse kantud Euroopa patendile on ühtse patendikaitse registri kohaselt registreeritud ühtne toime, kustutatakse kõnealuse Euroopa patendi kirje asjast huvitatud isiku taotlusel või Eesti Patendiameti algatusel registrist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
       },
@@ -1533,20 +1639,15 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_12_v104072017128"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_patendiamet"
         }
       ],
       "estleg:competenceType": "general",
-      "estleg:mentionsInstitution": [
+      "estleg:hasVersion": [
         {
-          "@id": "estleg:Institution_valisministeerium"
+          "@id": "estleg:EPVKS_Par_12_v104072017128"
         }
       ]
     },
@@ -1557,11 +1658,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kui samale isikule või tema õigusjärglasele on välja antud nii Euroopa patent, milles Eesti Vabariik on märgitud riik, kui ka siseriiklik patent ning neil on sama esitamise kuupäev või prioriteedinõude korral prioriteedikuupäev, lakkab siseriikliku patendi õiguslik toime ulatuses, milles leiutis on kaetud Euroopa patendiga, päevast, millal: lõpeb Euroopa patendi vaidlustamise tähtaeg, ilma et Euroopa patenti oleks vaidlustatud, või jõustub vaidlustusavalduse menetlemise tulemusena tehtud lõppotsus, mis jätab Euroopa patendi kehtima.",
+      "estleg:legalText": "(1) Kui samale isikule või tema õigusjärglasele on välja antud nii Euroopa patent, milles Eesti Vabariik on märgitud riik, kui ka siseriiklik patent ning neil on sama esitamise kuupäev või prioriteedinõude korral prioriteedikuupäev, lakkab siseriikliku patendi õiguslik toime ulatuses, milles leiutis on kaetud Euroopa patendiga, päevast, millal: 1) lõpeb Euroopa patendi vaidlustamise tähtaeg, ilma et Euroopa patenti oleks vaidlustatud, või 2) jõustub vaidlustusavalduse menetlemise tulemusena tehtud lõppotsus, mis jätab Euroopa patendi kehtima.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_12"
       },
       "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1619,7 +1724,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kui Euroopa patendi kohta, millele on ühtse patendikaitse registri kohaselt registreeritud ühtne toime, esitatakse Eesti Patendiametile vastavalt käesoleva seaduse §-le 7 Euroopa patendikirjelduse tõlge, keeldub Eesti Patendiamet kõnealuse Euroopa patendi kandmisest Eestis kehtivate Euroopa patentide registrisse (edaspidi register). - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:legalText": "(4) Kui Euroopa patendi kohta, millele on ühtse patendikaitse registri kohaselt registreeritud ühtne toime, esitatakse Eesti Patendiametile vastavalt käesoleva seaduse §-le 7 Euroopa patendikirjelduse tõlge, keeldub Eesti Patendiamet kõnealuse Euroopa patendi kandmisest Eestis kehtivate Euroopa patentide registrisse (edaspidi register).",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_12"
       },
@@ -1634,12 +1739,7 @@
           "@id": "estleg:Institution_patendiamet"
         }
       ],
-      "estleg:competenceType": "general",
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
-      ]
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EPVKS_Par_12_Lg_5",
@@ -1648,7 +1748,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kui registrisse kantud Euroopa patendile on ühtse patendikaitse registri kohaselt registreeritud ühtne toime, kustutatakse kõnealuse Euroopa patendi kirje asjast huvitatud isiku taotlusel või Eesti Patendiameti algatusel registrist. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:legalText": "(5) Kui registrisse kantud Euroopa patendile on ühtse patendikaitse registri kohaselt registreeritud ühtne toime, kustutatakse kõnealuse Euroopa patendi kirje asjast huvitatud isiku taotlusel või Eesti Patendiameti algatusel registrist.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_12"
       },
@@ -1665,9 +1765,6 @@
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
-        },
-        {
-          "@id": "estleg:Institution_valisministeerium"
         }
       ]
     },
@@ -1678,12 +1775,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Euroopa patendi tühistamise või selles muudatuste tegemise õiguslik tagajärg",
+      "rdfs:label": {
+        "@value": "§ 13. Euroopa patendi tühistamise või selles muudatuste tegemise õiguslik tagajärg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Euroopa Patendiametis vaidlustusavalduse menetlemise tulemusena Euroopa patendi kohta, milles Eesti Vabariik on märgitud riik, tehtud tühistamise või muudatuste tegemise otsus on Eesti suhtes õiguslikult siduv. (2) Euroopa patendis muudatuste tegemise korral peab patendiomanik kolme kuu jooksul Euroopa Patendiameti ametlikus väljaandes nimetatud muudatuste tegemisest teatamise päevast arvates esitama Eesti Patendiametile muudetud Euroopa patendikirjelduse tõlke eesti keeles ja tasuma tõlke",
+      "estleg:summary": {
+        "@value": "(1) Euroopa Patendiametis vaidlustusavalduse menetlemise tulemusena Euroopa patendi kohta, milles Eesti Vabariik on märgitud riik, tehtud tühistamise või muudatuste tegemise otsus on Eesti suhtes õiguslikult siduv. (2) Euroopa patendis muudatuste tegemise korral peab patendiomanik kolme kuu jooksul Euroopa Patendiameti ametlikus väljaandes nimetatud muudatuste tegemisest teatamise päevast arvates esitama Eesti Patendiametile muudetud Euroopa patendikirjelduse tõlke eesti keeles ja tasuma tõlke",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Euroopa Patendiametis vaidlustusavalduse menetlemise tulemusena Euroopa patendi kohta, milles Eesti Vabariik on märgitud riik, tehtud tühistamise või muudatuste tegemise otsus on Eesti suhtes õiguslikult siduv. (2) Euroopa patendis muudatuste tegemise korral peab patendiomanik kolme kuu jooksul Euroopa Patendiameti ametlikus väljaandes nimetatud muudatuste tegemisest teatamise päevast arvates esitama Eesti Patendiametile muudetud Euroopa patendikirjelduse tõlke eesti keeles ja tasuma tõlke avalikustamise eest ettenähtud riigilõivu. Tõlke esitamise tähtaega võib pikendada kahe kuu võrra, tasudes pikendamise eest täiendava riigilõivu. Tõlke suhtes kohaldatakse käesoleva seaduse § 7 lõiget 2. (3) Eesti Patendiamet teatab Euroopa patendi tühistamisest või selles muudatuste tegemisest oma ametlikus väljaandes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -1699,14 +1802,21 @@
           "@id": "estleg:EPVKS_Par_13_Lg_3"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_13_v104072017128"
-        }
-      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EPVKS_Par_13_v104072017128"
         }
       ]
     },
@@ -1740,9 +1850,6 @@
         "@id": "estleg:EPVKS_Par_13"
       },
       "rdfs:label": "§ 13 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -1752,6 +1859,9 @@
           "@id": "estleg:EPVKS_Par_7"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
@@ -1770,17 +1880,20 @@
         "@id": "estleg:EPVKS_Par_13"
       },
       "rdfs:label": "§ 13 lg 3",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_patendiamet"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:EPVKS_Map"
+        },
         {
           "@id": "estleg:EPVKS_Par_14"
         },
         {
           "@id": "estleg:EPVKS_Par_14_Lg_1"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_patendiamet"
         }
       ]
     },
@@ -1791,12 +1904,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Siseriikliku kohtumenetluse peatamine",
+      "rdfs:label": {
+        "@value": "§ 14. Siseriikliku kohtumenetluse peatamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Kui samaaegselt siseriikliku kohtumenetlusega Euroopa patendi kehtivuse asjas või patendiomaniku õiguste kaitse asjas on Euroopa Patendiamet alustanud Euroopa patendi vaidlustusavalduse menetlemist, peatatakse siseriiklik kohtumenetlus käesoleva seaduse § 13 lõikes 3 nimetatud teate avaldamiseni. (2) Euroopa patendi tühistamise korral või käesoleva seaduse §-s 7 või 13 sätestatust tulenevalt õigustühiseks lugemise korral lõpetatakse siseriiklik kohtumenetlus.",
+      "estleg:summary": {
+        "@value": "(1) Kui samaaegselt siseriikliku kohtumenetlusega Euroopa patendi kehtivuse asjas või patendiomaniku õiguste kaitse asjas on Euroopa Patendiamet alustanud Euroopa patendi vaidlustusavalduse menetlemist, peatatakse siseriiklik kohtumenetlus käesoleva seaduse § 13 lõikes 3 nimetatud teate avaldamiseni. (2) Euroopa patendi tühistamise korral või käesoleva seaduse §-s 7 või 13 sätestatust tulenevalt õigustühiseks lugemise korral lõpetatakse siseriiklik kohtumenetlus.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui samaaegselt siseriikliku kohtumenetlusega Euroopa patendi kehtivuse asjas või patendiomaniku õiguste kaitse asjas on Euroopa Patendiamet alustanud Euroopa patendi vaidlustusavalduse menetlemist, peatatakse siseriiklik kohtumenetlus käesoleva seaduse § 13 lõikes 3 nimetatud teate avaldamiseni. (2) Euroopa patendi tühistamise korral või käesoleva seaduse §-s 7 või 13 sätestatust tulenevalt õigustühiseks lugemise korral lõpetatakse siseriiklik kohtumenetlus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -1817,14 +1936,14 @@
           "@id": "estleg:EPVKS_Par_7"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_14_v104072017128"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EPVKS_Par_14_v104072017128"
         }
       ]
     },
@@ -1876,12 +1995,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Patendiomaniku esindamine",
+      "rdfs:label": {
+        "@value": "§ 15. Patendiomaniku esindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Euroopa patendi Eestis jõushoidmisega seotud siseriikliku menetluse toimingute tegemisel, välja arvatud Euroopa patendi siseriikliku menetluse toimingute ja Euroopa patendi jõushoidmise eest tasumine, võivad patendiomanikku Eesti Patendiametis esindada ainult riiklikku patendivolinike registrisse kantud patendivolinikud, kelle kutsetegevuse valdkonnaks on leiutise ja mikrolülituse topoloogia õiguskaitse.",
+      "estleg:summary": {
+        "@value": "Euroopa patendi Eestis jõushoidmisega seotud siseriikliku menetluse toimingute tegemisel, välja arvatud Euroopa patendi siseriikliku menetluse toimingute ja Euroopa patendi jõushoidmise eest tasumine, võivad patendiomanikku Eesti Patendiametis esindada ainult riiklikku patendivolinike registrisse kantud patendivolinikud, kelle kutsetegevuse valdkonnaks on leiutise ja mikrolülituse topoloogia õiguskaitse.",
+        "@language": "et"
+      },
       "estleg:legalText": "Euroopa patendi Eestis jõushoidmisega seotud siseriikliku menetluse toimingute tegemisel, välja arvatud Euroopa patendi siseriikliku menetluse toimingute ja Euroopa patendi jõushoidmise eest tasumine, võivad patendiomanikku Eesti Patendiametis esindada ainult riiklikku patendivolinike registrisse kantud patendivolinikud, kelle kutsetegevuse valdkonnaks on leiutise ja mikrolülituse topoloogia õiguskaitse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -1891,14 +2016,14 @@
           "@id": "estleg:EPVKS_Par_15_Lg_1"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_15_v104072017128"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EPVKS_Par_15_v104072017128"
         }
       ]
     },
@@ -1908,10 +2033,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Euroopa patendi Eestis jõushoidmisega seotud siseriikliku menetluse toimingute tegemisel, välja arvatud Euroopa patendi siseriikliku menetluse toimingute ja Euroopa patendi jõushoidmise eest tasumine, võivad patendiomanikku Eesti Patendiametis esindada ainult riiklikku patendivolinike registrisse kantud patendivolinikud, kelle kutsetegevuse valdkonnaks on leiutise ja mikrolülituse topoloogia õiguskaitse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Euroopa patendi Eestis jõushoidmisega seotud siseriikliku menetluse toimingute tegemisel, välja arvatud Euroopa patendi siseriikliku menetluse toimingute ja Euroopa patendi jõushoidmise eest tasumine, võivad patendiomanikku Eesti Patendiametis esindada ainult riiklikku patendivolinike registrisse kantud patendivolinikud, kelle kutsetegevuse valdkonnaks on leiutise ja mikrolülituse topoloogia õiguskaitse.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_15"
       },
+      "rdfs:label": "§ 15 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
@@ -1925,13 +2052,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Register",
+      "rdfs:label": {
+        "@value": "§ 16. Register",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Registrit peetakse käesolevas seaduses sätestatu kohaselt Eestis õiguskaitse saanud Euroopa patentide kohta. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) (2) Register on õiguslikult võrdne patendiseaduses sätestatud patendiregistriga.",
-      "estleg:legalText": "(1) Registrit peetakse käesolevas seaduses sätestatu kohaselt Eestis õiguskaitse saanud Euroopa patentide kohta. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) (2) Register on õiguslikult võrdne patendiseaduses sätestatud patendiregistriga. (3) Registri pidamisel kohaldatakse patendiseaduse sätteid käesolevast seadusest tulenevate erisustega.",
+      "estleg:summary": {
+        "@value": "(1) Registrit peetakse käesolevas seaduses sätestatu kohaselt Eestis õiguskaitse saanud Euroopa patentide kohta. (2) Register on õiguslikult võrdne patendiseaduses sätestatud patendiregistriga. (3) Registri pidamisel kohaldatakse patendiseaduse sätteid käesolevast seadusest tulenevate erisustega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Registrit peetakse käesolevas seaduses sätestatu kohaselt Eestis õiguskaitse saanud Euroopa patentide kohta. (2) Register on õiguslikult võrdne patendiseaduses sätestatud patendiregistriga. (3) Registri pidamisel kohaldatakse patendiseaduse sätteid käesolevast seadusest tulenevate erisustega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
       },
@@ -1946,25 +2079,9 @@
           "@id": "estleg:EPVKS_Par_16_Lg_3"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:PatS_Par_36_1"
-        },
-        {
-          "@id": "estleg:PatS_Par_36_2"
-        },
-        {
-          "@id": "estleg:PatS_Par_36_3"
-        }
-      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:EPVKS_Par_16_v104072017128"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
         }
       ]
     },
@@ -1975,16 +2092,11 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Registrit peetakse käesolevas seaduses sätestatu kohaselt Eestis õiguskaitse saanud Euroopa patentide kohta. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:legalText": "(1) Registrit peetakse käesolevas seaduses sätestatu kohaselt Eestis õiguskaitse saanud Euroopa patentide kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_16"
       },
-      "rdfs:label": "§ 16 lg 1",
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
-      ]
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:EPVKS_Par_16_Lg_2",
@@ -2019,13 +2131,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Registrikanded",
+      "rdfs:label": {
+        "@value": "§ 17. Registrikanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Registrikanded on: Euroopa patente, milles Eesti Vabariik on märgitud riik, iseloomustavate andmete kanne; Euroopa patendi Eestis jõustumise kanne; Euroopa patendi jõushoidmise kanne; Euroopa patendis tehtud muudatuste kanne; Euroopa patendi tühistamise kanne; Euroopa patendi kehtivuse lõppemise kanne; meditsiinitoote ja taimekaitsetoote sellise täiendava kaitse kanne, mille aluspatendiks on ühtse toimega Euroopa patent; - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse",
-      "estleg:legalText": "Registrikanded on: Euroopa patente, milles Eesti Vabariik on märgitud riik, iseloomustavate andmete kanne; Euroopa patendi Eestis jõustumise kanne; Euroopa patendi jõushoidmise kanne; Euroopa patendis tehtud muudatuste kanne; Euroopa patendi tühistamise kanne; Euroopa patendi kehtivuse lõppemise kanne; meditsiinitoote ja taimekaitsetoote sellise täiendava kaitse kanne, mille aluspatendiks on ühtse toimega Euroopa patent; - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) muud Euroopa patendi suhtes õiguslikku tähendust omavad kanded, sealhulgas õiguste ülemineku, litsentsi või pandi registreerimise ning meditsiinitoote ja taimekaitsetoote täiendava kaitse kanded.",
+      "estleg:summary": {
+        "@value": "Registrikanded on: 1) Euroopa patente, milles Eesti Vabariik on märgitud riik, iseloomustavate andmete kanne; 2) Euroopa patendi Eestis jõustumise kanne; 3) Euroopa patendi jõushoidmise kanne; 4) Euroopa patendis tehtud muudatuste kanne; 5) Euroopa patendi tühistamise kanne; 6) Euroopa patendi kehtivuse lõppemise kanne; 6¹) meditsiinitoote ja taimekaitsetoote sellise täiendava kaitse kanne, mille aluspatendiks on ühtse toimega Euroopa patent; 7) muud Euroopa patendi suhtes õiguslikku tähendust",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registrikanded on: 1) Euroopa patente, milles Eesti Vabariik on märgitud riik, iseloomustavate andmete kanne; 2) Euroopa patendi Eestis jõustumise kanne; 3) Euroopa patendi jõushoidmise kanne; 4) Euroopa patendis tehtud muudatuste kanne; 5) Euroopa patendi tühistamise kanne; 6) Euroopa patendi kehtivuse lõppemise kanne; 6¹) meditsiinitoote ja taimekaitsetoote sellise täiendava kaitse kanne, mille aluspatendiks on ühtse toimega Euroopa patent; 7) muud Euroopa patendi suhtes õiguslikku tähendust omavad kanded, sealhulgas õiguste ülemineku, litsentsi või pandi registreerimise ning meditsiinitoote ja taimekaitsetoote täiendava kaitse kanded.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
       },
@@ -2047,11 +2165,6 @@
         {
           "@id": "estleg:EPVKS_Par_17_v104072017128"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
       ]
     },
     {
@@ -2060,10 +2173,22 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Registrikanded on: Euroopa patente, milles Eesti Vabariik on märgitud riik, iseloomustavate andmete kanne; Euroopa patendi Eestis jõustumise kanne; Euroopa patendi jõushoidmise kanne; Euroopa patendis tehtud muudatuste kanne; Euroopa patendi tühistamise kanne; Euroopa patendi kehtivuse lõppemise kanne; meditsiinitoote ja taimekaitsetoote sellise täiendava kaitse kanne, mille aluspatendiks on ühtse toimega Euroopa patent; - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4) muud Euroopa patendi suhtes õiguslikku tähendust omavad kanded, sealhulgas õiguste ülemineku, litsentsi või pandi registreerimise ning meditsiinitoote ja taimekaitsetoote täiendava kaitse kanded.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registrikanded on: 1) Euroopa patente, milles Eesti Vabariik on märgitud riik, iseloomustavate andmete kanne; 2) Euroopa patendi Eestis jõustumise kanne; 3) Euroopa patendi jõushoidmise kanne; 4) Euroopa patendis tehtud muudatuste kanne; 5) Euroopa patendi tühistamise kanne; 6) Euroopa patendi kehtivuse lõppemise kanne; 6¹) meditsiinitoote ja taimekaitsetoote sellise täiendava kaitse kanne, mille aluspatendiks on ühtse toimega Euroopa patent; 7) muud Euroopa patendi suhtes õiguslikku tähendust omavad kanded, sealhulgas õiguste ülemineku, litsentsi või pandi registreerimise ning meditsiinitoote ja taimekaitsetoote täiendava kaitse kanded.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_17"
       },
+      "rdfs:label": "§ 17 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "6¹",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -2072,12 +2197,7 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      },
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
-      ]
+      }
     },
     {
       "@id": "estleg:EPVKS_Par_17_1",
@@ -2086,13 +2206,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17¹.",
-      "rdfs:label": "§ 17¹. Sundlitsentsi andmine ühtse toimega Euroopa patendile",
+      "rdfs:label": {
+        "@value": "§ 17¹. Sundlitsentsi andmine ühtse toimega Euroopa patendile",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Ühtse toimega Euroopa patendile Eestis sundlitsentsi andmisel kohaldatakse patendiseaduses sundlitsentsi kohta sätestatut. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
-      "estleg:legalText": "Ühtse toimega Euroopa patendile Eestis sundlitsentsi andmisel kohaldatakse patendiseaduses sundlitsentsi kohta sätestatut. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:summary": {
+        "@value": "Ühtse toimega Euroopa patendile Eestis sundlitsentsi andmisel kohaldatakse patendiseaduses sundlitsentsi kohta sätestatut.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühtse toimega Euroopa patendile Eestis sundlitsentsi andmisel kohaldatakse patendiseaduses sundlitsentsi kohta sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
       },
@@ -2101,22 +2227,9 @@
           "@id": "estleg:EPVKS_Par_17_1_Lg_1"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:PatS_Par_36_1"
-        },
-        {
-          "@id": "estleg:PatS_Par_36_3"
-        }
-      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:EPVKS_Par_17_1_v104072017128"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
         }
       ]
     },
@@ -2126,15 +2239,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühtse toimega Euroopa patendile Eestis sundlitsentsi andmisel kohaldatakse patendiseaduses sundlitsentsi kohta sätestatut. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühtse toimega Euroopa patendile Eestis sundlitsentsi andmisel kohaldatakse patendiseaduses sundlitsentsi kohta sätestatut.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_17_1"
       },
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
-      ]
+      "rdfs:label": "§ 17¹ lg 1"
     },
     {
       "@id": "estleg:EPVKS_Par_17_2",
@@ -2143,13 +2253,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17².",
-      "rdfs:label": "§ 17². Täiendav kaitse, mille aluspatendiks on ühtse toimega Euroopa patent",
+      "rdfs:label": {
+        "@value": "§ 17². Täiendav kaitse, mille aluspatendiks on ühtse toimega Euroopa patent",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Sellise täiendava kaitse registreerimisele, mille aluspatendiks on ühtse toimega Euroopa patent, kohaldatakse patendiseaduses sätestatut. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
-      "estleg:legalText": "Sellise täiendava kaitse registreerimisele, mille aluspatendiks on ühtse toimega Euroopa patent, kohaldatakse patendiseaduses sätestatut. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:summary": {
+        "@value": "Sellise täiendava kaitse registreerimisele, mille aluspatendiks on ühtse toimega Euroopa patent, kohaldatakse patendiseaduses sätestatut.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sellise täiendava kaitse registreerimisele, mille aluspatendiks on ühtse toimega Euroopa patent, kohaldatakse patendiseaduses sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
       },
@@ -2158,25 +2274,9 @@
           "@id": "estleg:EPVKS_Par_17_2_Lg_1"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:PatS_Par_36_1"
-        },
-        {
-          "@id": "estleg:PatS_Par_36_3"
-        },
-        {
-          "@id": "estleg:TsMSRS_Par_2_5"
-        }
-      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:EPVKS_Par_17_2_v104072017128"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
         }
       ]
     },
@@ -2186,15 +2286,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Sellise täiendava kaitse registreerimisele, mille aluspatendiks on ühtse toimega Euroopa patent, kohaldatakse patendiseaduses sätestatut. - jõustub samal ajal ühtset patendikohut käsitleva lepingu ning ühtse patendikohtu Põhjamaade ja Balti riikide piirkondliku talituse asutamise kokkuleppe jõustumisega Eesti suhtes (Välisministeeriumi teadaanded RT II, 04.03.2023, 3 ja RT II, 04.03.2023, 4)",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sellise täiendava kaitse registreerimisele, mille aluspatendiks on ühtse toimega Euroopa patent, kohaldatakse patendiseaduses sätestatut.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_17_2"
       },
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_valisministeerium"
-        }
-      ]
+      "rdfs:label": "§ 17² lg 1"
     },
     {
       "@id": "estleg:EPVKS_Par_18",
@@ -2203,12 +2300,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Euroopa patendiga seotud riigilõivud",
+      "rdfs:label": {
+        "@value": "§ 18. Euroopa patendiga seotud riigilõivud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) Euroopa patendiga seotud riigilõivud on käesolevas seaduses sätestatud Euroopa patenditaotluste ja Euroopa patentide siseriikliku menetluse toimingute ning Euroopa patentide jõushoidmise eest võetavad riigilõivud. Euroopa patendiga seotud riigilõivudest kaetakse konventsioonist tulenevate Eesti Patendiameti ülesannete täitmisega seotud kulud, sealhulgas Euroopa patenditaotluste ja Euroopa patentide siseriikliku menetluse kulud ning kulud menetlusega seotud infotehnoloogilistele",
+      "estleg:summary": {
+        "@value": "(1) Euroopa patendiga seotud riigilõivud on käesolevas seaduses sätestatud Euroopa patenditaotluste ja Euroopa patentide siseriikliku menetluse toimingute ning Euroopa patentide jõushoidmise eest võetavad riigilõivud. Euroopa patendiga seotud riigilõivudest kaetakse konventsioonist tulenevate Eesti Patendiameti ülesannete täitmisega seotud kulud, sealhulgas Euroopa patenditaotluste ja Euroopa patentide siseriikliku menetluse kulud ning kulud menetlusega seotud infotehnoloogilistele",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Euroopa patendiga seotud riigilõivud on käesolevas seaduses sätestatud Euroopa patenditaotluste ja Euroopa patentide siseriikliku menetluse toimingute ning Euroopa patentide jõushoidmise eest võetavad riigilõivud. Euroopa patendiga seotud riigilõivudest kaetakse konventsioonist tulenevate Eesti Patendiameti ülesannete täitmisega seotud kulud, sealhulgas Euroopa patenditaotluste ja Euroopa patentide siseriikliku menetluse kulud ning kulud menetlusega seotud infotehnoloogilistele arendustöödele. (2) Eesti Patendiamet kannab konventsiooni kohaselt organisatsiooni poolt määratud osa kõikidest Eesti Patendiametile laekunud Euroopa patendi jõushoidmise riigilõivudest üle Euroopa Patendiametile. (3) Euroopa patendiga seotud riigilõivudest laekunud summa peab pärast käesoleva paragrahvi lõike 2 kohast jõushoidmise riigilõivude osa ülekandmist Euroopa Patendiametile katma konventsiooni kohaldamise ja siseriikliku menetluse kulutused ega tohi seejuures kolme viimase aasta jooksul kogusummas võetuna ületada nimetatud kulutuste kogusummat rohkem kui 10 protsenti. (4) Kui käesoleva paragrahvi lõikes 3 sätestatu korral kolme viimase aasta laekunud riigilõivude kogusumma ei kata kulutusi või ületab sama perioodi kulutuste kogusummat rohkem kui 10 protsenti, kehtestatakse uued riigilõivude määrad.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -2227,14 +2330,21 @@
           "@id": "estleg:EPVKS_Par_18_Lg_4"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_18_v104072017128"
-        }
-      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EPVKS_Par_18_v104072017128"
         }
       ]
     },
@@ -2268,14 +2378,14 @@
         "@id": "estleg:EPVKS_Par_18"
       },
       "rdfs:label": "§ 18 lg 2",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:EPVKS_Par_20_Lg_2"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:EPVKS_Par_20_Lg_2"
         }
       ]
     },
@@ -2291,12 +2401,12 @@
         "@id": "estleg:EPVKS_Par_18"
       },
       "rdfs:label": "§ 18 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -2324,12 +2434,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Haldus- ja õiguskoostöö",
+      "rdfs:label": {
+        "@value": "§ 19. Haldus- ja õiguskoostöö",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Tulenevalt konventsioonis sätestatust ja vastavalt konventsiooni rakendusmäärusele ning kooskõlas Euroopa patentide väljaandmise konventsiooniga ühinemise seaduse (RT II 2002, 10, 40) §-ga 2 suhtleb Euroopa Patendiametiga konventsiooni kohaldamisest tuleneva teabevahetuse ja õigusabipalvete vastuvõtmise küsimustes Eesti Patendiamet. Kohtud ja Eesti muud ametiasutused suhtlevad Euroopa Patendiametiga konventsioonis sätestatud juhtudel Eesti Patendiameti vahendusel.",
+      "estleg:summary": {
+        "@value": "Tulenevalt konventsioonis sätestatust ja vastavalt konventsiooni rakendusmäärusele ning kooskõlas Euroopa patentide väljaandmise konventsiooniga ühinemise seaduse (RT II 2002, 10, 40) §-ga 2 suhtleb Euroopa Patendiametiga konventsiooni kohaldamisest tuleneva teabevahetuse ja õigusabipalvete vastuvõtmise küsimustes Eesti Patendiamet. Kohtud ja Eesti muud ametiasutused suhtlevad Euroopa Patendiametiga konventsioonis sätestatud juhtudel Eesti Patendiameti vahendusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Tulenevalt konventsioonis sätestatust ja vastavalt konventsiooni rakendusmäärusele ning kooskõlas Euroopa patentide väljaandmise konventsiooniga ühinemise seaduse (RT II 2002, 10, 40) §-ga 2 suhtleb Euroopa Patendiametiga konventsiooni kohaldamisest tuleneva teabevahetuse ja õigusabipalvete vastuvõtmise küsimustes Eesti Patendiamet. Kohtud ja Eesti muud ametiasutused suhtlevad Euroopa Patendiametiga konventsioonis sätestatud juhtudel Eesti Patendiameti vahendusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -2348,14 +2464,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EPVKS_Par_19_v104072017128"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EPVKS_Par_19_v104072017128"
         }
       ]
     },
@@ -2365,10 +2481,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tulenevalt konventsioonis sätestatust ja vastavalt konventsiooni rakendusmäärusele ning kooskõlas Euroopa patentide väljaandmise konventsiooniga ühinemise seaduse (RT II 2002, 10, 40) §-ga 2 suhtleb Euroopa Patendiametiga konventsiooni kohaldamisest tuleneva teabevahetuse ja õigusabipalvete vastuvõtmise küsimustes Eesti Patendiamet. Kohtud ja Eesti muud ametiasutused suhtlevad Euroopa Patendiametiga konventsioonis sätestatud juhtudel Eesti Patendiameti vahendusel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tulenevalt konventsioonis sätestatust ja vastavalt konventsiooni rakendusmäärusele ning kooskõlas Euroopa patentide väljaandmise konventsiooniga ühinemise seaduse (RT II 2002, 10, 40) §-ga 2 suhtleb Euroopa Patendiametiga konventsiooni kohaldamisest tuleneva teabevahetuse ja õigusabipalvete vastuvõtmise küsimustes Eesti Patendiamet. Kohtud ja Eesti muud ametiasutused suhtlevad Euroopa Patendiametiga konventsioonis sätestatud juhtudel Eesti Patendiameti vahendusel.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_19"
       },
+      "rdfs:label": "§ 19 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2391,13 +2509,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Seaduse kohaldamine",
+      "rdfs:label": {
+        "@value": "§ 20. Seaduse kohaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "(1) määrusega kehtestatakse: , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „Justiitsministri” sõnadega „valdkonna eest vastutava ministri”. Euroopa patenditaotluse Eesti Patendiametile esitamise ja Euroopa Patendiametile edastamise kord; käesoleva seaduse §-s 6, § 7 lõikes 1 ja § 13 lõikes 2 nimetatud tõlgete Eesti Patendiametile esitamise ning nende avalikustamisest teatamise kord; Euroopa patenditaotluse siseriiklikuks patenditaotluseks ja",
-      "estleg:legalText": "(1) määrusega kehtestatakse: , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „Justiitsministri” sõnadega „valdkonna eest vastutava ministri”. Euroopa patenditaotluse Eesti Patendiametile esitamise ja Euroopa Patendiametile edastamise kord; käesoleva seaduse §-s 6, § 7 lõikes 1 ja § 13 lõikes 2 nimetatud tõlgete Eesti Patendiametile esitamise ning nende avalikustamisest teatamise kord; Euroopa patenditaotluse siseriiklikuks patenditaotluseks ja kasuliku mudeli registreerimise taotluseks muutmise kord. (2) Euroopa patentidega seotud riigilõivude Eesti Patendiameti kontole kandmise korra ja käesoleva seaduse § 18 lõikes 2 nimetatud Euroopa patendi jõushoidmise riigilõivude Euroopa Patendiametile ülekandmise korra kehtestab , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „rahandusminister” sõnadega „valdkonna eest vastutav minister”. (3) Euroopa patentide siseriiklikku menetlust puudutavates küsimustes, mis ei ole reguleeritud käesoleva seaduse või teiste siseriiklike õigusaktidega, juhinduvad Eesti Patendiamet ja kohtud ning Eesti muud ametiasutused organisatsiooni institutsioonide otsustest, mis käsitlevad samu või sarnaseid küsimusi.",
+      "estleg:summary": {
+        "@value": "(1) Valdkonna eest vastutava ministri määrusega kehtestatakse: 1) Euroopa patenditaotluse Eesti Patendiametile esitamise ja Euroopa Patendiametile edastamise kord; 2) käesoleva seaduse §-s 6, § 7 lõikes 1 ja § 13 lõikes 2 nimetatud tõlgete Eesti Patendiametile esitamise ning nende avalikustamisest Eesti Patendiameti ametlikus väljaandes teatamise kord; 3) Euroopa patenditaotluse siseriiklikuks patenditaotluseks ja kasuliku mudeli registreerimise taotluseks muutmise kord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Valdkonna eest vastutava ministri määrusega kehtestatakse: 1) Euroopa patenditaotluse Eesti Patendiametile esitamise ja Euroopa Patendiametile edastamise kord; 2) käesoleva seaduse §-s 6, § 7 lõikes 1 ja § 13 lõikes 2 nimetatud tõlgete Eesti Patendiametile esitamise ning nende avalikustamisest Eesti Patendiameti ametlikus väljaandes teatamise kord; 3) Euroopa patenditaotluse siseriiklikuks patenditaotluseks ja kasuliku mudeli registreerimise taotluseks muutmise kord. (2) Euroopa patentidega seotud riigilõivude Eesti Patendiameti kontole kandmise korra ja käesoleva seaduse § 18 lõikes 2 nimetatud Euroopa patendi jõushoidmise riigilõivude Euroopa Patendiametile ülekandmise korra kehtestab valdkonna eest vastutav minister . (3) Euroopa patentide siseriiklikku menetlust puudutavates küsimustes, mis ei ole reguleeritud käesoleva seaduse või teiste siseriiklike õigusaktidega, juhinduvad Eesti Patendiamet ja kohtud ning Eesti muud ametiasutused organisatsiooni institutsioonide otsustest, mis käsitlevad samu või sarnaseid küsimusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
       },
@@ -2420,23 +2544,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:EILLNRSTPIKL_Par_2"
-        },
-        {
-          "@id": "estleg:EUKKEEUEVSEV_Par_2_1"
-        },
-        {
-          "@id": "estleg:PRS_Par_30"
-        },
-        {
-          "@id": "estleg:RKPSS_Par_15"
-        },
-        {
-          "@id": "estleg:euroopa_ulikool_instituudi_asutamise_konventsiooni_Par_2"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2444,25 +2551,16 @@
       "estleg:references": [
         {
           "@id": "estleg:EPVKS_Par_6"
-        },
+        }
+      ],
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:VABARI_Par_107_3_Lg_4"
+          "@id": "estleg:Institution_patendiamet"
         }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:EPVKS_Par_20_v104072017128"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiitsminister"
-        },
-        {
-          "@id": "estleg:Institution_patendiamet"
-        },
-        {
-          "@id": "estleg:Institution_rahandusminister"
         }
       ]
     },
@@ -2473,15 +2571,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) määrusega kehtestatakse: , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „Justiitsministri” sõnadega „valdkonna eest vastutava ministri”. Euroopa patenditaotluse Eesti Patendiametile esitamise ja Euroopa Patendiametile edastamise kord; käesoleva seaduse §-s 6, § 7 lõikes 1 ja § 13 lõikes 2 nimetatud tõlgete Eesti Patendiametile esitamise ning nende avalikustamisest teatamise kord; Euroopa patenditaotluse siseriiklikuks patenditaotluseks ja kasuliku mudeli registreerimise taotluseks muutmise kord.",
+      "estleg:legalText": "(1) Valdkonna eest vastutava ministri määrusega kehtestatakse: 1) Euroopa patenditaotluse Eesti Patendiametile esitamise ja Euroopa Patendiametile edastamise kord; 2) käesoleva seaduse §-s 6, § 7 lõikes 1 ja § 13 lõikes 2 nimetatud tõlgete Eesti Patendiametile esitamise ning nende avalikustamisest Eesti Patendiameti ametlikus väljaandes teatamise kord; 3) Euroopa patenditaotluse siseriiklikuks patenditaotluseks ja kasuliku mudeli registreerimise taotluseks muutmise kord.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_20"
       },
       "rdfs:label": "§ 20 lg 1",
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
@@ -2490,15 +2588,9 @@
       "estleg:references": [
         {
           "@id": "estleg:EPVKS_Par_6"
-        },
-        {
-          "@id": "estleg:VABARI_Par_107_3_Lg_4"
         }
       ],
       "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiitsminister"
-        },
         {
           "@id": "estleg:Institution_patendiamet"
         }
@@ -2511,19 +2603,11 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Euroopa patentidega seotud riigilõivude Eesti Patendiameti kontole kandmise korra ja käesoleva seaduse § 18 lõikes 2 nimetatud Euroopa patendi jõushoidmise riigilõivude Euroopa Patendiametile ülekandmise korra kehtestab , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „rahandusminister” sõnadega „valdkonna eest vastutav minister”.",
+      "estleg:legalText": "(2) Euroopa patentidega seotud riigilõivude Eesti Patendiameti kontole kandmise korra ja käesoleva seaduse § 18 lõikes 2 nimetatud Euroopa patendi jõushoidmise riigilõivude Euroopa Patendiametile ülekandmise korra kehtestab valdkonna eest vastutav minister .",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_20"
       },
       "rdfs:label": "§ 20 lg 2",
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        },
-        {
-          "@id": "estleg:TargetGroup_Official"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2531,17 +2615,16 @@
       "estleg:references": [
         {
           "@id": "estleg:EPVKS_Par_18_Lg_2"
-        },
+        }
+      ],
+      "estleg:targetGroup": [
         {
-          "@id": "estleg:VABARI_Par_107_3_Lg_4"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_patendiamet"
-        },
-        {
-          "@id": "estleg:Institution_rahandusminister"
         }
       ]
     },
@@ -2579,12 +2662,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 21. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa patentide väljaandmise konventsiooni ning Euroopa Parlamendi ja nõukogu määruse (EL) nr 1257/2012 kohaldamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EPVKS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub päeval, millal jõustub Eesti Vabariigi ühinemine konventsiooniga.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub päeval, millal jõustub Eesti Vabariigi ühinemine konventsiooniga.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub päeval, millal jõustub Eesti Vabariigi ühinemine konventsiooniga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EPVKS_default"
@@ -2606,9 +2695,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub päeval, millal jõustub Eesti Vabariigi ühinemine konventsiooniga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub päeval, millal jõustub Eesti Vabariigi ühinemine konventsiooniga.",
       "estleg:parentProvision": {
         "@id": "estleg:EPVKS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/524072017003",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:EPVKS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Implementation of the Convention on the Grant of European Patents and of Regulation (EU) No 1257/2012 of the European Parliament and of the Council Act",
+        "@language": "en"
       }
     }
   ]

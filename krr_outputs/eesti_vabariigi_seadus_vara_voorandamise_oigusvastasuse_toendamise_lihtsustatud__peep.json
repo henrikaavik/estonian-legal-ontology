@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VVOTS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta teemakaardistus",
+      "rdfs:label": {
+        "@value": "Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta",
-      "dcterms:title": [
-        {
-          "@value": "Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta",
-          "@language": "et"
-        },
-        {
-          "@value": "Republic of Estonia Act on Establishment of Simplified Procedure for Proving Unlawfulness of Expropriation of Property",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/24219.xml"
+        "@id": "https://www.riigiteataja.ee/akt/24219"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/24219/xml"
+      },
+      "estleg:globalId": "24219",
+      "eli:id_local": "24219",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "151334",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "2bd4f8126c6cf3fea39626d51e00e18974f07fd6cce25d83836fdd4d9f683b85",
+      "estleg:issuer": "Ülemnõukogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/524112014002"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/524112014002"
       },
       "dcterms:subject": [
@@ -57,19 +63,20 @@
         {
           "@id": "http://eurovoc.europa.eu/517"
         }
-      ]
-    },
-    {
-      "@id": "estleg:VVOTS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_VVOTS_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationYear": {
+        "@value": "1991",
+        "@type": "xsd:gYear"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_VVOTS_default",
@@ -78,12 +85,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta",
-      "skos:prefLabel": "§1–3 Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta",
+      "rdfs:label": {
+        "@value": "§1–3 Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VVOTS_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:VVOTS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_VVOTS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:VVOTS_Par_1",
@@ -92,12 +120,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Kui vara omanikuks olnud füüsiline isik oli ajavahemikus 1940. aasta 16. juunist...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Kui vara omanikuks olnud füüsiline isik oli ajavahemikus 1940. aasta 16. juunist...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:VVOTS_Map"
       },
-      "estleg:summary": "Kui vara omanikuks olnud füüsiline isik oli ajavahemikus 1940. aasta 16. juunist kuni 1954. aasta 1.jaanuarini sunnitud oma vara maha jätma oma elukohast või vara asukohast pagemise tõttu või seoses sellega, et välismaal viibides ta keeldus Eestisse tagasi tulemast, lugeda vara mahajätmine toimunuks reaalse repressiooniohu tõttu.",
+      "estleg:summary": {
+        "@value": "Kui vara omanikuks olnud füüsiline isik oli ajavahemikus 1940. aasta 16. juunist kuni 1954. aasta 1.jaanuarini sunnitud oma vara maha jätma oma elukohast või vara asukohast pagemise tõttu või seoses sellega, et välismaal viibides ta keeldus Eestisse tagasi tulemast, lugeda vara mahajätmine toimunuks reaalse repressiooniohu tõttu.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui vara omanikuks olnud füüsiline isik oli ajavahemikus 1940. aasta 16. juunist kuni 1954. aasta 1.jaanuarini sunnitud oma vara maha jätma oma elukohast või vara asukohast pagemise tõttu või seoses sellega, et välismaal viibides ta keeldus Eestisse tagasi tulemast, lugeda vara mahajätmine toimunuks reaalse repressiooniohu tõttu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VVOTS_default"
@@ -124,12 +158,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Kui isik on vara maha jätnud paragrahvis 1 nimetatud viisil või kui vara võõrand...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Kui vara võõrandamine on toimunud tsiviilasjas tehtud kohtulahendi alusel, on va...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:VVOTS_Map"
       },
-      "estleg:summary": "Kui vara võõrandamine on toimunud tsiviilasjas tehtud kohtulahendi alusel, on vaja taotleda kõrgemalseisvalt kohtult kohtulahendi tühistamist järelevalve korras.",
+      "estleg:summary": {
+        "@value": "Kui vara võõrandamine on toimunud tsiviilasjas tehtud kohtulahendi alusel, on vaja taotleda kõrgemalseisvalt kohtult kohtulahendi tühistamist järelevalve korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui vara võõrandamine on toimunud tsiviilasjas tehtud kohtulahendi alusel, on vaja taotleda kõrgemalseisvalt kohtult kohtulahendi tühistamist järelevalve korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VVOTS_default"
@@ -140,9 +180,6 @@
         }
       ],
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
@@ -163,10 +200,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui vara võõrandamine on toimunud tsiviilasjas tehtud kohtulahendi alusel, on vaja taotleda kõrgemalseisvalt kohtult kohtulahendi tühistamist järelevalve korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui vara võõrandamine on toimunud tsiviilasjas tehtud kohtulahendi alusel, on vaja taotleda kõrgemalseisvalt kohtult kohtulahendi tühistamist järelevalve korras.",
       "estleg:parentProvision": {
         "@id": "estleg:VVOTS_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -184,21 +223,79 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Käesolev seadus jõustub vastuvõtmise päevast. <p align=\"right\"><b>Eesti Vabariig...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Eesti Vabariigi Ülemnõukogu juhataja Eesti Vabariigi Ülemnõukogu esimehe kohuste...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi seadus vara võõrandamise õigusvastasuse tõendamise lihtsustatud korra kehtestamise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:VVOTS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub vastuvõtmise päevast.",
-      "estleg:legalText": "Käesolev seadus jõustub vastuvõtmise päevast.",
+      "estleg:summary": {
+        "@value": "Eesti Vabariigi Ülemnõukogu juhataja Eesti Vabariigi Ülemnõukogu esimehe kohustes Ü. NUGIS Tallinn, 5. detsembril 1991.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Eesti Vabariigi Ülemnõukogu juhataja Eesti Vabariigi Ülemnõukogu esimehe kohustes Ü. NUGIS Tallinn, 5. detsembril 1991.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VVOTS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VVOTS_Par_3_Lg_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VVOTS_Par_3_v24219"
         }
       ]
+    },
+    {
+      "@id": "estleg:VVOTS_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Vabariigi Ülemnõukogu juhataja Eesti Vabariigi Ülemnõukogu esimehe kohustes Ü. NUGIS Tallinn, 5. detsembril 1991.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VVOTS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/524112014002",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:VVOTS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Republic of Estonia Act on Establishment of Simplified Procedure for Proving Unlawfulness of Expropriation of Property",
+        "@language": "en"
+      }
     }
   ]
 }

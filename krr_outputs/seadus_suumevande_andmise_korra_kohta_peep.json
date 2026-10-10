@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Seadus süümevande andmise korra kohta teemakaardistus",
+      "rdfs:label": {
+        "@value": "Seadus süümevande andmise korra kohta teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Seadus süümevande andmise korra kohta",
-      "dcterms:title": [
-        {
-          "@value": "Seadus süümevande andmise korra kohta",
-          "@language": "et"
-        },
-        {
-          "@value": "Act on Procedure for Taking Oath",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Seadus süümevande andmise korra kohta",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13125260.xml"
+        "@id": "https://www.riigiteataja.ee/akt/13125260"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/13125260/xml"
+      },
+      "estleg:globalId": "13125260",
+      "eli:id_local": "13125260",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "159190",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "feee4c4ee3dce91f1bc642d09158a819f4acca80b413b10315cfbd8e354f1fcc",
+      "estleg:issuer": "Ülemnõukogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2009-07-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/520052014002"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/520052014002"
       },
       "estleg:references": [
@@ -83,7 +89,58 @@
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_8"
         }
       ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/695"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/695"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/527"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        }
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "1992-09-06",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2009-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationYear": {
+        "@value": "1992",
+        "@type": "xsd:gYear"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_seadus_suumevande_andmise_korra_kohta_5d51e09d66"
+        },
+        {
+          "@id": "estleg:Amendment_seadus_suumevande_andmise_korra_kohta_26a25485a5"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
+        },
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_2"
         },
@@ -114,45 +171,6 @@
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_11_Lg_2"
         }
-      ],
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/695"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/527"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        }
-      ],
-      "eli:is_about": [
-        {
-          "@id": "http://eurovoc.europa.eu/695"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/527"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohus"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:seadus_suumevande_andmise_korra_kohta_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Seadus süümevande andmise korra kohta teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
-        }
       ]
     },
     {
@@ -162,12 +180,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–11 Seadus süümevande andmise korra kohta",
-      "skos:prefLabel": "§1–11 Seadus süümevande andmise korra kohta",
+      "rdfs:label": {
+        "@value": "§1–11 Seadus süümevande andmise korra kohta",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–11 Seadus süümevande andmise korra kohta",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_TopicScheme"
       },
       "estleg:provisionCount": 11
+    },
+    {
+      "@id": "estleg:seadus_suumevande_andmise_korra_kohta_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Seadus süümevande andmise korra kohta teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
+        }
+      ]
     },
     {
       "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1",
@@ -176,13 +215,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Tulenevalt Eesti Vabariigi põhiseaduse rakendamise seadusest peab Vabariigi Pres...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Tulenevalt Eesti Vabariigi põhiseaduse rakendamise seadusest peab Vabariigi Pres...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Tulenevalt Eesti Vabariigi põhiseaduse rakendamise seadusest peab Vabariigi Presidendi ametikohale, Riigikogusse või kohaliku omavalitsuse volikogusse kandideerija, samuti isik, kes taotleb peaministri, ministri, Riigikohtu esimehe, Riigikohtu liikme, kohtuniku, õiguskantsleri, riigikontrolöri, Eesti Panga presidendi, kaitseväe juhataja või ülemjuhataja või mis tahes muud valimise või nimetamise alusel täidetavat ametikohta riigi- või kohaliku omavalitsuse organis, andma järgmise kirjaliku",
-      "estleg:legalText": "Tulenevalt Eesti Vabariigi põhiseaduse rakendamise seadusest peab Vabariigi Presidendi ametikohale, Riigikogusse või kohaliku omavalitsuse volikogusse kandideerija, samuti isik, kes taotleb peaministri, ministri, Riigikohtu esimehe, Riigikohtu liikme, kohtuniku, õiguskantsleri, riigikontrolöri, Eesti Panga presidendi, kaitseväe juhataja või ülemjuhataja või mis tahes muud valimise või nimetamise alusel täidetavat ametikohta riigi- või kohaliku omavalitsuse organis, andma järgmise kirjaliku süümevande: «Annan vande, et ma ei ole olnud Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure või vastuluure teenistuses ega agent ega ole osalenud kodanike jälitamisel ja represseerimisel nende poliitiliste veendumuste, ebalojaalsuse, klassikuuluvuse või Eesti Vabariigi riigi- või kaitseteenistuses olemise eest.». Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite agentideks on isikud, kes olid nende poolt värvatud agentideks, residentideks, kohtumis- või konspiratiivkorteri pidajateks, olid usaldusisikud või tegid muul moel teadlikult ja vabatahtlikult nendega koostööd. Agendiks, residendiks, kohtumis- või konspiratiivkorteri pidajaks või usaldusisikuks loetakse isik, kes tegi koostööd või andis nõusoleku koostööks Eestit okupeerinud riikide julgeolekuorganitega või relvajõudude luure- või vastuluureorganitega, ilma et ta oleks olnud viimastega tööõiguslikes suhetes. Isiku koostöö nimetatud organitega loetakse tõendatuks vastavale kohustusele (nõusolekule) või tema poolt neile organitele adresseeritud koostööd väljendavale ettekandele allkirja andmisega või koostöö eest rahalise või muu hüvituse saamisega, samuti muude kriminaalkohtumenetlust reguleerivas seaduses ettenähtud korras hinnatud tõenditega. Kodanike jälitamiseks ja represseerimiseks nende poliitiliste veendumuste, ebalojaalsuse, klassikuuluvuse või Eesti Vabariigi riigi- või kaitseteenistuses olemise eest loetakse kõik kohtuvälised massirepressioonid 1940.-1950. aastail Eestis, samuti kõik tahtlikud teod, mis on viinud või kaasa aidanud süüdimõistva kohtuotsuse langetamisele isikute suhtes, kes on nüüdseks Eesti Vabariigi seaduse «Kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta» alusel rehabiliteeritud või kuuluvad rehabiliteerimisele individuaalse taotluse alusel. Kodanike jälitamises või represseerimises osalenud isikuteks käesoleva paragrahvi 4. lõike mõistes on: kohtuväliseid massirepressioone (sealhulgas küüditamist) kavandanud või selleks korraldusi andnud või ettevalmistusi juhendanud või selleks korraldusi andnud isikud; küüditamisnimekirjade koostamiseks käsu andnud isikud ja isikud, kellel oli otsustusvoli neid koostada või nende koostamist korraldada ja kontrollida; isikud, kes teadvalt, omal soovil, kuigi ilma vastavate volitusteta, kogusid ja edastasid andmeid, mis viisid teiste isikute lülitamisele küüditamisnimekirjadesse või nende küüditamisele; küüditamist vahetult korraldanud või läbi viinud või selleks käsu andnud isikud, kellel olid selleks vastavad volitused või kellel oli otsustav või vastutav staatus või kes tegid seda teadvalt, omal soovil, kuigi ilma vastavate volitusteta; Rahva Omakaitsesse või rahvakaitse- või hävituspataljonidesse kuulunud isikud, kes teadvalt andsid või täitsid kuritegelikke käske või korraldusi kodanike jälitamiseks või represseerimiseks; alusetult süüdimõistetud ja seaduse jõustumise päevaks rehabiliteeritud isikute süüdimõistmisele eelnenud kohtueelses- või kohtumenetluses juurdleja, uurija, eksperdi, spetsialisti, kohtuniku, kohtukaasistuja või prokurörina tegutsenud isikud, kui on kohtulikult tõendatud, et nende isikute tahtlik tegevus tõi kaasa isiku alusetult süüdimõistmise.",
+      "estleg:summary": {
+        "@value": "Tulenevalt Eesti Vabariigi põhiseaduse rakendamise seadusest peab Vabariigi Presidendi ametikohale, Riigikogusse või kohaliku omavalitsuse volikogusse kandideerija, samuti isik, kes taotleb peaministri, ministri, Riigikohtu esimehe, Riigikohtu liikme, kohtuniku, õiguskantsleri, riigikontrolöri, Eesti Panga presidendi, kaitseväe juhataja või ülemjuhataja või mis tahes muud valimise või nimetamise alusel täidetavat ametikohta riigi- või kohaliku omavalitsuse organis, andma järgmise kirjaliku",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tulenevalt Eesti Vabariigi põhiseaduse rakendamise seadusest peab Vabariigi Presidendi ametikohale, Riigikogusse või kohaliku omavalitsuse volikogusse kandideerija, samuti isik, kes taotleb peaministri, ministri, Riigikohtu esimehe, Riigikohtu liikme, kohtuniku, õiguskantsleri, riigikontrolöri, Eesti Panga presidendi, kaitseväe juhataja või ülemjuhataja või mis tahes muud valimise või nimetamise alusel täidetavat ametikohta riigi- või kohaliku omavalitsuse organis, andma järgmise kirjaliku süümevande: «Annan vande, et ma ei ole olnud Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure või vastuluure teenistuses ega agent ega ole osalenud kodanike jälitamisel ja represseerimisel nende poliitiliste veendumuste, ebalojaalsuse, klassikuuluvuse või Eesti Vabariigi riigi- või kaitseteenistuses olemise eest.». Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite agentideks on isikud, kes olid nende poolt värvatud agentideks, residentideks, kohtumis- või konspiratiivkorteri pidajateks, olid usaldusisikud või tegid muul moel teadlikult ja vabatahtlikult nendega koostööd. Agendiks, residendiks, kohtumis- või konspiratiivkorteri pidajaks või usaldusisikuks loetakse isik, kes tegi koostööd või andis nõusoleku koostööks Eestit okupeerinud riikide julgeolekuorganitega või relvajõudude luure- või vastuluureorganitega, ilma et ta oleks olnud viimastega tööõiguslikes suhetes. Isiku koostöö nimetatud organitega loetakse tõendatuks vastavale kohustusele (nõusolekule) või tema poolt neile organitele adresseeritud koostööd väljendavale ettekandele allkirja andmisega või koostöö eest rahalise või muu hüvituse saamisega, samuti muude kriminaalkohtumenetlust reguleerivas seaduses ettenähtud korras hinnatud tõenditega. Kodanike jälitamiseks ja represseerimiseks nende poliitiliste veendumuste, ebalojaalsuse, klassikuuluvuse või Eesti Vabariigi riigi- või kaitseteenistuses olemise eest loetakse kõik kohtuvälised massirepressioonid 1940.-1950. aastail Eestis, samuti kõik tahtlikud teod, mis on viinud või kaasa aidanud süüdimõistva kohtuotsuse langetamisele isikute suhtes, kes on nüüdseks Eesti Vabariigi seaduse «Kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta» alusel rehabiliteeritud või kuuluvad rehabiliteerimisele individuaalse taotluse alusel. Kodanike jälitamises või represseerimises osalenud isikuteks käesoleva paragrahvi 4. lõike mõistes on: 1) kohtuväliseid massirepressioone (sealhulgas küüditamist) kavandanud või selleks korraldusi andnud või ettevalmistusi juhendanud või selleks korraldusi andnud isikud; 2) küüditamisnimekirjade koostamiseks käsu andnud isikud ja isikud, kellel oli otsustusvoli neid koostada või nende koostamist korraldada ja kontrollida; 3) isikud, kes teadvalt, omal soovil, kuigi ilma vastavate volitusteta, kogusid ja edastasid andmeid, mis viisid teiste isikute lülitamisele küüditamisnimekirjadesse või nende küüditamisele; 4) küüditamist vahetult korraldanud või läbi viinud või selleks käsu andnud isikud, kellel olid selleks vastavad volitused või kellel oli otsustav või vastutav staatus või kes tegid seda teadvalt, omal soovil, kuigi ilma vastavate volitusteta; 5) Rahva Omakaitsesse või rahvakaitse- või hävituspataljonidesse kuulunud isikud, kes teadvalt andsid või täitsid kuritegelikke käske või korraldusi kodanike jälitamiseks või represseerimiseks; 6) alusetult süüdimõistetud ja seaduse jõustumise päevaks rehabiliteeritud isikute süüdimõistmisele eelnenud kohtueelses- või kohtumenetluses juurdleja, uurija, eksperdi, spetsialisti, kohtuniku, kohtukaasistuja või prokurörina tegutsenud isikud, kui on kohtulikult tõendatud, et nende isikute tahtlik tegevus tõi kaasa isiku alusetult süüdimõistmise.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
       },
@@ -211,16 +256,36 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        },
+        {
+          "@id": "estleg:Institution_peaminister"
+        },
+        {
+          "@id": "estleg:Institution_riigikohus"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:PSRS_Par_6"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
+        },
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_2"
         },
@@ -259,23 +324,6 @@
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1_v13125260"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigipresident"
-        },
-        {
-          "@id": "estleg:Institution_riigikogu"
-        },
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        },
-        {
-          "@id": "estleg:Institution_peaminister"
-        },
-        {
-          "@id": "estleg:Institution_riigikohus"
-        }
       ]
     },
     {
@@ -284,10 +332,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tulenevalt Eesti Vabariigi põhiseaduse rakendamise seadusest peab Vabariigi Presidendi ametikohale, Riigikogusse või kohaliku omavalitsuse volikogusse kandideerija, samuti isik, kes taotleb peaministri, ministri, Riigikohtu esimehe, Riigikohtu liikme, kohtuniku, õiguskantsleri, riigikontrolöri, Eesti Panga presidendi, kaitseväe juhataja või ülemjuhataja või mis tahes muud valimise või nimetamise alusel täidetavat ametikohta riigi- või kohaliku omavalitsuse organis, andma järgmise kirjaliku süümevande: «Annan vande, et ma ei ole olnud Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure või vastuluure teenistuses ega agent ega ole osalenud kodanike jälitamisel ja represseerimisel nende poliitiliste veendumuste, ebalojaalsuse, klassikuuluvuse või Eesti Vabariigi riigi- või kaitseteenistuses olemise eest.».",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tulenevalt Eesti Vabariigi põhiseaduse rakendamise seadusest peab Vabariigi Presidendi ametikohale, Riigikogusse või kohaliku omavalitsuse volikogusse kandideerija, samuti isik, kes taotleb peaministri, ministri, Riigikohtu esimehe, Riigikohtu liikme, kohtuniku, õiguskantsleri, riigikontrolöri, Eesti Panga presidendi, kaitseväe juhataja või ülemjuhataja või mis tahes muud valimise või nimetamise alusel täidetavat ametikohta riigi- või kohaliku omavalitsuse organis, andma järgmise kirjaliku süümevande: «Annan vande, et ma ei ole olnud Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure või vastuluure teenistuses ega agent ega ole osalenud kodanike jälitamisel ja represseerimisel nende poliitiliste veendumuste, ebalojaalsuse, klassikuuluvuse või Eesti Vabariigi riigi- või kaitseteenistuses olemise eest.».",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1"
       },
+      "rdfs:label": "§ 1 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -324,10 +374,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite agentideks on isikud, kes olid nende poolt värvatud agentideks, residentideks, kohtumis- või konspiratiivkorteri pidajateks, olid usaldusisikud või tegid muul moel teadlikult ja vabatahtlikult nendega koostööd.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite agentideks on isikud, kes olid nende poolt värvatud agentideks, residentideks, kohtumis- või konspiratiivkorteri pidajateks, olid usaldusisikud või tegid muul moel teadlikult ja vabatahtlikult nendega koostööd.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1"
       },
+      "rdfs:label": "§ 1 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -344,10 +396,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Agendiks, residendiks, kohtumis- või konspiratiivkorteri pidajaks või usaldusisikuks loetakse isik, kes tegi koostööd või andis nõusoleku koostööks Eestit okupeerinud riikide julgeolekuorganitega või relvajõudude luure- või vastuluureorganitega, ilma et ta oleks olnud viimastega tööõiguslikes suhetes. Isiku koostöö nimetatud organitega loetakse tõendatuks vastavale kohustusele (nõusolekule) või tema poolt neile organitele adresseeritud koostööd väljendavale ettekandele allkirja andmisega või koostöö eest rahalise või muu hüvituse saamisega, samuti muude kriminaalkohtumenetlust reguleerivas seaduses ettenähtud korras hinnatud tõenditega.",
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Agendiks, residendiks, kohtumis- või konspiratiivkorteri pidajaks või usaldusisikuks loetakse isik, kes tegi koostööd või andis nõusoleku koostööks Eestit okupeerinud riikide julgeolekuorganitega või relvajõudude luure- või vastuluureorganitega, ilma et ta oleks olnud viimastega tööõiguslikes suhetes. Isiku koostöö nimetatud organitega loetakse tõendatuks vastavale kohustusele (nõusolekule) või tema poolt neile organitele adresseeritud koostööd väljendavale ettekandele allkirja andmisega või koostöö eest rahalise või muu hüvituse saamisega, samuti muude kriminaalkohtumenetlust reguleerivas seaduses ettenähtud korras hinnatud tõenditega.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1"
       },
+      "rdfs:label": "§ 1 lg 3",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -364,10 +418,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kodanike jälitamiseks ja represseerimiseks nende poliitiliste veendumuste, ebalojaalsuse, klassikuuluvuse või Eesti Vabariigi riigi- või kaitseteenistuses olemise eest loetakse kõik kohtuvälised massirepressioonid 1940.-1950. aastail Eestis, samuti kõik tahtlikud teod, mis on viinud või kaasa aidanud süüdimõistva kohtuotsuse langetamisele isikute suhtes, kes on nüüdseks Eesti Vabariigi seaduse «Kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta» alusel rehabiliteeritud või kuuluvad rehabiliteerimisele individuaalse taotluse alusel.",
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kodanike jälitamiseks ja represseerimiseks nende poliitiliste veendumuste, ebalojaalsuse, klassikuuluvuse või Eesti Vabariigi riigi- või kaitseteenistuses olemise eest loetakse kõik kohtuvälised massirepressioonid 1940.-1950. aastail Eestis, samuti kõik tahtlikud teod, mis on viinud või kaasa aidanud süüdimõistva kohtuotsuse langetamisele isikute suhtes, kes on nüüdseks Eesti Vabariigi seaduse «Kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta» alusel rehabiliteeritud või kuuluvad rehabiliteerimisele individuaalse taotluse alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1"
       },
+      "rdfs:label": "§ 1 lg 4",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -384,10 +440,20 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kodanike jälitamises või represseerimises osalenud isikuteks käesoleva paragrahvi 4. lõike mõistes on: kohtuväliseid massirepressioone (sealhulgas küüditamist) kavandanud või selleks korraldusi andnud või ettevalmistusi juhendanud või selleks korraldusi andnud isikud; küüditamisnimekirjade koostamiseks käsu andnud isikud ja isikud, kellel oli otsustusvoli neid koostada või nende koostamist korraldada ja kontrollida; isikud, kes teadvalt, omal soovil, kuigi ilma vastavate volitusteta, kogusid ja edastasid andmeid, mis viisid teiste isikute lülitamisele küüditamisnimekirjadesse või nende küüditamisele; küüditamist vahetult korraldanud või läbi viinud või selleks käsu andnud isikud, kellel olid selleks vastavad volitused või kellel oli otsustav või vastutav staatus või kes tegid seda teadvalt, omal soovil, kuigi ilma vastavate volitusteta; Rahva Omakaitsesse või rahvakaitse- või hävituspataljonidesse kuulunud isikud, kes teadvalt andsid või täitsid kuritegelikke käske või korraldusi kodanike jälitamiseks või represseerimiseks; alusetult süüdimõistetud ja seaduse jõustumise päevaks rehabiliteeritud isikute süüdimõistmisele eelnenud kohtueelses- või kohtumenetluses juurdleja, uurija, eksperdi, spetsialisti, kohtuniku, kohtukaasistuja või prokurörina tegutsenud isikud, kui on kohtulikult tõendatud, et nende isikute tahtlik tegevus tõi kaasa isiku alusetult süüdimõistmise.",
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kodanike jälitamises või represseerimises osalenud isikuteks käesoleva paragrahvi 4. lõike mõistes on: 1) kohtuväliseid massirepressioone (sealhulgas küüditamist) kavandanud või selleks korraldusi andnud või ettevalmistusi juhendanud või selleks korraldusi andnud isikud; 2) küüditamisnimekirjade koostamiseks käsu andnud isikud ja isikud, kellel oli otsustusvoli neid koostada või nende koostamist korraldada ja kontrollida; 3) isikud, kes teadvalt, omal soovil, kuigi ilma vastavate volitusteta, kogusid ja edastasid andmeid, mis viisid teiste isikute lülitamisele küüditamisnimekirjadesse või nende küüditamisele; 4) küüditamist vahetult korraldanud või läbi viinud või selleks käsu andnud isikud, kellel olid selleks vastavad volitused või kellel oli otsustav või vastutav staatus või kes tegid seda teadvalt, omal soovil, kuigi ilma vastavate volitusteta; 5) Rahva Omakaitsesse või rahvakaitse- või hävituspataljonidesse kuulunud isikud, kes teadvalt andsid või täitsid kuritegelikke käske või korraldusi kodanike jälitamiseks või represseerimiseks; 6) alusetult süüdimõistetud ja seaduse jõustumise päevaks rehabiliteeritud isikute süüdimõistmisele eelnenud kohtueelses- või kohtumenetluses juurdleja, uurija, eksperdi, spetsialisti, kohtuniku, kohtukaasistuja või prokurörina tegutsenud isikud, kui on kohtulikult tõendatud, et nende isikute tahtlik tegevus tõi kaasa isiku alusetult süüdimõistmise.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1"
       },
+      "rdfs:label": "§ 1 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -408,12 +474,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Süümevanne antakse omakäeliselt ja selle tekst peab täpselt vastama käesoleva se...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Süümevanne antakse omakäeliselt ja selle tekst peab täpselt vastama käesoleva se...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Süümevanne antakse omakäeliselt ja selle tekst peab täpselt vastama käesoleva seaduse §-le 1.",
+      "estleg:summary": {
+        "@value": "Süümevanne antakse omakäeliselt ja selle tekst peab täpselt vastama käesoleva seaduse §-le 1.",
+        "@language": "et"
+      },
       "estleg:legalText": "Süümevanne antakse omakäeliselt ja selle tekst peab täpselt vastama käesoleva seaduse §-le 1.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
@@ -423,9 +495,6 @@
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_2_Lg_1"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -435,7 +504,13 @@
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
+        },
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
         },
@@ -455,13 +530,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Süümevanne antakse omakäeliselt ja selle tekst peab täpselt vastama käesoleva seaduse §-le 1.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Süümevanne antakse omakäeliselt ja selle tekst peab täpselt vastama käesoleva seaduse §-le 1.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -470,7 +544,10 @@
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_3",
@@ -479,12 +556,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Vabariigi Presidendi ametikohale või Riigikogusse kandideerija esitab süümevande...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Vabariigi Presidendi ametikohale või Riigikogusse kandideerija esitab süümevande...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Vabariigi Presidendi ametikohale või Riigikogusse kandideerija esitab süümevande Vabariigi Valimiskomisjonile koos teiste andmetega, mis vastavalt valimisseadusele tuleb esitada kandidatuuri ülesseadmiseks. Süümevande andmise kord kohaliku omavalitsuse volikogu kandidaadi suhtes sätestatakse kohaliku omavalitsuse volikogu valimisseadusega.",
+      "estleg:summary": {
+        "@value": "Vabariigi Presidendi ametikohale või Riigikogusse kandideerija esitab süümevande Vabariigi Valimiskomisjonile koos teiste andmetega, mis vastavalt valimisseadusele tuleb esitada kandidatuuri ülesseadmiseks. Süümevande andmise kord kohaliku omavalitsuse volikogu kandidaadi suhtes sätestatakse kohaliku omavalitsuse volikogu valimisseadusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vabariigi Presidendi ametikohale või Riigikogusse kandideerija esitab süümevande Vabariigi Valimiskomisjonile koos teiste andmetega, mis vastavalt valimisseadusele tuleb esitada kandidatuuri ülesseadmiseks. Süümevande andmise kord kohaliku omavalitsuse volikogu kandidaadi suhtes sätestatakse kohaliku omavalitsuse volikogu valimisseadusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
@@ -499,14 +582,28 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
+        },
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
         },
@@ -518,17 +615,6 @@
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_3_v22231"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigipresident"
-        },
-        {
-          "@id": "estleg:Institution_riigikogu"
-        },
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
       ]
     },
     {
@@ -537,13 +623,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vabariigi Presidendi ametikohale või Riigikogusse kandideerija esitab süümevande Vabariigi Valimiskomisjonile koos teiste andmetega, mis vastavalt valimisseadusele tuleb esitada kandidatuuri ülesseadmiseks. Süümevande andmise kord kohaliku omavalitsuse volikogu kandidaadi suhtes sätestatakse kohaliku omavalitsuse volikogu valimisseadusega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Presidendi ametikohale või Riigikogusse kandideerija esitab süümevande Vabariigi Valimiskomisjonile koos teiste andmetega, mis vastavalt valimisseadusele tuleb esitada kandidatuuri ülesseadmiseks. Süümevande andmise kord kohaliku omavalitsuse volikogu kandidaadi suhtes sätestatakse kohaliku omavalitsuse volikogu valimisseadusega.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -552,6 +637,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -572,12 +660,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. [Peaministrikandidaat esitab süümevande Vabariigi Presidendile uue valitsuse mood...]",
+      "rdfs:label": {
+        "@value": "§ 4. [Peaministrikandidaat esitab süümevande Vabariigi Presidendile uue valitsuse mood...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Peaministrikandidaat esitab süümevande Vabariigi Presidendile uue valitsuse moodustamise ülesande saamisel. Ministrikandidaat esitab süümevande peaministrile, kes teatab sellest Vabariigi Presidendile koos ettepanekuga ministri ametisse nimetamiseks põhiseaduse §-de 89 ja 90 kohaselt.",
+      "estleg:summary": {
+        "@value": "Peaministrikandidaat esitab süümevande Vabariigi Presidendile uue valitsuse moodustamise ülesande saamisel. Ministrikandidaat esitab süümevande peaministrile, kes teatab sellest Vabariigi Presidendile koos ettepanekuga ministri ametisse nimetamiseks põhiseaduse §-de 89 ja 90 kohaselt.",
+        "@language": "et"
+      },
       "estleg:legalText": "Peaministrikandidaat esitab süümevande Vabariigi Presidendile uue valitsuse moodustamise ülesande saamisel. Ministrikandidaat esitab süümevande peaministrile, kes teatab sellest Vabariigi Presidendile koos ettepanekuga ministri ametisse nimetamiseks põhiseaduse §-de 89 ja 90 kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
@@ -601,7 +695,18 @@
           "@id": "estleg:eesti_vabariigi_pohiseadus_Par_89"
         }
       ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        },
+        {
+          "@id": "estleg:Institution_peaminister"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
+        },
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
         },
@@ -613,14 +718,6 @@
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_4_v22231"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigipresident"
-        },
-        {
-          "@id": "estleg:Institution_peaminister"
-        }
       ]
     },
     {
@@ -629,10 +726,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Peaministrikandidaat esitab süümevande Vabariigi Presidendile uue valitsuse moodustamise ülesande saamisel. Ministrikandidaat esitab süümevande peaministrile, kes teatab sellest Vabariigi Presidendile koos ettepanekuga ministri ametisse nimetamiseks põhiseaduse §-de 89 ja 90 kohaselt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Peaministrikandidaat esitab süümevande Vabariigi Presidendile uue valitsuse moodustamise ülesande saamisel. Ministrikandidaat esitab süümevande peaministrile, kes teatab sellest Vabariigi Presidendile koos ettepanekuga ministri ametisse nimetamiseks põhiseaduse §-de 89 ja 90 kohaselt.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_4"
       },
+      "rdfs:label": "§ 4 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -663,12 +762,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. [Isik, kes taotleb Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolö...]",
+      "rdfs:label": {
+        "@value": "§ 5. [Isik, kes taotleb Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolö...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Isik, kes taotleb Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolöri, õiguskantsleri, kaitseväe juhataja või ülemjuhataja ametikohta, esitab süümevande Vabariigi Presidendile. Süümevande andmisest teatab Vabariigi President Riigikogule koos ettepanekuga nimetada antud isik vastavasse ametisse põhiseaduse § 65 punkt 7 kohaselt. Isik, kes taotleb Riigikohtu liikme ametikohta, esitab süümevande Riigikohtu esimehele. Süümevande andmisest teatab Riigikohtu esimees Riigikogule koos",
+      "estleg:summary": {
+        "@value": "Isik, kes taotleb Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolöri, õiguskantsleri, kaitseväe juhataja või ülemjuhataja ametikohta, esitab süümevande Vabariigi Presidendile. Süümevande andmisest teatab Vabariigi President Riigikogule koos ettepanekuga nimetada antud isik vastavasse ametisse põhiseaduse § 65 punkt 7 kohaselt. Isik, kes taotleb Riigikohtu liikme ametikohta, esitab süümevande Riigikohtu esimehele. Süümevande andmisest teatab Riigikohtu esimees Riigikogule koos",
+        "@language": "et"
+      },
       "estleg:legalText": "Isik, kes taotleb Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolöri, õiguskantsleri, kaitseväe juhataja või ülemjuhataja ametikohta, esitab süümevande Vabariigi Presidendile. Süümevande andmisest teatab Vabariigi President Riigikogule koos ettepanekuga nimetada antud isik vastavasse ametisse põhiseaduse § 65 punkt 7 kohaselt. Isik, kes taotleb Riigikohtu liikme ametikohta, esitab süümevande Riigikohtu esimehele. Süümevande andmisest teatab Riigikohtu esimees Riigikogule koos ettepanekuga nimetada antud isik Riigikohtu liikmeks põhiseaduse § 65 punkt 8 kohaselt. Kohtunikukandidaat esitab süümevande Riigikohtule. Riigikohus teatab süümevande andmisest Vabariigi Presidendile koos ettepanekuga nimetada antud isik kohtunikuks põhiseaduse § 78 punkt 13 kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
@@ -680,10 +785,10 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_PublicBody"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
       "estleg:assertionConfidence": {
@@ -695,7 +800,21 @@
           "@id": "estleg:eesti_vabariigi_pohiseadus_Par_65"
         }
       ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_riigikohus"
+        },
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
+        },
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_7"
         },
@@ -713,17 +832,6 @@
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_5_v22231"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_riigikohus"
-        },
-        {
-          "@id": "estleg:Institution_vabariigipresident"
-        },
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
       ]
     },
     {
@@ -732,10 +840,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Isik, kes taotleb Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolöri, õiguskantsleri, kaitseväe juhataja või ülemjuhataja ametikohta, esitab süümevande Vabariigi Presidendile. Süümevande andmisest teatab Vabariigi President Riigikogule koos ettepanekuga nimetada antud isik vastavasse ametisse põhiseaduse § 65 punkt 7 kohaselt. Isik, kes taotleb Riigikohtu liikme ametikohta, esitab süümevande Riigikohtu esimehele. Süümevande andmisest teatab Riigikohtu esimees Riigikogule koos ettepanekuga nimetada antud isik Riigikohtu liikmeks põhiseaduse § 65 punkt 8 kohaselt. Kohtunikukandidaat esitab süümevande Riigikohtule. Riigikohus teatab süümevande andmisest Vabariigi Presidendile koos ettepanekuga nimetada antud isik kohtunikuks põhiseaduse § 78 punkt 13 kohaselt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isik, kes taotleb Riigikohtu esimehe, Eesti Panga nõukogu esimehe, riigikontrolöri, õiguskantsleri, kaitseväe juhataja või ülemjuhataja ametikohta, esitab süümevande Vabariigi Presidendile. Süümevande andmisest teatab Vabariigi President Riigikogule koos ettepanekuga nimetada antud isik vastavasse ametisse põhiseaduse § 65 punkt 7 kohaselt. Isik, kes taotleb Riigikohtu liikme ametikohta, esitab süümevande Riigikohtu esimehele. Süümevande andmisest teatab Riigikohtu esimees Riigikogule koos ettepanekuga nimetada antud isik Riigikohtu liikmeks põhiseaduse § 65 punkt 8 kohaselt. Kohtunikukandidaat esitab süümevande Riigikohtule. Riigikohus teatab süümevande andmisest Vabariigi Presidendile koos ettepanekuga nimetada antud isik kohtunikuks põhiseaduse § 78 punkt 13 kohaselt.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_5"
       },
+      "rdfs:label": "§ 5 lg 1",
       "estleg:itemNumber": [
         "7",
         "8",
@@ -780,12 +890,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. [Isik, kes taotleb valimise või nimetamise alusel täidetavat ja käesoleva seaduse...]",
+      "rdfs:label": {
+        "@value": "§ 6. [Isik, kes taotleb valimise või nimetamise alusel täidetavat ja käesoleva seaduse...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Isik, kes taotleb valimise või nimetamise alusel täidetavat ja käesoleva seaduse §-dega 3-5 hõlmamata ametikohta riigi- või kohaliku omavalitsuse organis, esitab süümevande ametiisikule või organile, kes on pädev otsustama antud ametikoha täitmist.",
+      "estleg:summary": {
+        "@value": "Isik, kes taotleb valimise või nimetamise alusel täidetavat ja käesoleva seaduse §-dega 3-5 hõlmamata ametikohta riigi- või kohaliku omavalitsuse organis, esitab süümevande ametiisikule või organile, kes on pädev otsustama antud ametikoha täitmist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Isik, kes taotleb valimise või nimetamise alusel täidetavat ja käesoleva seaduse §-dega 3-5 hõlmamata ametikohta riigi- või kohaliku omavalitsuse organis, esitab süümevande ametiisikule või organile, kes on pädev otsustama antud ametikoha täitmist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
@@ -797,17 +913,25 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_PublicBody"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
+        },
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
         },
@@ -819,11 +943,6 @@
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_6_v22231"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
       ]
     },
     {
@@ -832,10 +951,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Isik, kes taotleb valimise või nimetamise alusel täidetavat ja käesoleva seaduse §-dega 3-5 hõlmamata ametikohta riigi- või kohaliku omavalitsuse organis, esitab süümevande ametiisikule või organile, kes on pädev otsustama antud ametikoha täitmist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isik, kes taotleb valimise või nimetamise alusel täidetavat ja käesoleva seaduse §-dega 3-5 hõlmamata ametikohta riigi- või kohaliku omavalitsuse organis, esitab süümevande ametiisikule või organile, kes on pädev otsustama antud ametikoha täitmist.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_6"
       },
+      "rdfs:label": "§ 6 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -861,12 +982,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. [Isik, kes soovib jääda käesoleva seaduse §-des 5 ja 6 nimetatud ametikohale, mid...]",
+      "rdfs:label": {
+        "@value": "§ 7. [Isik, kes soovib jääda käesoleva seaduse §-des 5 ja 6 nimetatud ametikohale, mid...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Isik, kes soovib jääda käesoleva seaduse §-des 5 ja 6 nimetatud ametikohale, mida ta on asunud täitma enne Riigikogu kokkuastumist, peab andma süümevande 30 päeva jooksul Riigikogu kokkuastumisest arvates käesoleva seaduse §-des 1, 2, 5 ja 6 sätestatud korras. Süümevande mitteandmisel vabastatakse isik ametist töölepingu seaduse § 88 lõike 1 punktis 2 toodud alusel.",
+      "estleg:summary": {
+        "@value": "Isik, kes soovib jääda käesoleva seaduse §-des 5 ja 6 nimetatud ametikohale, mida ta on asunud täitma enne Riigikogu kokkuastumist, peab andma süümevande 30 päeva jooksul Riigikogu kokkuastumisest arvates käesoleva seaduse §-des 1, 2, 5 ja 6 sätestatud korras. Süümevande mitteandmisel vabastatakse isik ametist töölepingu seaduse § 88 lõike 1 punktis 2 toodud alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Isik, kes soovib jääda käesoleva seaduse §-des 5 ja 6 nimetatud ametikohale, mida ta on asunud täitma enne Riigikogu kokkuastumist, peab andma süümevande 30 päeva jooksul Riigikogu kokkuastumisest arvates käesoleva seaduse §-des 1, 2, 5 ja 6 sätestatud korras. Süümevande mitteandmisel vabastatakse isik ametist töölepingu seaduse § 88 lõike 1 punktis 2 toodud alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
@@ -878,20 +1005,9 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:PSRS_Par_7"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -907,7 +1023,23 @@
           "@id": "estleg:TOOLEP_Par_88_Lg_1"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:PSRS_Par_7"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
+        },
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
         },
@@ -922,11 +1054,6 @@
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_7_v13125260"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
       ]
     },
     {
@@ -935,14 +1062,13 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Isik, kes soovib jääda käesoleva seaduse §-des 5 ja 6 nimetatud ametikohale, mida ta on asunud täitma enne Riigikogu kokkuastumist, peab andma süümevande 30 päeva jooksul Riigikogu kokkuastumisest arvates käesoleva seaduse §-des 1, 2, 5 ja 6 sätestatud korras. Süümevande mitteandmisel vabastatakse isik ametist töölepingu seaduse § 88 lõike 1 punktis 2 toodud alusel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isik, kes soovib jääda käesoleva seaduse §-des 5 ja 6 nimetatud ametikohale, mida ta on asunud täitma enne Riigikogu kokkuastumist, peab andma süümevande 30 päeva jooksul Riigikogu kokkuastumisest arvates käesoleva seaduse §-des 1, 2, 5 ja 6 sätestatud korras. Süümevande mitteandmisel vabastatakse isik ametist töölepingu seaduse § 88 lõike 1 punktis 2 toodud alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_7"
       },
+      "rdfs:label": "§ 7 lg 1",
       "estleg:itemNumber": "2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -963,6 +1089,9 @@
           "@id": "estleg:TOOLEP_Par_88_Lg_1"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikogu"
@@ -976,12 +1105,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. [Isikul, kes on andnud süümevande käesoleva seadusega sätestatud korras, ei ole k...]",
+      "rdfs:label": {
+        "@value": "§ 8. [Isikul, kes on andnud süümevande käesoleva seadusega sätestatud korras, ei ole k...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Isikul, kes on andnud süümevande käesoleva seadusega sätestatud korras, ei ole korduva vande andmise kohustust, kui ta esitab uuel kandideerimisel või ametikoha taotlemisel teatise, millest nähtub, kellele ja millal ta vande on andnud.",
+      "estleg:summary": {
+        "@value": "Isikul, kes on andnud süümevande käesoleva seadusega sätestatud korras, ei ole korduva vande andmise kohustust, kui ta esitab uuel kandideerimisel või ametikoha taotlemisel teatise, millest nähtub, kellele ja millal ta vande on andnud.",
+        "@language": "et"
+      },
       "estleg:legalText": "Isikul, kes on andnud süümevande käesoleva seadusega sätestatud korras, ei ole korduva vande andmise kohustust, kui ta esitab uuel kandideerimisel või ametikoha taotlemisel teatise, millest nähtub, kellele ja millal ta vande on andnud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
@@ -1002,6 +1137,9 @@
       },
       "estleg:referencedBy": [
         {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
+        },
+        {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
         },
         {
@@ -1020,10 +1158,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Isikul, kes on andnud süümevande käesoleva seadusega sätestatud korras, ei ole korduva vande andmise kohustust, kui ta esitab uuel kandideerimisel või ametikoha taotlemisel teatise, millest nähtub, kellele ja millal ta vande on andnud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikul, kes on andnud süümevande käesoleva seadusega sätestatud korras, ei ole korduva vande andmise kohustust, kui ta esitab uuel kandideerimisel või ametikoha taotlemisel teatise, millest nähtub, kellele ja millal ta vande on andnud.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_8"
       },
+      "rdfs:label": "§ 8 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1041,12 +1181,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. [Käesoleva seaduse §-de 1-8 kohaselt antud süümevannet võib kohtus vaidlustada ig...]",
+      "rdfs:label": {
+        "@value": "§ 9. [Käesoleva seaduse §-de 1-8 kohaselt antud süümevannet võib kohtus vaidlustada ig...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Käesoleva seaduse §-de 1-8 kohaselt antud süümevannet võib kohtus vaidlustada iga isik või riigiorgan, kes esitab kohtule avalduse koos tõenditega süümevandega kinnitatu tõele mittevastavuse kohta. Tõendamise kohustus lasub süümevande vaidlustajal ja Eesti riigi esindajana Riigiprokuratuuril. Viimasel on õigus tema poolt tõendite puudulikeks, ebapiisavaiks või valedeks hindamisel loobuda süüdistuse toetamisest. Tõenditena ei arvestata anonüümseid tunnistusi.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse §-de 1-8 kohaselt antud süümevannet võib kohtus vaidlustada iga isik või riigiorgan, kes esitab kohtule avalduse koos tõenditega süümevandega kinnitatu tõele mittevastavuse kohta. Tõendamise kohustus lasub süümevande vaidlustajal ja Eesti riigi esindajana Riigiprokuratuuril. Viimasel on õigus tema poolt tõendite puudulikeks, ebapiisavaiks või valedeks hindamisel loobuda süüdistuse toetamisest. Tõenditena ei arvestata anonüümseid tunnistusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse §-de 1-8 kohaselt antud süümevannet võib kohtus vaidlustada iga isik või riigiorgan, kes esitab kohtule avalduse koos tõenditega süümevandega kinnitatu tõele mittevastavuse kohta. Tõendamise kohustus lasub süümevande vaidlustajal ja Eesti riigi esindajana Riigiprokuratuuril. Viimasel on õigus tema poolt tõendite puudulikeks, ebapiisavaiks või valedeks hindamisel loobuda süüdistuse toetamisest. Tõenditena ei arvestata anonüümseid tunnistusi. Riigiprokuratuur on kohustatud vaidlustama süümevande kohtus, kui tema kasutuses olevad materjalid annavad selleks aluse. Riigiprokuratuuri keeldumisele süümevannet vaidlustada võib huvitatud isik kaevata kohtusse. Kohus teavitab süümevande vaidlustanud isikuid või riigiorganeid võimalikust vastutusest isiku au ja hea nime teotamise ning tema väärikuse alandamise eest. Vaidlused, kas mingit tegevust lugeda käesoleva seaduse § 1 4. lõikes tähendatud tegevuseks, samuti isiku kuulumise üle käesoleva seaduse § 1 2. ja 5. lõikes tähendatud isikute hulka, lahendab kohus. Kohus võib kuulutada oma istungi kinniseks. Ainult jõustunud kohtuotsus, millega on kindlaks tehtud süümevandega kinnitatu tõele mittevastavus, saab olla aluseks kandidaadi kõrvaldamiseks valimisnimekirjast või tema mandaadi tühistamiseks või ametist vabastamiseks süümevandega kinnitatu tõele mittevastavuse motiivil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
@@ -1070,15 +1216,9 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1109,17 +1249,20 @@
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_8"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9_v22231"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kohus"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9_v22231"
+        }
+      ]
     },
     {
       "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9_Lg_1",
@@ -1127,13 +1270,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse §-de 1-8 kohaselt antud süümevannet võib kohtus vaidlustada iga isik või riigiorgan, kes esitab kohtule avalduse koos tõenditega süümevandega kinnitatu tõele mittevastavuse kohta. Tõendamise kohustus lasub süümevande vaidlustajal ja Eesti riigi esindajana Riigiprokuratuuril. Viimasel on õigus tema poolt tõendite puudulikeks, ebapiisavaiks või valedeks hindamisel loobuda süüdistuse toetamisest. Tõenditena ei arvestata anonüümseid tunnistusi. Riigiprokuratuur on kohustatud vaidlustama süümevande kohtus, kui tema kasutuses olevad materjalid annavad selleks aluse. Riigiprokuratuuri keeldumisele süümevannet vaidlustada võib huvitatud isik kaevata kohtusse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-de 1-8 kohaselt antud süümevannet võib kohtus vaidlustada iga isik või riigiorgan, kes esitab kohtule avalduse koos tõenditega süümevandega kinnitatu tõele mittevastavuse kohta. Tõendamise kohustus lasub süümevande vaidlustajal ja Eesti riigi esindajana Riigiprokuratuuril. Viimasel on õigus tema poolt tõendite puudulikeks, ebapiisavaiks või valedeks hindamisel loobuda süüdistuse toetamisest. Tõenditena ei arvestata anonüümseid tunnistusi. Riigiprokuratuur on kohustatud vaidlustama süümevande kohtus, kui tema kasutuses olevad materjalid annavad selleks aluse. Riigiprokuratuuri keeldumisele süümevannet vaidlustada võib huvitatud isik kaevata kohtusse.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "rdfs:label": "§ 9 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1168,7 +1310,10 @@
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_8"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9_Lg_2",
@@ -1176,10 +1321,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kohus teavitab süümevande vaidlustanud isikuid või riigiorganeid võimalikust vastutusest isiku au ja hea nime teotamise ning tema väärikuse alandamise eest.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kohus teavitab süümevande vaidlustanud isikuid või riigiorganeid võimalikust vastutusest isiku au ja hea nime teotamise ning tema väärikuse alandamise eest.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
       },
+      "rdfs:label": "§ 9 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1201,10 +1348,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vaidlused, kas mingit tegevust lugeda käesoleva seaduse § 1 4. lõikes tähendatud tegevuseks, samuti isiku kuulumise üle käesoleva seaduse § 1 2. ja 5. lõikes tähendatud isikute hulka, lahendab kohus.",
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Vaidlused, kas mingit tegevust lugeda käesoleva seaduse § 1 4. lõikes tähendatud tegevuseks, samuti isiku kuulumise üle käesoleva seaduse § 1 2. ja 5. lõikes tähendatud isikute hulka, lahendab kohus.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
       },
+      "rdfs:label": "§ 9 lg 3",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1232,13 +1381,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kohus võib kuulutada oma istungi kinniseks.",
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kohus võib kuulutada oma istungi kinniseks.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 9 lg 4",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1247,6 +1395,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1260,10 +1411,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ainult jõustunud kohtuotsus, millega on kindlaks tehtud süümevandega kinnitatu tõele mittevastavus, saab olla aluseks kandidaadi kõrvaldamiseks valimisnimekirjast või tema mandaadi tühistamiseks või ametist vabastamiseks süümevandega kinnitatu tõele mittevastavuse motiivil.",
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Ainult jõustunud kohtuotsus, millega on kindlaks tehtud süümevandega kinnitatu tõele mittevastavus, saab olla aluseks kandidaadi kõrvaldamiseks valimisnimekirjast või tema mandaadi tühistamiseks või ametist vabastamiseks süümevandega kinnitatu tõele mittevastavuse motiivil.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_9"
       },
+      "rdfs:label": "§ 9 lg 5",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1281,12 +1434,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. [Massiteabevahendites on keelatud avaldada informatsiooni süümevandega kinnitatu...]",
+      "rdfs:label": {
+        "@value": "§ 10. [Massiteabevahendites on keelatud avaldada informatsiooni süümevandega kinnitatu...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Massiteabevahendites on keelatud avaldada informatsiooni süümevandega kinnitatu kohtuliku vaidlustamise kohta enne kohtuotsuse jõustumist.",
+      "estleg:summary": {
+        "@value": "Massiteabevahendites on keelatud avaldada informatsiooni süümevandega kinnitatu kohtuliku vaidlustamise kohta enne kohtuotsuse jõustumist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Massiteabevahendites on keelatud avaldada informatsiooni süümevandega kinnitatu kohtuliku vaidlustamise kohta enne kohtuotsuse jõustumist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
@@ -1296,12 +1455,12 @@
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_10_Lg_1"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasVersion": [
         {
@@ -1315,16 +1474,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Massiteabevahendites on keelatud avaldada informatsiooni süümevandega kinnitatu kohtuliku vaidlustamise kohta enne kohtuotsuse jõustumist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Massiteabevahendites on keelatud avaldada informatsiooni süümevandega kinnitatu kohtuliku vaidlustamise kohta enne kohtuotsuse jõustumist.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_10"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
+      "rdfs:label": "§ 10 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -1334,12 +1495,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. [Käesoleva seaduse § 1 2. lõikes nimetatud, sealhulgas süümevande andnud isikute...]",
+      "rdfs:label": {
+        "@value": "§ 11. [Käesoleva seaduse § 1 2. lõikes nimetatud, sealhulgas süümevande andnud isikute...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus süümevande andmise korra kohta",
       "estleg:partOfAct": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
       },
-      "estleg:summary": "Käesoleva seaduse § 1 2. lõikes nimetatud, sealhulgas süümevande andnud isikute (välja arvatud Vabariigi President ning Riigikogu, Vabariigi Valitsuse ja Riigikohtu liikmed) vabatahtlikul ilmumisel ja süü ülestunnistamisel Riigiprokuratuuris või selle poolt määratud prokuröri juures ning nende valimistel kandideerimisest või saadud mandaadist vabatahtlikul loobumisel või vabatahtlikul lahkumisel Eesti Vabariigi põhiseaduse rakendamise seaduse järgi süümevannet nõudvalt ametikohalt nende nimesid",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse § 1 2. lõikes nimetatud, sealhulgas süümevande andnud isikute (välja arvatud Vabariigi President ning Riigikogu, Vabariigi Valitsuse ja Riigikohtu liikmed) vabatahtlikul ilmumisel ja süü ülestunnistamisel Riigiprokuratuuris või selle poolt määratud prokuröri juures ning nende valimistel kandideerimisest või saadud mandaadist vabatahtlikul loobumisel või vabatahtlikul lahkumisel Eesti Vabariigi põhiseaduse rakendamise seaduse järgi süümevannet nõudvalt ametikohalt nende nimesid",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse § 1 2. lõikes nimetatud, sealhulgas süümevande andnud isikute (välja arvatud Vabariigi President ning Riigikogu, Vabariigi Valitsuse ja Riigikohtu liikmed) vabatahtlikul ilmumisel ja süü ülestunnistamisel Riigiprokuratuuris või selle poolt määratud prokuröri juures ning nende valimistel kandideerimisest või saadud mandaadist vabatahtlikul loobumisel või vabatahtlikul lahkumisel Eesti Vabariigi põhiseaduse rakendamise seaduse järgi süümevannet nõudvalt ametikohalt nende nimesid ei avalikustata. Nimetatud isikute vabatahtlik loobumine valimistel kandideerimisest või saadud mandaadist on aluseks nende kandidaatide kõrvaldamiseks valimisnimekirjast või nende mandaadi tühistamiseks. Käesoleva seaduse täitmise tagamiseks on Riigiprokuratuuri kohustuseks käesoleva seaduse § 1 2. lõikes nimetatud isikute kohta või nendelt isikutelt endilt avalduse (või süü ülestunnistuse) vastuvõtmine ja nende isikute kohta arvestuse pidamine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_seadus_suumevande_andmise_korra_kohta_default"
@@ -1354,10 +1521,10 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_PublicBody"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
       "estleg:assertionConfidence": {
@@ -1367,11 +1534,6 @@
       "estleg:references": [
         {
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1"
-        }
-      ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_11_v22231"
         }
       ],
       "estleg:mentionsInstitution": [
@@ -1387,6 +1549,11 @@
         {
           "@id": "estleg:Institution_riigikohus"
         }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_11_v22231"
+        }
       ]
     },
     {
@@ -1395,10 +1562,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse § 1 2. lõikes nimetatud, sealhulgas süümevande andnud isikute (välja arvatud Vabariigi President ning Riigikogu, Vabariigi Valitsuse ja Riigikohtu liikmed) vabatahtlikul ilmumisel ja süü ülestunnistamisel Riigiprokuratuuris või selle poolt määratud prokuröri juures ning nende valimistel kandideerimisest või saadud mandaadist vabatahtlikul loobumisel või vabatahtlikul lahkumisel Eesti Vabariigi põhiseaduse rakendamise seaduse järgi süümevannet nõudvalt ametikohalt nende nimesid ei avalikustata. Nimetatud isikute vabatahtlik loobumine valimistel kandideerimisest või saadud mandaadist on aluseks nende kandidaatide kõrvaldamiseks valimisnimekirjast või nende mandaadi tühistamiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 1 2. lõikes nimetatud, sealhulgas süümevande andnud isikute (välja arvatud Vabariigi President ning Riigikogu, Vabariigi Valitsuse ja Riigikohtu liikmed) vabatahtlikul ilmumisel ja süü ülestunnistamisel Riigiprokuratuuris või selle poolt määratud prokuröri juures ning nende valimistel kandideerimisest või saadud mandaadist vabatahtlikul loobumisel või vabatahtlikul lahkumisel Eesti Vabariigi põhiseaduse rakendamise seaduse järgi süümevannet nõudvalt ametikohalt nende nimesid ei avalikustata. Nimetatud isikute vabatahtlik loobumine valimistel kandideerimisest või saadud mandaadist on aluseks nende kandidaatide kõrvaldamiseks valimisnimekirjast või nende mandaadi tühistamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_11"
       },
+      "rdfs:label": "§ 11 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1437,10 +1606,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse täitmise tagamiseks on Riigiprokuratuuri kohustuseks käesoleva seaduse § 1 2. lõikes nimetatud isikute kohta või nendelt isikutelt endilt avalduse (või süü ülestunnistuse) vastuvõtmine ja nende isikute kohta arvestuse pidamine.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse täitmise tagamiseks on Riigiprokuratuuri kohustuseks käesoleva seaduse § 1 2. lõikes nimetatud isikute kohta või nendelt isikutelt endilt avalduse (või süü ülestunnistuse) vastuvõtmine ja nende isikute kohta arvestuse pidamine.",
       "estleg:parentProvision": {
         "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_11"
       },
+      "rdfs:label": "§ 11 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1455,6 +1626,22 @@
           "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Par_1"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/520052014002",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:seadus_suumevande_andmise_korra_kohta_Map"
+      },
+      "rdfs:label": {
+        "@value": "Act on Procedure for Taking Oath",
+        "@language": "en"
+      }
     }
   ]
 }

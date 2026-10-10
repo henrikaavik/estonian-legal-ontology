@@ -69,8 +69,9 @@ def test_curia_preserves_full_title_separately_from_label():
     long_title = "Kohtuasi C-1/24#" + ("Väga pikk pealkiri " * 40)
     node = curia.decision_to_node({"celex": "62024CJ0001", "title": long_title})
 
-    assert len(node["rdfs:label"]["@value"]) <= 500
-    assert node["dcterms:title"]["@value"] == curia.clean_title(long_title)
+    # #697: plain-string literals, as on every published CURIA node.
+    assert len(node["rdfs:label"]) <= 500
+    assert node["dcterms:title"] == curia.clean_title(long_title)
 
 
 def test_curia_extract_case_number_parses_efta_prefix():

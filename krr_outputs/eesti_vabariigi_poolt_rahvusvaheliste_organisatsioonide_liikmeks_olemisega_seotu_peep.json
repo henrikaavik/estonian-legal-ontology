@@ -5,45 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:ROLVKS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Assumption and Performance by the Republic of Estonia of Proprietary Obligations Related to Membership in International Organisations Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/123122011012.xml"
+        "@id": "https://www.riigiteataja.ee/akt/123122011012"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/123122011012/xml"
+      },
+      "estleg:globalId": "123122011012",
+      "eli:id_local": "123122011012",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "155094",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "c5332a83696b84eea82cef33d37a583bd4ae743b19ba5a7df448abb1451af8be",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2011-12-24",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/530102013063"
@@ -53,17 +56,12 @@
         "@type": "xsd:boolean"
       },
       "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528).",
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/530102013063"
+      },
       "estleg:references": [
         {
           "@id": "estleg:ROLVKS_Par_2"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:ROLVKS_Par_3"
-        },
-        {
-          "@id": "estleg:ROLVKS_Par_3_Lg_1"
         }
       ],
       "dcterms:subject": [
@@ -76,21 +74,41 @@
           "@id": "http://eurovoc.europa.eu/5050"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2002-02-11",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2011-12-24",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2011-12-23",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
-      ]
-    },
-    {
-      "@id": "estleg:ROLVKS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_ROLVKS_default"
+          "@id": "estleg:Amendment_ROLVKS_135c48f1d6"
+        },
+        {
+          "@id": "estleg:Amendment_ROLVKS_a4b69463de"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ROLVKS_Map"
+        },
+        {
+          "@id": "estleg:ROLVKS_Par_3"
+        },
+        {
+          "@id": "estleg:ROLVKS_Par_3_Lg_1"
         }
       ]
     },
@@ -101,12 +119,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–5 Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
-      "skos:prefLabel": "§1–5 Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
+      "rdfs:label": {
+        "@value": "§1–5 Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–5 Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:ROLVKS_TopicScheme"
       },
       "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:ROLVKS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_ROLVKS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:ROLVKS_Par_1",
@@ -115,12 +154,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROLVKS_Map"
       },
-      "estleg:summary": "Käesolevas seaduses sätestatakse Eesti Vabariigi poolt Rahvusvahelise Rekonstrueerimis- ja Arengupangaga ja selle juurde kuuluvate organisatsioonidega ning Euroopa Nõukogu Arengupangaga (kõik edaspidi rahvusvaheline organisatsioon) ühinemisel võetud kohustuste täitmisega seotud täiendavate varaliste kohustuste, nagu võlakirja emiteerimine ja tagasiostmine, võtmise ja täitmise alused ja kord.",
+      "estleg:summary": {
+        "@value": "Käesolevas seaduses sätestatakse Eesti Vabariigi poolt Rahvusvahelise Rekonstrueerimis- ja Arengupangaga ja selle juurde kuuluvate organisatsioonidega ning Euroopa Nõukogu Arengupangaga (kõik edaspidi rahvusvaheline organisatsioon) ühinemisel võetud kohustuste täitmisega seotud täiendavate varaliste kohustuste, nagu võlakirja emiteerimine ja tagasiostmine, võtmise ja täitmise alused ja kord.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevas seaduses sätestatakse Eesti Vabariigi poolt Rahvusvahelise Rekonstrueerimis- ja Arengupangaga ja selle juurde kuuluvate organisatsioonidega ning Euroopa Nõukogu Arengupangaga (kõik edaspidi rahvusvaheline organisatsioon) ühinemisel võetud kohustuste täitmisega seotud täiendavate varaliste kohustuste, nagu võlakirja emiteerimine ja tagasiostmine, võtmise ja täitmise alused ja kord.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROLVKS_default"
@@ -145,10 +190,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas seaduses sätestatakse Eesti Vabariigi poolt Rahvusvahelise Rekonstrueerimis- ja Arengupangaga ja selle juurde kuuluvate organisatsioonidega ning Euroopa Nõukogu Arengupangaga (kõik edaspidi rahvusvaheline organisatsioon) ühinemisel võetud kohustuste täitmisega seotud täiendavate varaliste kohustuste, nagu võlakirja emiteerimine ja tagasiostmine, võtmise ja täitmise alused ja kord.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatakse Eesti Vabariigi poolt Rahvusvahelise Rekonstrueerimis- ja Arengupangaga ja selle juurde kuuluvate organisatsioonidega ning Euroopa Nõukogu Arengupangaga (kõik edaspidi rahvusvaheline organisatsioon) ühinemisel võetud kohustuste täitmisega seotud täiendavate varaliste kohustuste, nagu võlakirja emiteerimine ja tagasiostmine, võtmise ja täitmise alused ja kord.",
       "estleg:parentProvision": {
         "@id": "estleg:ROLVKS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:ROLVKS_Par_2",
@@ -157,12 +204,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kohustuste liigid",
+      "rdfs:label": {
+        "@value": "§ 2. Kohustuste liigid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROLVKS_Map"
       },
-      "estleg:summary": "(1) Osaluse eest rahvusvahelises organisatsioonis tasub Eesti Vabariik kas rahas või võlakirja emiteerimise teel. (2) Kui valuuta, milles Eesti Vabariik on teinud makse või emiteerinud võlakirja, nõrgeneb valuuta suhtes, milles rahvusvaheline organisatsioon peab Eesti Vabariigi osaluse üle arvestust, tuleb osaluse suuruse säilitamiseks teostada juurdemakse vastavalt rahvusvahelise organisatsiooni poolt esitatud nõudele vajaliku summa tasumisega rahvusvahelise organisatsiooni kontole või",
+      "estleg:summary": {
+        "@value": "(1) Osaluse eest rahvusvahelises organisatsioonis tasub Eesti Vabariik kas rahas või võlakirja emiteerimise teel. (2) Kui valuuta, milles Eesti Vabariik on teinud makse või emiteerinud võlakirja, nõrgeneb valuuta suhtes, milles rahvusvaheline organisatsioon peab Eesti Vabariigi osaluse üle arvestust, tuleb osaluse suuruse säilitamiseks teostada juurdemakse vastavalt rahvusvahelise organisatsiooni poolt esitatud nõudele vajaliku summa tasumisega rahvusvahelise organisatsiooni kontole või",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Osaluse eest rahvusvahelises organisatsioonis tasub Eesti Vabariik kas rahas või võlakirja emiteerimise teel. (2) Kui valuuta, milles Eesti Vabariik on teinud makse või emiteerinud võlakirja, nõrgeneb valuuta suhtes, milles rahvusvaheline organisatsioon peab Eesti Vabariigi osaluse üle arvestust, tuleb osaluse suuruse säilitamiseks teostada juurdemakse vastavalt rahvusvahelise organisatsiooni poolt esitatud nõudele vajaliku summa tasumisega rahvusvahelise organisatsiooni kontole või võlakirja emiteerimisega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROLVKS_default"
@@ -175,14 +228,17 @@
           "@id": "estleg:ROLVKS_Par_2_Lg_2"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:ROLVKS_Map"
+        },
         {
           "@id": "estleg:ROLVKS_Par_3"
         },
@@ -221,12 +277,12 @@
         "@id": "estleg:ROLVKS_Par_2"
       },
       "rdfs:label": "§ 2 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -236,13 +292,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Võlakirja emiteerimine",
+      "rdfs:label": {
+        "@value": "§ 3. Võlakirja emiteerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROLVKS_Map"
       },
-      "estleg:summary": "(1) Eesti Vabariigi poolt käesoleva seaduse §-s 2 nimetatud võlakirja emiteerimise otsuse teeb Vabariigi Valitsus. (2) Võlakiri emiteeritakse järgmistel tingimustel: võlakirja nimiväärtus võrdub summaga, mille ulatuses rahvusvaheline organisatsioon esitab Eesti Vabariigile tasumise nõude; võlakiri on intressita; võlakirja võõrandamine ei ole lubatud; võlakirja tagasiostmine toimub rahvusvahelise organisatsiooni esimesel nõudmisel. (3) Võlakirja emiteerimisega seotud toiminguid korraldab",
-      "estleg:legalText": "(1) Eesti Vabariigi poolt käesoleva seaduse §-s 2 nimetatud võlakirja emiteerimise otsuse teeb Vabariigi Valitsus. (2) Võlakiri emiteeritakse järgmistel tingimustel: võlakirja nimiväärtus võrdub summaga, mille ulatuses rahvusvaheline organisatsioon esitab Eesti Vabariigile tasumise nõude; võlakiri on intressita; võlakirja võõrandamine ei ole lubatud; võlakirja tagasiostmine toimub rahvusvahelise organisatsiooni esimesel nõudmisel. (3) Võlakirja emiteerimisega seotud toiminguid korraldab valdkonna eest vastutav minister. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „rahandusminister” sõnadega „valdkonna eest vastutav minister”.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Vabariigi poolt käesoleva seaduse §-s 2 nimetatud võlakirja emiteerimise otsuse teeb Vabariigi Valitsus. (2) Võlakiri emiteeritakse järgmistel tingimustel: 1) võlakirja nimiväärtus võrdub summaga, mille ulatuses rahvusvaheline organisatsioon esitab Eesti Vabariigile tasumise nõude; 2) võlakiri on intressita; 3) võlakirja võõrandamine ei ole lubatud; 4) võlakirja tagasiostmine toimub rahvusvahelise organisatsiooni esimesel nõudmisel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti Vabariigi poolt käesoleva seaduse §-s 2 nimetatud võlakirja emiteerimise otsuse teeb Vabariigi Valitsus. (2) Võlakiri emiteeritakse järgmistel tingimustel: 1) võlakirja nimiväärtus võrdub summaga, mille ulatuses rahvusvaheline organisatsioon esitab Eesti Vabariigile tasumise nõude; 2) võlakiri on intressita; 3) võlakirja võõrandamine ei ole lubatud; 4) võlakirja tagasiostmine toimub rahvusvahelise organisatsiooni esimesel nõudmisel. (3) Võlakirja emiteerimisega seotud toiminguid korraldab valdkonna eest vastutav minister.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROLVKS_default"
       },
@@ -265,9 +327,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -277,20 +336,20 @@
           "@id": "estleg:ROLVKS_Par_2"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:ROLVKS_Par_3_v162908"
         },
         {
           "@id": "estleg:ROLVKS_Par_3_v123122011012"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        },
-        {
-          "@id": "estleg:Institution_rahandusminister"
         }
       ]
     },
@@ -333,17 +392,23 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Võlakiri emiteeritakse järgmistel tingimustel: võlakirja nimiväärtus võrdub summaga, mille ulatuses rahvusvaheline organisatsioon esitab Eesti Vabariigile tasumise nõude; võlakiri on intressita; võlakirja võõrandamine ei ole lubatud; võlakirja tagasiostmine toimub rahvusvahelise organisatsiooni esimesel nõudmisel.",
+      "estleg:legalText": "(2) Võlakiri emiteeritakse järgmistel tingimustel: 1) võlakirja nimiväärtus võrdub summaga, mille ulatuses rahvusvaheline organisatsioon esitab Eesti Vabariigile tasumise nõude; 2) võlakiri on intressita; 3) võlakirja võõrandamine ei ole lubatud; 4) võlakirja tagasiostmine toimub rahvusvahelise organisatsiooni esimesel nõudmisel.",
       "estleg:parentProvision": {
         "@id": "estleg:ROLVKS_Par_3"
       },
       "rdfs:label": "§ 3 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -353,15 +418,12 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Võlakirja emiteerimisega seotud toiminguid korraldab valdkonna eest vastutav minister. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „rahandusminister” sõnadega „valdkonna eest vastutav minister”.",
+      "estleg:legalText": "(3) Võlakirja emiteerimisega seotud toiminguid korraldab valdkonna eest vastutav minister.",
       "estleg:parentProvision": {
         "@id": "estleg:ROLVKS_Par_3"
       },
       "rdfs:label": "§ 3 lg 3",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        },
         {
           "@id": "estleg:TargetGroup_Official"
         }
@@ -369,17 +431,7 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:VABARI_Par_107_3_Lg_4"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_rahandusminister"
-        }
-      ]
+      }
     },
     {
       "@id": "estleg:ROLVKS_Par_4",
@@ -388,12 +440,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Võlakirja tagasiostmine",
+      "rdfs:label": {
+        "@value": "§ 4. Võlakirja tagasiostmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROLVKS_Map"
       },
-      "estleg:summary": "(1) Eesti Vabariigi poolt rahvusvahelisele organisatsioonile emiteeritud võlakirja tagasiostmine toimub rahvusvahelise organisatsiooni poolt esitatud ajakava või nõudekirja alusel. (2) Võlakirja tagasiostmise korraldab Vabariigi Valitsus. (3) Vabariigi Valitsusel on õigus Riigikogu nõusolekuta võtta võlakirja tagasiostmiseks lühiajalist laenu kuni 5 protsendi ulatuses Riigikogu poolt jooksvaks eelarveaastaks kinnitatud riigieelarve tuludest.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Vabariigi poolt rahvusvahelisele organisatsioonile emiteeritud võlakirja tagasiostmine toimub rahvusvahelise organisatsiooni poolt esitatud ajakava või nõudekirja alusel. (2) Võlakirja tagasiostmise korraldab Vabariigi Valitsus. (3) Vabariigi Valitsusel on õigus Riigikogu nõusolekuta võtta võlakirja tagasiostmiseks lühiajalist laenu kuni 5 protsendi ulatuses Riigikogu poolt jooksvaks eelarveaastaks kinnitatud riigieelarve tuludest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Vabariigi poolt rahvusvahelisele organisatsioonile emiteeritud võlakirja tagasiostmine toimub rahvusvahelise organisatsiooni poolt esitatud ajakava või nõudekirja alusel. (2) Võlakirja tagasiostmise korraldab Vabariigi Valitsus. (3) Vabariigi Valitsusel on õigus Riigikogu nõusolekuta võtta võlakirja tagasiostmiseks lühiajalist laenu kuni 5 protsendi ulatuses Riigikogu poolt jooksvaks eelarveaastaks kinnitatud riigieelarve tuludest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROLVKS_default"
@@ -414,18 +472,13 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:ROLVKS_Par_4_v162908"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
@@ -435,6 +488,11 @@
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:ROLVKS_Par_4_v162908"
         }
       ]
     },
@@ -491,9 +549,6 @@
         "@id": "estleg:ROLVKS_Par_4"
       },
       "rdfs:label": "§ 4 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -502,6 +557,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       },
       "estleg:competentAuthority": [
         {
@@ -522,12 +580,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 5. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi poolt rahvusvaheliste organisatsioonide liikmeks olemisega seotud varaliste kohustuste võtmise ja täitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROLVKS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROLVKS_default"
@@ -540,6 +604,22 @@
           "@id": "estleg:ROLVKS_Par_5_v123122011012"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/530102013063",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:ROLVKS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Assumption and Performance by the Republic of Estonia of Proprietary Obligations Related to Membership in International Organisations Act",
+        "@language": "en"
+      }
     }
   ]
 }

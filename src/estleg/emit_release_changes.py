@@ -212,8 +212,15 @@ def build_index_deprecated_vs_live_record(
     *,
     listed_cap: int = LISTED_IRI_CAP,
     version: str = ONTOLOGY_VERSION,
+    old_label: str = OLD_LABEL_DEFAULT,
+    new_label: str | None = None,
 ) -> dict[str, Any]:
-    """Honest first published delta: deprecated INDEX slugs vs live laws."""
+    """Honest first published delta: deprecated INDEX slugs vs live laws.
+
+    ``new_label`` defaults to ``INDEX laws <version>`` so a record re-emitted
+    for an earlier version (e.g. the #549 ``changes-0.11.0.jsonld``) is not
+    relabelled with the current ``ONTOLOGY_VERSION``.
+    """
     with Path(index_path).open(encoding="utf-8") as handle:
         index = json.load(handle)
     if not isinstance(index, dict):
@@ -221,8 +228,8 @@ def build_index_deprecated_vs_live_record(
     old = snapshot_iris_from_index(index, deprecated=True)
     new = snapshot_iris_from_index(index, deprecated=False)
     return build_change_record(
-        OLD_LABEL_DEFAULT,
-        NEW_LABEL_DEFAULT,
+        old_label,
+        new_label or f"INDEX laws {version}",
         diff_iris(old, new),
         listed_cap=listed_cap,
         version=version,
@@ -803,8 +810,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "--new-label",
-        default=NEW_LABEL_DEFAULT,
-        help="IRI-set / index-deprecated modes: estleg:comparedTo label.",
+        default=None,
+        help=(
+            "IRI-set / index-deprecated modes: estleg:comparedTo label "
+            f"(default: 'INDEX laws <--version>'; IRI-set mode: {NEW_LABEL_DEFAULT!r})."
+        ),
     )
     return parser.parse_args(argv)
 
@@ -819,14 +829,18 @@ def main(argv: list[str] | None = None) -> int:
         if args.old is not None:
             record = build_change_record(
                 args.old_label,
-                args.new_label,
+                args.new_label or NEW_LABEL_DEFAULT,
                 diff_iris(collect_iris_from_jsonld(args.old), collect_iris_from_jsonld(args.new)),
                 listed_cap=args.cap,
                 version=args.version,
             )
         else:
             record = build_index_deprecated_vs_live_record(
-                args.index, listed_cap=args.cap, version=args.version
+                args.index,
+                listed_cap=args.cap,
+                version=args.version,
+                old_label=args.old_label,
+                new_label=args.new_label,
             )
         save_json(output, record)
         print(

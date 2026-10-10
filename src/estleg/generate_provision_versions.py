@@ -87,7 +87,7 @@ from estleg.kov_pipeline_coverage import (
     resolve_pipeline_version,
     write_coverage_report,
 )
-from estleg.riigiteataja_common import DATA_DIR, ln
+from estleg.riigiteataja_common import DATA_DIR, build_xml_url, ln
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS_DIR = REPO_ROOT / "scripts"
@@ -1425,10 +1425,10 @@ def fetch_redaction_xml(
             return parse_xml_file(cache_path)
         except (ET.ParseError, ValueError):
             pass
-    url = redaction.url
-    full_url = BASE_URL + url if url.startswith("/") else url
-    if not full_url.endswith(".xml"):
-        full_url = full_url + ".xml"
+    # #691: the legacy ``/akt/{id}.xml`` path serves the Riigi Teataja web-app
+    # shell since the 2026-06-01 relaunch (an HTML DOCTYPE the XML parser
+    # rightly refuses); the structured redaction XML lives on the public API.
+    full_url = build_xml_url(redaction.global_id or redaction.url)
     try:
         if sleep:
             time.sleep(sleep)

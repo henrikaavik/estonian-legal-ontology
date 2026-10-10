@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:PSTS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Eesti Vabariigi põhiseaduse täiendamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Eesti Vabariigi põhiseaduse täiendamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Eesti Vabariigi põhiseaduse täiendamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Eesti Vabariigi põhiseaduse täiendamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "The Constitution of the Republic of Estonia Amendment Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Eesti Vabariigi põhiseaduse täiendamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/631119.xml"
+        "@id": "https://www.riigiteataja.ee/akt/631119"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/631119/xml"
+      },
+      "estleg:globalId": "631119",
+      "eli:id_local": "631119",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "156787",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "0b0c018d0e82ba939f420da221bf04a4826b6cbdd2eed887d67b77f8eb67895a",
+      "estleg:issuer": "Rahvahääletusel vastu võetud",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2004-01-06",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/530102013005"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/530102013005"
       },
       "dcterms:subject": [
@@ -63,19 +69,20 @@
         {
           "@id": "http://eurovoc.europa.eu/695"
         }
-      ]
-    },
-    {
-      "@id": "estleg:PSTS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Eesti Vabariigi põhiseaduse täiendamise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_PSTS_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2004-01-06",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2003-10-10",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2004-01-06",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_PSTS_default",
@@ -84,12 +91,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–4 Eesti Vabariigi põhiseaduse täiendamise seadus",
-      "skos:prefLabel": "§1–4 Eesti Vabariigi põhiseaduse täiendamise seadus",
+      "rdfs:label": {
+        "@value": "§1–4 Eesti Vabariigi põhiseaduse täiendamise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 Eesti Vabariigi põhiseaduse täiendamise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PSTS_TopicScheme"
       },
       "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:PSTS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Eesti Vabariigi põhiseaduse täiendamise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_PSTS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:PSTS_Par_1",
@@ -98,12 +126,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Eesti võib kuuluda Euroopa Liitu, lähtudes Eesti Vabariigi põhiseaduse aluspõhim...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Eesti võib kuuluda Euroopa Liitu, lähtudes Eesti Vabariigi põhiseaduse aluspõhim...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi põhiseaduse täiendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSTS_Map"
       },
-      "estleg:summary": "Eesti võib kuuluda Euroopa Liitu, lähtudes Eesti Vabariigi põhiseaduse aluspõhimõtetest.",
+      "estleg:summary": {
+        "@value": "Eesti võib kuuluda Euroopa Liitu, lähtudes Eesti Vabariigi põhiseaduse aluspõhimõtetest.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti võib kuuluda Euroopa Liitu, lähtudes Eesti Vabariigi põhiseaduse aluspõhimõtetest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSTS_default"
@@ -113,12 +147,12 @@
           "@id": "estleg:PSTS_Par_1_Lg_1"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -132,16 +166,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti võib kuuluda Euroopa Liitu, lähtudes Eesti Vabariigi põhiseaduse aluspõhimõtetest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti võib kuuluda Euroopa Liitu, lähtudes Eesti Vabariigi põhiseaduse aluspõhimõtetest.",
       "estleg:parentProvision": {
         "@id": "estleg:PSTS_Par_1"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 1 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -151,12 +187,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Eesti kuulumisel Euroopa Liitu kohaldatakse Eesti Vabariigi põhiseadust, arvesta...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Eesti kuulumisel Euroopa Liitu kohaldatakse Eesti Vabariigi põhiseadust, arvesta...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi põhiseaduse täiendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSTS_Map"
       },
-      "estleg:summary": "Eesti kuulumisel Euroopa Liitu kohaldatakse Eesti Vabariigi põhiseadust, arvestades liitumislepingust tulenevaid õigusi ja kohustusi.",
+      "estleg:summary": {
+        "@value": "Eesti kuulumisel Euroopa Liitu kohaldatakse Eesti Vabariigi põhiseadust, arvestades liitumislepingust tulenevaid õigusi ja kohustusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti kuulumisel Euroopa Liitu kohaldatakse Eesti Vabariigi põhiseadust, arvestades liitumislepingust tulenevaid õigusi ja kohustusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSTS_default"
@@ -178,10 +220,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti kuulumisel Euroopa Liitu kohaldatakse Eesti Vabariigi põhiseadust, arvestades liitumislepingust tulenevaid õigusi ja kohustusi.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti kuulumisel Euroopa Liitu kohaldatakse Eesti Vabariigi põhiseadust, arvestades liitumislepingust tulenevaid õigusi ja kohustusi.",
       "estleg:parentProvision": {
         "@id": "estleg:PSTS_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:PSTS_Par_3",
@@ -190,12 +234,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Käesolevat seadust saab muuta ainult rahvahääletusega. Käesolevat seadust saab m...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Käesolevat seadust saab muuta ainult rahvahääletusega.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi põhiseaduse täiendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSTS_Map"
       },
-      "estleg:summary": "Käesolevat seadust saab muuta ainult rahvahääletusega.",
+      "estleg:summary": {
+        "@value": "Käesolevat seadust saab muuta ainult rahvahääletusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevat seadust saab muuta ainult rahvahääletusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSTS_default"
@@ -207,7 +257,7 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:eesti_vabariigi_pohiseadus_Par_168"
+          "@id": "estleg:PS_Par_168"
         },
         {
           "@id": "estleg:eesti_vabariigi_pohiseadus_Par_162"
@@ -225,10 +275,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevat seadust saab muuta ainult rahvahääletusega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevat seadust saab muuta ainult rahvahääletusega.",
       "estleg:parentProvision": {
         "@id": "estleg:PSTS_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:PSTS_Par_4",
@@ -237,12 +289,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. [Käesolev seadus jõustub kolm kuud pärast väljakuulutamist. Käesolev seadus jõust...]",
+      "rdfs:label": {
+        "@value": "§ 4. [Käesolev seadus jõustub kolm kuud pärast väljakuulutamist.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Vabariigi põhiseaduse täiendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSTS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub kolm kuud pärast väljakuulutamist.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub kolm kuud pärast väljakuulutamist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub kolm kuud pärast väljakuulutamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSTS_default"
@@ -264,9 +322,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub kolm kuud pärast väljakuulutamist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub kolm kuud pärast väljakuulutamist.",
       "estleg:parentProvision": {
         "@id": "estleg:PSTS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/530102013005",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:PSTS_Map"
+      },
+      "rdfs:label": {
+        "@value": "The Constitution of the Republic of Estonia Amendment Act",
+        "@language": "en"
       }
     }
   ]

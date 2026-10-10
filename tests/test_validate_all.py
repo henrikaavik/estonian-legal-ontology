@@ -3339,3 +3339,162 @@ def test_validate_combined_ontology_still_rejects_typed_drift_on_a_non_stub(tmp_
     assert any(
         "drift from source on SHACL-sensitive fields" in err for err in validate_all.errors
     ), validate_all.errors
+
+
+# ---------------------------------------------------------------------------
+# #711: regulation harmonisation anchors (symmetry gate + leaky-stub rule)
+# ---------------------------------------------------------------------------
+
+
+def _harm_link(celex: str, targets: list[str]) -> dict:
+    return {
+        "@graph": [
+            {
+                "@id": f"estleg:Harmonisation_{celex}",
+                "@type": ["owl:NamedIndividual", "estleg:HarmonisationLink"],
+                "estleg:harmonises": [{"@id": t} for t in targets],
+            }
+        ]
+    }
+
+
+def _reg_root(tid: str, harmonised: list[str]) -> dict:
+    root: dict = {
+        "@id": f"estleg:Reg_{tid}_Map",
+        "@type": ["estleg:Act", "estleg:NationalRegulation"],
+    }
+    if harmonised:
+        root["estleg:harmonisedWith"] = [{"@id": f"estleg:Harmonisation_{c}"} for c in harmonised]
+    return {"@graph": [root]}
+
+
+def _harm_tree(tmp_path: Path, *, kov_forward: bool) -> Path:
+    krr = tmp_path / "krr_outputs"
+    by_dir = krr / "harmonisation" / "harmonisation_by_directive"
+    write_json(
+        krr / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:law_a_Map",
+                    "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                    "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_32000L0001"}],
+                }
+            ]
+        },
+    )
+    write_json(by_dir / "harm_32000L0001.json", _harm_link("32000L0001", ["estleg:law_a_Map"]))
+    write_json(by_dir / "harm_32000L0002.json", _harm_link("32000L0002", ["estleg:Reg_1001_Map"]))
+    write_json(by_dir / "harm_32000L0003.json", _harm_link("32000L0003", ["estleg:Reg_2002_Map"]))
+    write_json(
+        krr / "regulations" / "riik" / "riik_reg_t1001_peep.json",
+        _reg_root("1001", ["32000L0002"]),
+    )
+    write_json(
+        krr / "regulations" / "kov" / "x_vallavolikogu" / "kov_reg_t2002_peep.json",
+        _reg_root("2002", ["32000L0003"] if kov_forward else []),
+    )
+    return krr
+
+
+def test_harmonisation_symmetry_accepts_riik_and_kov_regulation_backing(tmp_path):
+    krr = _harm_tree(tmp_path, kov_forward=True)
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_harmonisation_symmetry_flags_regulation_missing_forward_edge(tmp_path):
+    krr = _harm_tree(tmp_path, kov_forward=False)
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any(
+        "1/3 harmonises→act edge(s) lack a backing" in e and "estleg:Reg_2002_Map" in e
+        for e in validate_all.errors
+    ), validate_all.errors
+
+
+def test_harmonisation_symmetry_ignores_combined_only_backing(tmp_path):
+    """Combined's harmonisedWith is materialised from the harmonises edge under
+    test (#520), so a combined stub alone must not satisfy the gate."""
+    krr = _harm_tree(tmp_path, kov_forward=False)
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:Reg_2002_Map",
+                "@type": ["estleg:Act"],
+                "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_32000L0003"}],
+                estleg_common.STUB_NODE_MARKER: True,
+            }
+        ],
+    )
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("lack a backing" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_harmonisation_symmetry_flags_unmapped_regulation_forward_edge(tmp_path):
+    """The mapping-backing rule applies to regulation peeps too."""
+    krr = _harm_tree(tmp_path, kov_forward=True)
+    write_json(
+        krr / "reports" / "transposition_mapping.json",
+        {
+            "mappings": [
+                {"directive_celex": "32000L0001", "law_files": ["law_a_peep.json"]},
+                {
+                    "directive_celex": "32000L0002",
+                    "law_files": ["regulations/riik/riik_reg_t1001_peep.json"],
+                },
+            ]
+        },
+    )
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any(
+        "1 harmonisedWith link(s) not backed" in e and "kov_reg_t2002_peep.json" in e
+        for e in validate_all.errors
+    ), validate_all.errors
+
+
+def test_combined_closure_allows_harmonised_with_on_regulation_stub(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:Harmonisation_32006L0021",
+                "@type": ["estleg:HarmonisationLink"],
+                "estleg:harmonises": [{"@id": "estleg:Reg_1000061_Map"}],
+                estleg_common.STUB_NODE_MARKER: True,
+            },
+            {
+                "@id": "estleg:Reg_1000061_Map",
+                "@type": ["estleg:Act", "estleg:NationalRegulation"],
+                "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_32006L0021"}],
+                estleg_common.STUB_NODE_MARKER: True,
+            },
+        ],
+    )
+    validate_all.validate_combined_graph_closure(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_combined_closure_still_flags_other_edges_on_regulation_stub(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:Harmonisation_32006L0021",
+                "@type": ["estleg:HarmonisationLink"],
+                "estleg:harmonises": [{"@id": "estleg:Reg_1000061_Map"}],
+                estleg_common.STUB_NODE_MARKER: True,
+            },
+            {
+                "@id": "estleg:Reg_1000061_Map",
+                "@type": ["estleg:Act", "estleg:NationalRegulation"],
+                "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_32006L0021"}],
+                "estleg:competentAuthority": [{"@id": "estleg:Harmonisation_32006L0021"}],
+                estleg_common.STUB_NODE_MARKER: True,
+            },
+        ],
+    )
+    validate_all.validate_combined_graph_closure(krr)
+    assert any("disallowed estleg: object refs" in e for e in validate_all.errors), validate_all.errors

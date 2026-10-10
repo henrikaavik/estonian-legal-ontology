@@ -168,8 +168,15 @@ def test_fixture_matches_merged_copy() -> None:
 
 CORPUS_PEEPS = (
     "karistusregistri_seadus_peep.json",  # clean structured law
-    "volaoigusseadus_map_peep.json",  # Law root without source/kehtiv
-    "elamuseadus_peep.json",  # provisions without legalText
+    # Law root without source/kehtiv: a legacy act no longer in the RT
+    # snapshot (volaoigusseadus_map was the example until the 2026-10-09
+    # refresh stamped the multipart map roots).
+    "reisipraam_estonia_katastroofiga_seotud_toetuste_tulumaksust_vabastamise_seadus_peep.json",
+    # Provisions without legalText: KRASS §§ 1–2 are empty <paragrahv>
+    # elements in the Riigi Teataja XML (no text, no repeal or omission note),
+    # one of the honest residues of the #703 baseline. elamuseadus was the
+    # example until the parser learnt to read HTMLKonteiner bodies.
+    "seadus_kohtuvaliselt_represseeritud_ja_alusetult_suudimoistetud_isikute_rehabili_peep.json",
 )
 
 
@@ -195,7 +202,7 @@ def test_corpus_peeps_agree_with_python_baseline(tmp_path: Path, inference: str)
     def iri(curie: str) -> str:
         return str(ESTLEG) + curie.removeprefix("estleg:")
 
-    assert measured["missing_legal_text"], "elamuseadus should still lack legalText"
+    assert measured["missing_legal_text"], "KRASS should still lack legalText"
     expected = {
         (iri(i), "http://purl.org/dc/terms/source", WARNING)
         for i in measured["root_missing_source"]

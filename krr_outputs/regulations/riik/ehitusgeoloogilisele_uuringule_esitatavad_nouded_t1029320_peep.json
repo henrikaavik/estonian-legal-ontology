@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Ehitusgeoloogilisele uuringule esitatavad nõuded (määrus)",
+      "rdfs:label": {
+        "@value": "Ehitusgeoloogilisele uuringule esitatavad nõuded (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Ehitusgeoloogilisele uuringule esitatavad nõuded",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,6 +39,32 @@
       "estleg:globalId": "127122024021",
       "estleg:terviktekstId": "1029320",
       "estleg:preambleText": "Määrus kehtestatakse ehituseadustiku § 14 lõike 4 punkti 2 alusel.",
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Ehitusgeoloogilisele uuringule esitatavad nõuded",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5188"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5188"
+        }
+      ],
       "estleg:entryIntoForce": {
         "@value": "2015-07-01",
         "@type": "xsd:date"
@@ -49,26 +82,6 @@
         {
           "@id": "estleg:Amendment_Reg_1029320_f97a487132"
         }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.55",
-        "@type": "xsd:decimal"
-      },
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2475"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/5188"
-        }
-      ],
-      "eli:is_about": [
-        {
-          "@id": "http://eurovoc.europa.eu/2475"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/5188"
-        }
       ]
     },
     {
@@ -78,18 +91,90 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Ehitusgeoloogiline uuring",
+      "rdfs:label": {
+        "@value": "§ 1. Ehitusgeoloogiline uuring",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ehitusgeoloogilisele uuringule esitatavad nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1029320_Map"
       },
-      "estleg:summary": "1 (1) Ehitusgeoloogilise uuringu (edaspidi uuring) eesmärgiks on saada ehitise planeerimiseks, projekteerimiseks ning ehitamiseks vajalikke andmeid pinnasekihtide ning maapõue kohta. Ehitusgeoloogilise uuringu (edaspidi uuring) eesmärgiks on saada ehitise planeerimiseks, projekteerimiseks ning ehitamiseks vajalikke andmeid pinnasekihtide ning maapõue kohta. 2 (2) Uuringu metoodika ja maht määratakse, lähtudes uuritava maa-ala eeldatavatest ehitusgeoloogilistest tingimustest, ehitise tehnilistest",
-      "estleg:legalText": "1 (1) Ehitusgeoloogilise uuringu (edaspidi uuring) eesmärgiks on saada ehitise planeerimiseks, projekteerimiseks ning ehitamiseks vajalikke andmeid pinnasekihtide ning maapõue kohta. Ehitusgeoloogilise uuringu (edaspidi uuring) eesmärgiks on saada ehitise planeerimiseks, projekteerimiseks ning ehitamiseks vajalikke andmeid pinnasekihtide ning maapõue kohta. 2 (2) Uuringu metoodika ja maht määratakse, lähtudes uuritava maa-ala eeldatavatest ehitusgeoloogilistest tingimustest, ehitise tehnilistest andmetest ja tellija esitatud lähteülesandest. Uuringu metoodika ja maht määratakse, lähtudes uuritava maa-ala eeldatavatest ehitusgeoloogilistest tingimustest, ehitise tehnilistest andmetest ja tellija esitatud lähteülesandest. 3 (3) Uuringu käigus rajatud kaevand, mida seireks ei konserveerita, tuleb likvideerida. Uuringu käigus rajatud kaevand, mida seireks ei konserveerita, tuleb likvideerida. 4 (4) Eeldatakse, et uuringu tehnilised nõuded ja uuringu aruande nõuded on täidetud, kui on järgitud Eesti, Euroopa või rahvusvahelise standardiorganisatsiooni kehtivat geotehniliste ja geoloogiliste uuringute tegemise standardit. Eeldatakse, et uuringu tehnilised nõuded ja uuringu aruande nõuded on täidetud, kui on järgitud Eesti, Euroopa või rahvusvahelise standardiorganisatsiooni kehtivat geotehniliste ja geoloogiliste uuringute tegemise standardit.",
+      "estleg:summary": {
+        "@value": "1 (1) Ehitusgeoloogilise uuringu (edaspidi uuring) eesmärgiks on saada ehitise planeerimiseks, projekteerimiseks ning ehitamiseks vajalikke andmeid pinnasekihtide ning maapõue kohta. 2 (2) Uuringu metoodika ja maht määratakse, lähtudes uuritava maa-ala eeldatavatest ehitusgeoloogilistest tingimustest, ehitise tehnilistest andmetest ja tellija esitatud lähteülesandest. 3 (3) Uuringu käigus rajatud kaevand, mida seireks ei konserveerita, tuleb likvideerida.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ehitusgeoloogilise uuringu (edaspidi uuring) eesmärgiks on saada ehitise planeerimiseks, projekteerimiseks ning ehitamiseks vajalikke andmeid pinnasekihtide ning maapõue kohta. 2 (2) Uuringu metoodika ja maht määratakse, lähtudes uuritava maa-ala eeldatavatest ehitusgeoloogilistest tingimustest, ehitise tehnilistest andmetest ja tellija esitatud lähteülesandest. 3 (3) Uuringu käigus rajatud kaevand, mida seireks ei konserveerita, tuleb likvideerida. 4 (4) Eeldatakse, et uuringu tehnilised nõuded ja uuringu aruande nõuded on täidetud, kui on järgitud Eesti, Euroopa või rahvusvahelise standardiorganisatsiooni kehtivat geotehniliste ja geoloogiliste uuringute tegemise standardit.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1029320_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_1_Lg_4"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1029320_Par_1_v1029320"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ehitusgeoloogilise uuringu (edaspidi uuring) eesmärgiks on saada ehitise planeerimiseks, projekteerimiseks ning ehitamiseks vajalikke andmeid pinnasekihtide ning maapõue kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Uuringu metoodika ja maht määratakse, lähtudes uuritava maa-ala eeldatavatest ehitusgeoloogilistest tingimustest, ehitise tehnilistest andmetest ja tellija esitatud lähteülesandest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Uuringu käigus rajatud kaevand, mida seireks ei konserveerita, tuleb likvideerida.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Eeldatakse, et uuringu tehnilised nõuded ja uuringu aruande nõuded on täidetud, kui on järgitud Eesti, Euroopa või rahvusvahelise standardiorganisatsiooni kehtivat geotehniliste ja geoloogiliste uuringute tegemise standardit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 4"
     },
     {
       "@id": "estleg:Reg_1029320_Par_2",
@@ -98,24 +183,53 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Uuringu aruanne",
+      "rdfs:label": {
+        "@value": "§ 2. Uuringu aruanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ehitusgeoloogilisele uuringule esitatavad nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1029320_Map"
       },
-      "estleg:summary": "1 (1) Uuringu tulemus vormistatakse aruandena. Aruanne koosneb seletuskirjast ja lisadest (nagu joonised, plaanid, tabelid). Uuringu tulemus vormistatakse aruandena. Aruanne koosneb seletuskirjast ja lisadest (nagu joonised, plaanid, tabelid). 2 (2) Aruanne peab sisaldama vähemalt järgmist: 1 1) uuringu maa-ala piiritlus; 2 2) uuringu tegemise aeg; 3 3) uuringu teinud isiku andmed; 4 4) uuringu teinud isiku poolt konkreetse uuringu eest vastutavaks määratud pädeva isiku nimi ja andmed ning kaasa",
-      "estleg:legalText": "1 (1) Uuringu tulemus vormistatakse aruandena. Aruanne koosneb seletuskirjast ja lisadest (nagu joonised, plaanid, tabelid). Uuringu tulemus vormistatakse aruandena. Aruanne koosneb seletuskirjast ja lisadest (nagu joonised, plaanid, tabelid). 2 (2) Aruanne peab sisaldama vähemalt järgmist: 1 1) uuringu maa-ala piiritlus; 2 2) uuringu tegemise aeg; 3 3) uuringu teinud isiku andmed; 4 4) uuringu teinud isiku poolt konkreetse uuringu eest vastutavaks määratud pädeva isiku nimi ja andmed ning kaasatud isiku nimi; 5 5) uuringu tellija andmed; 6 6) maa-ala plaan uuringupunktide asukohtade ja suudmete kõrgustega ning koordinaatidega kehtivas geodeetilises süsteemis; 7 7) standardi kohase uuringu tegemisel viide standardile, millele vastavalt on uuring tehtud; 8 8) uuringu metoodika iseloomustus ja uuringumahud; 9 9) täpsed viited varasematest uuringutest kasutatud andmete sisu ja mahu kohta; 10 10) kõigi kaevandite kirjeldused, välikatsete ja laborimäärangute üksiktulemused; 11 11) uuringu tulemustest johtuvad järeldused ja soovitused koos põhjendusega; 12 12) uuringu tulemuse saajatele üle antavate dokumentide loetelu ja väljastusviis. Aruanne peab sisaldama vähemalt järgmist: uuringu maa-ala piiritlus; uuringu tegemise aeg; uuringu teinud isiku andmed; uuringu teinud isiku poolt konkreetse uuringu eest vastutavaks määratud pädeva isiku nimi ja andmed ning kaasatud isiku nimi; uuringu tellija andmed; maa-ala plaan uuringupunktide asukohtade ja suudmete kõrgustega ning koordinaatidega kehtivas geodeetilises süsteemis; standardi kohase uuringu tegemisel viide standardile, millele vastavalt on uuring tehtud; uuringu metoodika iseloomustus ja uuringumahud; täpsed viited varasematest uuringutest kasutatud andmete sisu ja mahu kohta; kõigi kaevandite kirjeldused, välikatsete ja laborimäärangute üksiktulemused; uuringu tulemustest johtuvad järeldused ja soovitused koos põhjendusega; uuringu tulemuse saajatele üle antavate dokumentide loetelu ja väljastusviis. 3 (3) Kui uuringu eesmärgiks on vaid pinnaseuuringu andmete saamine, siis peab olema uuringu aruandes selle kohta selgitus. Sellise uuringu aruandes ei pea esitama käesoleva paragrahvi lõike 2 punktis 11 nimetatud järeldusi ja soovitusi. Kui uuringu eesmärgiks on vaid pinnaseuuringu andmete saamine, siis peab olema uuringu aruandes selle kohta selgitus. Sellise uuringu aruandes ei pea esitama käesoleva paragrahvi lõike 2 punktis 11 nimetatud järeldusi ja soovitusi. 4 (4) Aruandes teeb uuringu tegija ettepanekuid täiendavate uuringute tegemiseks uuritava maa-ala osas. Aruandes teeb uuringu tegija ettepanekuid täiendavate uuringute tegemiseks uuritava maa-ala osas. 5 (5) Aruandes andmete esitamisel tuleb arvestada geodeetilisele süsteemile esitatavate nõuetega. Aruandes andmete esitamisel tuleb arvestada geodeetilisele süsteemile esitatavate nõuetega. 6 (6) Uuringu aruanne peab olema allkirjastatud uuringu eest vastutavaks määratud pädeva isiku poolt. Uuringu aruanne peab olema allkirjastatud uuringu eest vastutavaks määratud pädeva isiku poolt. 7 (7) Uuringu aruande digitaalsel vormistusel tuleb lähtuda ehitusseadustiku § 15 lõike 5 punkti 1 alusel kehtestatud määruse nõuetest digitaalsetele ehitamise dokumentidele. Uuringu aruande digitaalsel vormistusel tuleb lähtuda ehitusseadustiku § 15 lõike 5 punkti 1 alusel kehtestatud määruse nõuetest digitaalsetele ehitamise dokumentidele.",
+      "estleg:summary": {
+        "@value": "1 (1) Uuringu tulemus vormistatakse aruandena. Aruanne koosneb seletuskirjast ja lisadest (nagu joonised, plaanid, tabelid). 2 (2) Aruanne peab sisaldama vähemalt järgmist: 1 1) uuringu maa-ala piiritlus; 2 2) uuringu tegemise aeg; 3 3) uuringu teinud isiku andmed; 4 4) uuringu teinud isiku poolt konkreetse uuringu eest vastutavaks määratud pädeva isiku nimi ja andmed ning kaasatud isiku nimi; 5 5) uuringu tellija andmed; 6 6) maa-ala plaan uuringupunktide asukohtade ja suudmete kõrgustega ning…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Uuringu tulemus vormistatakse aruandena. Aruanne koosneb seletuskirjast ja lisadest (nagu joonised, plaanid, tabelid). 2 (2) Aruanne peab sisaldama vähemalt järgmist: 1 1) uuringu maa-ala piiritlus; 2 2) uuringu tegemise aeg; 3 3) uuringu teinud isiku andmed; 4 4) uuringu teinud isiku poolt konkreetse uuringu eest vastutavaks määratud pädeva isiku nimi ja andmed ning kaasatud isiku nimi; 5 5) uuringu tellija andmed; 6 6) maa-ala plaan uuringupunktide asukohtade ja suudmete kõrgustega ning koordinaatidega kehtivas geodeetilises süsteemis; 7 7) standardi kohase uuringu tegemisel viide standardile, millele vastavalt on uuring tehtud; 8 8) uuringu metoodika iseloomustus ja uuringumahud; 9 9) täpsed viited varasematest uuringutest kasutatud andmete sisu ja mahu kohta; 10 10) kõigi kaevandite kirjeldused, välikatsete ja laborimäärangute üksiktulemused; 11 11) uuringu tulemustest johtuvad järeldused ja soovitused koos põhjendusega; 12 12) uuringu tulemuse saajatele üle antavate dokumentide loetelu ja väljastusviis. 3 (3) Kui uuringu eesmärgiks on vaid pinnaseuuringu andmete saamine, siis peab olema uuringu aruandes selle kohta selgitus. Sellise uuringu aruandes ei pea esitama käesoleva paragrahvi lõike 2 punktis 11 nimetatud järeldusi ja soovitusi. 4 (4) Aruandes teeb uuringu tegija ettepanekuid täiendavate uuringute tegemiseks uuritava maa-ala osas. 5 (5) Aruandes andmete esitamisel tuleb arvestada geodeetilisele süsteemile esitatavate nõuetega. 6 (6) Uuringu aruanne peab olema allkirjastatud uuringu eest vastutavaks määratud pädeva isiku poolt. 7 (7) Uuringu aruande digitaalsel vormistusel tuleb lähtuda ehitusseadustiku § 15 lõike 5 punkti 1 alusel kehtestatud määruse nõuetest digitaalsetele ehitamise dokumentidele.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1029320_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_2_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_2_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_2_Lg_7"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -124,25 +238,199 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1029320_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Uuringu tulemus vormistatakse aruandena. Aruanne koosneb seletuskirjast ja lisadest (nagu joonised, plaanid, tabelid).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Aruanne peab sisaldama vähemalt järgmist: 1) uuringu maa-ala piiritlus; 2) uuringu tegemise aeg; 3) uuringu teinud isiku andmed; 4) uuringu teinud isiku poolt konkreetse uuringu eest vastutavaks määratud pädeva isiku nimi ja andmed ning kaasatud isiku nimi; 5) uuringu tellija andmed; 6) maa-ala plaan uuringupunktide asukohtade ja suudmete kõrgustega ning koordinaatidega kehtivas geodeetilises süsteemis; 7) standardi kohase uuringu tegemisel viide standardile, millele vastavalt on uuring tehtud; 8) uuringu metoodika iseloomustus ja uuringumahud; 9) täpsed viited varasematest uuringutest kasutatud andmete sisu ja mahu kohta; 10) kõigi kaevandite kirjeldused, välikatsete ja laborimäärangute üksiktulemused; 11) uuringu tulemustest johtuvad järeldused ja soovitused koos põhjendusega; 12) uuringu tulemuse saajatele üle antavate dokumentide loetelu ja väljastusviis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui uuringu eesmärgiks on vaid pinnaseuuringu andmete saamine, siis peab olema uuringu aruandes selle kohta selgitus. Sellise uuringu aruandes ei pea esitama käesoleva paragrahvi lõike 2 punktis 11 nimetatud järeldusi ja soovitusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:itemNumber": "11",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Aruandes teeb uuringu tegija ettepanekuid täiendavate uuringute tegemiseks uuritava maa-ala osas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Aruandes andmete esitamisel tuleb arvestada geodeetilisele süsteemile esitatavate nõuetega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Uuringu aruanne peab olema allkirjastatud uuringu eest vastutavaks määratud pädeva isiku poolt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 6",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_2_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Uuringu aruande digitaalsel vormistusel tuleb lähtuda ehitusseadustiku § 15 lõike 5 punkti 1 alusel kehtestatud määruse nõuetest digitaalsetele ehitamise dokumentidele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 7",
+      "estleg:itemNumber": "1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:references": [
+        {
+          "@id": "estleg:EHS_Par_15_Lg_5"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
       "@id": "estleg:Reg_1029320_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Uuringu tulemuste esitamine",
+      "rdfs:label": {
+        "@value": "§ 3. Uuringu tulemuste esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ehitusgeoloogilisele uuringule esitatavad nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1029320_Map"
       },
-      "estleg:summary": "1 (1) Lisaks ehitisregistrile tuleb uuringu aruanne esitada ka Eesti Geoloogiateenistusele. RT I 2024-12-27 3 127122024003 2025-01-01 Lisaks ehitisregistrile tuleb uuringu aruanne esitada ka Eesti Geoloogiateenistusele. 2 (2) Uuringu tegija on kohustatud uuringu aruande esitama ehitisregistrile ja Eesti Geoloogiateenistusele 10 päeva jooksul uuringu aruande valmimise päevast arvates. RT I 2024-12-27 3 127122024003 2025-01-01 Uuringu tegija on kohustatud uuringu aruande esitama ehitisregistrile j",
-      "estleg:legalText": "1 (1) Lisaks ehitisregistrile tuleb uuringu aruanne esitada ka Eesti Geoloogiateenistusele. RT I 2024-12-27 3 127122024003 2025-01-01 Lisaks ehitisregistrile tuleb uuringu aruanne esitada ka Eesti Geoloogiateenistusele. 2 (2) Uuringu tegija on kohustatud uuringu aruande esitama ehitisregistrile ja Eesti Geoloogiateenistusele 10 päeva jooksul uuringu aruande valmimise päevast arvates. RT I 2024-12-27 3 127122024003 2025-01-01 Uuringu tegija on kohustatud uuringu aruande esitama ehitisregistrile ja Eesti Geoloogiateenistusele 10 päeva jooksul uuringu aruande valmimise päevast arvates. 3 (3) Uuringu aruanne esitatakse elektrooniliselt. Uuringu aruanne esitatakse elektrooniliselt.",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:summary": {
+        "@value": "1 (1) Lisaks ehitisregistrile tuleb uuringu aruanne esitada ka Eesti Geoloogiateenistusele. RT I 2024-12-27 3 127122024003 2025-01-01 2 (2) Uuringu tegija on kohustatud uuringu aruande esitama ehitisregistrile ja Eesti Geoloogiateenistusele 10 päeva jooksul uuringu aruande valmimise päevast arvates. RT I 2024-12-27 3 127122024003 2025-01-01 3 (3) Uuringu aruanne esitatakse elektrooniliselt.",
+        "@language": "et"
       },
+      "estleg:legalText": "1 (1) Lisaks ehitisregistrile tuleb uuringu aruanne esitada ka Eesti Geoloogiateenistusele. RT I 2024-12-27 3 127122024003 2025-01-01 2 (2) Uuringu tegija on kohustatud uuringu aruande esitama ehitisregistrile ja Eesti Geoloogiateenistusele 10 päeva jooksul uuringu aruande valmimise päevast arvates. RT I 2024-12-27 3 127122024003 2025-01-01 3 (3) Uuringu aruanne esitatakse elektrooniliselt.",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1029320_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1029320_Par_3_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -151,24 +439,95 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1029320_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lisaks ehitisregistrile tuleb uuringu aruanne esitada ka Eesti Geoloogiateenistusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Uuringu tegija on kohustatud uuringu aruande esitama ehitisregistrile ja Eesti Geoloogiateenistusele 10 päeva jooksul uuringu aruande valmimise päevast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Uuringu aruanne esitatakse elektrooniliselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
       "@id": "estleg:Reg_1029320_Par_4",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Uuringu andmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 4. Uuringu andmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ehitusgeoloogilisele uuringule esitatavad nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1029320_Map"
       },
-      "estleg:summary": "Uuringut tegev isik peab säilitama täies ulatuses kõik uuringu tegemisega seotud andmed vähemalt seitse aastat või arhiiviseaduses sätestatud korras arhiivi üleandmiseni.",
-      "estleg:legalText": "Uuringut tegev isik peab säilitama täies ulatuses kõik uuringu tegemisega seotud andmed vähemalt seitse aastat või arhiiviseaduses sätestatud korras arhiivi üleandmiseni. Uuringut tegev isik peab säilitama täies ulatuses kõik uuringu tegemisega seotud andmed vähemalt seitse aastat või arhiiviseaduses sätestatud korras arhiivi üleandmiseni.",
+      "estleg:summary": {
+        "@value": "Uuringut tegev isik peab säilitama täies ulatuses kõik uuringu tegemisega seotud andmed vähemalt seitse aastat või arhiiviseaduses sätestatud korras arhiivi üleandmiseni.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Uuringut tegev isik peab säilitama täies ulatuses kõik uuringu tegemisega seotud andmed vähemalt seitse aastat või arhiiviseaduses sätestatud korras arhiivi üleandmiseni.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1029320_Par_4_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1029194_Par_8"
@@ -177,18 +536,36 @@
           "@id": "estleg:Reg_1029865_Par_8"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1029320_Par_4_v1029320"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Uuringut tegev isik peab säilitama täies ulatuses kõik uuringu tegemisega seotud andmed vähemalt seitse aastat või arhiiviseaduses sätestatud korras arhiivi üleandmiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:Reg_1029320_Par_5",
@@ -197,19 +574,30 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Rakendussäte",
+      "rdfs:label": {
+        "@value": "§ 5. Rakendussäte",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ehitusgeoloogilisele uuringule esitatavad nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1029320_Map"
       },
-      "estleg:summary": "Enne käesoleva määruse jõustumist alustatud ehitusgeoloogilise uuringule kohaldatakse enne käesoleva määruse jõustumist kehtinud nõudeid, kuid uuringu aruanne tuleb esitada Eesti Geoloogiateenistusele käesoleva määruse §-s 3 sätestatust lähtudes. RT I 2024-12-27 3 127122024003 2025-01-01",
-      "estleg:legalText": "Enne käesoleva määruse jõustumist alustatud ehitusgeoloogilise uuringule kohaldatakse enne käesoleva määruse jõustumist kehtinud nõudeid, kuid uuringu aruanne tuleb esitada Eesti Geoloogiateenistusele käesoleva määruse §-s 3 sätestatust lähtudes. RT I 2024-12-27 3 127122024003 2025-01-01 Enne käesoleva määruse jõustumist alustatud ehitusgeoloogilise uuringule kohaldatakse enne käesoleva määruse jõustumist kehtinud nõudeid, kuid uuringu aruanne tuleb esitada Eesti Geoloogiateenistusele käesoleva määruse §-s 3 sätestatust lähtudes.",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:summary": {
+        "@value": "Enne käesoleva määruse jõustumist alustatud ehitusgeoloogilise uuringule kohaldatakse enne käesoleva määruse jõustumist kehtinud nõudeid, kuid uuringu aruanne tuleb esitada Eesti Geoloogiateenistusele käesoleva määruse §-s 3 sätestatust lähtudes. RT I 2024-12-27 3 127122024003 2025-01-01",
+        "@language": "et"
       },
+      "estleg:legalText": "Enne käesoleva määruse jõustumist alustatud ehitusgeoloogilise uuringule kohaldatakse enne käesoleva määruse jõustumist kehtinud nõudeid, kuid uuringu aruanne tuleb esitada Eesti Geoloogiateenistusele käesoleva määruse §-s 3 sätestatust lähtudes. RT I 2024-12-27 3 127122024003 2025-01-01",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1029320_Par_5_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -218,24 +606,68 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1029320_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne käesoleva määruse jõustumist alustatud ehitusgeoloogilise uuringule kohaldatakse enne käesoleva määruse jõustumist kehtinud nõudeid, kuid uuringu aruanne tuleb esitada Eesti Geoloogiateenistusele käesoleva määruse §-s 3 sätestatust lähtudes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
       "@id": "estleg:Reg_1029320_Par_6",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 6. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ehitusgeoloogilisele uuringule esitatavad nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1029320_Map"
       },
-      "estleg:summary": "Käesolev määrus jõustub 2015. aasta 1. juulil.",
-      "estleg:legalText": "Käesolev määrus jõustub 2015. aasta 1. juulil. Käesolev määrus jõustub 2015. aasta 1. juulil.",
+      "estleg:summary": {
+        "@value": "Käesolev määrus jõustub 2015. aasta 1. juulil.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolev määrus jõustub 2015. aasta 1. juulil.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1029320_Par_6_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1029320_Par_6_v1029320"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1029320_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev määrus jõustub 2015. aasta 1. juulil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1029320_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
     }
   ]
 }

@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Töökohapõhise õppe rakendamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Töökohapõhise õppe rakendamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Töökohapõhise õppe rakendamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,27 +39,15 @@
       "estleg:globalId": "119062019004",
       "estleg:terviktekstId": "1019954",
       "estleg:preambleText": "Määrus kehtestatakse kutseõppeasutuse seaduse § 28 lõike 7 alusel.",
-      "estleg:entryIntoForce": {
-        "@value": "2014-01-01",
-        "@type": "xsd:date"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2019-06-13",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2013-12-29",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Amendment_Reg_1019954_82cdac0592"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Töökohapõhise õppe rakendamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "estleg:issuedUnder": [
         {
@@ -90,6 +85,24 @@
         {
           "@id": "http://eurovoc.europa.eu/523"
         }
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2014-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2019-06-13",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2013-12-29",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_Reg_1019954_82cdac0592"
+        }
       ]
     },
     {
@@ -99,13 +112,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Töökohapõhine õpe",
+      "rdfs:label": {
+        "@value": "§ 1. Töökohapõhine õpe",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töökohapõhise õppe rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1019954_Map"
       },
-      "estleg:summary": "1 (1) Töökohapõhine õpe on kutseõppe tasemeõppe õppevorm, mille puhul praktika ettevõttes või asutuses (edaspidi praktikakoht) moodustab vähemalt kaks kolmandikku õppekava mahust. Töökohapõhine õpe on kutseõppe tasemeõppe õppevorm, mille puhul praktika ettevõttes või asutuses (edaspidi praktikakoht) moodustab vähemalt kaks kolmandikku õppekava mahust. 2 (2) Töökohapõhist õpet rakendatakse kutseõpet andva õppeasutuse (edaspidi kool), õpilase ja praktikakoha koostöös. Töökohapõhist õpet rakendatak",
-      "estleg:legalText": "1 (1) Töökohapõhine õpe on kutseõppe tasemeõppe õppevorm, mille puhul praktika ettevõttes või asutuses (edaspidi praktikakoht) moodustab vähemalt kaks kolmandikku õppekava mahust. Töökohapõhine õpe on kutseõppe tasemeõppe õppevorm, mille puhul praktika ettevõttes või asutuses (edaspidi praktikakoht) moodustab vähemalt kaks kolmandikku õppekava mahust. 2 (2) Töökohapõhist õpet rakendatakse kutseõpet andva õppeasutuse (edaspidi kool), õpilase ja praktikakoha koostöös. Töökohapõhist õpet rakendatakse kutseõpet andva õppeasutuse (edaspidi kool), õpilase ja praktikakoha koostöös. 3 (3) Töökohapõhine õpe toimub praktikakohas ja koolis nii kontaktõppe kui iseseisva tööna. Praktikakohas omandab õpilane õppekavas kirjeldatud õpiväljundeid praktikakohapoolseid tööülesandeid täites. Praktikast ülejäävas mahus toimub õpe koolis ning sel ajal ei täida õpilane praktikakohapoolseid tööülesandeid. Töökohapõhine õpe toimub praktikakohas ja koolis nii kontaktõppe kui iseseisva tööna. Praktikakohas omandab õpilane õppekavas kirjeldatud õpiväljundeid praktikakohapoolseid tööülesandeid täites. Praktikast ülejäävas mahus toimub õpe koolis ning sel ajal ei täida õpilane praktikakohapoolseid tööülesandeid.",
+      "estleg:summary": {
+        "@value": "1 (1) Töökohapõhine õpe on kutseõppe tasemeõppe õppevorm, mille puhul praktika ettevõttes või asutuses (edaspidi praktikakoht) moodustab vähemalt kaks kolmandikku õppekava mahust. 2 (2) Töökohapõhist õpet rakendatakse kutseõpet andva õppeasutuse (edaspidi kool), õpilase ja praktikakoha koostöös. 3 (3) Töökohapõhine õpe toimub praktikakohas ja koolis nii kontaktõppe kui iseseisva tööna. Praktikakohas omandab õpilane õppekavas kirjeldatud õpiväljundeid praktikakohapoolseid tööülesandeid täites.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Töökohapõhine õpe on kutseõppe tasemeõppe õppevorm, mille puhul praktika ettevõttes või asutuses (edaspidi praktikakoht) moodustab vähemalt kaks kolmandikku õppekava mahust. 2 (2) Töökohapõhist õpet rakendatakse kutseõpet andva õppeasutuse (edaspidi kool), õpilase ja praktikakoha koostöös. 3 (3) Töökohapõhine õpe toimub praktikakohas ja koolis nii kontaktõppe kui iseseisva tööna. Praktikakohas omandab õpilane õppekavas kirjeldatud õpiväljundeid praktikakohapoolseid tööülesandeid täites. Praktikast ülejäävas mahus toimub õpe koolis ning sel ajal ei täida õpilane praktikakohapoolseid tööülesandeid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -118,11 +137,91 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1019954_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_1_Lg_3"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1019954_Par_1_v1019954"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töökohapõhine õpe on kutseõppe tasemeõppe õppevorm, mille puhul praktika ettevõttes või asutuses (edaspidi praktikakoht) moodustab vähemalt kaks kolmandikku õppekava mahust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Töökohapõhist õpet rakendatakse kutseõpet andva õppeasutuse (edaspidi kool), õpilase ja praktikakoha koostöös.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Töökohapõhine õpe toimub praktikakohas ja koolis nii kontaktõppe kui iseseisva tööna. Praktikakohas omandab õpilane õppekavas kirjeldatud õpiväljundeid praktikakohapoolseid tööülesandeid täites. Praktikast ülejäävas mahus toimub õpe koolis ning sel ajal ei täida õpilane praktikakohapoolseid tööülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1019954_Par_2",
@@ -131,13 +230,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Töökohapõhise õppe osapoolte suhted",
+      "rdfs:label": {
+        "@value": "§ 2. Töökohapõhise õppe osapoolte suhted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töökohapõhise õppe rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1019954_Map"
       },
-      "estleg:summary": "1 (1) Kooli, õpilase ja praktikakoha suhted töökohapõhise õppe rakendamisel reguleeritakse kutseõppeasutuse seaduse § 30 lõike 3 alusel sõlmitavas töökohapõhise õppe praktikalepingus. RT I 2019-06-19 2 119062019002 2019-06-22 Kooli, õpilase ja praktikakoha suhted töökohapõhise õppe rakendamisel reguleeritakse kutseõppeasutuse seaduse § 30 lõike 3 alusel sõlmitavas töökohapõhise õppe praktikalepingus. 2 (2) Töökohapõhise õppe praktikalepingus lepitakse kokku poolte õigustes ja kohustustes ning tö",
-      "estleg:legalText": "1 (1) Kooli, õpilase ja praktikakoha suhted töökohapõhise õppe rakendamisel reguleeritakse kutseõppeasutuse seaduse § 30 lõike 3 alusel sõlmitavas töökohapõhise õppe praktikalepingus. RT I 2019-06-19 2 119062019002 2019-06-22 Kooli, õpilase ja praktikakoha suhted töökohapõhise õppe rakendamisel reguleeritakse kutseõppeasutuse seaduse § 30 lõike 3 alusel sõlmitavas töökohapõhise õppe praktikalepingus. 2 (2) Töökohapõhise õppe praktikalepingus lepitakse kokku poolte õigustes ja kohustustes ning töökohapõhise õppe täpsemas korralduses, sealhulgas fikseeritakse praktika maht, koolis toimuva õppe maht, õppija töökoormus ja töötasu, kui õppijaga ei sõlmita töölepingut, õppija ja juhendajate kontaktandmed ning ettevõttele eraldatava juhendamistasu suurus ja maksmise põhimõtted, kui selleks ei sõlmita eraldi lepingut. Töökohapõhise õppe korraldusele kohaldatakse töölepingu seaduse töö- ja puhkeaja regulatsiooni. RT I 2019-06-19 2 119062019002 2019-06-22 Töökohapõhise õppe praktikalepingus lepitakse kokku poolte õigustes ja kohustustes ning töökohapõhise õppe täpsemas korralduses, sealhulgas fikseeritakse praktika maht, koolis toimuva õppe maht, õppija töökoormus ja töötasu, kui õppijaga ei sõlmita töölepingut, õppija ja juhendajate kontaktandmed ning ettevõttele eraldatava juhendamistasu suurus ja maksmise põhimõtted, kui selleks ei sõlmita eraldi lepingut. Töökohapõhise õppe korraldusele kohaldatakse töölepingu seaduse töö- ja puhkeaja regulatsiooni. 3 (3) Praktikakoht tagab õpilasele töökohapõhise õppe praktikakohas toimuvatel perioodidel töötervishoiu ja tööohutuse nõuetele vastavad töötingimused ning praktikakoha poolt antavate töö- ja õppeülesannete nõuetekohaseks täitmiseks vajalikud materjalid ja töövahendid praktikakoha teiste töötajatega samadel alustel. Praktikakoht tagab õpilasele töökohapõhise õppe praktikakohas toimuvatel perioodidel töötervishoiu ja tööohutuse nõuetele vastavad töötingimused ning praktikakoha poolt antavate töö- ja õppeülesannete nõuetekohaseks täitmiseks vajalikud materjalid ja töövahendid praktikakoha teiste töötajatega samadel alustel.",
+      "estleg:summary": {
+        "@value": "1 (1) Kooli, õpilase ja praktikakoha suhted töökohapõhise õppe rakendamisel reguleeritakse kutseõppeasutuse seaduse § 30 lõike 3 alusel sõlmitavas töökohapõhise õppe praktikalepingus. RT I 2019-06-19 2 119062019002 2019-06-22 2 (2) Töökohapõhise õppe praktikalepingus lepitakse kokku poolte õigustes ja kohustustes ning töökohapõhise õppe täpsemas korralduses, sealhulgas fikseeritakse praktika maht, koolis toimuva õppe maht, õppija töökoormus ja töötasu, kui õppijaga ei sõlmita töölepingut,…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kooli, õpilase ja praktikakoha suhted töökohapõhise õppe rakendamisel reguleeritakse kutseõppeasutuse seaduse § 30 lõike 3 alusel sõlmitavas töökohapõhise õppe praktikalepingus. RT I 2019-06-19 2 119062019002 2019-06-22 2 (2) Töökohapõhise õppe praktikalepingus lepitakse kokku poolte õigustes ja kohustustes ning töökohapõhise õppe täpsemas korralduses, sealhulgas fikseeritakse praktika maht, koolis toimuva õppe maht, õppija töökoormus ja töötasu, kui õppijaga ei sõlmita töölepingut, õppija ja juhendajate kontaktandmed ning ettevõttele eraldatava juhendamistasu suurus ja maksmise põhimõtted, kui selleks ei sõlmita eraldi lepingut. Töökohapõhise õppe korraldusele kohaldatakse töölepingu seaduse töö- ja puhkeaja regulatsiooni. RT I 2019-06-19 2 119062019002 2019-06-22 3 (3) Praktikakoht tagab õpilasele töökohapõhise õppe praktikakohas toimuvatel perioodidel töötervishoiu ja tööohutuse nõuetele vastavad töötingimused ning praktikakoha poolt antavate töö- ja õppeülesannete nõuetekohaseks täitmiseks vajalikud materjalid ja töövahendid praktikakoha teiste töötajatega samadel alustel.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -150,6 +255,17 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1019954_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_2_Lg_3"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KUTSEO_Par_30_Lg_3"
@@ -162,19 +278,17 @@
       ]
     },
     {
-      "@id": "estleg:Reg_1019954_Par_3",
+      "@id": "estleg:Reg_1019954_Par_2_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Praktikakoha hindamine",
-      "estleg:sourceAct": "Töökohapõhise õppe rakendamise kord",
-      "estleg:partOfAct": {
-        "@id": "estleg:Reg_1019954_Map"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kooli, õpilase ja praktikakoha suhted töökohapõhise õppe rakendamisel reguleeritakse kutseõppeasutuse seaduse § 30 lõike 3 alusel sõlmitavas töökohapõhise õppe praktikalepingus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_2"
       },
-      "estleg:summary": "1 (1) Enne töökohapõhise õppe praktikalepingu sõlmimist hindavad kool ja praktikakoht koos õppetingimusi praktikakohas, et veenduda praktikakoha valmisolekus täita õppekava eesmärke ning tagada õpilase ohutus ja tervise kaitse. Hindamise käigus selgitatakse välja ka see, millised õppekavas kirjeldatud õpiväljundid on omandatavad praktikakohas ja milliste omandamine tagatakse koolis või teises praktikakohas. RT I 2019-06-19 2 119062019002 2019-06-22 Enne töökohapõhise õppe praktikalepingu sõlmimi",
-      "estleg:legalText": "1 (1) Enne töökohapõhise õppe praktikalepingu sõlmimist hindavad kool ja praktikakoht koos õppetingimusi praktikakohas, et veenduda praktikakoha valmisolekus täita õppekava eesmärke ning tagada õpilase ohutus ja tervise kaitse. Hindamise käigus selgitatakse välja ka see, millised õppekavas kirjeldatud õpiväljundid on omandatavad praktikakohas ja milliste omandamine tagatakse koolis või teises praktikakohas. RT I 2019-06-19 2 119062019002 2019-06-22 Enne töökohapõhise õppe praktikalepingu sõlmimist hindavad kool ja praktikakoht koos õppetingimusi praktikakohas, et veenduda praktikakoha valmisolekus täita õppekava eesmärke ning tagada õpilase ohutus ja tervise kaitse. Hindamise käigus selgitatakse välja ka see, millised õppekavas kirjeldatud õpiväljundid on omandatavad praktikakohas ja milliste omandamine tagatakse koolis või teises praktikakohas. 2 (2) Hindamise tulemuseks on kirjalik hinnang, mis lisatakse töökohapõhise õppe praktikalepingule. RT I 2019-06-19 2 119062019002 2019-06-22 Hindamise tulemuseks on kirjalik hinnang, mis lisatakse töökohapõhise õppe praktikalepingule. 3 (3) Praktikakoha täiendavat hindamist võib läbi viia ka praktika jooksul. Praktikakoha täiendavat hindamist võib läbi viia ka praktika jooksul.",
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -183,6 +297,99 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:references": [
+        {
+          "@id": "estleg:KUTSEO_Par_30_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Töökohapõhise õppe praktikalepingus lepitakse kokku poolte õigustes ja kohustustes ning töökohapõhise õppe täpsemas korralduses, sealhulgas fikseeritakse praktika maht, koolis toimuva õppe maht, õppija töökoormus ja töötasu, kui õppijaga ei sõlmita töölepingut, õppija ja juhendajate kontaktandmed ning ettevõttele eraldatava juhendamistasu suurus ja maksmise põhimõtted, kui selleks ei sõlmita eraldi lepingut. Töökohapõhise õppe korraldusele kohaldatakse töölepingu seaduse töö- ja puhkeaja regulatsiooni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Praktikakoht tagab õpilasele töökohapõhise õppe praktikakohas toimuvatel perioodidel töötervishoiu ja tööohutuse nõuetele vastavad töötingimused ning praktikakoha poolt antavate töö- ja õppeülesannete nõuetekohaseks täitmiseks vajalikud materjalid ja töövahendid praktikakoha teiste töötajatega samadel alustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
+      ],
+      "estleg:paragrahv": "§ 3.",
+      "rdfs:label": {
+        "@value": "§ 3. Praktikakoha hindamine",
+        "@language": "et"
+      },
+      "estleg:sourceAct": "Töökohapõhise õppe rakendamise kord",
+      "estleg:partOfAct": {
+        "@id": "estleg:Reg_1019954_Map"
+      },
+      "estleg:summary": {
+        "@value": "1 (1) Enne töökohapõhise õppe praktikalepingu sõlmimist hindavad kool ja praktikakoht koos õppetingimusi praktikakohas, et veenduda praktikakoha valmisolekus täita õppekava eesmärke ning tagada õpilase ohutus ja tervise kaitse. Hindamise käigus selgitatakse välja ka see, millised õppekavas kirjeldatud õpiväljundid on omandatavad praktikakohas ja milliste omandamine tagatakse koolis või teises praktikakohas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Enne töökohapõhise õppe praktikalepingu sõlmimist hindavad kool ja praktikakoht koos õppetingimusi praktikakohas, et veenduda praktikakoha valmisolekus täita õppekava eesmärke ning tagada õpilase ohutus ja tervise kaitse. Hindamise käigus selgitatakse välja ka see, millised õppekavas kirjeldatud õpiväljundid on omandatavad praktikakohas ja milliste omandamine tagatakse koolis või teises praktikakohas. RT I 2019-06-19 2 119062019002 2019-06-22 2 (2) Hindamise tulemuseks on kirjalik hinnang, mis lisatakse töökohapõhise õppe praktikalepingule. RT I 2019-06-19 2 119062019002 2019-06-22 3 (3) Praktikakoha täiendavat hindamist võib läbi viia ka praktika jooksul.",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1019954_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_3_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -191,19 +398,80 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1019954_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne töökohapõhise õppe praktikalepingu sõlmimist hindavad kool ja praktikakoht koos õppetingimusi praktikakohas, et veenduda praktikakoha valmisolekus täita õppekava eesmärke ning tagada õpilase ohutus ja tervise kaitse. Hindamise käigus selgitatakse välja ka see, millised õppekavas kirjeldatud õpiväljundid on omandatavad praktikakohas ja milliste omandamine tagatakse koolis või teises praktikakohas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Hindamise tulemuseks on kirjalik hinnang, mis lisatakse töökohapõhise õppe praktikalepingule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Praktikakoha täiendavat hindamist võib läbi viia ka praktika jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
       "@id": "estleg:Reg_1019954_Par_4",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Õppekava",
+      "rdfs:label": {
+        "@value": "§ 4. Õppekava",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töökohapõhise õppe rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1019954_Map"
       },
-      "estleg:summary": "1 (1) Töökohapõhine õpe toimub kooli õppekava alusel. Töökohapõhine õpe toimub kooli õppekava alusel. 2 (2) Õpilasele koostatakse vajadusel kooli õppekava alusel individuaalne õppekava, arvestades praktikakoha eripära ning õpilase haridustaset, varasemaid teadmisi ja oskusi ning hariduslikke erivajadusi. Õpilasele koostatakse vajadusel kooli õppekava alusel individuaalne õppekava, arvestades praktikakoha eripära ning õpilase haridustaset, varasemaid teadmisi ja oskusi ning hariduslikke erivajadu",
-      "estleg:legalText": "1 (1) Töökohapõhine õpe toimub kooli õppekava alusel. Töökohapõhine õpe toimub kooli õppekava alusel. 2 (2) Õpilasele koostatakse vajadusel kooli õppekava alusel individuaalne õppekava, arvestades praktikakoha eripära ning õpilase haridustaset, varasemaid teadmisi ja oskusi ning hariduslikke erivajadusi. Õpilasele koostatakse vajadusel kooli õppekava alusel individuaalne õppekava, arvestades praktikakoha eripära ning õpilase haridustaset, varasemaid teadmisi ja oskusi ning hariduslikke erivajadusi. 3 (3) Kui töökohapõhises õppevormis õppivale õpilasele koostatakse individuaalne õppekava, lisatakse see töökohapõhise õppe praktikalepingule. RT I 2019-06-19 2 119062019002 2019-06-22 Kui töökohapõhises õppevormis õppivale õpilasele koostatakse individuaalne õppekava, lisatakse see töökohapõhise õppe praktikalepingule.",
+      "estleg:summary": {
+        "@value": "1 (1) Töökohapõhine õpe toimub kooli õppekava alusel. 2 (2) Õpilasele koostatakse vajadusel kooli õppekava alusel individuaalne õppekava, arvestades praktikakoha eripära ning õpilase haridustaset, varasemaid teadmisi ja oskusi ning hariduslikke erivajadusi. 3 (3) Kui töökohapõhises õppevormis õppivale õpilasele koostatakse individuaalne õppekava, lisatakse see töökohapõhise õppe praktikalepingule. RT I 2019-06-19 2 119062019002 2019-06-22",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Töökohapõhine õpe toimub kooli õppekava alusel. 2 (2) Õpilasele koostatakse vajadusel kooli õppekava alusel individuaalne õppekava, arvestades praktikakoha eripära ning õpilase haridustaset, varasemaid teadmisi ja oskusi ning hariduslikke erivajadusi. 3 (3) Kui töökohapõhises õppevormis õppivale õpilasele koostatakse individuaalne õppekava, lisatakse see töökohapõhise õppe praktikalepingule. RT I 2019-06-19 2 119062019002 2019-06-22",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -213,11 +481,79 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1019954_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_4_Lg_3"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1019954_Par_4_v1019954"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töökohapõhine õpe toimub kooli õppekava alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Õpilasele koostatakse vajadusel kooli õppekava alusel individuaalne õppekava, arvestades praktikakoha eripära ning õpilase haridustaset, varasemaid teadmisi ja oskusi ning hariduslikke erivajadusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui töökohapõhises õppevormis õppivale õpilasele koostatakse individuaalne õppekava, lisatakse see töökohapõhise õppe praktikalepingule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
     },
     {
       "@id": "estleg:Reg_1019954_Par_5",
@@ -226,13 +562,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Juhendamine töökohapõhises õppes",
+      "rdfs:label": {
+        "@value": "§ 5. Juhendamine töökohapõhises õppes",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töökohapõhise õppe rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1019954_Map"
       },
-      "estleg:summary": "1 (1) Kool ja praktikakoht määravad õpilasele koolipoolse juhendaja ja praktikakoha poolse juhendaja, arvestades nende määramisel erialast ja pedagoogilist pädevust. Kool ja praktikakoht tagavad õpilase juhendamise töökohapõhises õppevormis kogu õppeaja jooksul. Kool ja praktikakoht määravad õpilasele koolipoolse juhendaja ja praktikakoha poolse juhendaja, arvestades nende määramisel erialast ja pedagoogilist pädevust. Kool ja praktikakoht tagavad õpilase juhendamise töökohapõhises õppevormis ko",
-      "estleg:legalText": "1 (1) Kool ja praktikakoht määravad õpilasele koolipoolse juhendaja ja praktikakoha poolse juhendaja, arvestades nende määramisel erialast ja pedagoogilist pädevust. Kool ja praktikakoht tagavad õpilase juhendamise töökohapõhises õppevormis kogu õppeaja jooksul. Kool ja praktikakoht määravad õpilasele koolipoolse juhendaja ja praktikakoha poolse juhendaja, arvestades nende määramisel erialast ja pedagoogilist pädevust. Kool ja praktikakoht tagavad õpilase juhendamise töökohapõhises õppevormis kogu õppeaja jooksul. 2 (2) Ühel praktikakohapoolsel juhendajal võib samaaegselt olla kuni neli juhendatavat õpilast. Ühel praktikakohapoolsel juhendajal võib samaaegselt olla kuni neli juhendatavat õpilast. 3 (3) Kool tagab juhendajate ettevalmistuse töökohapõhises õppes õppijate juhendamiseks, lähtuvalt töökohapõhise õppe spetsiifikast. Kool tagab juhendajate ettevalmistuse töökohapõhises õppes õppijate juhendamiseks, lähtuvalt töökohapõhise õppe spetsiifikast. 4 (4) Praktikakoht peab tagama õpilase juhendamiseks vajaliku töökorralduse ja juhendamisega seotud ülesannete täitmise. Praktikakoht peab tagama õpilase juhendamiseks vajaliku töökorralduse ja juhendamisega seotud ülesannete täitmise.",
+      "estleg:summary": {
+        "@value": "1 (1) Kool ja praktikakoht määravad õpilasele koolipoolse juhendaja ja praktikakoha poolse juhendaja, arvestades nende määramisel erialast ja pedagoogilist pädevust. Kool ja praktikakoht tagavad õpilase juhendamise töökohapõhises õppevormis kogu õppeaja jooksul. 2 (2) Ühel praktikakohapoolsel juhendajal võib samaaegselt olla kuni neli juhendatavat õpilast. 3 (3) Kool tagab juhendajate ettevalmistuse töökohapõhises õppes õppijate juhendamiseks, lähtuvalt töökohapõhise õppe spetsiifikast.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kool ja praktikakoht määravad õpilasele koolipoolse juhendaja ja praktikakoha poolse juhendaja, arvestades nende määramisel erialast ja pedagoogilist pädevust. Kool ja praktikakoht tagavad õpilase juhendamise töökohapõhises õppevormis kogu õppeaja jooksul. 2 (2) Ühel praktikakohapoolsel juhendajal võib samaaegselt olla kuni neli juhendatavat õpilast. 3 (3) Kool tagab juhendajate ettevalmistuse töökohapõhises õppes õppijate juhendamiseks, lähtuvalt töökohapõhise õppe spetsiifikast. 4 (4) Praktikakoht peab tagama õpilase juhendamiseks vajaliku töökorralduse ja juhendamisega seotud ülesannete täitmise.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -241,6 +583,23 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1019954_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_5_Lg_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -249,19 +608,156 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1019954_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kool ja praktikakoht määravad õpilasele koolipoolse juhendaja ja praktikakoha poolse juhendaja, arvestades nende määramisel erialast ja pedagoogilist pädevust. Kool ja praktikakoht tagavad õpilase juhendamise töökohapõhises õppevormis kogu õppeaja jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ühel praktikakohapoolsel juhendajal võib samaaegselt olla kuni neli juhendatavat õpilast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kool tagab juhendajate ettevalmistuse töökohapõhises õppes õppijate juhendamiseks, lähtuvalt töökohapõhise õppe spetsiifikast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Praktikakoht peab tagama õpilase juhendamiseks vajaliku töökorralduse ja juhendamisega seotud ülesannete täitmise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
       "@id": "estleg:Reg_1019954_Par_6",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Õpilasele makstav tasu",
+      "rdfs:label": {
+        "@value": "§ 6. Õpilasele makstav tasu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töökohapõhise õppe rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1019954_Map"
       },
-      "estleg:summary": "1 (1) Praktikakoht maksab õpilasele tasu tööülesannete täitmise eest praktikakohas toimuval õppeperioodil vastavalt töökohapõhise õppe praktikalepingus kokku lepitule. Kokku lepitud tasu ei või olla väiksem Vabariigi Valitsuse kehtestatud töötasu alammäärast. RT I 2019-06-19 2 119062019002 2019-06-22 Praktikakoht maksab õpilasele tasu tööülesannete täitmise eest praktikakohas toimuval õppeperioodil vastavalt töökohapõhise õppe praktikalepingus kokku lepitule. Kokku lepitud tasu ei või olla väiks",
-      "estleg:legalText": "1 (1) Praktikakoht maksab õpilasele tasu tööülesannete täitmise eest praktikakohas toimuval õppeperioodil vastavalt töökohapõhise õppe praktikalepingus kokku lepitule. Kokku lepitud tasu ei või olla väiksem Vabariigi Valitsuse kehtestatud töötasu alammäärast. RT I 2019-06-19 2 119062019002 2019-06-22 Praktikakoht maksab õpilasele tasu tööülesannete täitmise eest praktikakohas toimuval õppeperioodil vastavalt töökohapõhise õppe praktikalepingus kokku lepitule. Kokku lepitud tasu ei või olla väiksem Vabariigi Valitsuse kehtestatud töötasu alammäärast. 2 (2) Töökohapõhise õppe praktikalepingus ei lepita kokku käesoleva paragrahvi lõikes 1 nimetatud tasu maksmist, kui õpilase ja praktikakoha vahel on kehtiv tööleping. RT I 2019-06-19 2 119062019002 2019-06-22 Töökohapõhise õppe praktikalepingus ei lepita kokku käesoleva paragrahvi lõikes 1 nimetatud tasu maksmist, kui õpilase ja praktikakoha vahel on kehtiv tööleping.",
+      "estleg:summary": {
+        "@value": "1 (1) Praktikakoht maksab õpilasele tasu tööülesannete täitmise eest praktikakohas toimuval õppeperioodil vastavalt töökohapõhise õppe praktikalepingus kokku lepitule. Kokku lepitud tasu ei või olla väiksem Vabariigi Valitsuse kehtestatud töötasu alammäärast. RT I 2019-06-19 2 119062019002 2019-06-22 2 (2) Töökohapõhise õppe praktikalepingus ei lepita kokku käesoleva paragrahvi lõikes 1 nimetatud tasu maksmist, kui õpilase ja praktikakoha vahel on kehtiv tööleping.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Praktikakoht maksab õpilasele tasu tööülesannete täitmise eest praktikakohas toimuval õppeperioodil vastavalt töökohapõhise õppe praktikalepingus kokku lepitule. Kokku lepitud tasu ei või olla väiksem Vabariigi Valitsuse kehtestatud töötasu alammäärast. RT I 2019-06-19 2 119062019002 2019-06-22 2 (2) Töökohapõhise õppe praktikalepingus ei lepita kokku käesoleva paragrahvi lõikes 1 nimetatud tasu maksmist, kui õpilase ja praktikakoha vahel on kehtiv tööleping. RT I 2019-06-19 2 119062019002 2019-06-22",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1019954_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_6_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:Reg_1019954_Par_6_v1019954"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Praktikakoht maksab õpilasele tasu tööülesannete täitmise eest praktikakohas toimuval õppeperioodil vastavalt töökohapõhise õppe praktikalepingus kokku lepitule. Kokku lepitud tasu ei või olla väiksem Vabariigi Valitsuse kehtestatud töötasu alammäärast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -270,20 +766,24 @@
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:Reg_1019954_Par_6_v1019954"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Töökohapõhise õppe praktikalepingus ei lepita kokku käesoleva paragrahvi lõikes 1 nimetatud tasu maksmist, kui õpilase ja praktikakoha vahel on kehtiv tööleping.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
     },
     {
       "@id": "estleg:Reg_1019954_Par_7",
@@ -292,13 +792,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Töökohapõhise õppe kulude katmine",
+      "rdfs:label": {
+        "@value": "§ 7. Töökohapõhise õppe kulude katmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töökohapõhise õppe rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1019954_Map"
       },
-      "estleg:summary": "1 (1) Töökohapõhise õppe rakendamisel tegevustoetustest ja Euroopa Sotsiaalfondi vahenditest finantseeritud koolituskohtadel katab kool õppekulud koolis toimuva õppe ja juhendajate koolituse ning koolipoolsele juhendajale makstava juhendamistasu ulatuses. Vastavalt töökohapõhise õppe praktikalepingus kokku lepitule kannab kool ühe õppija kohta ühes kuus maksimaalselt 0,1 õpetaja töötasu alammäära üle praktikakohale praktikakohapoolsele juhendajale juhendamistasu maksmiseks. RT I 2019-06-19 2 119",
-      "estleg:legalText": "1 (1) Töökohapõhise õppe rakendamisel tegevustoetustest ja Euroopa Sotsiaalfondi vahenditest finantseeritud koolituskohtadel katab kool õppekulud koolis toimuva õppe ja juhendajate koolituse ning koolipoolsele juhendajale makstava juhendamistasu ulatuses. Vastavalt töökohapõhise õppe praktikalepingus kokku lepitule kannab kool ühe õppija kohta ühes kuus maksimaalselt 0,1 õpetaja töötasu alammäära üle praktikakohale praktikakohapoolsele juhendajale juhendamistasu maksmiseks. RT I 2019-06-19 2 119062019002 2019-06-22 Töökohapõhise õppe rakendamisel tegevustoetustest ja Euroopa Sotsiaalfondi vahenditest finantseeritud koolituskohtadel katab kool õppekulud koolis toimuva õppe ja juhendajate koolituse ning koolipoolsele juhendajale makstava juhendamistasu ulatuses. Vastavalt töökohapõhise õppe praktikalepingus kokku lepitule kannab kool ühe õppija kohta ühes kuus maksimaalselt 0,1 õpetaja töötasu alammäära üle praktikakohale praktikakohapoolsele juhendajale juhendamistasu maksmiseks. 2 (2) Muudest vahenditest rahastatava koolituse puhul lepitakse kulude jaotus kokku töökohapõhises praktikalepingus. RT I 2019-06-19 2 119062019002 2019-06-22 Muudest vahenditest rahastatava koolituse puhul lepitakse kulude jaotus kokku töökohapõhises praktikalepingus.",
+      "estleg:summary": {
+        "@value": "1 (1) Töökohapõhise õppe rakendamisel tegevustoetustest ja Euroopa Sotsiaalfondi vahenditest finantseeritud koolituskohtadel katab kool õppekulud koolis toimuva õppe ja juhendajate koolituse ning koolipoolsele juhendajale makstava juhendamistasu ulatuses. Vastavalt töökohapõhise õppe praktikalepingus kokku lepitule kannab kool ühe õppija kohta ühes kuus maksimaalselt 0,1 õpetaja töötasu alammäära üle praktikakohale praktikakohapoolsele juhendajale juhendamistasu maksmiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Töökohapõhise õppe rakendamisel tegevustoetustest ja Euroopa Sotsiaalfondi vahenditest finantseeritud koolituskohtadel katab kool õppekulud koolis toimuva õppe ja juhendajate koolituse ning koolipoolsele juhendajale makstava juhendamistasu ulatuses. Vastavalt töökohapõhise õppe praktikalepingus kokku lepitule kannab kool ühe õppija kohta ühes kuus maksimaalselt 0,1 õpetaja töötasu alammäära üle praktikakohale praktikakohapoolsele juhendajale juhendamistasu maksmiseks. RT I 2019-06-19 2 119062019002 2019-06-22 2 (2) Muudest vahenditest rahastatava koolituse puhul lepitakse kulude jaotus kokku töökohapõhises praktikalepingus. RT I 2019-06-19 2 119062019002 2019-06-22",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -308,11 +814,54 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1019954_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1019954_Par_7_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1019954_Par_7_v1019954"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töökohapõhise õppe rakendamisel tegevustoetustest ja Euroopa Sotsiaalfondi vahenditest finantseeritud koolituskohtadel katab kool õppekulud koolis toimuva õppe ja juhendajate koolituse ning koolipoolsele juhendajale makstava juhendamistasu ulatuses. Vastavalt töökohapõhise õppe praktikalepingus kokku lepitule kannab kool ühe õppija kohta ühes kuus maksimaalselt 0,1 õpetaja töötasu alammäära üle praktikakohale praktikakohapoolsele juhendajale juhendamistasu maksmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Muudest vahenditest rahastatava koolituse puhul lepitakse kulude jaotus kokku töökohapõhises praktikalepingus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
     },
     {
       "@id": "estleg:Reg_1019954_Par_8",
@@ -321,13 +870,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Üleminek",
+      "rdfs:label": {
+        "@value": "§ 8. Üleminek",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töökohapõhise õppe rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1019954_Map"
       },
-      "estleg:summary": "Käesolevas määruses sätestatut kohaldatakse ka enne 1. septembrit 2013 Eesti Hariduse Infosüsteemis registreeritud õppekavadel töökohapõhise õppe rakendamisele.",
-      "estleg:legalText": "Käesolevas määruses sätestatut kohaldatakse ka enne 1. septembrit 2013 Eesti Hariduse Infosüsteemis registreeritud õppekavadel töökohapõhise õppe rakendamisele. Käesolevas määruses sätestatut kohaldatakse ka enne 1. septembrit 2013 Eesti Hariduse Infosüsteemis registreeritud õppekavadel töökohapõhise õppe rakendamisele.",
+      "estleg:summary": {
+        "@value": "Käesolevas määruses sätestatut kohaldatakse ka enne 1. septembrit 2013 Eesti Hariduse Infosüsteemis registreeritud õppekavadel töökohapõhise õppe rakendamisele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolevas määruses sätestatut kohaldatakse ka enne 1. septembrit 2013 Eesti Hariduse Infosüsteemis registreeritud õppekavadel töökohapõhise õppe rakendamisele.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -337,11 +892,29 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1019954_Par_8_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1019954_Par_8_v1019954"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1019954_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas määruses sätestatut kohaldatakse ka enne 1. septembrit 2013 Eesti Hariduse Infosüsteemis registreeritud õppekavadel töökohapõhise õppe rakendamisele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1019954_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1019954_Map_1",

@@ -77,7 +77,8 @@ def test_multipart_osa_nodes_stamp_terviktekst_id_when_kehtiv_set():
         assert doc["@graph"][0]["estleg:terviktekstId"] == "555"
 
 
-def test_no_terviktekst_id_without_kehtiv():
+def test_terviktekst_id_stamped_without_kehtiv():
+    """#692 supersedes #341.1's gate: every act root names its consolidation."""
     generate_all_laws._used_prefixes.clear()
     doc = generate_all_laws.generate_law_stub_jsonld(
         "X",
@@ -88,7 +89,8 @@ def test_no_terviktekst_id_without_kehtiv():
         terviktekst_id="100",
         allocator=generate_all_laws.PrefixAllocator(registry={}),
     )
-    assert "estleg:terviktekstId" not in doc["@graph"][0]
+    assert doc["@graph"][0]["estleg:terviktekstId"] == "100"
+    assert "estleg:kehtiv" not in doc["@graph"][0]
 
 
 def test_target_iri_collisions_ignores_old_keys():

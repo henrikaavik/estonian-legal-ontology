@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus",
       "dcterms:title": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/25035.xml"
+        "@id": "https://www.riigiteataja.ee/akt/25035"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/25035/xml"
+      },
+      "estleg:globalId": "25035",
+      "eli:id_local": "25035",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "151805",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "c30fcd96c4f843a48f2e7708f58260ec0f98878eff43d1be97e34357e5693e3f",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -50,19 +62,20 @@
         {
           "@id": "http://eurovoc.europa.eu/523"
         }
-      ]
-    },
-    {
-      "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_tsiviil_ja_kaubandusasjades_valisriigis_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1996-01-02",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_tsiviil_ja_kaubandusasjades_valisriigis_default",
@@ -71,12 +84,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–5 Lepingu sätted",
-      "skos:prefLabel": "§1–5 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–5 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–5 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_TopicScheme"
       },
       "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_tsiviil_ja_kaubandusasjades_valisriigis_default"
+        }
+      ]
     },
     {
       "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Par_1",
@@ -85,31 +119,28 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud , mis on alla kirjutatud 1970. aasta 18. märtsil Haagis.]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud tsiviil- ja kaubandusasjades välisriigis tõendite kogumise...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on alla kirjutatud 1970. aasta 18. märtsil Haagis.",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on alla kirjutatud 1970. aasta 18. märtsil Haagis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga , mis on alla kirjutatud 1970. aasta 18. märtsil Haagis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga , mis on alla kirjutatud 1970. aasta 18. märtsil Haagis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_tsiviil_ja_kaubandusasjades_valisriigis_default"
       },
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:EVIVKKIUKR_Par_1"
-        },
-        {
-          "@id": "estleg:EVLSAIMKR_Par_1"
-        },
-        {
-          "@id": "estleg:euroopa_tuumauuringute_organisatsiooni_a_Par_2"
+          "@id": "estleg:TKKKDVKKU_Par_1"
         },
         {
           "@id": "estleg:rahvusvahelise_kohtumenetluse_lihtsustam_Par_1"
-        },
-        {
-          "@id": "estleg:ukraina_kahjunouete_rahvusvahelise_komis_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -125,16 +156,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ühinemisel määrata artikli 2 alusel keskasutuseks Justiitsministeerium.]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ühinemisel määrata artikli 2 alusel keskasutuseks Justiitsministeerium.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Map"
       },
-      "estleg:summary": "Ühinemisel määrata artikli 2 alusel keskasutuseks Justiitsministeerium.",
+      "estleg:summary": {
+        "@value": "Ühinemisel määrata artikli 2 alusel keskasutuseks Justiitsministeerium.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühinemisel määrata artikli 2 alusel keskasutuseks Justiitsministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_tsiviil_ja_kaubandusasjades_valisriigis_default"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:TKKKDVKKU_Par_2"
@@ -147,16 +189,14 @@
         },
         {
           "@id": "estleg:VKKLKAPKOATK_Par_2"
+        },
+        {
+          "@id": "estleg:VUTKU_Par_2"
         }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Par_2_v25035"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -167,12 +207,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Ühinemisel deklareerida:1) artikli 8 alusel, et taotleva riigi kohtunikel on õig...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Ühinemisel deklareerida:1) artikli 8 alusel, et taotleva riigi kohtunikel on õig...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Map"
       },
-      "estleg:summary": "Ühinemisel deklareerida:1) artikli 8 alusel, et taotleva riigi kohtunikel on õigus osaleda protsessitoimingul Justiitsministeeriumi eelneval nõusolekul;2) artikli 11 alusel, et isik võib keelduda tõendi võtmises või protsessitoimingus osalemast, kui tal on selleks õigus või kohustus tema koduriigi seaduste kohaselt.",
+      "estleg:summary": {
+        "@value": "Ühinemisel deklareerida:1) artikli 8 alusel, et taotleva riigi kohtunikel on õigus osaleda protsessitoimingul Justiitsministeeriumi eelneval nõusolekul;2) artikli 11 alusel, et isik võib keelduda tõendi võtmises või protsessitoimingus osalemast, kui tal on selleks õigus või kohustus tema koduriigi seaduste kohaselt.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühinemisel deklareerida:1) artikli 8 alusel, et taotleva riigi kohtunikel on õigus osaleda protsessitoimingul Justiitsministeeriumi eelneval nõusolekul;2) artikli 11 alusel, et isik võib keelduda tõendi võtmises või protsessitoimingus osalemast, kui tal on selleks õigus või kohustus tema koduriigi seaduste kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_tsiviil_ja_kaubandusasjades_valisriigis_default"
@@ -185,21 +231,21 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Par_3_v25035"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Par_3_v25035"
         }
       ]
     },
@@ -210,12 +256,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. [Ühinemisel deklareerida artikli 23 alusel, et Eesti Vabariik täidab nõudekirja,...]",
+      "rdfs:label": {
+        "@value": "§ 4. [Ühinemisel deklareerida artikli 23 alusel, et Eesti Vabariik täidab nõudekirja,...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Map"
       },
-      "estleg:summary": "Ühinemisel deklareerida artikli 23 alusel, et Eesti Vabariik täidab nõudekirja, milles soovitakse dokumendi või selle koopia esitamist, kui see vastab järgmistele nõuetele:1) menetlus on algatatud;2) dokumendid on arukalt identifitseeritud kuupäevade, sisu või muu informatsiooni järgi;3) nõudekirjas on näidatud asjaolud, mis annavad alust arvata, et dokumendid on isiku omanduses, valduses või isikule teada.",
+      "estleg:summary": {
+        "@value": "Ühinemisel deklareerida artikli 23 alusel, et Eesti Vabariik täidab nõudekirja, milles soovitakse dokumendi või selle koopia esitamist, kui see vastab järgmistele nõuetele:1) menetlus on algatatud;2) dokumendid on arukalt identifitseeritud kuupäevade, sisu või muu informatsiooni järgi;3) nõudekirjas on näidatud asjaolud, mis annavad alust arvata, et dokumendid on isiku omanduses, valduses või isikule teada.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühinemisel deklareerida artikli 23 alusel, et Eesti Vabariik täidab nõudekirja, milles soovitakse dokumendi või selle koopia esitamist, kui see vastab järgmistele nõuetele:1) menetlus on algatatud;2) dokumendid on arukalt identifitseeritud kuupäevade, sisu või muu informatsiooni järgi;3) nõudekirjas on näidatud asjaolud, mis annavad alust arvata, et dokumendid on isiku omanduses, valduses või isikule teada.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_tsiviil_ja_kaubandusasjades_valisriigis_default"
@@ -242,27 +294,33 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. [Ühinemisel teatada Hollandi Kuningriigi Välisministeeriumile, et artiklite 16 ja...]",
+      "rdfs:label": {
+        "@value": "§ 5. [Ühinemisel teatada Hollandi Kuningriigi Välisministeeriumile, et artiklite 16 ja...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviil- ja kaubandusasjades välisriigis tõendite kogumise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Map"
       },
-      "estleg:summary": "Ühinemisel teatada Hollandi Kuningriigi Välisministeeriumile, et artiklite 16 ja 17 alusel on luba andma määratud Justiitsministeerium.",
+      "estleg:summary": {
+        "@value": "Ühinemisel teatada Hollandi Kuningriigi Välisministeeriumile, et artiklite 16 ja 17 alusel on luba andma määratud Justiitsministeerium.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühinemisel teatada Hollandi Kuningriigi Välisministeeriumile, et artiklite 16 ja 17 alusel on luba andma määratud Justiitsministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_tsiviil_ja_kaubandusasjades_valisriigis_default"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Par_5_v25035"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_valisministeerium"
         },
         {
           "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Par_5_v25035"
         }
       ]
     }

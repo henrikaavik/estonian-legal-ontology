@@ -2031,6 +2031,44 @@ def _provision_lookup_keys(par_num: str, lg: str | None) -> list[str]:
     return keys
 
 
+def build_known_target_ids(
+    prefix_to_provisions: dict[str, dict[str, str]],
+) -> frozenset[str]:
+    """Every provision / lõige @id present in the indexed corpus (built once per run)."""
+    return frozenset(
+        iri for provisions in prefix_to_provisions.values() for iri in provisions.values()
+    )
+
+
+def guard_provision_target(
+    iri: str,
+    known_ids: frozenset[str] | set[str] | None,
+    stats: dict | None = None,
+) -> str | None:
+    """Cite the finest EXISTING granularity for a provision-level target.
+
+    Act-level IRIs (no ``_Par_``) and calls without ``known_ids`` pass
+    through unchanged. A missing ``…_Lg_<n>[_<m>]`` folds to its parent §
+    when that exists (counted as ``subsectionTargetsFoldedToSection``);
+    otherwise the target is dropped (``targetsDroppedMissing``) so no
+    dangling @id is emitted — e.g. a repealed § whose lõiked were removed
+    by the 2026-10-09 RT refresh.
+    """
+    if known_ids is None or "_Par_" not in iri or iri in known_ids:
+        return iri
+    if "_Lg_" in iri:
+        parent = iri.split("_Lg_", 1)[0]
+        if parent in known_ids:
+            if stats is not None:
+                stats["subsectionTargetsFoldedToSection"] = (
+                    stats.get("subsectionTargetsFoldedToSection", 0) + 1
+                )
+            return parent
+    if stats is not None:
+        stats["targetsDroppedMissing"] = stats.get("targetsDroppedMissing", 0) + 1
+    return None
+
+
 def _xml_paragraph_key(par_el: ET.Element) -> str:
     """Return the IRI-suffix key for a ``paragrahv`` element.
 
@@ -2206,8 +2244,16 @@ def _run_inlaw_citation_pass(
     prefix_to_provisions: dict[str, dict[str, str]],
     xml_par_texts: dict[str, str],
     law_title_to_prefixes: dict[str, list[str]] | None = None,
+    known_target_ids: frozenset[str] | set[str] | None = None,
 ) -> dict:
     """Run the in-law citation pass over ``graph``.
+
+    ``known_target_ids`` (from ``build_known_target_ids``) enables the
+    target-existence guard: every emitted provision IRI must exist, a
+    missing lõige folds to its §, and a wholly missing target becomes a
+    target-less Citation node instead of a dangling edge. Typed #513
+    edges left over from an earlier run are cleared before regenerating
+    (``staleTypedEdgesCleared``).
 
     ``law_title_to_prefixes`` (#696, from ``build_law_title_to_prefixes``)
     lets full-name genitive citations resolve against every registry /
@@ -2224,6 +2270,9 @@ def _run_inlaw_citation_pass(
         "citations_resolved": 0,
         "citations_unresolved": 0,
         "provisions_with_refs": 0,
+        "subsectionTargetsFoldedToSection": 0,
+        "targetsDroppedMissing": 0,
+        "staleTypedEdgesCleared": 0,
         "modified": False,
     }
     kept = [
@@ -2245,6 +2294,13 @@ def _run_inlaw_citation_pass(
         if not is_provision_node(node):
             continue
         stats["provisions_scanned"] += 1
+        # This pass owns the #513 typed edges: drop prior-run values so a
+        # provision whose citation vanished (or whose target was repealed)
+        # does not keep a stale — possibly dangling — typed edge.
+        for prop in TYPED_REFERENCE_PROPS:
+            if node.pop(prop, None) is not None:
+                stats["staleTypedEdgesCleared"] += 1
+                stats["modified"] = True
 
         text_to_scan = _load_provision_text(node, xml_par_texts)
         if not text_to_scan:
@@ -2268,6 +2324,11 @@ def _run_inlaw_citation_pass(
             resolved = resolve_citation(
                 cit, self_prefix, abbrev_to_prefix, prefix_to_provisions
             )
+            if known_target_ids is not None:
+                guarded = (
+                    guard_provision_target(r, known_target_ids, stats) for r in resolved
+                )
+                resolved = [r for r in guarded if r]
             all_refs.extend(resolved)
             stats["citations_resolved"] += len(resolved)
             if not resolved:
@@ -2436,6 +2497,9 @@ def _merge_pass_stats(base: dict, *passes: dict) -> bool:
         "citations_resolved",
         "citations_unresolved",
         "provisions_with_refs",
+        "subsectionTargetsFoldedToSection",
+        "targetsDroppedMissing",
+        "staleTypedEdgesCleared",
     )
     modified = False
     for pass_stats in passes:
@@ -2458,6 +2522,7 @@ def process_law_file(
     issuer_indexes: IssuerRegistryIndex | None = None,
     act_iri_to_prefix: dict[str, str] | None = None,
     law_title_to_prefixes: dict[str, list[str]] | None = None,
+    known_target_ids: frozenset[str] | set[str] | None = None,
 ) -> dict:
     """
     Process a single law JSON-LD file to extract and add cross-references.
@@ -2509,6 +2574,7 @@ def process_law_file(
         prefix_to_provisions=prefix_to_provisions,
         xml_par_texts=xml_par_texts,
         law_title_to_prefixes=law_title_to_prefixes,
+        known_target_ids=known_target_ids,
     )
     pass_results.append(inlaw_stats)
 
@@ -2531,8 +2597,10 @@ def process_law_file(
 
 def clear_existing_references() -> int:
     """
-    Remove estleg:references from all provision nodes in *_peep.json files
-    so the script is idempotent on re-run.
+    Remove estleg:references and the #513 typed sub-property edges from
+    all provision nodes in *_peep.json files so the script is idempotent
+    on re-run (typed edges used to survive and could dangle after a
+    refresh removed their target lõige).
     """
     cleaned = 0
     for json_file in iter_peep_files():
@@ -2546,9 +2614,10 @@ def clear_existing_references() -> int:
 
         modified = False
         for node in doc.get("@graph", []):
-            if "estleg:references" in node:
-                del node["estleg:references"]
-                modified = True
+            for prop in ("estleg:references", *TYPED_REFERENCE_PROPS):
+                if prop in node:
+                    del node[prop]
+                    modified = True
 
         if modified:
             save_json(json_file, doc)
@@ -2567,8 +2636,13 @@ def _process_preamble_for_act(
     state_reg_lookup: dict,
     kov_act_lookup: dict,
     law_title_to_iri: dict[str, str] | None = None,
+    known_target_ids: frozenset[str] | set[str] | None = None,
 ) -> dict | None:
     """Run the Layer 2b preamble pass on a single peep file's @graph.
+
+    ``known_target_ids`` guards provision-level ``citationTarget`` IRIs
+    (see ``guard_provision_target``); a dropped target yields a
+    target-less Citation node.
 
     Performs the per-peep clear-and-regenerate cycle:
 
@@ -2648,6 +2722,7 @@ def _process_preamble_for_act(
     new_citation_nodes: list[dict] = []
     citations_resolved = 0
     citations_unresolved = 0
+    guard_stats: dict[str, int] = {}
 
     for seq, cit in enumerate(citations, start=1):
         resolved = resolve_preamble_citation(
@@ -2659,6 +2734,9 @@ def _process_preamble_for_act(
             kov_act_lookup=kov_act_lookup,
             law_title_to_iri=law_title_to_iri,
         )
+        if resolved is not None and known_target_ids is not None:
+            guarded = guard_provision_target(resolved[0], known_target_ids, guard_stats)
+            resolved = None if guarded is None else (guarded, resolved[1])
         if resolved is None:
             citations_unresolved += 1
             citation_iri = build_citation_iri(source_act_iri, seq)
@@ -2724,6 +2802,10 @@ def _process_preamble_for_act(
         "had_existing": had_existing,
         "citations_resolved": citations_resolved,
         "citations_unresolved": citations_unresolved,
+        "subsectionTargetsFoldedToSection": guard_stats.get(
+            "subsectionTargetsFoldedToSection", 0
+        ),
+        "targetsDroppedMissing": guard_stats.get("targetsDroppedMissing", 0),
         "saved": saved,
     }
 
@@ -2757,6 +2839,7 @@ def main() -> int:
     total_provisions = sum(len(v) for v in prefix_to_provisions.values())
     print(f"  Found {len(prefix_to_provisions)} law prefixes with {total_provisions} provisions")
     print(f"  Source act mappings: {len(source_act_to_prefix)}")
+    known_target_ids = build_known_target_ids(prefix_to_provisions)
 
     # Layer 2b: canonical lookups for the preamble + body-text passes
     genitive_to_act_iri = build_genitive_to_act_iri(
@@ -2815,6 +2898,11 @@ def main() -> int:
     total_resolved = 0
     total_with_refs = 0
     files_modified = 0
+    guard_totals = {
+        "subsectionTargetsFoldedToSection": 0,
+        "targetsDroppedMissing": 0,
+        "staleTypedEdgesCleared": 0,
+    }
 
     for i, json_file in enumerate(law_files, 1):
         stats = process_law_file(
@@ -2824,8 +2912,11 @@ def main() -> int:
             issuer_indexes=issuer_indexes,
             act_iri_to_prefix=act_iri_to_prefix,
             law_title_to_prefixes=law_title_to_prefixes,
+            known_target_ids=known_target_ids,
         )
         all_stats.append(stats)
+        for key in guard_totals:
+            guard_totals[key] += stats.get(key, 0)
 
         # Accumulate totals unconditionally (#81: include every file)
         total_citations += stats.get("citations_found", 0)
@@ -2883,6 +2974,7 @@ def main() -> int:
             state_reg_lookup=state_reg_lookup,
             kov_act_lookup=kov_act_lookup,
             law_title_to_iri=law_title_to_iri,
+            known_target_ids=known_target_ids,
         )
         if result is None:
             # Peep had no @graph, no act_node, or no preambleText —
@@ -2900,6 +2992,10 @@ def main() -> int:
             preamble_triples_emitted_kov += result["triples_emitted"]
         preamble_citations_resolved += result["citations_resolved"]
         preamble_citations_unresolved += result["citations_unresolved"]
+        guard_totals["subsectionTargetsFoldedToSection"] += result[
+            "subsectionTargetsFoldedToSection"
+        ]
+        guard_totals["targetsDroppedMissing"] += result["targetsDroppedMissing"]
 
         # files_with_output only counts files whose fresh parse produced
         # positive output. The cleared-but-empty case (had_existing but
@@ -2945,6 +3041,7 @@ def main() -> int:
             "abbreviations_mapped": len(abbrev_to_prefix),
             "law_prefixes_indexed": len(prefix_to_provisions),
             "total_provisions_indexed": total_provisions,
+            **guard_totals,
         },
         "abbreviation_mapping": abbreviation_mapping_report,
         "per_file_stats": all_stats,
@@ -2964,6 +3061,9 @@ def main() -> int:
     print(f"  Total citations resolved:     {total_resolved}")
     print(f"  Total citations unresolved:   {total_unresolved}")
     print(f"  Provisions with references:   {total_with_refs}")
+    print(f"  Lõige targets folded to §:    {guard_totals['subsectionTargetsFoldedToSection']}")
+    print(f"  Missing targets dropped:      {guard_totals['targetsDroppedMissing']}")
+    print(f"  Stale typed edges cleared:    {guard_totals['staleTypedEdgesCleared']}")
     print(f"  Report: {report_path}")
     print("=" * 70)
 

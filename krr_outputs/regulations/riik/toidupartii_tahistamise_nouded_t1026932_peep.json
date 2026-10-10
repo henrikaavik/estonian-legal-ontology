@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Toidupartii tähistamise nõuded (määrus)",
+      "rdfs:label": {
+        "@value": "Toidupartii tähistamise nõuded (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Toidupartii tähistamise nõuded",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,19 +39,21 @@
       "estleg:globalId": "103122014009",
       "estleg:terviktekstId": "1026932",
       "estleg:preambleText": "Määrus kehtestatakse toiduseaduse § 38 lõike 6 alusel.",
-      "estleg:entryIntoForce": {
-        "@value": "2014-12-13",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2014-12-03",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
+      "dcterms:title": "Toidupartii tähistamise nõuded",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:transposesDirectiveAsserted": [
+        {
+          "@id": "estleg:EU_32011L0091"
+        }
+      ],
       "estleg:issuedUnder": [
         {
           "@id": "estleg:ToiduS_Map"
@@ -57,20 +66,29 @@
       ],
       "dcterms:subject": [
         {
-          "@id": "http://eurovoc.europa.eu/525"
+          "@id": "http://eurovoc.europa.eu/2924"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2924"
+          "@id": "http://eurovoc.europa.eu/525"
         }
       ],
       "eli:is_about": [
         {
-          "@id": "http://eurovoc.europa.eu/525"
+          "@id": "http://eurovoc.europa.eu/2924"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2924"
+          "@id": "http://eurovoc.europa.eu/525"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2014-12-13",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2014-12-03",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1026932_Par_1",
@@ -79,13 +97,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Toidupartii tähistus",
+      "rdfs:label": {
+        "@value": "§ 1. Toidupartii tähistus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Toidupartii tähistamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1026932_Map"
       },
-      "estleg:summary": "1 (1) Toidupartii tähistus võimaldab määrata, millisest partiist toit pärineb. Toidupartii tähistus võimaldab määrata, millisest partiist toit pärineb. 2 (2) Toidupartii määrab ja tähistab pakendil tootja, töötleja, valmistaja, pakendaja või Euroopa Liidu liikmesriigis asutatud müüja, kes seda toitu esimesena müüb. Toidupartii määrab ja tähistab pakendil tootja, töötleja, valmistaja, pakendaja või Euroopa Liidu liikmesriigis asutatud müüja, kes seda toitu esimesena müüb. 3 (3) Toidupartii tähist",
-      "estleg:legalText": "1 (1) Toidupartii tähistus võimaldab määrata, millisest partiist toit pärineb. Toidupartii tähistus võimaldab määrata, millisest partiist toit pärineb. 2 (2) Toidupartii määrab ja tähistab pakendil tootja, töötleja, valmistaja, pakendaja või Euroopa Liidu liikmesriigis asutatud müüja, kes seda toitu esimesena müüb. Toidupartii määrab ja tähistab pakendil tootja, töötleja, valmistaja, pakendaja või Euroopa Liidu liikmesriigis asutatud müüja, kes seda toitu esimesena müüb. 3 (3) Toidupartii tähistus esitatakse selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt toidu müügipakendil. Toidupartii tähistus esitatakse selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt toidu müügipakendil. 4 (4) Toidupartii tähistusele eelneb täht „L”, välja arvatud muust teabest selgelt eristatava tähistuse puhul. Toidupartii tähistusele eelneb täht „L”, välja arvatud muust teabest selgelt eristatava tähistuse puhul.",
+      "estleg:summary": {
+        "@value": "1 (1) Toidupartii tähistus võimaldab määrata, millisest partiist toit pärineb. 2 (2) Toidupartii määrab ja tähistab pakendil tootja, töötleja, valmistaja, pakendaja või Euroopa Liidu liikmesriigis asutatud müüja, kes seda toitu esimesena müüb. 3 (3) Toidupartii tähistus esitatakse selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt toidu müügipakendil. 4 (4) Toidupartii tähistusele eelneb täht „L”, välja arvatud muust teabest selgelt eristatava tähistuse puhul.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Toidupartii tähistus võimaldab määrata, millisest partiist toit pärineb. 2 (2) Toidupartii määrab ja tähistab pakendil tootja, töötleja, valmistaja, pakendaja või Euroopa Liidu liikmesriigis asutatud müüja, kes seda toitu esimesena müüb. 3 (3) Toidupartii tähistus esitatakse selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt toidu müügipakendil. 4 (4) Toidupartii tähistusele eelneb täht „L”, välja arvatud muust teabest selgelt eristatava tähistuse puhul.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -95,11 +119,86 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1026932_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1026932_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1026932_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1026932_Par_1_Lg_4"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1026932_Par_1_v1026932"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1026932_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Toidupartii tähistus võimaldab määrata, millisest partiist toit pärineb.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1026932_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1026932_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Toidupartii määrab ja tähistab pakendil tootja, töötleja, valmistaja, pakendaja või Euroopa Liidu liikmesriigis asutatud müüja, kes seda toitu esimesena müüb.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1026932_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1026932_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Toidupartii tähistus esitatakse selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt toidu müügipakendil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1026932_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1026932_Par_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Toidupartii tähistusele eelneb täht „L”, välja arvatud muust teabest selgelt eristatava tähistuse puhul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1026932_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 4"
     },
     {
       "@id": "estleg:Reg_1026932_Par_2",
@@ -108,18 +207,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Toidupartii tähistus müügipakendisse pakendamata toidu puhul",
+      "rdfs:label": {
+        "@value": "§ 2. Toidupartii tähistus müügipakendisse pakendamata toidu puhul",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Toidupartii tähistamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1026932_Map"
       },
-      "estleg:summary": "1 (1) Toidupartii tähistus, vajaduse korral koos tähega „L”, kantakse müügipakendisse pakendamata toidu puhul selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt pakendile või mahutile. Toidupartii tähistus, vajaduse korral koos tähega „L”, kantakse müügipakendisse pakendamata toidu puhul selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt pakendile või mahutile. 2 (2) Kui pakendile või mahutile ei ole võimalik toidupartii tähistust kanda, siis märgitakse tähistus toiduga kaasas olevatele ",
-      "estleg:legalText": "1 (1) Toidupartii tähistus, vajaduse korral koos tähega „L”, kantakse müügipakendisse pakendamata toidu puhul selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt pakendile või mahutile. Toidupartii tähistus, vajaduse korral koos tähega „L”, kantakse müügipakendisse pakendamata toidu puhul selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt pakendile või mahutile. 2 (2) Kui pakendile või mahutile ei ole võimalik toidupartii tähistust kanda, siis märgitakse tähistus toiduga kaasas olevatele dokumentidele. Kui pakendile või mahutile ei ole võimalik toidupartii tähistust kanda, siis märgitakse tähistus toiduga kaasas olevatele dokumentidele.",
+      "estleg:summary": {
+        "@value": "1 (1) Toidupartii tähistus, vajaduse korral koos tähega „L”, kantakse müügipakendisse pakendamata toidu puhul selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt pakendile või mahutile. 2 (2) Kui pakendile või mahutile ei ole võimalik toidupartii tähistust kanda, siis märgitakse tähistus toiduga kaasas olevatele dokumentidele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Toidupartii tähistus, vajaduse korral koos tähega „L”, kantakse müügipakendisse pakendamata toidu puhul selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt pakendile või mahutile. 2 (2) Kui pakendile või mahutile ei ole võimalik toidupartii tähistust kanda, siis märgitakse tähistus toiduga kaasas olevatele dokumentidele.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1026932_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1026932_Par_2_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1026932_Par_2_v1026932"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1026932_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Toidupartii tähistus, vajaduse korral koos tähega „L”, kantakse müügipakendisse pakendamata toidu puhul selgesti loetavalt, hästi nähtavalt ja kulumiskindlalt pakendile või mahutile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1026932_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1026932_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui pakendile või mahutile ei ole võimalik toidupartii tähistust kanda, siis märgitakse tähistus toiduga kaasas olevatele dokumentidele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1026932_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_1026932_Par_3",
@@ -128,13 +267,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Toidupartii tähistuse esitamata jätmise juhud",
+      "rdfs:label": {
+        "@value": "§ 3. Toidupartii tähistuse esitamata jätmise juhud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Toidupartii tähistamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1026932_Map"
       },
-      "estleg:summary": "1 (1) Toidupartii tähistuse esitamine ei ole vajalik: 1 1) kui toidu minimaalse säilimisaja tähtpäev või tarvitamise tähtpäev sisaldab kodeerimata kronoloogilises järjestuses vähemalt kuupäeva ja kuud; 2 2) üksikportsjonites jäätise puhul, mille toidupartii tähistus kantakse rühmapakendile; 3 3) kui toidu pakendi või mahuti suurima külje pindala on alla 10 ruutsentimeetri; 4 4) kui toit on tarbijale müümisel müügipakendisse pakendamata või kui toit pakendatakse müügikohas tarbija soovil või vahe",
-      "estleg:legalText": "1 (1) Toidupartii tähistuse esitamine ei ole vajalik: 1 1) kui toidu minimaalse säilimisaja tähtpäev või tarvitamise tähtpäev sisaldab kodeerimata kronoloogilises järjestuses vähemalt kuupäeva ja kuud; 2 2) üksikportsjonites jäätise puhul, mille toidupartii tähistus kantakse rühmapakendile; 3 3) kui toidu pakendi või mahuti suurima külje pindala on alla 10 ruutsentimeetri; 4 4) kui toit on tarbijale müümisel müügipakendisse pakendamata või kui toit pakendatakse müügikohas tarbija soovil või vahetult müügiks tarbija juuresolekuta. Toidupartii tähistuse esitamine ei ole vajalik: kui toidu minimaalse säilimisaja tähtpäev või tarvitamise tähtpäev sisaldab kodeerimata kronoloogilises järjestuses vähemalt kuupäeva ja kuud; üksikportsjonites jäätise puhul, mille toidupartii tähistus kantakse rühmapakendile; kui toidu pakendi või mahuti suurima külje pindala on alla 10 ruutsentimeetri; kui toit on tarbijale müümisel müügipakendisse pakendamata või kui toit pakendatakse müügikohas tarbija soovil või vahetult müügiks tarbija juuresolekuta. 2 (2) Toidupartii tähistuse esitamine ei ole vajalik põllumajandussaaduste puhul, mis ettevõttest: 1 1) otse müüakse või antakse muul viisil üle ajutiseks ladustamiseks, töötlemiseks või pakendamiseks; 2 2) otse veetakse põllumajandustootjate organisatsioonile; 3 3) otse kogutakse viivitamatuks töötlemiseks. Toidupartii tähistuse esitamine ei ole vajalik põllumajandussaaduste puhul, mis ettevõttest: otse müüakse või antakse muul viisil üle ajutiseks ladustamiseks, töötlemiseks või pakendamiseks; otse veetakse põllumajandustootjate organisatsioonile; otse kogutakse viivitamatuks töötlemiseks.",
+      "estleg:summary": {
+        "@value": "1 (1) Toidupartii tähistuse esitamine ei ole vajalik: 1 1) kui toidu minimaalse säilimisaja tähtpäev või tarvitamise tähtpäev sisaldab kodeerimata kronoloogilises järjestuses vähemalt kuupäeva ja kuud; 2 2) üksikportsjonites jäätise puhul, mille toidupartii tähistus kantakse rühmapakendile; 3 3) kui toidu pakendi või mahuti suurima külje pindala on alla 10 ruutsentimeetri; 4 4) kui toit on tarbijale müümisel müügipakendisse pakendamata või kui toit pakendatakse müügikohas tarbija soovil või…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Toidupartii tähistuse esitamine ei ole vajalik: 1 1) kui toidu minimaalse säilimisaja tähtpäev või tarvitamise tähtpäev sisaldab kodeerimata kronoloogilises järjestuses vähemalt kuupäeva ja kuud; 2 2) üksikportsjonites jäätise puhul, mille toidupartii tähistus kantakse rühmapakendile; 3 3) kui toidu pakendi või mahuti suurima külje pindala on alla 10 ruutsentimeetri; 4 4) kui toit on tarbijale müümisel müügipakendisse pakendamata või kui toit pakendatakse müügikohas tarbija soovil või vahetult müügiks tarbija juuresolekuta. 2 (2) Toidupartii tähistuse esitamine ei ole vajalik põllumajandussaaduste puhul, mis ettevõttest: 1 1) otse müüakse või antakse muul viisil üle ajutiseks ladustamiseks, töötlemiseks või pakendamiseks; 2 2) otse veetakse põllumajandustootjate organisatsioonile; 3 3) otse kogutakse viivitamatuks töötlemiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -144,10 +289,64 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1026932_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1026932_Par_3_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1026932_Par_3_v1026932"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1026932_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Toidupartii tähistuse esitamine ei ole vajalik: 1) kui toidu minimaalse säilimisaja tähtpäev või tarvitamise tähtpäev sisaldab kodeerimata kronoloogilises järjestuses vähemalt kuupäeva ja kuud; 2) üksikportsjonites jäätise puhul, mille toidupartii tähistus kantakse rühmapakendile; 3) kui toidu pakendi või mahuti suurima külje pindala on alla 10 ruutsentimeetri; 4) kui toit on tarbijale müümisel müügipakendisse pakendamata või kui toit pakendatakse müügikohas tarbija soovil või vahetult müügiks tarbija juuresolekuta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1026932_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1026932_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Toidupartii tähistuse esitamine ei ole vajalik põllumajandussaaduste puhul, mis ettevõttest: 1) otse müüakse või antakse muul viisil üle ajutiseks ladustamiseks, töötlemiseks või pakendamiseks; 2) otse veetakse põllumajandustootjate organisatsioonile; 3) otse kogutakse viivitamatuks töötlemiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1026932_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -157,18 +356,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 4. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Toidupartii tähistamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1026932_Map"
       },
-      "estleg:summary": "Määrus jõustub 13. detsembril 2014. a.",
-      "estleg:legalText": "Määrus jõustub 13. detsembril 2014. a. Määrus jõustub 13. detsembril 2014. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 13. detsembril 2014. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 13. detsembril 2014. a.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1026932_Par_4_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1026932_Par_4_v1026932"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1026932_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 13. detsembril 2014. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1026932_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1026932_Map_1",

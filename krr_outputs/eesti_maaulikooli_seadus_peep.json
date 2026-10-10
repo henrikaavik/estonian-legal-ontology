@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:EMUKS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Eesti Maaülikooli seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Eesti Maaülikooli seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Eesti Maaülikooli seadus",
-      "dcterms:title": [
-        {
-          "@value": "Eesti Maaülikooli seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Estonian University of Life Sciences Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Eesti Maaülikooli seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/112072025011.xml"
+        "@id": "https://www.riigiteataja.ee/akt/112072025011"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/112072025011/xml"
+      },
+      "estleg:globalId": "112072025011",
+      "eli:id_local": "112072025011",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "1046446",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "17f9f0698eee609f460161ac6bc578705e617ae5120bace7844eb5765a835439",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-10-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/517072025003"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/517072025003"
       },
       "dcterms:subject": [
@@ -70,6 +76,19 @@
           "@id": "http://eurovoc.europa.eu/5050"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2019-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-10-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2019-03-14",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
@@ -79,17 +98,13 @@
         {
           "@id": "estleg:Draft_HTM18_0587"
         }
-      ]
-    },
-    {
-      "@id": "estleg:EMUKS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Eesti Maaülikooli seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_EMUKS_default"
+          "@id": "estleg:Amendment_EMUKS_68dd1a9105"
+        },
+        {
+          "@id": "estleg:Amendment_EMUKS_5025f23437"
         }
       ]
     },
@@ -100,12 +115,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–10 Eesti Maaülikooli seadus",
-      "skos:prefLabel": "§1–10 Eesti Maaülikooli seadus",
+      "rdfs:label": {
+        "@value": "§1–10 Eesti Maaülikooli seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–10 Eesti Maaülikooli seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EMUKS_TopicScheme"
       },
       "estleg:provisionCount": 10
+    },
+    {
+      "@id": "estleg:EMUKS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Eesti Maaülikooli seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EMUKS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:EMUKS_Par_1",
@@ -114,12 +150,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala ja kohaldamisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala ja kohaldamisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Maaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMUKS_Map"
       },
-      "estleg:summary": "(1) Käesolevas seaduses sätestatakse Eesti Maaülikooli õiguslik seisund, eesmärk ja ülesanded, tegevuse alused ning juhtorganid. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:summary": {
+        "@value": "(1) Käesolevas seaduses sätestatakse Eesti Maaülikooli õiguslik seisund, eesmärk ja ülesanded, tegevuse alused ning juhtorganid. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolevas seaduses sätestatakse Eesti Maaülikooli õiguslik seisund, eesmärk ja ülesanded, tegevuse alused ning juhtorganid. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMUKS_default"
@@ -134,9 +176,6 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:AVALIK_Par_4"
-        },
-        {
           "@id": "estleg:EESTI_3_Par_1"
         },
         {
@@ -144,6 +183,9 @@
         },
         {
           "@id": "estleg:EMTAS_Par_1"
+        },
+        {
+          "@id": "estleg:KAITSE_Par_1"
         },
         {
           "@id": "estleg:TalUKS_Par_1"
@@ -188,13 +230,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Eesti Maaülikooli õiguslik seisund, eesmärk ja ülesanded",
+      "rdfs:label": {
+        "@value": "§ 2. Eesti Maaülikooli õiguslik seisund, eesmärk ja ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Maaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMUKS_Map"
       },
-      "estleg:summary": "(1) Eesti Maaülikool (edaspidi ülikool) on 1848. aastal asutatud Tartu veterinaariakooli järjepidevuse kandja. (2) Ülikool on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, kõrgharidusseaduse, oma põhikirja ja muude õigusaktide alusel. (3) Ülikool on integreeritud teadus-, arendus-, õppe- ja kultuuriasutus. Ülikooli eesmärk on rahvusvahelise kõrgetasemelise teadus-, õppe- ja arendustööga ning sellele tuginevate uuenduslike teenustega panustada ühiskonna jätkusuutlikku",
-      "estleg:legalText": "(1) Eesti Maaülikool (edaspidi ülikool) on 1848. aastal asutatud Tartu veterinaariakooli järjepidevuse kandja. (2) Ülikool on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, kõrgharidusseaduse, oma põhikirja ja muude õigusaktide alusel. (3) Ülikool on integreeritud teadus-, arendus-, õppe- ja kultuuriasutus. Ülikooli eesmärk on rahvusvahelise kõrgetasemelise teadus-, õppe- ja arendustööga ning sellele tuginevate uuenduslike teenustega panustada ühiskonna jätkusuutlikku arengusse ja rahva heaolu kasvu. (4) Käesoleva paragrahvi lõikes 3 nimetatud eesmärgi saavutamiseks ülikool: edendab väärtusahela põhiselt biomajandust ning teadus- ja arendustegevust loodusressursside kestliku kasutamise ning maaelu ja maamajanduse arendamisega seotud valdkondades; pakub teaduse ja tehnoloogia arengule tuginevaid kõrghariduse omandamise võimalusi kõrghariduse kõigil astmetel põllumajandusteaduste ja veterinaaria, metsanduse ja keskkonnateaduste valdkondades ning nendega seotud tehnika ja tehnoloogia valdkonnas; korraldab loomaarstiõppe kliinilist õpet.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Maaülikool (edaspidi ülikool) on 1848. aastal asutatud Tartu veterinaariakooli järjepidevuse kandja. (2) Ülikool on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, kõrgharidusseaduse, oma põhikirja ja muude õigusaktide alusel. (3) Ülikool on integreeritud teadus-, arendus-, õppe- ja kultuuriasutus. Ülikooli eesmärk on rahvusvahelise kõrgetasemelise teadus-, õppe- ja arendustööga ning sellele tuginevate uuenduslike teenustega panustada ühiskonna jätkusuutlikku",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti Maaülikool (edaspidi ülikool) on 1848. aastal asutatud Tartu veterinaariakooli järjepidevuse kandja. (2) Ülikool on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, kõrgharidusseaduse, oma põhikirja ja muude õigusaktide alusel. (3) Ülikool on integreeritud teadus-, arendus-, õppe- ja kultuuriasutus. Ülikooli eesmärk on rahvusvahelise kõrgetasemelise teadus-, õppe- ja arendustööga ning sellele tuginevate uuenduslike teenustega panustada ühiskonna jätkusuutlikku arengusse ja rahva heaolu kasvu. (4) Käesoleva paragrahvi lõikes 3 nimetatud eesmärgi saavutamiseks ülikool: 1) edendab väärtusahela põhiselt biomajandust ning teadus- ja arendustegevust loodusressursside kestliku kasutamise ning maaelu ja maamajanduse arendamisega seotud valdkondades; 2) pakub teaduse ja tehnoloogia arengule tuginevaid kõrghariduse omandamise võimalusi kõrghariduse kõigil astmetel põllumajandusteaduste ja veterinaaria, metsanduse ja keskkonnateaduste valdkondades ning nendega seotud tehnika ja tehnoloogia valdkonnas; 3) korraldab loomaarstiõppe kliinilist õpet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMUKS_default"
       },
@@ -220,6 +268,10 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:EKAS_Par_2"
@@ -231,16 +283,12 @@
           "@id": "estleg:TTUKS_Par_2"
         },
         {
-          "@id": "estleg:TalUKS_Par_2"
+          "@id": "estleg:TUKS_Par_2"
         },
         {
-          "@id": "estleg:TUKS_Par_2"
+          "@id": "estleg:TalUKS_Par_2"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:EMUKS_Par_2_v114032019003"
@@ -305,11 +353,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 3 nimetatud eesmärgi saavutamiseks ülikool: edendab väärtusahela põhiselt biomajandust ning teadus- ja arendustegevust loodusressursside kestliku kasutamise ning maaelu ja maamajanduse arendamisega seotud valdkondades; pakub teaduse ja tehnoloogia arengule tuginevaid kõrghariduse omandamise võimalusi kõrghariduse kõigil astmetel põllumajandusteaduste ja veterinaaria, metsanduse ja keskkonnateaduste valdkondades ning nendega seotud tehnika ja tehnoloogia valdkonnas; korraldab loomaarstiõppe kliinilist õpet.",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 3 nimetatud eesmärgi saavutamiseks ülikool: 1) edendab väärtusahela põhiselt biomajandust ning teadus- ja arendustegevust loodusressursside kestliku kasutamise ning maaelu ja maamajanduse arendamisega seotud valdkondades; 2) pakub teaduse ja tehnoloogia arengule tuginevaid kõrghariduse omandamise võimalusi kõrghariduse kõigil astmetel põllumajandusteaduste ja veterinaaria, metsanduse ja keskkonnateaduste valdkondades ning nendega seotud tehnika ja tehnoloogia valdkonnas; 3) korraldab loomaarstiõppe kliinilist õpet.",
       "estleg:parentProvision": {
         "@id": "estleg:EMUKS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 4"
+      "rdfs:label": "§ 2 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:EMUKS_Par_3",
@@ -318,12 +371,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Ülikooli juhtimine",
+      "rdfs:label": {
+        "@value": "§ 3. Ülikooli juhtimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Maaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMUKS_Map"
       },
-      "estleg:summary": "(1) Ülikooli juhivad nõukogu, senat ja rektor. (2) Nõukogu on ülikooli kõrgeim juhtorgan, kes vastutab ülikooli pikaajalise ja kestliku arengu ning oluliste majandus-, finants- ja varaga seotud otsuste tegemise eest, tagades ülikooli eesmärkide saavutamise. (3) Senat on ülikooli akadeemiline otsustuskogu, kes vastutab ülikooli teadus-, arendus-, loome- ja õppetegevuse eest ning tagab selle kõrge kvaliteedi. (4) Rektor on ülikooli seaduslik esindaja, kes juhib ülikooli igapäevast tegevust,",
+      "estleg:summary": {
+        "@value": "(1) Ülikooli juhivad nõukogu, senat ja rektor. (2) Nõukogu on ülikooli kõrgeim juhtorgan, kes vastutab ülikooli pikaajalise ja kestliku arengu ning oluliste majandus-, finants- ja varaga seotud otsuste tegemise eest, tagades ülikooli eesmärkide saavutamise. (3) Senat on ülikooli akadeemiline otsustuskogu, kes vastutab ülikooli teadus-, arendus-, loome- ja õppetegevuse eest ning tagab selle kõrge kvaliteedi. (4) Rektor on ülikooli seaduslik esindaja, kes juhib ülikooli igapäevast tegevust,",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ülikooli juhivad nõukogu, senat ja rektor. (2) Nõukogu on ülikooli kõrgeim juhtorgan, kes vastutab ülikooli pikaajalise ja kestliku arengu ning oluliste majandus-, finants- ja varaga seotud otsuste tegemise eest, tagades ülikooli eesmärkide saavutamise. (3) Senat on ülikooli akadeemiline otsustuskogu, kes vastutab ülikooli teadus-, arendus-, loome- ja õppetegevuse eest ning tagab selle kõrge kvaliteedi. (4) Rektor on ülikooli seaduslik esindaja, kes juhib ülikooli igapäevast tegevust, lähtudes juhtimisel ülikooli arengukavast, eelarvest ja teistest strateegilistest dokumentidest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMUKS_default"
@@ -418,13 +477,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Nõukogu",
+      "rdfs:label": {
+        "@value": "§ 4. Nõukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Maaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMUKS_Map"
       },
-      "estleg:summary": "(1) Nõukogu: võtab vastu ülikooli põhikirja; võtab vastu ülikooli arengukava; võtab vastu ülikooli eelarve ja selle täitmise aruande, finantsplaani ning majandusaasta aruande; annab hinnangu valdkonna eest vastutava ministriga rahastamiseks sõlmitud halduslepingu täitmisele; otsustab ülikoolile laenu võtmise; nimetab audiitori ja kuulab ära audiitori aruande; korraldab ülikooli tegevuse kontrollimiseks revisjone; täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid.",
-      "estleg:legalText": "(1) Nõukogu: võtab vastu ülikooli põhikirja; võtab vastu ülikooli arengukava; võtab vastu ülikooli eelarve ja selle täitmise aruande, finantsplaani ning majandusaasta aruande; annab hinnangu valdkonna eest vastutava ministriga rahastamiseks sõlmitud halduslepingu täitmisele; otsustab ülikoolile laenu võtmise; nimetab audiitori ja kuulab ära audiitori aruande; korraldab ülikooli tegevuse kontrollimiseks revisjone; täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid. (2) Nõukogu koosseisu kuulub seitse liiget, kellest: kolm liiget nimetab senat ülikooli põhikirjas sätestatud korras; ühe liikme nimetab Eesti Teaduste Akadeemia; kolm liiget nimetab valdkonna eest vastutav minister isikute hulgast, kellel on nõukogu liikme kohustuste täitmiseks ja ülikooli ühiskonnaga sidustamiseks vajalikud teadmised ülikooli tegevusvaldkondades, majanduses või ettevõtluses ning laitmatu reputatsioon. (3) Üks isik saab olla nõukogusse nimetatud ainult ühel käesoleva paragrahvi lõikes 2 toodud alusel. Käesoleva paragrahvi lõike 2 punkti 2 või 3 alusel nimetatavaks nõukogu liikmeks ei saa olla Eesti Teaduste Akadeemia president, asepresident ega peasekretär, valdkonna eest vastutava ministeeriumi minister ega kantsler, ülikooli töötaja ega teise Eesti ülikooli juhtorgani liige. (4) Nõukogu koosseisu määrab viieks aastaks Vabariigi Valitsus korraldusega valdkonna eest vastutava ministri ettepanekul. (5) Nõukogu liikme nimetanud asutus, juhtorgan või isik võib enda nimetatud liikme põhjendatud juhul enne tema volituste lõppu tagasi kutsuda. Nõukogu liikme tagasikutsumisel või omal soovil tagasiastumisel nimetatakse tema asemele viivitamata uus nõukogu liige ajani, mis on jäänud asendatava nõukogu liikme volituste lõpuni.",
+      "estleg:summary": {
+        "@value": "(1) Nõukogu: 1) võtab vastu ülikooli põhikirja; 2) võtab vastu ülikooli arengukava; 3) võtab vastu ülikooli eelarve ja selle täitmise aruande, finantsplaani ning majandusaasta aruande; 4) annab hinnangu valdkonna eest vastutava ministriga rahastamiseks sõlmitud halduslepingu täitmisele; 5) otsustab ülikoolile laenu võtmise; 6) nimetab audiitori ja kuulab ära audiitori aruande; 7) korraldab ülikooli tegevuse kontrollimiseks revisjone; 8) täidab teisi seaduse või ülikooli põhikirjaga talle pandud",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Nõukogu: 1) võtab vastu ülikooli põhikirja; 2) võtab vastu ülikooli arengukava; 3) võtab vastu ülikooli eelarve ja selle täitmise aruande, finantsplaani ning majandusaasta aruande; 4) annab hinnangu valdkonna eest vastutava ministriga rahastamiseks sõlmitud halduslepingu täitmisele; 5) otsustab ülikoolile laenu võtmise; 6) nimetab audiitori ja kuulab ära audiitori aruande; 7) korraldab ülikooli tegevuse kontrollimiseks revisjone; 8) täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid. (2) Nõukogu koosseisu kuulub seitse liiget, kellest: 1) kolm liiget nimetab senat ülikooli põhikirjas sätestatud korras; 2) ühe liikme nimetab Eesti Teaduste Akadeemia; 3) kolm liiget nimetab valdkonna eest vastutav minister isikute hulgast, kellel on nõukogu liikme kohustuste täitmiseks ja ülikooli ühiskonnaga sidustamiseks vajalikud teadmised ülikooli tegevusvaldkondades, majanduses või ettevõtluses ning laitmatu reputatsioon. (3) Üks isik saab olla nõukogusse nimetatud ainult ühel käesoleva paragrahvi lõikes 2 toodud alusel. Käesoleva paragrahvi lõike 2 punkti 2 või 3 alusel nimetatavaks nõukogu liikmeks ei saa olla Eesti Teaduste Akadeemia president, asepresident ega peasekretär, valdkonna eest vastutava ministeeriumi minister ega kantsler, ülikooli töötaja ega teise Eesti ülikooli juhtorgani liige. (4) Nõukogu koosseisu määrab viieks aastaks Vabariigi Valitsus korraldusega valdkonna eest vastutava ministri ettepanekul. (5) Nõukogu liikme nimetanud asutus, juhtorgan või isik võib enda nimetatud liikme põhjendatud juhul enne tema volituste lõppu tagasi kutsuda. Nõukogu liikme tagasikutsumisel või omal soovil tagasiastumisel nimetatakse tema asemele viivitamata uus nõukogu liige ajani, mis on jäänud asendatava nõukogu liikme volituste lõpuni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMUKS_default"
       },
@@ -453,6 +518,19 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:EKAS_Par_4"
@@ -461,21 +539,11 @@
           "@id": "estleg:EMTAS_Par_4"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:EMUKS_Par_4_v114032019003"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:EMUKS_Par_4_Lg_1",
@@ -484,11 +552,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Nõukogu: võtab vastu ülikooli põhikirja; võtab vastu ülikooli arengukava; võtab vastu ülikooli eelarve ja selle täitmise aruande, finantsplaani ning majandusaasta aruande; annab hinnangu valdkonna eest vastutava ministriga rahastamiseks sõlmitud halduslepingu täitmisele; otsustab ülikoolile laenu võtmise; nimetab audiitori ja kuulab ära audiitori aruande; korraldab ülikooli tegevuse kontrollimiseks revisjone; täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid.",
+      "estleg:legalText": "(1) Nõukogu: 1) võtab vastu ülikooli põhikirja; 2) võtab vastu ülikooli arengukava; 3) võtab vastu ülikooli eelarve ja selle täitmise aruande, finantsplaani ning majandusaasta aruande; 4) annab hinnangu valdkonna eest vastutava ministriga rahastamiseks sõlmitud halduslepingu täitmisele; 5) otsustab ülikoolile laenu võtmise; 6) nimetab audiitori ja kuulab ära audiitori aruande; 7) korraldab ülikooli tegevuse kontrollimiseks revisjone; 8) täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:EMUKS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 1"
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
     },
     {
       "@id": "estleg:EMUKS_Par_4_Lg_2",
@@ -497,11 +575,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Nõukogu koosseisu kuulub seitse liiget, kellest: kolm liiget nimetab senat ülikooli põhikirjas sätestatud korras; ühe liikme nimetab Eesti Teaduste Akadeemia; kolm liiget nimetab valdkonna eest vastutav minister isikute hulgast, kellel on nõukogu liikme kohustuste täitmiseks ja ülikooli ühiskonnaga sidustamiseks vajalikud teadmised ülikooli tegevusvaldkondades, majanduses või ettevõtluses ning laitmatu reputatsioon.",
+      "estleg:legalText": "(2) Nõukogu koosseisu kuulub seitse liiget, kellest: 1) kolm liiget nimetab senat ülikooli põhikirjas sätestatud korras; 2) ühe liikme nimetab Eesti Teaduste Akadeemia; 3) kolm liiget nimetab valdkonna eest vastutav minister isikute hulgast, kellel on nõukogu liikme kohustuste täitmiseks ja ülikooli ühiskonnaga sidustamiseks vajalikud teadmised ülikooli tegevusvaldkondades, majanduses või ettevõtluses ning laitmatu reputatsioon.",
       "estleg:parentProvision": {
         "@id": "estleg:EMUKS_Par_4"
       },
       "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -581,9 +664,6 @@
         "@id": "estleg:EMUKS_Par_4"
       },
       "rdfs:label": "§ 4 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -592,6 +672,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -601,13 +684,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Senat",
+      "rdfs:label": {
+        "@value": "§ 5. Senat",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Maaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMUKS_Map"
       },
-      "estleg:summary": "(1) Senat: teeb õppe-, teadus-, arendus- ja loometegevusega seotud olulised otsused ning kehtestab selle valdkonna õigusaktid vastavalt ülikooli põhikirjale; kehtetu - esitab nõukogule vastuvõtmiseks põhikirja; võib panna ühekordse veto nõukogu põhikirja, eelarve või arengukava vastuvõtmise otsusele, kui veto poolt on vähemalt kaks kolmandikku senati koosseisust; täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid. (2) Kui senat kasutab käesoleva paragrahvi lõike 1 punktis 4",
-      "estleg:legalText": "(1) Senat: teeb õppe-, teadus-, arendus- ja loometegevusega seotud olulised otsused ning kehtestab selle valdkonna õigusaktid vastavalt ülikooli põhikirjale; kehtetu - esitab nõukogule vastuvõtmiseks põhikirja; võib panna ühekordse veto nõukogu põhikirja, eelarve või arengukava vastuvõtmise otsusele, kui veto poolt on vähemalt kaks kolmandikku senati koosseisust; täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid. (2) Kui senat kasutab käesoleva paragrahvi lõike 1 punktis 4 sätestatud vetoõigust, siis nõukogu otsus ei jõustu ja pärast ülikooli põhikirjas sätestatud menetluse läbimist otsustab nõukogu põhikirja, eelarve või arengukava vastuvõtmise lõplikult. (3) Senati koosseisu kuuluvad: rektor, kes on senati esimees; teised rektoraadi liikmed; üliõpilaste esindajad, kes moodustavad vähemalt ühe viiendiku senati koosseisust; teised põhikirjas nimetatud isikud. (4) Senati moodustamise tingimused ja kord sätestatakse ülikooli põhikirjas.",
+      "estleg:summary": {
+        "@value": "(1) Senat: 1) teeb õppe-, teadus-, arendus- ja loometegevusega seotud olulised otsused ning kehtestab selle valdkonna õigusaktid vastavalt ülikooli põhikirjale; 2) 3) esitab nõukogule vastuvõtmiseks põhikirja; 4) võib panna ühekordse veto nõukogu põhikirja, eelarve või arengukava vastuvõtmise otsusele, kui veto poolt on vähemalt kaks kolmandikku senati koosseisust; 5) täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Senat: 1) teeb õppe-, teadus-, arendus- ja loometegevusega seotud olulised otsused ning kehtestab selle valdkonna õigusaktid vastavalt ülikooli põhikirjale; 2) 3) esitab nõukogule vastuvõtmiseks põhikirja; 4) võib panna ühekordse veto nõukogu põhikirja, eelarve või arengukava vastuvõtmise otsusele, kui veto poolt on vähemalt kaks kolmandikku senati koosseisust; 5) täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid. (2) Kui senat kasutab käesoleva paragrahvi lõike 1 punktis 4 sätestatud vetoõigust, siis nõukogu otsus ei jõustu ja pärast ülikooli põhikirjas sätestatud menetluse läbimist otsustab nõukogu põhikirja, eelarve või arengukava vastuvõtmise lõplikult. (3) Senati koosseisu kuuluvad: 1) rektor, kes on senati esimees; 2) teised rektoraadi liikmed; 3) üliõpilaste esindajad, kes moodustavad vähemalt ühe viiendiku senati koosseisust; 4) teised põhikirjas nimetatud isikud. (4) Senati moodustamise tingimused ja kord sätestatakse ülikooli põhikirjas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMUKS_default"
       },
@@ -633,6 +722,13 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:EKAS_Par_5"
@@ -641,13 +737,6 @@
           "@id": "estleg:EMTAS_Par_5"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:EMUKS_Par_5_v114032019003"
@@ -664,19 +753,29 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Senat: teeb õppe-, teadus-, arendus- ja loometegevusega seotud olulised otsused ning kehtestab selle valdkonna õigusaktid vastavalt ülikooli põhikirjale; kehtetu - esitab nõukogule vastuvõtmiseks põhikirja; võib panna ühekordse veto nõukogu põhikirja, eelarve või arengukava vastuvõtmise otsusele, kui veto poolt on vähemalt kaks kolmandikku senati koosseisust; täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid.",
+      "estleg:legalText": "(1) Senat: 1) teeb õppe-, teadus-, arendus- ja loometegevusega seotud olulised otsused ning kehtestab selle valdkonna õigusaktid vastavalt ülikooli põhikirjale; 2) 3) esitab nõukogule vastuvõtmiseks põhikirja; 4) võib panna ühekordse veto nõukogu põhikirja, eelarve või arengukava vastuvõtmise otsusele, kui veto poolt on vähemalt kaks kolmandikku senati koosseisust; 5) täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:EMUKS_Par_5"
       },
       "rdfs:label": "§ 5 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:TAIKS_Map"
+        },
         {
           "@id": "estleg:TAIKS_Par_38"
         }
@@ -703,11 +802,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Senati koosseisu kuuluvad: rektor, kes on senati esimees; teised rektoraadi liikmed; üliõpilaste esindajad, kes moodustavad vähemalt ühe viiendiku senati koosseisust; teised põhikirjas nimetatud isikud.",
+      "estleg:legalText": "(3) Senati koosseisu kuuluvad: 1) rektor, kes on senati esimees; 2) teised rektoraadi liikmed; 3) üliõpilaste esindajad, kes moodustavad vähemalt ühe viiendiku senati koosseisust; 4) teised põhikirjas nimetatud isikud.",
       "estleg:parentProvision": {
         "@id": "estleg:EMUKS_Par_5"
       },
       "rdfs:label": "§ 5 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -741,13 +846,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Rektor",
+      "rdfs:label": {
+        "@value": "§ 6. Rektor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Maaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMUKS_Map"
       },
-      "estleg:summary": "(1) Rektor: esindab ülikooli ja teeb ülikooli nimel tehinguid ning volitab selleks vajaduse korral teisi isikuid; vastutab ülikooli üldseisundi ja arengu, eelarve täitmise ja rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; tagab nõukogu ning senati määruste ja otsuste täitmise; omab ühekordset vetoõigust nõukogu või senati määruse või otsuse suhtes; tagab ülikooli põhikirja, arengukava, finantsplaani ja eelarve projektide koostamise; on aruandekohustuslik nõukogu ja senati ees;",
-      "estleg:legalText": "(1) Rektor: esindab ülikooli ja teeb ülikooli nimel tehinguid ning volitab selleks vajaduse korral teisi isikuid; vastutab ülikooli üldseisundi ja arengu, eelarve täitmise ja rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; tagab nõukogu ning senati määruste ja otsuste täitmise; omab ühekordset vetoõigust nõukogu või senati määruse või otsuse suhtes; tagab ülikooli põhikirja, arengukava, finantsplaani ja eelarve projektide koostamise; on aruandekohustuslik nõukogu ja senati ees; täidab teisi ülikooli põhikirja või muude õigusaktidega talle pandud ülesandeid ning otsustab ülikooli tegevusega seotud küsimusi, mis ei ole antud nõukogu ega senati pädevusse. (2) Rektori valib valimiskogu kuni viieks aastaks ülikooli põhikirjas sätestatud korras. Valimiskogu liikmeteks on nõukogu ja senati liikmed ning teised ülikooli põhikirjas nimetatud isikud. (3) Ülikooli rektori ametikohale võib kandideerida isik, kes on või on olnud valitud professori ametikohale. (4) Nõukogu esimees sõlmib rektoriga lepingu, millega määratakse kindlaks rektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kohaldatakse võlaõigusseaduses käsunduslepingu kohta sätestatut. Rektor astub ametisse nõukogu ja senati ees ametivande andmisega. (5) Nõukogul ja senatil on õigus avaldada rektorile umbusaldust ning rektor vabastatakse enne lepingu tähtaja möödumist ametist, kui selle otsuse poolt on kaks kolmandikku mõlema kogu koosseisust. (6) Rektori volitused lõpevad lepingu tähtaja möödumisel, omal soovil ametist tagasiastumisel või enne lepingu tähtaja möödumist ametist vabastamisel põhikirjas sätestatud korras. (7) Kui rektori volitused lõpevad ja volituste lõppemise ajaks ei ole valitud uut rektorit, määrab nõukogu rektori kohusetäitja kuni uue rektori valimiseni, kuid mitte kauemaks kui üheks aastaks. Kohusetäitjaga sõlmitavale lepingule kohaldatakse käesoleva paragrahvi lõikes 4 sätestatut. (8) Rektoriks valitud ülikooli töötajal on pärast rektori volituste lõppemist õigus jätkata töötamist samal või samaväärsel ametikohal, kus ta ülikoolis töötas.",
+      "estleg:summary": {
+        "@value": "(1) Rektor: 1) esindab ülikooli ja teeb ülikooli nimel tehinguid ning volitab selleks vajaduse korral teisi isikuid; 2) vastutab ülikooli üldseisundi ja arengu, eelarve täitmise ja rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; 3) tagab nõukogu ning senati määruste ja otsuste täitmise; 4) omab ühekordset vetoõigust nõukogu või senati määruse või otsuse suhtes; 5) tagab ülikooli põhikirja, arengukava, finantsplaani ja eelarve projektide koostamise; 6) on aruandekohustuslik",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Rektor: 1) esindab ülikooli ja teeb ülikooli nimel tehinguid ning volitab selleks vajaduse korral teisi isikuid; 2) vastutab ülikooli üldseisundi ja arengu, eelarve täitmise ja rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; 3) tagab nõukogu ning senati määruste ja otsuste täitmise; 4) omab ühekordset vetoõigust nõukogu või senati määruse või otsuse suhtes; 5) tagab ülikooli põhikirja, arengukava, finantsplaani ja eelarve projektide koostamise; 6) on aruandekohustuslik nõukogu ja senati ees; 7) täidab teisi ülikooli põhikirja või muude õigusaktidega talle pandud ülesandeid ning otsustab ülikooli tegevusega seotud küsimusi, mis ei ole antud nõukogu ega senati pädevusse. (2) Rektori valib valimiskogu kuni viieks aastaks ülikooli põhikirjas sätestatud korras. Valimiskogu liikmeteks on nõukogu ja senati liikmed ning teised ülikooli põhikirjas nimetatud isikud. (3) Ülikooli rektori ametikohale võib kandideerida isik, kes on või on olnud valitud professori ametikohale. (4) Nõukogu esimees sõlmib rektoriga lepingu, millega määratakse kindlaks rektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kohaldatakse võlaõigusseaduses käsunduslepingu kohta sätestatut. Rektor astub ametisse nõukogu ja senati ees ametivande andmisega. (5) Nõukogul ja senatil on õigus avaldada rektorile umbusaldust ning rektor vabastatakse enne lepingu tähtaja möödumist ametist, kui selle otsuse poolt on kaks kolmandikku mõlema kogu koosseisust. (6) Rektori volitused lõpevad lepingu tähtaja möödumisel, omal soovil ametist tagasiastumisel või enne lepingu tähtaja möödumist ametist vabastamisel põhikirjas sätestatud korras. (7) Kui rektori volitused lõpevad ja volituste lõppemise ajaks ei ole valitud uut rektorit, määrab nõukogu rektori kohusetäitja kuni uue rektori valimiseni, kuid mitte kauemaks kui üheks aastaks. Kohusetäitjaga sõlmitavale lepingule kohaldatakse käesoleva paragrahvi lõikes 4 sätestatut. (8) Rektoriks valitud ülikooli töötajal on pärast rektori volituste lõppemist õigus jätkata töötamist samal või samaväärsel ametikohal, kus ta ülikoolis töötas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMUKS_default"
       },
@@ -785,18 +896,24 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:EKAS_Par_6"
         },
         {
           "@id": "estleg:EMTAS_Par_6"
+        },
+        {
+          "@id": "estleg:TalUKS_Par_6"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:EMUKS_Par_6_v114032019003"
@@ -810,11 +927,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Rektor: esindab ülikooli ja teeb ülikooli nimel tehinguid ning volitab selleks vajaduse korral teisi isikuid; vastutab ülikooli üldseisundi ja arengu, eelarve täitmise ja rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; tagab nõukogu ning senati määruste ja otsuste täitmise; omab ühekordset vetoõigust nõukogu või senati määruse või otsuse suhtes; tagab ülikooli põhikirja, arengukava, finantsplaani ja eelarve projektide koostamise; on aruandekohustuslik nõukogu ja senati ees; täidab teisi ülikooli põhikirja või muude õigusaktidega talle pandud ülesandeid ning otsustab ülikooli tegevusega seotud küsimusi, mis ei ole antud nõukogu ega senati pädevusse.",
+      "estleg:legalText": "(1) Rektor: 1) esindab ülikooli ja teeb ülikooli nimel tehinguid ning volitab selleks vajaduse korral teisi isikuid; 2) vastutab ülikooli üldseisundi ja arengu, eelarve täitmise ja rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; 3) tagab nõukogu ning senati määruste ja otsuste täitmise; 4) omab ühekordset vetoõigust nõukogu või senati määruse või otsuse suhtes; 5) tagab ülikooli põhikirja, arengukava, finantsplaani ja eelarve projektide koostamise; 6) on aruandekohustuslik nõukogu ja senati ees; 7) täidab teisi ülikooli põhikirja või muude õigusaktidega talle pandud ülesandeid ning otsustab ülikooli tegevusega seotud küsimusi, mis ei ole antud nõukogu ega senati pädevusse.",
       "estleg:parentProvision": {
         "@id": "estleg:EMUKS_Par_6"
       },
       "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -859,9 +985,6 @@
         "@id": "estleg:EMUKS_Par_6"
       },
       "rdfs:label": "§ 6 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -870,6 +993,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -906,9 +1032,6 @@
         "@id": "estleg:EMUKS_Par_6"
       },
       "rdfs:label": "§ 6 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -917,6 +1040,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -983,12 +1109,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Ülikooli juhtorganite õigusaktid",
+      "rdfs:label": {
+        "@value": "§ 7. Ülikooli juhtorganite õigusaktid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Maaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMUKS_Map"
       },
-      "estleg:summary": "(1) Nõukogu annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (2) Senat annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (3) Rektor annab oma pädevuse piires käskkirju ja korraldusi.",
+      "estleg:summary": {
+        "@value": "(1) Nõukogu annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (2) Senat annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (3) Rektor annab oma pädevuse piires käskkirju ja korraldusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nõukogu annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (2) Senat annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (3) Rektor annab oma pädevuse piires käskkirju ja korraldusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMUKS_default"
@@ -1073,13 +1205,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Ülikooli vara ja rahastamine",
+      "rdfs:label": {
+        "@value": "§ 8. Ülikooli vara ja rahastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Maaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMUKS_Map"
       },
-      "estleg:summary": "(1) Ülikool on oma vara omanik, kellel on õigus seda vallata, kasutada ja käsutada käesolevas seaduses ja ülikooli põhikirjas sätestatud korras, tagades vara eesmärgipärase, otstarbeka, säästliku ja heaperemeheliku valitsemise. (2) Ülikool omandab ja kasutab oma vara ülikooli tegevusteks ja eesmärkide saavutamiseks ning võõrandab vara, mis ei ole eeltoodu saavutamiseks vajalik, tagades tehingute kooskõla õigusaktidega, läbipaistvuse ja kontrollitavuse.",
-      "estleg:legalText": "(1) Ülikool on oma vara omanik, kellel on õigus seda vallata, kasutada ja käsutada käesolevas seaduses ja ülikooli põhikirjas sätestatud korras, tagades vara eesmärgipärase, otstarbeka, säästliku ja heaperemeheliku valitsemise. (2) Ülikool omandab ja kasutab oma vara ülikooli tegevusteks ja eesmärkide saavutamiseks ning võõrandab vara, mis ei ole eeltoodu saavutamiseks vajalik, tagades tehingute kooskõla õigusaktidega, läbipaistvuse ja kontrollitavuse. (3) Ülikool arendab, säilitab ja täiendab kultuuripärandi kaitseks ja oma ülesannete täitmiseks akadeemilise ja ajaloolise väärtusega kogusid ja arhiive, tagades neile teadus- ja õppetöö eesmärgil vaba juurdepääsu, ning osutab ühiskonnale muid avalikke teenuseid raamatukogu, loomakliiniku ja teiste üksuste kaudu. (4) Ülikool valdab, kasutab ja käsutab oma vara, arvestades järgmisi piiranguid: kinnisvara on õigus omandada, võõrandada või koormata piiratud asjaõigusega ülikooli nõukogu kehtestatud tingimustel ja korras; ülikoolil ei ole õigust tagada oma varaga teise isiku kohustusi ega anda laenu, välja arvatud käesoleva lõike punktis 5 nimetatud juhul; ülikoolil on õigus nõukogu otsusel asutada oma põhikirjaliste ülesannete täitmiseks eraõiguslikke juriidilisi isikuid, kellel ei ole õigust asutada erakooli või eraõiguslikku teadus- ja arendusasutust; ülikoolil ei ole õigust anda sponsortoetusi ja teha muid rahalisi annetusi; ülikoolil on õigus nõukogu otsusel omatulude arvelt tagada ülikooli poolt põhikirjaliste ülesannete täitmiseks asutatud juriidiliste isikute kohustusi ja anda neile laenu arvestusega, et kohustuste suurus kokku ei tohi ületada kümmet protsenti ülikooli eelarveaasta omatuludest. (5) Ülikooli tegevust rahastatakse riigieelarvest samadel alustel teiste avalik-õiguslike ülikoolidega, samuti õppekulude hüvitamisest ja ülikooli põhitegevusest tulenevate tasuliste teenuste osutamisest saadud vahenditest ning muudest allikatest. (6) Loomaarstiõppe kliinilise õppe korraldamisega seotud tegevuskulud kaetakse lisafinantseeringuna veterinaarseaduses sätestatud alustel ja korras.",
+      "estleg:summary": {
+        "@value": "(1) Ülikool on oma vara omanik, kellel on õigus seda vallata, kasutada ja käsutada käesolevas seaduses ja ülikooli põhikirjas sätestatud korras, tagades vara eesmärgipärase, otstarbeka, säästliku ja heaperemeheliku valitsemise. (2) Ülikool omandab ja kasutab oma vara ülikooli tegevusteks ja eesmärkide saavutamiseks ning võõrandab vara, mis ei ole eeltoodu saavutamiseks vajalik, tagades tehingute kooskõla õigusaktidega, läbipaistvuse ja kontrollitavuse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ülikool on oma vara omanik, kellel on õigus seda vallata, kasutada ja käsutada käesolevas seaduses ja ülikooli põhikirjas sätestatud korras, tagades vara eesmärgipärase, otstarbeka, säästliku ja heaperemeheliku valitsemise. (2) Ülikool omandab ja kasutab oma vara ülikooli tegevusteks ja eesmärkide saavutamiseks ning võõrandab vara, mis ei ole eeltoodu saavutamiseks vajalik, tagades tehingute kooskõla õigusaktidega, läbipaistvuse ja kontrollitavuse. (3) Ülikool arendab, säilitab ja täiendab kultuuripärandi kaitseks ja oma ülesannete täitmiseks akadeemilise ja ajaloolise väärtusega kogusid ja arhiive, tagades neile teadus- ja õppetöö eesmärgil vaba juurdepääsu, ning osutab ühiskonnale muid avalikke teenuseid raamatukogu, loomakliiniku ja teiste üksuste kaudu. (4) Ülikool valdab, kasutab ja käsutab oma vara, arvestades järgmisi piiranguid: 1) kinnisvara on õigus omandada, võõrandada või koormata piiratud asjaõigusega ülikooli nõukogu kehtestatud tingimustel ja korras; 2) ülikoolil ei ole õigust tagada oma varaga teise isiku kohustusi ega anda laenu, välja arvatud käesoleva lõike punktis 5 nimetatud juhul; 3) ülikoolil on õigus nõukogu otsusel asutada oma põhikirjaliste ülesannete täitmiseks eraõiguslikke juriidilisi isikuid, kellel ei ole õigust asutada erakooli või eraõiguslikku teadus- ja arendusasutust; 4) ülikoolil ei ole õigust anda sponsortoetusi ja teha muid rahalisi annetusi; 5) ülikoolil on õigus nõukogu otsusel omatulude arvelt tagada ülikooli poolt põhikirjaliste ülesannete täitmiseks asutatud juriidiliste isikute kohustusi ja anda neile laenu arvestusega, et kohustuste suurus kokku ei tohi ületada kümmet protsenti ülikooli eelarveaasta omatuludest. (5) Ülikooli tegevust rahastatakse riigieelarvest samadel alustel teiste avalik-õiguslike ülikoolidega, samuti õppekulude hüvitamisest ja ülikooli põhitegevusest tulenevate tasuliste teenuste osutamisest saadud vahenditest ning muudest allikatest. (6) Loomaarstiõppe kliinilise õppe korraldamisega seotud tegevuskulud kaetakse lisafinantseeringuna veterinaarseaduses sätestatud alustel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMUKS_default"
       },
@@ -1105,12 +1243,19 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_Business"
         },
         {
-          "@id": "estleg:TargetGroup_Business"
+          "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:EKAS_Par_9"
@@ -1122,19 +1267,12 @@
           "@id": "estleg:TTUKS_Par_8"
         },
         {
-          "@id": "estleg:TalUKS_Par_8"
+          "@id": "estleg:TUKS_Par_8"
         },
         {
-          "@id": "estleg:TUKS_Par_8"
+          "@id": "estleg:TalUKS_Par_8"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:EMUKS_Par_8_v114032019003"
@@ -1156,9 +1294,6 @@
         "@id": "estleg:EMUKS_Par_8"
       },
       "rdfs:label": "§ 8 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1167,6 +1302,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -1202,15 +1340,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Ülikool valdab, kasutab ja käsutab oma vara, arvestades järgmisi piiranguid: kinnisvara on õigus omandada, võõrandada või koormata piiratud asjaõigusega ülikooli nõukogu kehtestatud tingimustel ja korras; ülikoolil ei ole õigust tagada oma varaga teise isiku kohustusi ega anda laenu, välja arvatud käesoleva lõike punktis 5 nimetatud juhul; ülikoolil on õigus nõukogu otsusel asutada oma põhikirjaliste ülesannete täitmiseks eraõiguslikke juriidilisi isikuid, kellel ei ole õigust asutada erakooli või eraõiguslikku teadus- ja arendusasutust; ülikoolil ei ole õigust anda sponsortoetusi ja teha muid rahalisi annetusi; ülikoolil on õigus nõukogu otsusel omatulude arvelt tagada ülikooli poolt põhikirjaliste ülesannete täitmiseks asutatud juriidiliste isikute kohustusi ja anda neile laenu arvestusega, et kohustuste suurus kokku ei tohi ületada kümmet protsenti ülikooli eelarveaasta omatuludest.",
+      "estleg:legalText": "(4) Ülikool valdab, kasutab ja käsutab oma vara, arvestades järgmisi piiranguid: 1) kinnisvara on õigus omandada, võõrandada või koormata piiratud asjaõigusega ülikooli nõukogu kehtestatud tingimustel ja korras; 2) ülikoolil ei ole õigust tagada oma varaga teise isiku kohustusi ega anda laenu, välja arvatud käesoleva lõike punktis 5 nimetatud juhul; 3) ülikoolil on õigus nõukogu otsusel asutada oma põhikirjaliste ülesannete täitmiseks eraõiguslikke juriidilisi isikuid, kellel ei ole õigust asutada erakooli või eraõiguslikku teadus- ja arendusasutust; 4) ülikoolil ei ole õigust anda sponsortoetusi ja teha muid rahalisi annetusi; 5) ülikoolil on õigus nõukogu otsusel omatulude arvelt tagada ülikooli poolt põhikirjaliste ülesannete täitmiseks asutatud juriidiliste isikute kohustusi ja anda neile laenu arvestusega, et kohustuste suurus kokku ei tohi ületada kümmet protsenti ülikooli eelarveaasta omatuludest.",
       "estleg:parentProvision": {
         "@id": "estleg:EMUKS_Par_8"
       },
       "rdfs:label": "§ 8 lg 4",
-      "estleg:itemNumber": "5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1219,6 +1360,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -1263,12 +1407,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Üleminekusätted",
+      "rdfs:label": {
+        "@value": "§ 9. Üleminekusätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Maaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMUKS_Map"
       },
-      "estleg:summary": "(1) Ülikooli kuratooriumi volitused lõpevad 2019. aasta 31. detsembril. (2) Ülikooli ülikooliseaduse alusel moodustatud nõukogu ja Eesti Teaduste Akadeemia esitavad käesoleva seaduse alusel moodustatava nõukogu liikmed valdkonna eest vastutavale ministrile hiljemalt 2019. aasta 1. oktoobriks. (3) Käesoleva seaduse alusel moodustatava nõukogu esimese koosseisu määrab Vabariigi Valitsus korraldusega, arvestades, et nõukogu volitused algavad 2020. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "(1) Ülikooli kuratooriumi volitused lõpevad 2019. aasta 31. detsembril. (2) Ülikooli ülikooliseaduse alusel moodustatud nõukogu ja Eesti Teaduste Akadeemia esitavad käesoleva seaduse alusel moodustatava nõukogu liikmed valdkonna eest vastutavale ministrile hiljemalt 2019. aasta 1. oktoobriks. (3) Käesoleva seaduse alusel moodustatava nõukogu esimese koosseisu määrab Vabariigi Valitsus korraldusega, arvestades, et nõukogu volitused algavad 2020. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ülikooli kuratooriumi volitused lõpevad 2019. aasta 31. detsembril. (2) Ülikooli ülikooliseaduse alusel moodustatud nõukogu ja Eesti Teaduste Akadeemia esitavad käesoleva seaduse alusel moodustatava nõukogu liikmed valdkonna eest vastutavale ministrile hiljemalt 2019. aasta 1. oktoobriks. (3) Käesoleva seaduse alusel moodustatava nõukogu esimese koosseisu määrab Vabariigi Valitsus korraldusega, arvestades, et nõukogu volitused algavad 2020. aasta 1. jaanuaril. (4) Ülikooli ülikooliseaduse alusel moodustatud nõukogu täidab alates 2020. aasta 1. jaanuarist käesoleva seadusega senatile pandud ülesandeid. Ülikooli ülikooliseaduse alusel moodustatud nõukogu volitused kehtivad kuni käesolevas seaduses nimetatud senati moodustamiseni, kuid mitte kauem kui ülikooliseaduse alusel moodustatud nõukogu volituste kehtivuse lõpuni. (5) Ülikooli ülikooliseaduse alusel moodustatud juhtorganid täidavad kuni 2019. aasta 31. detsembrini ülikooliseadusega neile pandud ülesandeid. (6) Ülikooli põhikiri ja teised õigusaktid viiakse käesoleva seadusega kooskõlla hiljemalt 2020. aasta 1. märtsiks. (7) Ülikooli enne käesoleva seaduse jõustumist valitud rektori volitused kehtivad kuni volituste lõppemiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMUKS_default"
@@ -1304,6 +1454,16 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:EKAS_Par_10"
@@ -1315,27 +1475,17 @@
           "@id": "estleg:TTUKS_Par_10"
         },
         {
-          "@id": "estleg:TalUKS_Par_9"
+          "@id": "estleg:TUKS_Par_14_1"
         },
         {
-          "@id": "estleg:TUKS_Par_14_1"
+          "@id": "estleg:TalUKS_Par_9"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:EMUKS_Par_9_v114032019003"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:EMUKS_Par_9_Lg_1",
@@ -1450,12 +1600,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 10. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Maaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMUKS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2019. aasta 1. septembril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2019. aasta 1. septembril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2019. aasta 1. septembril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMUKS_default"
@@ -1477,9 +1633,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2019. aasta 1. septembril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2019. aasta 1. septembril.",
       "estleg:parentProvision": {
         "@id": "estleg:EMUKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/517072025003",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:EMUKS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Estonian University of Life Sciences Act",
+        "@language": "en"
       }
     }
   ]

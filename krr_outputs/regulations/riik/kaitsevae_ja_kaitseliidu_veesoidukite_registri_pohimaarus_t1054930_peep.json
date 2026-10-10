@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,18 +39,15 @@
       "estleg:globalId": "118102022002",
       "estleg:terviktekstId": "1054930",
       "estleg:preambleText": "Määrus kehtestatakse laeva lipuõiguse ja laevaregistrite seaduse § 77",
-      "estleg:entryIntoForce": {
-        "@value": "2022-10-21",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2022-10-18",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "estleg:issuedUnder": [
         {
@@ -60,10 +64,10 @@
           "@id": "http://eurovoc.europa.eu/557"
         },
         {
-          "@id": "http://eurovoc.europa.eu/5188"
+          "@id": "http://eurovoc.europa.eu/2464"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2464"
+          "@id": "http://eurovoc.europa.eu/5188"
         }
       ],
       "eli:is_about": [
@@ -71,12 +75,21 @@
           "@id": "http://eurovoc.europa.eu/557"
         },
         {
-          "@id": "http://eurovoc.europa.eu/5188"
+          "@id": "http://eurovoc.europa.eu/2464"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2464"
+          "@id": "http://eurovoc.europa.eu/5188"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2022-10-21",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2022-10-18",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1054930_Par_1",
@@ -85,13 +98,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Registri ametlik nimetus",
+      "rdfs:label": {
+        "@value": "§ 1. Registri ametlik nimetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Registri ametlik nimetus on Kaitseväe ja Kaitseliidu veesõidukite register (edaspidi register). Registri ametlik nimetus on Kaitseväe ja Kaitseliidu veesõidukite register (edaspidi register). 2 (2) Registri ingliskeelne nimetus on Register of Military Watercraft. Registri ingliskeelne nimetus on Register of Military Watercraft.",
-      "estleg:legalText": "1 (1) Registri ametlik nimetus on Kaitseväe ja Kaitseliidu veesõidukite register (edaspidi register). Registri ametlik nimetus on Kaitseväe ja Kaitseliidu veesõidukite register (edaspidi register). 2 (2) Registri ingliskeelne nimetus on Register of Military Watercraft. Registri ingliskeelne nimetus on Register of Military Watercraft.",
+      "estleg:summary": {
+        "@value": "1 (1) Registri ametlik nimetus on Kaitseväe ja Kaitseliidu veesõidukite register (edaspidi register). 2 (2) Registri ingliskeelne nimetus on Register of Military Watercraft.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Registri ametlik nimetus on Kaitseväe ja Kaitseliidu veesõidukite register (edaspidi register). 2 (2) Registri ingliskeelne nimetus on Register of Military Watercraft.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_1_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1036172_Par_1"
@@ -116,19 +143,56 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1054930_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registri ametlik nimetus on Kaitseväe ja Kaitseliidu veesõidukite register (edaspidi register).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registri ingliskeelne nimetus on Register of Military Watercraft.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1054930_Par_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Registri eesmärk",
+      "rdfs:label": {
+        "@value": "§ 2. Registri eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "Registri eesmärk on Kaitseväe ja Kaitseliidu ülesannete täitmiseks kasutatavate mehitatud ja mehitamata veesõidukite (edaspidi veesõiduk) ning nende meresõidukõlblikkuse või sõidukõlblikkuse üle arvestuse pidamine.",
-      "estleg:legalText": "Registri eesmärk on Kaitseväe ja Kaitseliidu ülesannete täitmiseks kasutatavate mehitatud ja mehitamata veesõidukite (edaspidi veesõiduk) ning nende meresõidukõlblikkuse või sõidukõlblikkuse üle arvestuse pidamine. Registri eesmärk on Kaitseväe ja Kaitseliidu ülesannete täitmiseks kasutatavate mehitatud ja mehitamata veesõidukite (edaspidi veesõiduk) ning nende meresõidukõlblikkuse või sõidukõlblikkuse üle arvestuse pidamine.",
+      "estleg:summary": {
+        "@value": "Registri eesmärk on Kaitseväe ja Kaitseliidu ülesannete täitmiseks kasutatavate mehitatud ja mehitamata veesõidukite (edaspidi veesõiduk) ning nende meresõidukõlblikkuse või sõidukõlblikkuse üle arvestuse pidamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registri eesmärk on Kaitseväe ja Kaitseliidu ülesannete täitmiseks kasutatavate mehitatud ja mehitamata veesõidukite (edaspidi veesõiduk) ning nende meresõidukõlblikkuse või sõidukõlblikkuse üle arvestuse pidamine.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_2_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:LaevaRS_Par_77_2"
@@ -141,19 +205,43 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1054930_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registri eesmärk on Kaitseväe ja Kaitseliidu ülesannete täitmiseks kasutatavate mehitatud ja mehitamata veesõidukite (edaspidi veesõiduk) ning nende meresõidukõlblikkuse või sõidukõlblikkuse üle arvestuse pidamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1054930_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Registriandmete õiguslik tähendus",
+      "rdfs:label": {
+        "@value": "§ 3. Registriandmete õiguslik tähendus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "Registrisse kantud andmetel on informatiivne tähendus.",
-      "estleg:legalText": "Registrisse kantud andmetel on informatiivne tähendus. Registrisse kantud andmetel on informatiivne tähendus.",
+      "estleg:summary": {
+        "@value": "Registrisse kantud andmetel on informatiivne tähendus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registrisse kantud andmetel on informatiivne tähendus.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_3_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1003285_Par_4"
@@ -178,22 +266,50 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1054930_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registrisse kantud andmetel on informatiivne tähendus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1054930_Par_4",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Registri vastutav ja volitatud töötleja",
+      "rdfs:label": {
+        "@value": "§ 4. Registri vastutav ja volitatud töötleja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "Registri vastutav ja volitatud töötleja on Kaitsevägi.",
-      "estleg:legalText": "Registri vastutav ja volitatud töötleja on Kaitsevägi. Registri vastutav ja volitatud töötleja on Kaitsevägi.",
+      "estleg:summary": {
+        "@value": "Registri vastutav ja volitatud töötleja on Kaitsevägi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registri vastutav ja volitatud töötleja on Kaitsevägi.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_4_Lg_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -201,7 +317,7 @@
           "@id": "estleg:Reg_1001852_Par_2"
         },
         {
-          "@id": "estleg:Reg_1008322_Par_2"
+          "@id": "estleg:Reg_1012558_Par_6_6"
         },
         {
           "@id": "estleg:Reg_1054164_Par_2"
@@ -213,15 +329,33 @@
           "@id": "estleg:Reg_160754_Par_2"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_4_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registri vastutav ja volitatud töötleja on Kaitsevägi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_5",
@@ -230,13 +364,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Registri pidamine ja ülesehitus",
+      "rdfs:label": {
+        "@value": "§ 5. Registri pidamine ja ülesehitus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Registrit peetakse ühetasandilise digitaalse andmekoguna. Registrit peetakse ühetasandilise digitaalse andmekoguna. 2 (2) Register koosneb: 1 1) digitaalregistrist; 2 2) digitaalarhiivist. Register koosneb: digitaalregistrist; digitaalarhiivist.",
-      "estleg:legalText": "1 (1) Registrit peetakse ühetasandilise digitaalse andmekoguna. Registrit peetakse ühetasandilise digitaalse andmekoguna. 2 (2) Register koosneb: 1 1) digitaalregistrist; 2 2) digitaalarhiivist. Register koosneb: digitaalregistrist; digitaalarhiivist.",
+      "estleg:summary": {
+        "@value": "1 (1) Registrit peetakse ühetasandilise digitaalse andmekoguna. 2 (2) Register koosneb: 1 1) digitaalregistrist; 2 2) digitaalarhiivist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Registrit peetakse ühetasandilise digitaalse andmekoguna. 2 (2) Register koosneb: 1 1) digitaalregistrist; 2 2) digitaalarhiivist.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_5_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1039853_Par_5"
@@ -261,19 +409,63 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1054930_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registrit peetakse ühetasandilise digitaalse andmekoguna.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Register koosneb: 1) digitaalregistrist; 2) digitaalarhiivist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
       "@id": "estleg:Reg_1054930_Par_6",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Registriandmete kaitse",
+      "rdfs:label": {
+        "@value": "§ 6. Registriandmete kaitse",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Registri turbeaste on keskmine (M) ja registri turvaklass on K2T2S2, osade andmete turbeaste on salajane (H). Registri turbeaste on keskmine (M) ja registri turvaklass on K2T2S2, osade andmete turbeaste on salajane (H). 2 (2) Kaitseväe valduses olevate osade veesõidukite registri turvalisuse tagamisel kohaldatakse riigisaladuse ja salastatud välisteabe seaduses ja selle alusel antud õigusaktides elektroonilisele teabeturbele sätestatud nõudeid. Kaitseväe valduses olevate osade veesõidukite",
-      "estleg:legalText": "1 (1) Registri turbeaste on keskmine (M) ja registri turvaklass on K2T2S2, osade andmete turbeaste on salajane (H). Registri turbeaste on keskmine (M) ja registri turvaklass on K2T2S2, osade andmete turbeaste on salajane (H). 2 (2) Kaitseväe valduses olevate osade veesõidukite registri turvalisuse tagamisel kohaldatakse riigisaladuse ja salastatud välisteabe seaduses ja selle alusel antud õigusaktides elektroonilisele teabeturbele sätestatud nõudeid. Kaitseväe valduses olevate osade veesõidukite registri turvalisuse tagamisel kohaldatakse riigisaladuse ja salastatud välisteabe seaduses ja selle alusel antud õigusaktides elektroonilisele teabeturbele sätestatud nõudeid.",
+      "estleg:summary": {
+        "@value": "1 (1) Registri turbeaste on keskmine (M) ja registri turvaklass on K2T2S2, osade andmete turbeaste on salajane (H). 2 (2) Kaitseväe valduses olevate osade veesõidukite registri turvalisuse tagamisel kohaldatakse riigisaladuse ja salastatud välisteabe seaduses ja selle alusel antud õigusaktides elektroonilisele teabeturbele sätestatud nõudeid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Registri turbeaste on keskmine (M) ja registri turvaklass on K2T2S2, osade andmete turbeaste on salajane (H). 2 (2) Kaitseväe valduses olevate osade veesõidukite registri turvalisuse tagamisel kohaldatakse riigisaladuse ja salastatud välisteabe seaduses ja selle alusel antud õigusaktides elektroonilisele teabeturbele sätestatud nõudeid.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_6_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1043729_Par_7"
@@ -289,19 +481,51 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1054930_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registri turbeaste on keskmine (M) ja registri turvaklass on K2T2S2, osade andmete turbeaste on salajane (H).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseväe valduses olevate osade veesõidukite registri turvalisuse tagamisel kohaldatakse riigisaladuse ja salastatud välisteabe seaduses ja selle alusel antud õigusaktides elektroonilisele teabeturbele sätestatud nõudeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1054930_Par_7",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Registri andmed",
+      "rdfs:label": {
+        "@value": "§ 7. Registri andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Mehitatud veesõiduki kohta kantakse registrisse järgmised andmed: 1 1) registreerimise kuupäev; 2 2) registreerimisnumber; 3 3) kere tüüp; 4 4) mark; 5 5) mudel; 6 6) valmistamise aasta; 7 7) kere identifitseerimise number või inventarinumber; 8 8) mehitatud veesõiduki mõõtmed – pikkus, laius ja süvis meetrites; 9 9) põhimaterjal; 10 10) mootori või käituri tüüp ja arv ning lubatud võimsus kilovattides; 11 11) sõidupiirkond; 12 12) kandevõime tonnides; 13 13) maksimaalne lubatud inimeste a",
-      "estleg:legalText": "1 (1) Mehitatud veesõiduki kohta kantakse registrisse järgmised andmed: 1 1) registreerimise kuupäev; 2 2) registreerimisnumber; 3 3) kere tüüp; 4 4) mark; 5 5) mudel; 6 6) valmistamise aasta; 7 7) kere identifitseerimise number või inventarinumber; 8 8) mehitatud veesõiduki mõõtmed – pikkus, laius ja süvis meetrites; 9 9) põhimaterjal; 10 10) mootori või käituri tüüp ja arv ning lubatud võimsus kilovattides; 11 11) sõidupiirkond; 12 12) kandevõime tonnides; 13 13) maksimaalne lubatud inimeste arv; 14 14) valdaja andmed; 15 15) täiendava funktsiooni kirjeldus; 16 16) registrist kustutamise kuupäev ja põhjus; 17 17) märkused. Mehitatud veesõiduki kohta kantakse registrisse järgmised andmed: registreerimise kuupäev; registreerimisnumber; kere tüüp; mark; mudel; valmistamise aasta; kere identifitseerimise number või inventarinumber; mehitatud veesõiduki mõõtmed – pikkus, laius ja süvis meetrites; põhimaterjal; mootori või käituri tüüp ja arv ning lubatud võimsus kilovattides; sõidupiirkond; kandevõime tonnides; maksimaalne lubatud inimeste arv; valdaja andmed; täiendava funktsiooni kirjeldus; registrist kustutamise kuupäev ja põhjus; märkused. 2 (2) Mehitamata veesõiduki kohta kantakse registrisse järgmised andmed: 1 1) lõike 1 punktides 1‒6 ja 14‒17 sätestatud andmed; 2 2) seeria- või inventarinumber; 3 3) maksimaalne lubatud kandejõud. Mehitamata veesõiduki kohta kantakse registrisse järgmised andmed: lõike 1 punktides 1‒6 ja 14‒17 sätestatud andmed; seeria- või inventarinumber; maksimaalne lubatud kandejõud. 3 (3) Lisaks lõikes 1 sätestatule kantakse registrisse mehitatud veesõiduki meresõidukõlblikkuse või sõidukõlblikkuse kontrollimise dokumendid veesõiduki meresõidukõlblikkuse või sõidukõlblikkuse kontrollimise kohta. Lisaks lõikes 1 sätestatule kantakse registrisse mehitatud veesõiduki meresõidukõlblikkuse või sõidukõlblikkuse kontrollimise dokumendid veesõiduki meresõidukõlblikkuse või sõidukõlblikkuse kontrollimise kohta. 4 (4) Lisaks lõikes 2 sätestatule kantakse registrisse mehitamata veesõiduki hoolduspäeviku väljavõte ja sõidutundide arv, kui meresõidukõlblikkuse või sõidukõlblikkuse tunnistus ei ole nõutav. Lisaks lõikes 2 sätestatule kantakse registrisse mehitamata veesõiduki hoolduspäeviku väljavõte ja sõidutundide arv, kui meresõidukõlblikkuse või sõidukõlblikkuse tunnistus ei ole nõutav.",
+      "estleg:summary": {
+        "@value": "1 (1) Mehitatud veesõiduki kohta kantakse registrisse järgmised andmed: 1 1) registreerimise kuupäev; 2 2) registreerimisnumber; 3 3) kere tüüp; 4 4) mark; 5 5) mudel; 6 6) valmistamise aasta; 7 7) kere identifitseerimise number või inventarinumber; 8 8) mehitatud veesõiduki mõõtmed – pikkus, laius ja süvis meetrites; 9 9) põhimaterjal; 10 10) mootori või käituri tüüp ja arv ning lubatud võimsus kilovattides; 11 11) sõidupiirkond; 12 12) kandevõime tonnides; 13 13) maksimaalne lubatud inimeste…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Mehitatud veesõiduki kohta kantakse registrisse järgmised andmed: 1 1) registreerimise kuupäev; 2 2) registreerimisnumber; 3 3) kere tüüp; 4 4) mark; 5 5) mudel; 6 6) valmistamise aasta; 7 7) kere identifitseerimise number või inventarinumber; 8 8) mehitatud veesõiduki mõõtmed – pikkus, laius ja süvis meetrites; 9 9) põhimaterjal; 10 10) mootori või käituri tüüp ja arv ning lubatud võimsus kilovattides; 11 11) sõidupiirkond; 12 12) kandevõime tonnides; 13 13) maksimaalne lubatud inimeste arv; 14 14) valdaja andmed; 15 15) täiendava funktsiooni kirjeldus; 16 16) registrist kustutamise kuupäev ja põhjus; 17 17) märkused. 2 (2) Mehitamata veesõiduki kohta kantakse registrisse järgmised andmed: 1 1) lõike 1 punktides 1‒6 ja 14‒17 sätestatud andmed; 2 2) seeria- või inventarinumber; 3 3) maksimaalne lubatud kandejõud. 3 (3) Lisaks lõikes 1 sätestatule kantakse registrisse mehitatud veesõiduki meresõidukõlblikkuse või sõidukõlblikkuse kontrollimise dokumendid veesõiduki meresõidukõlblikkuse või sõidukõlblikkuse kontrollimise kohta. 4 (4) Lisaks lõikes 2 sätestatule kantakse registrisse mehitamata veesõiduki hoolduspäeviku väljavõte ja sõidutundide arv, kui meresõidukõlblikkuse või sõidukõlblikkuse tunnistus ei ole nõutav.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -311,11 +535,110 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_7_Lg_4"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_7_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mehitatud veesõiduki kohta kantakse registrisse järgmised andmed: 1) registreerimise kuupäev; 2) registreerimisnumber; 3) kere tüüp; 4) mark; 5) mudel; 6) valmistamise aasta; 7) kere identifitseerimise number või inventarinumber; 8) mehitatud veesõiduki mõõtmed – pikkus, laius ja süvis meetrites; 9) põhimaterjal; 10) mootori või käituri tüüp ja arv ning lubatud võimsus kilovattides; 11) sõidupiirkond; 12) kandevõime tonnides; 13) maksimaalne lubatud inimeste arv; 14) valdaja andmed; 15) täiendava funktsiooni kirjeldus; 16) registrist kustutamise kuupäev ja põhjus; 17) märkused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Mehitamata veesõiduki kohta kantakse registrisse järgmised andmed: 1) lõike 1 punktides 1‒6 ja 14‒17 sätestatud andmed; 2) seeria- või inventarinumber; 3) maksimaalne lubatud kandejõud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lisaks lõikes 1 sätestatule kantakse registrisse mehitatud veesõiduki meresõidukõlblikkuse või sõidukõlblikkuse kontrollimise dokumendid veesõiduki meresõidukõlblikkuse või sõidukõlblikkuse kontrollimise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Lisaks lõikes 2 sätestatule kantakse registrisse mehitamata veesõiduki hoolduspäeviku väljavõte ja sõidutundide arv, kui meresõidukõlblikkuse või sõidukõlblikkuse tunnistus ei ole nõutav.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
     },
     {
       "@id": "estleg:Reg_1054930_Par_8",
@@ -324,18 +647,36 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Registriandmete kopeerimine",
+      "rdfs:label": {
+        "@value": "§ 8. Registriandmete kopeerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "Volitatud töötleja teeb registrist vähemalt üks kord kuus digitaalse varukoopia, mida hoitakse kahjustumise eest kaitstud kohas. Varukoopia võib kustutada või hävitada vähemalt kolme kuu möödumisel koopia tegemisest arvates.",
-      "estleg:legalText": "Volitatud töötleja teeb registrist vähemalt üks kord kuus digitaalse varukoopia, mida hoitakse kahjustumise eest kaitstud kohas. Varukoopia võib kustutada või hävitada vähemalt kolme kuu möödumisel koopia tegemisest arvates. Volitatud töötleja teeb registrist vähemalt üks kord kuus digitaalse varukoopia, mida hoitakse kahjustumise eest kaitstud kohas. Varukoopia võib kustutada või hävitada vähemalt kolme kuu möödumisel koopia tegemisest arvates.",
+      "estleg:summary": {
+        "@value": "Volitatud töötleja teeb registrist vähemalt üks kord kuus digitaalse varukoopia, mida hoitakse kahjustumise eest kaitstud kohas. Varukoopia võib kustutada või hävitada vähemalt kolme kuu möödumisel koopia tegemisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Volitatud töötleja teeb registrist vähemalt üks kord kuus digitaalse varukoopia, mida hoitakse kahjustumise eest kaitstud kohas. Varukoopia võib kustutada või hävitada vähemalt kolme kuu möödumisel koopia tegemisest arvates.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_8_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1043729_Par_11"
@@ -344,18 +685,36 @@
           "@id": "estleg:Reg_1048075_Par_9"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_8_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Volitatud töötleja teeb registrist vähemalt üks kord kuus digitaalse varukoopia, mida hoitakse kahjustumise eest kaitstud kohas. Varukoopia võib kustutada või hävitada vähemalt kolme kuu möödumisel koopia tegemisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_9",
@@ -364,19 +723,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Andmete esitaja",
+      "rdfs:label": {
+        "@value": "§ 9. Andmete esitaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "Registrile esitavad andmeid: 1 1) Kaitsevägi ja selle struktuuriüksused; 2 2) Kaitseliit ja selle struktuuriüksused. Registrile esitavad andmeid: Kaitsevägi ja selle struktuuriüksused; Kaitseliit ja selle struktuuriüksused.",
-      "estleg:legalText": "Registrile esitavad andmeid: 1 1) Kaitsevägi ja selle struktuuriüksused; 2 2) Kaitseliit ja selle struktuuriüksused. Registrile esitavad andmeid: Kaitsevägi ja selle struktuuriüksused; Kaitseliit ja selle struktuuriüksused.",
+      "estleg:summary": {
+        "@value": "Registrile esitavad andmeid: 1 1) Kaitsevägi ja selle struktuuriüksused; 2 2) Kaitseliit ja selle struktuuriüksused.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registrile esitavad andmeid: 1 1) Kaitsevägi ja selle struktuuriüksused; 2 2) Kaitseliit ja selle struktuuriüksused.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_9_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1034930_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_1043729_Par_12"
         },
         {
           "@id": "estleg:Reg_1048075_Par_10"
@@ -389,25 +756,54 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1054930_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registrile esitavad andmeid: 1) Kaitsevägi ja selle struktuuriüksused; 2) Kaitseliit ja selle struktuuriüksused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
       "@id": "estleg:Reg_1054930_Par_10",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Andmevahetus",
+      "rdfs:label": {
+        "@value": "§ 10. Andmevahetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "Registril puudub andmevahetus teiste isikute ja asutuste andmekogudega.",
-      "estleg:legalText": "Registril puudub andmevahetus teiste isikute ja asutuste andmekogudega. Registril puudub andmevahetus teiste isikute ja asutuste andmekogudega.",
+      "estleg:summary": {
+        "@value": "Registril puudub andmevahetus teiste isikute ja asutuste andmekogudega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registril puudub andmevahetus teiste isikute ja asutuste andmekogudega.",
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_10_Lg_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -415,15 +811,33 @@
           "@id": "estleg:Reg_1048075_Par_11"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_10_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registril puudub andmevahetus teiste isikute ja asutuste andmekogudega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_11",
@@ -432,16 +846,40 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Registritoimingud",
+      "rdfs:label": {
+        "@value": "§ 11. Registritoimingud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Registritoimingud on: 1 1) andmete registrisse kandmine; 2 2) andmete muutmine; 3 3) andmete kustutamine. Registritoimingud on: andmete registrisse kandmine; andmete muutmine; andmete kustutamine. 2 (2) Registritoiminguid teeb volitatud töötleja. Registritoiminguid teeb volitatud töötleja. 3 (3) Registris säilitatakse toimingu tegemisest arvates kolme aasta jooksul registritoimingute kohta järgmised andmed: 1 1) registritoimingu tegija ees- ja perekonnanimi; 2 2) registritoimingu kuupäev j",
-      "estleg:legalText": "1 (1) Registritoimingud on: 1 1) andmete registrisse kandmine; 2 2) andmete muutmine; 3 3) andmete kustutamine. Registritoimingud on: andmete registrisse kandmine; andmete muutmine; andmete kustutamine. 2 (2) Registritoiminguid teeb volitatud töötleja. Registritoiminguid teeb volitatud töötleja. 3 (3) Registris säilitatakse toimingu tegemisest arvates kolme aasta jooksul registritoimingute kohta järgmised andmed: 1 1) registritoimingu tegija ees- ja perekonnanimi; 2 2) registritoimingu kuupäev ja kellaaeg; 3 3) registritoimingu liik. Registris säilitatakse toimingu tegemisest arvates kolme aasta jooksul registritoimingute kohta järgmised andmed: registritoimingu tegija ees- ja perekonnanimi; registritoimingu kuupäev ja kellaaeg; registritoimingu liik. 4 (4) Registri volitatud töötleja teeb registritoimingu kümne tööpäeva jooksul andmete saamisest arvates. Registri volitatud töötleja teeb registritoimingu kümne tööpäeva jooksul andmete saamisest arvates.",
+      "estleg:summary": {
+        "@value": "1 (1) Registritoimingud on: 1 1) andmete registrisse kandmine; 2 2) andmete muutmine; 3 3) andmete kustutamine. 2 (2) Registritoiminguid teeb volitatud töötleja. 3 (3) Registris säilitatakse toimingu tegemisest arvates kolme aasta jooksul registritoimingute kohta järgmised andmed: 1 1) registritoimingu tegija ees- ja perekonnanimi; 2 2) registritoimingu kuupäev ja kellaaeg; 3 3) registritoimingu liik.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Registritoimingud on: 1 1) andmete registrisse kandmine; 2 2) andmete muutmine; 3 3) andmete kustutamine. 2 (2) Registritoiminguid teeb volitatud töötleja. 3 (3) Registris säilitatakse toimingu tegemisest arvates kolme aasta jooksul registritoimingute kohta järgmised andmed: 1 1) registritoimingu tegija ees- ja perekonnanimi; 2 2) registritoimingu kuupäev ja kellaaeg; 3 3) registritoimingu liik. 4 (4) Registri volitatud töötleja teeb registritoimingu kümne tööpäeva jooksul andmete saamisest arvates.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_11_Lg_4"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -455,15 +893,91 @@
           "@id": "estleg:Reg_1057255_Par_7"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_11_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registritoimingud on: 1) andmete registrisse kandmine; 2) andmete muutmine; 3) andmete kustutamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registritoiminguid teeb volitatud töötleja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Registris säilitatakse toimingu tegemisest arvates kolme aasta jooksul registritoimingute kohta järgmised andmed: 1) registritoimingu tegija ees- ja perekonnanimi; 2) registritoimingu kuupäev ja kellaaeg; 3) registritoimingu liik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Registri volitatud töötleja teeb registritoimingu kümne tööpäeva jooksul andmete saamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_12",
@@ -472,16 +986,34 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Registritoimingu alusdokumendid",
+      "rdfs:label": {
+        "@value": "§ 12. Registritoimingu alusdokumendid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Registritoimingu alusdokument on veesõidukit iseloomustav ja selle käitamist kajastav kirjalik dokument. Registritoimingu alusdokument on veesõidukit iseloomustav ja selle käitamist kajastav kirjalik dokument. 2 (2) Registritoimingute alusdokumentide üle peetakse arvestust registri volitatud töötleja dokumendihaldussüsteemis või registris. Registritoimingute alusdokumentide üle peetakse arvestust registri volitatud töötleja dokumendihaldussüsteemis või registris.",
-      "estleg:legalText": "1 (1) Registritoimingu alusdokument on veesõidukit iseloomustav ja selle käitamist kajastav kirjalik dokument. Registritoimingu alusdokument on veesõidukit iseloomustav ja selle käitamist kajastav kirjalik dokument. 2 (2) Registritoimingute alusdokumentide üle peetakse arvestust registri volitatud töötleja dokumendihaldussüsteemis või registris. Registritoimingute alusdokumentide üle peetakse arvestust registri volitatud töötleja dokumendihaldussüsteemis või registris.",
+      "estleg:summary": {
+        "@value": "1 (1) Registritoimingu alusdokument on veesõidukit iseloomustav ja selle käitamist kajastav kirjalik dokument. 2 (2) Registritoimingute alusdokumentide üle peetakse arvestust registri volitatud töötleja dokumendihaldussüsteemis või registris.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Registritoimingu alusdokument on veesõidukit iseloomustav ja selle käitamist kajastav kirjalik dokument. 2 (2) Registritoimingute alusdokumentide üle peetakse arvestust registri volitatud töötleja dokumendihaldussüsteemis või registris.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_12_Lg_2"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -492,15 +1024,46 @@
           "@id": "estleg:Reg_1048075_Par_13"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_12_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registritoimingu alusdokument on veesõidukit iseloomustav ja selle käitamist kajastav kirjalik dokument.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registritoimingute alusdokumentide üle peetakse arvestust registri volitatud töötleja dokumendihaldussüsteemis või registris.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_13",
@@ -509,19 +1072,40 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Andmete õigsus",
+      "rdfs:label": {
+        "@value": "§ 13. Andmete õigsus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Registrikande õigsuse eest vastutab volitatud töötleja. Registrikande õigsuse eest vastutab volitatud töötleja. 2 (2) Registrikande alusdokumentides sisalduvate andmete õigsuse eest vastutab andmete esitaja. Registrikande alusdokumentides sisalduvate andmete õigsuse eest vastutab andmete esitaja.",
-      "estleg:legalText": "1 (1) Registrikande õigsuse eest vastutab volitatud töötleja. Registrikande õigsuse eest vastutab volitatud töötleja. 2 (2) Registrikande alusdokumentides sisalduvate andmete õigsuse eest vastutab andmete esitaja. Registrikande alusdokumentides sisalduvate andmete õigsuse eest vastutab andmete esitaja.",
+      "estleg:summary": {
+        "@value": "1 (1) Registrikande õigsuse eest vastutab volitatud töötleja. 2 (2) Registrikande alusdokumentides sisalduvate andmete õigsuse eest vastutab andmete esitaja.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Registrikande õigsuse eest vastutab volitatud töötleja. 2 (2) Registrikande alusdokumentides sisalduvate andmete õigsuse eest vastutab andmete esitaja.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_13_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1025417_Par_5"
+        },
         {
           "@id": "estleg:Reg_1043729_Par_16"
         },
@@ -533,20 +1117,48 @@
         },
         {
           "@id": "estleg:Reg_1054782_Par_22"
-        },
-        {
-          "@id": "estleg:Reg_335568_Par_13"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_13_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registrikande õigsuse eest vastutab volitatud töötleja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registrikande alusdokumentides sisalduvate andmete õigsuse eest vastutab andmete esitaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
     },
     {
       "@id": "estleg:Reg_1054930_Par_14",
@@ -555,18 +1167,36 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Andmete muutmine",
+      "rdfs:label": {
+        "@value": "§ 14. Andmete muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "Volitatud töötleja võib andmeid muuta: 1 1) andmete parandamiseks; 2 2) uute andmete registrisse kandmiseks; 3 3) kande alusdokumendis sisalduvate andmete muutumisel; 4 4) kande alusdokumendis sisalduvate andmete kehtivuse tähtaja möödumisel; 5 5) muul õigusaktist tuleneval põhjusel. Volitatud töötleja võib andmeid muuta: andmete parandamiseks; uute andmete registrisse kandmiseks; kande alusdokumendis sisalduvate andmete muutumisel; kande alusdokumendis sisalduvate andmete kehtivuse tähtaja mööd",
-      "estleg:legalText": "Volitatud töötleja võib andmeid muuta: 1 1) andmete parandamiseks; 2 2) uute andmete registrisse kandmiseks; 3 3) kande alusdokumendis sisalduvate andmete muutumisel; 4 4) kande alusdokumendis sisalduvate andmete kehtivuse tähtaja möödumisel; 5 5) muul õigusaktist tuleneval põhjusel. Volitatud töötleja võib andmeid muuta: andmete parandamiseks; uute andmete registrisse kandmiseks; kande alusdokumendis sisalduvate andmete muutumisel; kande alusdokumendis sisalduvate andmete kehtivuse tähtaja möödumisel; muul õigusaktist tuleneval põhjusel.",
+      "estleg:summary": {
+        "@value": "Volitatud töötleja võib andmeid muuta: 1 1) andmete parandamiseks; 2 2) uute andmete registrisse kandmiseks; 3 3) kande alusdokumendis sisalduvate andmete muutumisel; 4 4) kande alusdokumendis sisalduvate andmete kehtivuse tähtaja möödumisel; 5 5) muul õigusaktist tuleneval põhjusel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Volitatud töötleja võib andmeid muuta: 1 1) andmete parandamiseks; 2 2) uute andmete registrisse kandmiseks; 3 3) kande alusdokumendis sisalduvate andmete muutumisel; 4 4) kande alusdokumendis sisalduvate andmete kehtivuse tähtaja möödumisel; 5 5) muul õigusaktist tuleneval põhjusel.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_14_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1012558_Par_14"
@@ -581,18 +1211,43 @@
           "@id": "estleg:Reg_1048075_Par_15"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_14_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Volitatud töötleja võib andmeid muuta: 1) andmete parandamiseks; 2) uute andmete registrisse kandmiseks; 3) kande alusdokumendis sisalduvate andmete muutumisel; 4) kande alusdokumendis sisalduvate andmete kehtivuse tähtaja möödumisel; 5) muul õigusaktist tuleneval põhjusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_15",
@@ -601,22 +1256,43 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Andmete parandamine",
+      "rdfs:label": {
+        "@value": "§ 15. Andmete parandamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Registriandmetes vea tuvastamisel on volitatud töötleja kohustatud vea parandama. Registriandmetes vea tuvastamisel on volitatud töötleja kohustatud vea parandama. 2 (2) Volitatud töötlejal on õigus vea tuvastamiseks ja parandamiseks pöörduda andmete esitaja poole. Volitatud töötlejal on õigus vea tuvastamiseks ja parandamiseks pöörduda andmete esitaja poole. 3 (3) Andmete esitaja on kohustatud esitama tegelikkusele ja õigusaktide nõuetele vastavad andmed viie tööpäeva jooksul lõikes 2 sät",
-      "estleg:legalText": "1 (1) Registriandmetes vea tuvastamisel on volitatud töötleja kohustatud vea parandama. Registriandmetes vea tuvastamisel on volitatud töötleja kohustatud vea parandama. 2 (2) Volitatud töötlejal on õigus vea tuvastamiseks ja parandamiseks pöörduda andmete esitaja poole. Volitatud töötlejal on õigus vea tuvastamiseks ja parandamiseks pöörduda andmete esitaja poole. 3 (3) Andmete esitaja on kohustatud esitama tegelikkusele ja õigusaktide nõuetele vastavad andmed viie tööpäeva jooksul lõikes 2 sätestatud pöördumisest arvates. Andmete esitaja on kohustatud esitama tegelikkusele ja õigusaktide nõuetele vastavad andmed viie tööpäeva jooksul lõikes 2 sätestatud pöördumisest arvates.",
+      "estleg:summary": {
+        "@value": "1 (1) Registriandmetes vea tuvastamisel on volitatud töötleja kohustatud vea parandama. 2 (2) Volitatud töötlejal on õigus vea tuvastamiseks ja parandamiseks pöörduda andmete esitaja poole. 3 (3) Andmete esitaja on kohustatud esitama tegelikkusele ja õigusaktide nõuetele vastavad andmed viie tööpäeva jooksul lõikes 2 sätestatud pöördumisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Registriandmetes vea tuvastamisel on volitatud töötleja kohustatud vea parandama. 2 (2) Volitatud töötlejal on õigus vea tuvastamiseks ja parandamiseks pöörduda andmete esitaja poole. 3 (3) Andmete esitaja on kohustatud esitama tegelikkusele ja õigusaktide nõuetele vastavad andmed viie tööpäeva jooksul lõikes 2 sätestatud pöördumisest arvates.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1012558_Par_15"
+          "@id": "estleg:Reg_1054930_Par_15_Lg_1"
         },
+        {
+          "@id": "estleg:Reg_1054930_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_15_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1043729_Par_18"
         },
@@ -625,20 +1301,83 @@
         },
         {
           "@id": "estleg:Reg_1054164_Par_8"
+        },
+        {
+          "@id": "estleg:Reg_1064561_Par_8"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_15_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registriandmetes vea tuvastamisel on volitatud töötleja kohustatud vea parandama.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Volitatud töötlejal on õigus vea tuvastamiseks ja parandamiseks pöörduda andmete esitaja poole.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmete esitaja on kohustatud esitama tegelikkusele ja õigusaktide nõuetele vastavad andmed viie tööpäeva jooksul lõikes 2 sätestatud pöördumisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_16",
@@ -647,32 +1386,124 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Andmete kustutamine",
+      "rdfs:label": {
+        "@value": "§ 16. Andmete kustutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Andmed kustutatakse registrist ja kantakse digitaalarhiivi, kui: 1 1) veesõiduk tunnistatakse meresõidukõlbmatuks või sõidukõlbmatuks; 2 2) veesõiduk hävib või lammutatakse; 3 3) veesõiduk kaob jäljetult ja kadumisest on möödunud vähemalt kolm kuud; 4 4) veesõiduk võõrandatakse; 5 5) Kaitsevägi või Kaitseliit lõpetavad veesõiduki kasutamise. Andmed kustutatakse registrist ja kantakse digitaalarhiivi, kui: veesõiduk tunnistatakse meresõidukõlbmatuks või sõidukõlbmatuks; veesõiduk hävib või ",
-      "estleg:legalText": "1 (1) Andmed kustutatakse registrist ja kantakse digitaalarhiivi, kui: 1 1) veesõiduk tunnistatakse meresõidukõlbmatuks või sõidukõlbmatuks; 2 2) veesõiduk hävib või lammutatakse; 3 3) veesõiduk kaob jäljetult ja kadumisest on möödunud vähemalt kolm kuud; 4 4) veesõiduk võõrandatakse; 5 5) Kaitsevägi või Kaitseliit lõpetavad veesõiduki kasutamise. Andmed kustutatakse registrist ja kantakse digitaalarhiivi, kui: veesõiduk tunnistatakse meresõidukõlbmatuks või sõidukõlbmatuks; veesõiduk hävib või lammutatakse; veesõiduk kaob jäljetult ja kadumisest on möödunud vähemalt kolm kuud; veesõiduk võõrandatakse; Kaitsevägi või Kaitseliit lõpetavad veesõiduki kasutamise. 2 (2) Digitaalarhiivi kantud andmed võib volitatud töötleja kanda tagasi digitaalregistrisse, kui: 1 1) andmete kustutamine on tühine; 2 2) veesõiduk, mille andmed kustutati, on muutunud uuesti registriobjektiks; 3 3) andmed on kustutatud ekslikult. Digitaalarhiivi kantud andmed võib volitatud töötleja kanda tagasi digitaalregistrisse, kui: andmete kustutamine on tühine; veesõiduk, mille andmed kustutati, on muutunud uuesti registriobjektiks; andmed on kustutatud ekslikult. 3 (3) Kustutatud andmeid säilitatakse kümme aastat nende digitaalarhiivi kandmisest arvates. Kustutatud andmetele tagab volitatud töötleja juurdepääsu ühe aasta jooksul nende kustutamisest arvates. Kustutatud andmeid säilitatakse kümme aastat nende digitaalarhiivi kandmisest arvates. Kustutatud andmetele tagab volitatud töötleja juurdepääsu ühe aasta jooksul nende kustutamisest arvates.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmed kustutatakse registrist ja kantakse digitaalarhiivi, kui: 1 1) veesõiduk tunnistatakse meresõidukõlbmatuks või sõidukõlbmatuks; 2 2) veesõiduk hävib või lammutatakse; 3 3) veesõiduk kaob jäljetult ja kadumisest on möödunud vähemalt kolm kuud; 4 4) veesõiduk võõrandatakse; 5 5) Kaitsevägi või Kaitseliit lõpetavad veesõiduki kasutamise. 2 (2) Digitaalarhiivi kantud andmed võib volitatud töötleja kanda tagasi digitaalregistrisse, kui: 1 1) andmete kustutamine on tühine; 2 2)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmed kustutatakse registrist ja kantakse digitaalarhiivi, kui: 1 1) veesõiduk tunnistatakse meresõidukõlbmatuks või sõidukõlbmatuks; 2 2) veesõiduk hävib või lammutatakse; 3 3) veesõiduk kaob jäljetult ja kadumisest on möödunud vähemalt kolm kuud; 4 4) veesõiduk võõrandatakse; 5 5) Kaitsevägi või Kaitseliit lõpetavad veesõiduki kasutamise. 2 (2) Digitaalarhiivi kantud andmed võib volitatud töötleja kanda tagasi digitaalregistrisse, kui: 1 1) andmete kustutamine on tühine; 2 2) veesõiduk, mille andmed kustutati, on muutunud uuesti registriobjektiks; 3 3) andmed on kustutatud ekslikult. 3 (3) Kustutatud andmeid säilitatakse kümme aastat nende digitaalarhiivi kandmisest arvates. Kustutatud andmetele tagab volitatud töötleja juurdepääsu ühe aasta jooksul nende kustutamisest arvates.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1048075_Par_17"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_16_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1048075_Par_17"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_16_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmed kustutatakse registrist ja kantakse digitaalarhiivi, kui: 1) veesõiduk tunnistatakse meresõidukõlbmatuks või sõidukõlbmatuks; 2) veesõiduk hävib või lammutatakse; 3) veesõiduk kaob jäljetult ja kadumisest on möödunud vähemalt kolm kuud; 4) veesõiduk võõrandatakse; 5) Kaitsevägi või Kaitseliit lõpetavad veesõiduki kasutamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Digitaalarhiivi kantud andmed võib volitatud töötleja kanda tagasi digitaalregistrisse, kui: 1) andmete kustutamine on tühine; 2) veesõiduk, mille andmed kustutati, on muutunud uuesti registriobjektiks; 3) andmed on kustutatud ekslikult.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kustutatud andmeid säilitatakse kümme aastat nende digitaalarhiivi kandmisest arvates. Kustutatud andmetele tagab volitatud töötleja juurdepääsu ühe aasta jooksul nende kustutamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_17",
@@ -681,19 +1512,37 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Juurdepääsuõigus digitaalregistri ja -arhiivi andmetele",
+      "rdfs:label": {
+        "@value": "§ 17. Juurdepääsuõigus digitaalregistri ja -arhiivi andmetele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Registrisse kantud või sealt kustutatud andmetele on juurdepääs asutusel või isikul, kellel on selleks seadusest või seaduse alusel antud õigusaktist tulenev õigus. Registrisse kantud või sealt kustutatud andmetele on juurdepääs asutusel või isikul, kellel on selleks seadusest või seaduse alusel antud õigusaktist tulenev õigus. 2 (2) Registri andmeid, mis kogumina või üksikult moodustavad riigisaladuse, salastatakse, kasutatakse ning kaitstakse riigisaladuse ja salastatud välisteabe seadus",
-      "estleg:legalText": "1 (1) Registrisse kantud või sealt kustutatud andmetele on juurdepääs asutusel või isikul, kellel on selleks seadusest või seaduse alusel antud õigusaktist tulenev õigus. Registrisse kantud või sealt kustutatud andmetele on juurdepääs asutusel või isikul, kellel on selleks seadusest või seaduse alusel antud õigusaktist tulenev õigus. 2 (2) Registri andmeid, mis kogumina või üksikult moodustavad riigisaladuse, salastatakse, kasutatakse ning kaitstakse riigisaladuse ja salastatud välisteabe seadusega ning selle alusel antud õigusaktidega sätestatud korras. Registri andmeid, mis kogumina või üksikult moodustavad riigisaladuse, salastatakse, kasutatakse ning kaitstakse riigisaladuse ja salastatud välisteabe seadusega ning selle alusel antud õigusaktidega sätestatud korras. 3 (3) Juurdepääs digitaalregistri ja -arhiivi registriandmetele võimaldatakse autentimise teel või väljavõttena digitaalregistrist või -arhiivist. Juurdepääs digitaalregistri ja -arhiivi registriandmetele võimaldatakse autentimise teel või väljavõttena digitaalregistrist või -arhiivist.",
+      "estleg:summary": {
+        "@value": "1 (1) Registrisse kantud või sealt kustutatud andmetele on juurdepääs asutusel või isikul, kellel on selleks seadusest või seaduse alusel antud õigusaktist tulenev õigus. 2 (2) Registri andmeid, mis kogumina või üksikult moodustavad riigisaladuse, salastatakse, kasutatakse ning kaitstakse riigisaladuse ja salastatud välisteabe seadusega ning selle alusel antud õigusaktidega sätestatud korras.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Registrisse kantud või sealt kustutatud andmetele on juurdepääs asutusel või isikul, kellel on selleks seadusest või seaduse alusel antud õigusaktist tulenev õigus. 2 (2) Registri andmeid, mis kogumina või üksikult moodustavad riigisaladuse, salastatakse, kasutatakse ning kaitstakse riigisaladuse ja salastatud välisteabe seadusega ning selle alusel antud õigusaktidega sätestatud korras. 3 (3) Juurdepääs digitaalregistri ja -arhiivi registriandmetele võimaldatakse autentimise teel või väljavõttena digitaalregistrist või -arhiivist.",
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_17_Lg_1"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:Reg_1054930_Par_17_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_17_Lg_3"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -707,15 +1556,59 @@
           "@id": "estleg:Reg_1054164_Par_10"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_17_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registrisse kantud või sealt kustutatud andmetele on juurdepääs asutusel või isikul, kellel on selleks seadusest või seaduse alusel antud õigusaktist tulenev õigus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registri andmeid, mis kogumina või üksikult moodustavad riigisaladuse, salastatakse, kasutatakse ning kaitstakse riigisaladuse ja salastatud välisteabe seadusega ning selle alusel antud õigusaktidega sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_17_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Juurdepääs digitaalregistri ja -arhiivi registriandmetele võimaldatakse autentimise teel või väljavõttena digitaalregistrist või -arhiivist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 3"
     },
     {
       "@id": "estleg:Reg_1054930_Par_18",
@@ -724,13 +1617,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Juurdepääsu andmine",
+      "rdfs:label": {
+        "@value": "§ 18. Juurdepääsu andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Digitaalregistri ja -arhiivi andmetele tagatakse juurdepääs autentimise teel vastutava ja volitatud töötleja ametnikule või töötajale, kellele vastav õigus on antud ametijuhendi või haldusakti alusel. Digitaalregistri ja -arhiivi andmetele tagatakse juurdepääs autentimise teel vastutava ja volitatud töötleja ametnikule või töötajale, kellele vastav õigus on antud ametijuhendi või haldusakti alusel. 2 (2) Digitaalregistrist ja -arhiivist väljastatakse andmeid valitsusasutusele ning kohaliku",
-      "estleg:legalText": "1 (1) Digitaalregistri ja -arhiivi andmetele tagatakse juurdepääs autentimise teel vastutava ja volitatud töötleja ametnikule või töötajale, kellele vastav õigus on antud ametijuhendi või haldusakti alusel. Digitaalregistri ja -arhiivi andmetele tagatakse juurdepääs autentimise teel vastutava ja volitatud töötleja ametnikule või töötajale, kellele vastav õigus on antud ametijuhendi või haldusakti alusel. 2 (2) Digitaalregistrist ja -arhiivist väljastatakse andmeid valitsusasutusele ning kohaliku omavalitsuse asutusele, kui seda on vaja õigusaktidega pandud ülesannete täitmiseks. Digitaalregistrist ja -arhiivist väljastatakse andmeid valitsusasutusele ning kohaliku omavalitsuse asutusele, kui seda on vaja õigusaktidega pandud ülesannete täitmiseks. 3 (3) Lõikes 2 nimetatud valitsusasutus ja kohaliku omavalitsuse asutus peab esitama volitatud töötlejale kirjaliku taotluse, milles tuleb välja tuua vähemalt järgmised andmed: 1 1) taotluse esitaja nimi; 2 2) taotluse esitaja postiaadress ja e-posti aadress; 3 3) taotluse allkirjastaja ees- ja perekonnanimi ning ametikoht; 4 4) juurdepääsuõiguse vajaduse põhjendus ning viide andmete saamise aluseks olevale õigusaktile ja sättele; 5 5) isiku ees- ja perekonnanimi, isikukood ning ameti- või töökoht, kellele juurdepääsuõigust taotletakse; 6 6) kirjeldus või loetelu andmetest, millele juurdepääsuõigust taotletakse; 7 7) soovitav andmete saamise viis. Lõikes 2 nimetatud valitsusasutus ja kohaliku omavalitsuse asutus peab esitama volitatud töötlejale kirjaliku taotluse, milles tuleb välja tuua vähemalt järgmised andmed: taotluse esitaja nimi; taotluse esitaja postiaadress ja e-posti aadress; taotluse allkirjastaja ees- ja perekonnanimi ning ametikoht; juurdepääsuõiguse vajaduse põhjendus ning viide andmete saamise aluseks olevale õigusaktile ja sättele; isiku ees- ja perekonnanimi, isikukood ning ameti- või töökoht, kellele juurdepääsuõigust taotletakse; kirjeldus või loetelu andmetest, millele juurdepääsuõigust taotletakse; soovitav andmete saamise viis. 4 (4) Salastatud veesõidukite registri andmetele juurdepääsuks tuleb lisaks lõikes 3 sätestatule lisada taotlusesse teave isiku riigisaladusele juurdepääsu loa ja selle taseme kohta, kui riigisaladusele juurdepääsu õigus ei tulene seadusest. Salastatud veesõidukite registri andmetele juurdepääsuks tuleb lisaks lõikes 3 sätestatule lisada taotlusesse teave isiku riigisaladusele juurdepääsu loa ja selle taseme kohta, kui riigisaladusele juurdepääsu õigus ei tulene seadusest. 5 (5) Registrist väljastatakse andmeid kirjaliku teatisena viie tööpäeva jooksul pärast taotluse saamist, sõiduõnnetuse või -intsidendi uurimise korral viivitamata. Registrist väljastatakse andmeid kirjaliku teatisena viie tööpäeva jooksul pärast taotluse saamist, sõiduõnnetuse või -intsidendi uurimise korral viivitamata. 6 (6) Juurdepääsuõiguse taotlus registreeritakse volitatud töötleja dokumendihaldussüsteemis ja neid säilitatakse kolm aastat taotluse esitamisest arvates. Juurdepääsuõiguse taotlus registreeritakse volitatud töötleja dokumendihaldussüsteemis ja neid säilitatakse kolm aastat taotluse esitamisest arvates.",
+      "estleg:summary": {
+        "@value": "1 (1) Digitaalregistri ja -arhiivi andmetele tagatakse juurdepääs autentimise teel vastutava ja volitatud töötleja ametnikule või töötajale, kellele vastav õigus on antud ametijuhendi või haldusakti alusel. 2 (2) Digitaalregistrist ja -arhiivist väljastatakse andmeid valitsusasutusele ning kohaliku omavalitsuse asutusele, kui seda on vaja õigusaktidega pandud ülesannete täitmiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Digitaalregistri ja -arhiivi andmetele tagatakse juurdepääs autentimise teel vastutava ja volitatud töötleja ametnikule või töötajale, kellele vastav õigus on antud ametijuhendi või haldusakti alusel. 2 (2) Digitaalregistrist ja -arhiivist väljastatakse andmeid valitsusasutusele ning kohaliku omavalitsuse asutusele, kui seda on vaja õigusaktidega pandud ülesannete täitmiseks. 3 (3) Lõikes 2 nimetatud valitsusasutus ja kohaliku omavalitsuse asutus peab esitama volitatud töötlejale kirjaliku taotluse, milles tuleb välja tuua vähemalt järgmised andmed: 1 1) taotluse esitaja nimi; 2 2) taotluse esitaja postiaadress ja e-posti aadress; 3 3) taotluse allkirjastaja ees- ja perekonnanimi ning ametikoht; 4 4) juurdepääsuõiguse vajaduse põhjendus ning viide andmete saamise aluseks olevale õigusaktile ja sättele; 5 5) isiku ees- ja perekonnanimi, isikukood ning ameti- või töökoht, kellele juurdepääsuõigust taotletakse; 6 6) kirjeldus või loetelu andmetest, millele juurdepääsuõigust taotletakse; 7 7) soovitav andmete saamise viis. 4 (4) Salastatud veesõidukite registri andmetele juurdepääsuks tuleb lisaks lõikes 3 sätestatule lisada taotlusesse teave isiku riigisaladusele juurdepääsu loa ja selle taseme kohta, kui riigisaladusele juurdepääsu õigus ei tulene seadusest. 5 (5) Registrist väljastatakse andmeid kirjaliku teatisena viie tööpäeva jooksul pärast taotluse saamist, sõiduõnnetuse või -intsidendi uurimise korral viivitamata. 6 (6) Juurdepääsuõiguse taotlus registreeritakse volitatud töötleja dokumendihaldussüsteemis ja neid säilitatakse kolm aastat taotluse esitamisest arvates.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -739,28 +1638,205 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_18_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_18_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_18_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_18_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_18_Lg_6"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1048075_Par_19"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_18_v1054930"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Digitaalregistri ja -arhiivi andmetele tagatakse juurdepääs autentimise teel vastutava ja volitatud töötleja ametnikule või töötajale, kellele vastav õigus on antud ametijuhendi või haldusakti alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_18_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Digitaalregistrist ja -arhiivist väljastatakse andmeid valitsusasutusele ning kohaliku omavalitsuse asutusele, kui seda on vaja õigusaktidega pandud ülesannete täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_18_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lõikes 2 nimetatud valitsusasutus ja kohaliku omavalitsuse asutus peab esitama volitatud töötlejale kirjaliku taotluse, milles tuleb välja tuua vähemalt järgmised andmed: 1) taotluse esitaja nimi; 2) taotluse esitaja postiaadress ja e-posti aadress; 3) taotluse allkirjastaja ees- ja perekonnanimi ning ametikoht; 4) juurdepääsuõiguse vajaduse põhjendus ning viide andmete saamise aluseks olevale õigusaktile ja sättele; 5) isiku ees- ja perekonnanimi, isikukood ning ameti- või töökoht, kellele juurdepääsuõigust taotletakse; 6) kirjeldus või loetelu andmetest, millele juurdepääsuõigust taotletakse; 7) soovitav andmete saamise viis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_18_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Salastatud veesõidukite registri andmetele juurdepääsuks tuleb lisaks lõikes 3 sätestatule lisada taotlusesse teave isiku riigisaladusele juurdepääsu loa ja selle taseme kohta, kui riigisaladusele juurdepääsu õigus ei tulene seadusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 4",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_18_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Registrist väljastatakse andmeid kirjaliku teatisena viie tööpäeva jooksul pärast taotluse saamist, sõiduõnnetuse või -intsidendi uurimise korral viivitamata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_18_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Juurdepääsuõiguse taotlus registreeritakse volitatud töötleja dokumendihaldussüsteemis ja neid säilitatakse kolm aastat taotluse esitamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 6",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_19",
@@ -769,22 +1845,37 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Juurdepääsuga isiku tehtud päringute kohta teabe kogumine ja säilitamine",
+      "rdfs:label": {
+        "@value": "§ 19. Juurdepääsuga isiku tehtud päringute kohta teabe kogumine ja säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Digitaalregistrile ja -arhiivile autentimise teel juurdepääsuga isiku tehtud päringu kohta kogutakse vähemalt järgmisi andmeid: 1 1) päringu tegija isikukood; 2 2) vaadatud andmed; 3 3) päringu kuupäev ja kellaaeg. Digitaalregistrile ja -arhiivile autentimise teel juurdepääsuga isiku tehtud päringu kohta kogutakse vähemalt järgmisi andmeid: päringu tegija isikukood; vaadatud andmed; päringu kuupäev ja kellaaeg. 2 (2) Lõikes 1 nimetatud andmeid säilitatakse kolm aastat päringu tegemisest ar",
-      "estleg:legalText": "1 (1) Digitaalregistrile ja -arhiivile autentimise teel juurdepääsuga isiku tehtud päringu kohta kogutakse vähemalt järgmisi andmeid: 1 1) päringu tegija isikukood; 2 2) vaadatud andmed; 3 3) päringu kuupäev ja kellaaeg. Digitaalregistrile ja -arhiivile autentimise teel juurdepääsuga isiku tehtud päringu kohta kogutakse vähemalt järgmisi andmeid: päringu tegija isikukood; vaadatud andmed; päringu kuupäev ja kellaaeg. 2 (2) Lõikes 1 nimetatud andmeid säilitatakse kolm aastat päringu tegemisest arvates. Andmeid säilitatakse elektrooniliselt. Elektroonilise säilitamise võimaluse puudumisel peetakse arvestust viisil, mis võimaldab lõikes 1 nimetatud andmete kirjalikku taasesitamist. Lõikes 1 nimetatud andmeid säilitatakse kolm aastat päringu tegemisest arvates. Andmeid säilitatakse elektrooniliselt. Elektroonilise säilitamise võimaluse puudumisel peetakse arvestust viisil, mis võimaldab lõikes 1 nimetatud andmete kirjalikku taasesitamist.",
+      "estleg:summary": {
+        "@value": "1 (1) Digitaalregistrile ja -arhiivile autentimise teel juurdepääsuga isiku tehtud päringu kohta kogutakse vähemalt järgmisi andmeid: 1 1) päringu tegija isikukood; 2 2) vaadatud andmed; 3 3) päringu kuupäev ja kellaaeg. 2 (2) Lõikes 1 nimetatud andmeid säilitatakse kolm aastat päringu tegemisest arvates. Andmeid säilitatakse elektrooniliselt. Elektroonilise säilitamise võimaluse puudumisel peetakse arvestust viisil, mis võimaldab lõikes 1 nimetatud andmete kirjalikku taasesitamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Digitaalregistrile ja -arhiivile autentimise teel juurdepääsuga isiku tehtud päringu kohta kogutakse vähemalt järgmisi andmeid: 1 1) päringu tegija isikukood; 2 2) vaadatud andmed; 3 3) päringu kuupäev ja kellaaeg. 2 (2) Lõikes 1 nimetatud andmeid säilitatakse kolm aastat päringu tegemisest arvates. Andmeid säilitatakse elektrooniliselt. Elektroonilise säilitamise võimaluse puudumisel peetakse arvestust viisil, mis võimaldab lõikes 1 nimetatud andmete kirjalikku taasesitamist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1012558_Par_17"
+          "@id": "estleg:Reg_1054930_Par_19_Lg_1"
         },
+        {
+          "@id": "estleg:Reg_1054930_Par_19_Lg_2"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1012558_Par_23"
         },
@@ -796,17 +1887,56 @@
         },
         {
           "@id": "estleg:Reg_1054164_Par_11"
+        },
+        {
+          "@id": "estleg:Reg_1064561_Par_11"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_19_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Digitaalregistrile ja -arhiivile autentimise teel juurdepääsuga isiku tehtud päringu kohta kogutakse vähemalt järgmisi andmeid: 1) päringu tegija isikukood; 2) vaadatud andmed; 3) päringu kuupäev ja kellaaeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_19_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõikes 1 nimetatud andmeid säilitatakse kolm aastat päringu tegemisest arvates. Andmeid säilitatakse elektrooniliselt. Elektroonilise säilitamise võimaluse puudumisel peetakse arvestust viisil, mis võimaldab lõikes 1 nimetatud andmete kirjalikku taasesitamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 2"
     },
     {
       "@id": "estleg:Reg_1054930_Par_20",
@@ -815,24 +1945,36 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Vastutava töötleja ülesanded",
+      "rdfs:label": {
+        "@value": "§ 20. Vastutava töötleja ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "Vastutav töötleja: 1 1) tagab registri pidamise õigusaktides sätestatud nõuete järgi; 2 2) vastutab koos volitatud töötlejaga isikuandmete töötlemise nõuete täitmise eest. Vastutav töötleja: tagab registri pidamise õigusaktides sätestatud nõuete järgi; vastutab koos volitatud töötlejaga isikuandmete töötlemise nõuete täitmise eest.",
-      "estleg:legalText": "Vastutav töötleja: 1 1) tagab registri pidamise õigusaktides sätestatud nõuete järgi; 2 2) vastutab koos volitatud töötlejaga isikuandmete töötlemise nõuete täitmise eest. Vastutav töötleja: tagab registri pidamise õigusaktides sätestatud nõuete järgi; vastutab koos volitatud töötlejaga isikuandmete töötlemise nõuete täitmise eest.",
+      "estleg:summary": {
+        "@value": "Vastutav töötleja: 1 1) tagab registri pidamise õigusaktides sätestatud nõuete järgi; 2 2) vastutab koos volitatud töötlejaga isikuandmete töötlemise nõuete täitmise eest.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vastutav töötleja: 1 1) tagab registri pidamise õigusaktides sätestatud nõuete järgi; 2 2) vastutab koos volitatud töötlejaga isikuandmete töötlemise nõuete täitmise eest.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_20_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1001852_Par_12"
-        },
-        {
-          "@id": "estleg:Reg_1032305_Par_3_4"
         },
         {
           "@id": "estleg:Reg_1043729_Par_23"
@@ -842,17 +1984,42 @@
         },
         {
           "@id": "estleg:Reg_1054164_Par_12"
+        },
+        {
+          "@id": "estleg:Reg_1064561_Par_12"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_20_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vastutav töötleja: 1) tagab registri pidamise õigusaktides sätestatud nõuete järgi; 2) vastutab koos volitatud töötlejaga isikuandmete töötlemise nõuete täitmise eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_21",
@@ -861,24 +2028,36 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Volitatud töötleja ülesanded",
+      "rdfs:label": {
+        "@value": "§ 21. Volitatud töötleja ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "Volitatud töötleja: 1 1) tagab registri pidamise õigusaktides sätestatud nõuete järgi; 2 2) vastutab registritoimingute õiguspärasuse eest; 3 3) vastutab registrist andmete väljastamise nõuetekohasuse eest; 4 4) tagab õigustatud isikutele juurdepääsu registrile; 5 5) vastutab isikuandmete töötlemise nõuete täitmise eest; 6 6) teeb registri vastutavale töötlejale ettepanekuid registri arendamiseks. Volitatud töötleja: tagab registri pidamise õigusaktides sätestatud nõuete järgi; vastutab registri",
-      "estleg:legalText": "Volitatud töötleja: 1 1) tagab registri pidamise õigusaktides sätestatud nõuete järgi; 2 2) vastutab registritoimingute õiguspärasuse eest; 3 3) vastutab registrist andmete väljastamise nõuetekohasuse eest; 4 4) tagab õigustatud isikutele juurdepääsu registrile; 5 5) vastutab isikuandmete töötlemise nõuete täitmise eest; 6 6) teeb registri vastutavale töötlejale ettepanekuid registri arendamiseks. Volitatud töötleja: tagab registri pidamise õigusaktides sätestatud nõuete järgi; vastutab registritoimingute õiguspärasuse eest; vastutab registrist andmete väljastamise nõuetekohasuse eest; tagab õigustatud isikutele juurdepääsu registrile; vastutab isikuandmete töötlemise nõuete täitmise eest; teeb registri vastutavale töötlejale ettepanekuid registri arendamiseks.",
+      "estleg:summary": {
+        "@value": "Volitatud töötleja: 1 1) tagab registri pidamise õigusaktides sätestatud nõuete järgi; 2 2) vastutab registritoimingute õiguspärasuse eest; 3 3) vastutab registrist andmete väljastamise nõuetekohasuse eest; 4 4) tagab õigustatud isikutele juurdepääsu registrile; 5 5) vastutab isikuandmete töötlemise nõuete täitmise eest; 6 6) teeb registri vastutavale töötlejale ettepanekuid registri arendamiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Volitatud töötleja: 1 1) tagab registri pidamise õigusaktides sätestatud nõuete järgi; 2 2) vastutab registritoimingute õiguspärasuse eest; 3 3) vastutab registrist andmete väljastamise nõuetekohasuse eest; 4 4) tagab õigustatud isikutele juurdepääsu registrile; 5 5) vastutab isikuandmete töötlemise nõuete täitmise eest; 6 6) teeb registri vastutavale töötlejale ettepanekuid registri arendamiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_21_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1032305_Par_3_4"
-        },
-        {
-          "@id": "estleg:Reg_1043729_Par_23"
         },
         {
           "@id": "estleg:Reg_1043729_Par_24"
@@ -887,18 +2066,47 @@
           "@id": "estleg:Reg_1048075_Par_22"
         },
         {
+          "@id": "estleg:Reg_1050868_Par_7"
+        },
+        {
           "@id": "estleg:Reg_1057089_Par_8"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_21_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Volitatud töötleja: 1) tagab registri pidamise õigusaktides sätestatud nõuete järgi; 2) vastutab registritoimingute õiguspärasuse eest; 3) vastutab registrist andmete väljastamise nõuetekohasuse eest; 4) tagab õigustatud isikutele juurdepääsu registrile; 5) vastutab isikuandmete töötlemise nõuete täitmise eest; 6) teeb registri vastutavale töötlejale ettepanekuid registri arendamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_22",
@@ -907,25 +2115,48 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Järelevalve",
+      "rdfs:label": {
+        "@value": "§ 22. Järelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Järelevalvet registri pidamise üle teevad registri vastutav töötleja, Andmekaitse Inspektsioon ning riigisaladuse ja salastatud välisteabe seaduses ja selle alusel kehtestatud õigusaktides määratud asutused oma pädevuse piires. Järelevalvet registri pidamise üle teevad registri vastutav töötleja, Andmekaitse Inspektsioon ning riigisaladuse ja salastatud välisteabe seaduses ja selle alusel kehtestatud õigusaktides määratud asutused oma pädevuse piires. 2 (2) Kaitseväe valduses olevate mehit",
-      "estleg:legalText": "1 (1) Järelevalvet registri pidamise üle teevad registri vastutav töötleja, Andmekaitse Inspektsioon ning riigisaladuse ja salastatud välisteabe seaduses ja selle alusel kehtestatud õigusaktides määratud asutused oma pädevuse piires. Järelevalvet registri pidamise üle teevad registri vastutav töötleja, Andmekaitse Inspektsioon ning riigisaladuse ja salastatud välisteabe seaduses ja selle alusel kehtestatud õigusaktides määratud asutused oma pädevuse piires. 2 (2) Kaitseväe valduses olevate mehitamata veesõidukite registri üle järelevalvet tegeval isikul peab olema vähemalt salajase taseme riigisaladusele juurdepääsu õigus. Kaitseväe valduses olevate mehitamata veesõidukite registri üle järelevalvet tegeval isikul peab olema vähemalt salajase taseme riigisaladusele juurdepääsu õigus.",
+      "estleg:summary": {
+        "@value": "1 (1) Järelevalvet registri pidamise üle teevad registri vastutav töötleja, Andmekaitse Inspektsioon ning riigisaladuse ja salastatud välisteabe seaduses ja selle alusel kehtestatud õigusaktides määratud asutused oma pädevuse piires. 2 (2) Kaitseväe valduses olevate mehitamata veesõidukite registri üle järelevalvet tegeval isikul peab olema vähemalt salajase taseme riigisaladusele juurdepääsu õigus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Järelevalvet registri pidamise üle teevad registri vastutav töötleja, Andmekaitse Inspektsioon ning riigisaladuse ja salastatud välisteabe seaduses ja selle alusel kehtestatud õigusaktides määratud asutused oma pädevuse piires. 2 (2) Kaitseväe valduses olevate mehitamata veesõidukite registri üle järelevalvet tegeval isikul peab olema vähemalt salajase taseme riigisaladusele juurdepääsu õigus.",
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_Business"
         },
         {
-          "@id": "estleg:TargetGroup_Business"
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_22_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_22_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_andmekaitseinspektsioon"
         }
       ],
       "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1028185_Par_18"
-        },
         {
           "@id": "estleg:Reg_1043729_Par_25"
         },
@@ -937,22 +2168,71 @@
         },
         {
           "@id": "estleg:Reg_1057089_Par_31"
+        },
+        {
+          "@id": "estleg:Reg_1064561_Par_13"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:Reg_1054930_Par_22_v1054930"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Järelevalvet registri pidamise üle teevad registri vastutav töötleja, Andmekaitse Inspektsioon ning riigisaladuse ja salastatud välisteabe seaduses ja selle alusel kehtestatud õigusaktides määratud asutused oma pädevuse piires.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:Reg_1054930_Par_22_v1054930"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_andmekaitseinspektsioon"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_22_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseväe valduses olevate mehitamata veesõidukite registri üle järelevalvet tegeval isikul peab olema vähemalt salajase taseme riigisaladusele juurdepääsu õigus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_23",
@@ -961,16 +2241,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Registri pidamise kulu",
+      "rdfs:label": {
+        "@value": "§ 23. Registri pidamise kulu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "Registri pidamise kulu kaetakse volitatud töötleja eelarvest.",
-      "estleg:legalText": "Registri pidamise kulu kaetakse volitatud töötleja eelarvest. Registri pidamise kulu kaetakse volitatud töötleja eelarvest.",
+      "estleg:summary": {
+        "@value": "Registri pidamise kulu kaetakse volitatud töötleja eelarvest.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registri pidamise kulu kaetakse volitatud töötleja eelarvest.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_23_Lg_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -981,24 +2276,42 @@
           "@id": "estleg:Reg_1043862_Par_14"
         },
         {
-          "@id": "estleg:Reg_1047743_Par_22"
-        },
-        {
           "@id": "estleg:Reg_1048075_Par_24"
         },
         {
           "@id": "estleg:Reg_1054164_Par_14"
+        },
+        {
+          "@id": "estleg:Reg_1064561_Par_14"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_23_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_23_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registri pidamise kulu kaetakse volitatud töötleja eelarvest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1054930_Par_24",
@@ -1007,16 +2320,34 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Registri likvideerimine",
+      "rdfs:label": {
+        "@value": "§ 24. Registri likvideerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe ja Kaitseliidu veesõidukite registri põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054930_Map"
       },
-      "estleg:summary": "1 (1) Registri likvideerimise otsustab valdkonna eest vastutav minister. Registri likvideerimise otsustab valdkonna eest vastutav minister. 2 (2) Register likvideeritakse kooskõlas arhiiviseaduse, avaliku teabe seaduse ning riigisaladuse ja salastatud välisteabe seaduse nõuetega. Register likvideeritakse kooskõlas arhiiviseaduse, avaliku teabe seaduse ning riigisaladuse ja salastatud välisteabe seaduse nõuetega.",
-      "estleg:legalText": "1 (1) Registri likvideerimise otsustab valdkonna eest vastutav minister. Registri likvideerimise otsustab valdkonna eest vastutav minister. 2 (2) Register likvideeritakse kooskõlas arhiiviseaduse, avaliku teabe seaduse ning riigisaladuse ja salastatud välisteabe seaduse nõuetega. Register likvideeritakse kooskõlas arhiiviseaduse, avaliku teabe seaduse ning riigisaladuse ja salastatud välisteabe seaduse nõuetega.",
+      "estleg:summary": {
+        "@value": "1 (1) Registri likvideerimise otsustab valdkonna eest vastutav minister. 2 (2) Register likvideeritakse kooskõlas arhiiviseaduse, avaliku teabe seaduse ning riigisaladuse ja salastatud välisteabe seaduse nõuetega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Registri likvideerimise otsustab valdkonna eest vastutav minister. 2 (2) Register likvideeritakse kooskõlas arhiiviseaduse, avaliku teabe seaduse ning riigisaladuse ja salastatud välisteabe seaduse nõuetega.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054930_Par_24_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054930_Par_24_Lg_2"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -1036,15 +2367,46 @@
           "@id": "estleg:Reg_1050868_Par_29"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054930_Par_24_v1054930"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_24_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registri likvideerimise otsustab valdkonna eest vastutav minister.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_24"
+      },
+      "rdfs:label": "§ 24 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1054930_Par_24_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Register likvideeritakse kooskõlas arhiiviseaduse, avaliku teabe seaduse ning riigisaladuse ja salastatud välisteabe seaduse nõuetega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054930_Par_24"
+      },
+      "rdfs:label": "§ 24 lg 2"
     },
     {
       "@id": "estleg:Citation_Reg_1054930_Map_1",

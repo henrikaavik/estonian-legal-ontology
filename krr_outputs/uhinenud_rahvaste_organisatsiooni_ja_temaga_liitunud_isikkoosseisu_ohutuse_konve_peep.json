@@ -5,49 +5,62 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus",
       "dcterms:title": "Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/964550.xml"
+        "@id": "https://www.riigiteataja.ee/akt/964550"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/964550/xml"
+      },
+      "estleg:globalId": "964550",
+      "eli:id_local": "964550",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "159115",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "1e7dc802cc235e633b2500e77ed55d8a4b1189a5f525e05f9ad2724cdacc79b3",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
+      "estleg:entryIntoForce": {
+        "@value": "2005-12-23",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2005-12-13",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:lastAmendmentDate": {
         "@value": "2005-12-23",
         "@type": "xsd:date"
       }
-    },
-    {
-      "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_uhinenud_rahvaste_organisatsiooni_ja_tem_default"
-        }
-      ]
     },
     {
       "@id": "estleg:Cluster_uhinenud_rahvaste_organisatsiooni_ja_tem_default",
@@ -56,12 +69,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus",
-      "skos:prefLabel": "§1–2 Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus",
+      "rdfs:label": {
+        "@value": "§1–2 Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_uhinenud_rahvaste_organisatsiooni_ja_tem_default"
+        }
+      ]
     },
     {
       "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_Par_1",
@@ -70,13 +104,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikk...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikk...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud (edaspidikonventsioon), mis on koostatud 1994. aasta 9. detsembril New Yorgis.",
-      "estleg:legalText": "Ühineda juurdelisatud (edaspidikonventsioon), mis on koostatud 1994. aasta 9. detsembril New Yorgis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga (edaspidikonventsioon), mis on koostatud 1994. aasta 9. detsembril New Yorgis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga (edaspidikonventsioon), mis on koostatud 1994. aasta 9. detsembril New Yorgis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_uhinenud_rahvaste_organisatsiooni_ja_tem_default"
       },
@@ -91,9 +131,6 @@
         },
         {
           "@id": "estleg:UROKKU_Par_1"
-        },
-        {
-          "@id": "estleg:kaebemenetlust_kasitleva_lapse_oiguste_k_Par_1"
         },
         {
           "@id": "estleg:uhinenud_rahvaste_organisatsiooni_1982_a_Par_2"
@@ -111,10 +148,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud (edaspidikonventsioon), mis on koostatud 1994. aasta 9. detsembril New Yorgis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga (edaspidikonventsioon), mis on koostatud 1994. aasta 9. detsembril New Yorgis.",
       "estleg:parentProvision": {
         "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_Par_2",
@@ -123,12 +162,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Teha konventsiooni artikli 10 lõike 2 alusel deklaratsioon, mille kohaselt Eesti...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Teha konventsiooni artikli 10 lõike 2 alusel deklaratsioon, mille kohaselt Eesti...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ühinenud Rahvaste Organisatsiooni ja temaga liitunud isikkoosseisu ohutuse konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_Map"
       },
-      "estleg:summary": "Teha konventsiooni artikli 10 lõike 2 alusel deklaratsioon, mille kohaselt Eesti Vabariik kehtestab oma jurisdiktsiooni Eesti kodaniku vastu toime pandud kuriteo üle.",
+      "estleg:summary": {
+        "@value": "Teha konventsiooni artikli 10 lõike 2 alusel deklaratsioon, mille kohaselt Eesti Vabariik kehtestab oma jurisdiktsiooni Eesti kodaniku vastu toime pandud kuriteo üle.",
+        "@language": "et"
+      },
       "estleg:legalText": "Teha konventsiooni artikli 10 lõike 2 alusel deklaratsioon, mille kohaselt Eesti Vabariik kehtestab oma jurisdiktsiooni Eesti kodaniku vastu toime pandud kuriteo üle.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_uhinenud_rahvaste_organisatsiooni_ja_tem_default"
@@ -141,23 +186,6 @@
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:KATMKKU_Par_2"
-        },
-        {
-          "@id": "estleg:KMTLMKSPR_Par_3"
-        },
-        {
-          "@id": "estleg:PVKR_Par_2"
-        },
-        {
-          "@id": "estleg:VOHMEKR_Par_2"
-        },
-        {
-          "@id": "estleg:rahvusvahelise_organiseeritud_kuritegevu_Par_5"
         }
       ],
       "estleg:assertionConfidence": {
@@ -176,10 +204,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Teha konventsiooni artikli 10 lõike 2 alusel deklaratsioon, mille kohaselt Eesti Vabariik kehtestab oma jurisdiktsiooni Eesti kodaniku vastu toime pandud kuriteo üle.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Teha konventsiooni artikli 10 lõike 2 alusel deklaratsioon, mille kohaselt Eesti Vabariik kehtestab oma jurisdiktsiooni Eesti kodaniku vastu toime pandud kuriteo üle.",
       "estleg:parentProvision": {
         "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"

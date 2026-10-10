@@ -31,12 +31,17 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import quote
 
+from estleg.ingest_overlay import (
+    IngestLayer,
+    add_replace_overlays_argument,
+    log_replace_overlays_mode,
+    prepare_write,
+)
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     CONTEXT,
     mint_act_iri,
     save_json,
-    stamp_combined_dataset_head,
 )
 from estleg.eurlex_common import (
     SPARQL_ENDPOINT,
@@ -808,9 +813,19 @@ def generate_schema_nodes() -> list[dict]:
     return nodes
 
 
+# #588/#697: CELLAR serves a few malformed CELEX. The correction lives in the
+# raw layer so a re-fetch reproduces the corrected node instead of reverting
+# it; the ``@id`` stays minted from the SOURCE CELEX (frozen IRI).
+CELEX_CORRECTIONS: dict[str, str] = {
+    # General Court tierce-opposition order, ECLI:EU:T:2019:47, T-624/16.
+    "62016TT0624": "62016TO0624",
+}
+
+
 def decision_to_node(item: dict) -> dict:
     """Convert a case-law dict to a JSON-LD node."""
     safe_celex = sanitize_celex(item["celex"])
+    item = {**item, "celex": CELEX_CORRECTIONS.get(item["celex"], item["celex"])}
     type_id, type_label, court_id, _ = classify_from_celex(item["celex"])
 
     cleaned_title = clean_title(item["title"])
@@ -819,8 +834,9 @@ def decision_to_node(item: dict) -> dict:
     node: dict = {
         "@id": f"estleg:EUCJ_{safe_celex}",
         "@type": ["owl:NamedIndividual", "estleg:EUCourtDecision"],
-        "rdfs:label": {"@value": truncate_label(cleaned_title), "@language": "et"},
-        "dcterms:title": {"@value": cleaned_title, "@language": "et"},
+        # #697: plain-string literals, as on every published CURIA node.
+        "rdfs:label": truncate_label(cleaned_title),
+        "dcterms:title": cleaned_title,
         "estleg:celexNumber": item["celex"],
         "estleg:euCourtDecisionType": {"@id": f"estleg:EUDecType_{type_id}"},
         "estleg:euCourt": {"@id": f"estleg:EUCourt_{court_id}"},
@@ -885,6 +901,69 @@ def decision_to_node(item: dict) -> dict:
     return node
 
 
+# #697: what the CELLAR case-law ingest owns on the per-category peeps.
+# ``estleg:interpretsEULaw`` (link_curia_eu_legislation / the cached CELLAR
+# interprets pass) and its ``estleg:derivationMethod`` are overlay and
+# survive a re-fetch.
+CURIA_INGEST_LAYER = IngestLayer(
+    name="generate_eu_court_decisions",
+    raw_keys=frozenset(
+        {
+            "rdfs:label",
+            "dc:description",
+            "dc:source",
+            "dcterms:title",
+            "dcterms:source",
+            "owl:sameAs",
+            "estleg:celexNumber",
+            "estleg:euCourtDecisionType",
+            "estleg:euCourt",
+            "estleg:eurLexLink",
+            "estleg:ecliIdentifier",
+            "estleg:euCaseNumber",
+            "estleg:documentDate",
+        }
+    ),
+    raw_node_types=frozenset({"estleg:EUCourtDecision", "owl:Ontology"}),
+    union_keys=frozenset({"estleg:derivationMethod"}),
+)
+
+CATEGORY_LABELS: dict[str, tuple[str, str]] = {
+    "judgments": ("Kohtuotsused", "Judgments"),
+    "orders": ("Kohtumäärused", "Orders"),
+    "ag_opinions": ("Kohtujuristi ettepanekud", "AG Opinions"),
+    "court_opinions": ("Kohtu arvamused", "Court Opinions"),
+    "other": ("Muud lahendid", "Other Decisions"),
+}
+
+
+def build_category_doc(cat_key: str, items: list[dict]) -> dict:
+    """Raw-layer ``curia_<category>_peep.json`` from SPARQL rows (#697). Pure."""
+    label_et, _label_en = CATEGORY_LABELS[cat_key]
+    graph: list[dict] = [
+        {
+            "@id": mint_act_iri(f"CURIA_{cat_key.title()}"),
+            "@type": ["owl:Ontology"],
+            "rdfs:label": f"EL kohtulahendid – {label_et} ({len(items)})",
+            "dc:description": f"Euroopa Liidu kohtulahendid – {label_et.lower()} eesti keeles.",
+            "dc:source": "EUR-Lex / CURIA – eur-lex.europa.eu",
+        },
+    ]
+    graph.extend(decision_to_node(item) for item in items)
+    return {"@context": CONTEXT, "@graph": graph}
+
+
+def write_category_peep(
+    out_path: Path, doc: dict, *, replace_overlays: bool = False
+) -> dict:
+    """Persist a category peep, keeping the existing overlay (#697)."""
+    merged, _report = prepare_write(
+        out_path, doc, CURIA_INGEST_LAYER, replace_overlays=replace_overlays
+    )
+    save_json(out_path, merged)
+    return merged
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -909,6 +988,7 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="With --fetch-interprets: re-query CELEX already in the cache.",
     )
+    add_replace_overlays_argument(parser)
     return parser.parse_args()
 
 
@@ -930,6 +1010,7 @@ def main():
         if stats["failed_batches"]:
             sys.exit(2)
         return
+    log_replace_overlays_mode(CURIA_INGEST_LAYER, args.replace_overlays)
     print("=" * 60)
     print("Fetching EU court decisions from EUR-Lex SPARQL endpoint")
     print(f"Endpoint: {SPARQL_ENDPOINT}")
@@ -960,63 +1041,30 @@ def main():
         _, _, _, category = classify_from_celex(item["celex"])
         categories[category].append(item)
 
-    category_labels = {
-        "judgments": ("Kohtuotsused", "Judgments"),
-        "orders": ("Kohtumäärused", "Orders"),
-        "ag_opinions": ("Kohtujuristi ettepanekud", "AG Opinions"),
-        "court_opinions": ("Kohtu arvamused", "Court Opinions"),
-        "other": ("Muud lahendid", "Other Decisions"),
-    }
-
     # Generate per-category files
     for cat_key, items in categories.items():
         if not items:
             continue
 
-        label_et, label_en = category_labels[cat_key]
+        _label_et, label_en = CATEGORY_LABELS[cat_key]
         print(f"\n--- Generating {label_en} file ({len(items)} entries) ---")
 
-        graph: list[dict] = [
-            {
-                "@id": mint_act_iri(f"CURIA_{cat_key.title()}"),
-                "@type": ["owl:Ontology"],
-                "rdfs:label": {"@value": f"EL kohtulahendid – {label_et} ({len(items)})", "@language": "et"},
-                "dc:description": {"@value": f"Euroopa Liidu kohtulahendid – {label_et.lower()} eesti keeles.", "@language": "et"},
-                "dc:source": "EUR-Lex / CURIA – eur-lex.europa.eu",
-            },
-        ]
-
-        for item in items:
-            graph.append(decision_to_node(item))
-
-        doc = {"@context": CONTEXT, "@graph": graph}
+        # #697: raw layer merged onto the existing overlay (interpretsEULaw).
+        doc = build_category_doc(cat_key, items)
         out_path = CURIA_DIR / f"curia_{cat_key}_peep.json"
-        save_json(out_path, doc)
-        print(f"  Saved: {out_path.name} ({len(graph)} nodes)")
+        merged = write_category_peep(out_path, doc, replace_overlays=args.replace_overlays)
+        print(f"  Saved: {out_path.name} ({len(merged['@graph'])} nodes)")
 
-    # Generate combined file
+    # Generate combined file — #697: rebuilt offline from schema + the
+    # (overlay-merged) peeps, like EUR-Lex (#417), so the aggregate keeps
+    # interpretsEULaw instead of being re-serialised from raw rows.
     print("\n--- Generating combined file ---")
-    combined_graph: list[dict] = [
-        {
-            "@id": mint_act_iri("CURIA_Combined"),
-            "@type": ["owl:Ontology"],
-            "rdfs:label": {"@value": "EL kohtulahendid – kõik (Combined)", "@language": "et"},
-            "dc:description": {"@value": "Kõik Euroopa Liidu kohtulahendid eesti keeles EUR-Lexist.", "@language": "et"},
-            "dc:source": "EUR-Lex / CURIA – eur-lex.europa.eu",
-        },
-    ]
-    for item in all_items:
-        combined_graph.append(decision_to_node(item))
+    from estleg.rebuild_subcorpus_combined import rebuild_subcorpus_combined
 
-    combined_doc = {"@context": CONTEXT, "@graph": combined_graph}
-    stamp_combined_dataset_head(
-        combined_doc,
-        label="Estonian Legal Ontology — CURIA combined",
-        contains_personal_data=True,  # #720: named parties in EU decisions
-    )
-    combined_path = CURIA_DIR / "curia_combined.jsonld"
-    save_json(combined_path, combined_doc)
-    print(f"  Saved: {combined_path.name} ({len(combined_graph)} nodes)")
+    combined_stats = rebuild_subcorpus_combined(
+        "curia", CURIA_DIR.parent, subcorpus_dir=CURIA_DIR
+    ).as_dict()
+    print(f"  Saved: {combined_stats['path'].name} ({combined_stats['nodes']} nodes)")
 
     # Count by court
     court_counts: dict[str, int] = {}

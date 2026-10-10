@@ -553,15 +553,67 @@ class TestRegulationIndex:
 
     def test_refresh_rewrites_changed_existing_output(self, tmp_path):
         out_path = tmp_path / "reg_peep.json"
+        # Typed as raw-owned act nodes: an act the new build no longer emits
+        # is dropped, it is not overlay (#697).
         out_path.write_text(
-            json.dumps({"@graph": [{"@id": "estleg:Old"}]}),
+            json.dumps({"@graph": [{"@id": "estleg:Old", "@type": ["estleg:Act"]}]}),
             encoding="utf-8",
         )
-        new_doc = {"@graph": [{"@id": "estleg:New"}]}
+        new_doc = {"@graph": [{"@id": "estleg:New", "@type": ["estleg:Act"]}]}
 
         status = write_regulation_output(out_path, new_doc, mode="refresh")
 
         assert status == "refreshed"
+        assert json.loads(out_path.read_text(encoding="utf-8")) == new_doc
+
+    def test_refresh_preserves_enrichment_overlay(self, tmp_path):
+        """#697: a refresh keeps enricher keys/nodes; --replace-overlays drops them."""
+        existing = {
+            "@graph": [
+                {
+                    "@id": "estleg:R",
+                    "@type": ["estleg:Act", "estleg:NationalRegulation"],
+                    "rdfs:label": "old",
+                    "dcterms:subject": [{"@id": "eurovoc:1"}],
+                },
+                {
+                    "@id": "estleg:R_Par_1",
+                    "@type": ["estleg:LegalProvision", "estleg:KovProvision"],
+                    "estleg:legalText": "old text",
+                    "estleg:targetGroup": [{"@id": "estleg:TG"}],
+                },
+                {"@id": "estleg:Sim_1", "@type": ["estleg:Similarity"]},
+            ]
+        }
+        out_path = tmp_path / "reg_peep.json"
+        out_path.write_text(json.dumps(existing), encoding="utf-8")
+        new_doc = {
+            "@graph": [
+                {
+                    "@id": "estleg:R",
+                    "@type": ["estleg:Act", "estleg:NationalRegulation"],
+                    "rdfs:label": "new",
+                },
+                {
+                    "@id": "estleg:R_Par_1",
+                    "@type": ["estleg:LegalProvision"],
+                    "estleg:summary": "s",
+                },
+            ]
+        }
+
+        assert write_regulation_output(out_path, new_doc, mode="refresh") == "refreshed"
+        got = {n["@id"]: n for n in json.loads(out_path.read_text(encoding="utf-8"))["@graph"]}
+        assert got["estleg:R"]["rdfs:label"] == "new"
+        assert got["estleg:R"]["dcterms:subject"] == [{"@id": "eurovoc:1"}]
+        par = got["estleg:R_Par_1"]
+        assert "estleg:legalText" not in par  # raw key the source no longer has
+        assert par["estleg:targetGroup"] == [{"@id": "estleg:TG"}]
+        assert par["@type"] == ["estleg:LegalProvision", "estleg:KovProvision"]
+        assert "estleg:Sim_1" in got
+
+        out_path.write_text(json.dumps(existing), encoding="utf-8")
+        write_regulation_output(out_path, new_doc, mode="force", replace_overlays=True)
         assert json.loads(out_path.read_text(encoding="utf-8")) == new_doc
 
     def test_refresh_leaves_unchanged_existing_output(self, tmp_path):
@@ -2276,3 +2328,34 @@ class TestRegenStateResume722:
         self._setup(tmp_path, monkeypatch)
         with pytest.raises(SystemExit):
             self._run(monkeypatch, "--reset-regen-state")
+
+
+def test_regulation_temporal_keys_follow_the_refreshed_xml(tmp_path):
+    """#697/#374: a stale ``repealed`` status never survives a refresh."""
+    from estleg import extract_temporal_data
+    from estleg.generate_regulations import REGULATION_INGEST_LAYER
+
+    assert set(extract_temporal_data.TEMPORAL_KEYS_TO_CLEAR) <= REGULATION_INGEST_LAYER.raw_keys
+    out_path = tmp_path / "reg_peep.json"
+    out_path.write_text(
+        json.dumps(
+            {
+                "@graph": [
+                    {
+                        "@id": "estleg:R",
+                        "@type": ["estleg:Act"],
+                        "estleg:temporalStatus": "repealed",
+                        "estleg:repealDate": {"@value": "2026-05-04", "@type": "xsd:date"},
+                        "dcterms:subject": [{"@id": "eurovoc:1"}],
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    write_regulation_output(
+        out_path, {"@graph": [{"@id": "estleg:R", "@type": ["estleg:Act"]}]}, mode="force"
+    )
+    act = json.loads(out_path.read_text(encoding="utf-8"))["@graph"][0]
+    assert "estleg:temporalStatus" not in act and "estleg:repealDate" not in act
+    assert act["dcterms:subject"] == [{"@id": "eurovoc:1"}]

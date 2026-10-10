@@ -5,54 +5,55 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VRKAS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Vähemusrahvuse kultuuriautonoomia seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Vähemusrahvuse kultuuriautonoomia seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Vähemusrahvuse kultuuriautonoomia seadus",
-      "dcterms:title": [
-        {
-          "@value": "Vähemusrahvuse kultuuriautonoomia seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "National Minorities Cultural Autonomy Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/109012025034.xml"
+        "@id": "https://www.riigiteataja.ee/akt/109012025034"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/109012025034/xml"
+      },
+      "estleg:globalId": "109012025034",
+      "eli:id_local": "109012025034",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "151544",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "128f2455ccbb0c71fead81e0f51d373ec19118dbddffb578eb812246595ea996",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-09-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/512092025002"
       },
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:alusharidusseadus_Par_78"
-        }
-      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/512092025002"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/695"
@@ -75,18 +76,76 @@
           "@id": "http://eurovoc.europa.eu/68"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "1993-11-28",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2025-01-09",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
+      ],
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_VRKAS_865785752d"
+        },
+        {
+          "@id": "estleg:Amendment_VRKAS_259c0bc740"
+        },
+        {
+          "@id": "estleg:Amendment_VRKAS_793061c0e3"
+        },
+        {
+          "@id": "estleg:Amendment_VRKAS_73a9b99ede"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:alusharidusseadus_Map"
+        },
+        {
+          "@id": "estleg:alusharidusseadus_Par_78"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Cluster_VRKAS_I",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–6 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–6 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:VRKAS_TopicScheme"
+      },
+      "estleg:provisionCount": 6
     },
     {
       "@id": "estleg:VRKAS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Vähemusrahvuse kultuuriautonoomia seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Vähemusrahvuse kultuuriautonoomia seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_VRKAS_I"
@@ -109,26 +168,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_VRKAS_I",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–6 Üldsätted",
-      "skos:prefLabel": "§1–6 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:VRKAS_TopicScheme"
-      },
-      "estleg:provisionCount": 6
-    },
-    {
       "@id": "estleg:Chapter_VRKAS_I",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "I. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "I. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "I",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
@@ -148,8 +196,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§7–9 Vähemusrahvuste rahvusnimekirjad",
-      "skos:prefLabel": "§7–9 Vähemusrahvuste rahvusnimekirjad",
+      "rdfs:label": {
+        "@value": "§7–9 Vähemusrahvuste rahvusnimekirjad",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§7–9 Vähemusrahvuste rahvusnimekirjad",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VRKAS_TopicScheme"
       },
@@ -161,7 +215,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "II. peatükk – Vähemusrahvuste rahvusnimekirjad",
+      "rdfs:label": {
+        "@value": "II. peatükk – Vähemusrahvuste rahvusnimekirjad",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "II",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
@@ -181,8 +238,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§10–23 Vähemusrahvuse kultuuriomavalitsuse juhtorganid ja nende moodustamine",
-      "skos:prefLabel": "§10–23 Vähemusrahvuse kultuuriomavalitsuse juhtorganid ja nende moodustamine",
+      "rdfs:label": {
+        "@value": "§10–23 Vähemusrahvuse kultuuriomavalitsuse juhtorganid ja nende moodustamine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§10–23 Vähemusrahvuse kultuuriomavalitsuse juhtorganid ja nende moodustamine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VRKAS_TopicScheme"
       },
@@ -194,7 +257,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "III. peatükk – Vähemusrahvuse kultuuriomavalitsuse juhtorganid ja nende moodustamine",
+      "rdfs:label": {
+        "@value": "III. peatükk – Vähemusrahvuse kultuuriomavalitsuse juhtorganid ja nende moodustamine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "III",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
@@ -214,8 +280,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§24–27 Kultuuriomavalitsusasutused ja nende tegevuse finantseerimine",
-      "skos:prefLabel": "§24–27 Kultuuriomavalitsusasutused ja nende tegevuse finantseerimine",
+      "rdfs:label": {
+        "@value": "§24–27 Kultuuriomavalitsusasutused ja nende tegevuse finantseerimine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§24–27 Kultuuriomavalitsusasutused ja nende tegevuse finantseerimine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VRKAS_TopicScheme"
       },
@@ -227,7 +299,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "IV. peatükk – Kultuuriomavalitsusasutused ja nende tegevuse finantseerimine",
+      "rdfs:label": {
+        "@value": "IV. peatükk – Kultuuriomavalitsusasutused ja nende tegevuse finantseerimine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "IV",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
@@ -247,8 +322,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§28–29 Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetamine",
-      "skos:prefLabel": "§28–29 Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetamine",
+      "rdfs:label": {
+        "@value": "§28–29 Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetamine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§28–29 Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetamine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VRKAS_TopicScheme"
       },
@@ -260,7 +341,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "V. peatükk – Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetamine",
+      "rdfs:label": {
+        "@value": "V. peatükk – Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetamine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "V",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
@@ -280,8 +364,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§30–30 Lõppsätted",
-      "skos:prefLabel": "§30–30 Lõppsätted",
+      "rdfs:label": {
+        "@value": "§30–30 Lõppsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§30–30 Lõppsätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VRKAS_TopicScheme"
       },
@@ -293,7 +383,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "VI. peatükk – Lõppsätted",
+      "rdfs:label": {
+        "@value": "VI. peatükk – Lõppsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "VI",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
@@ -313,12 +406,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Vähemusrahvusena käesoleva seaduse mõttes käsitletakse Eesti kodanikke, kes– ela...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Vähemusrahvusena käesoleva seaduse mõttes käsitletakse Eesti kodanikke, kes– ela...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Vähemusrahvusena käesoleva seaduse mõttes käsitletakse Eesti kodanikke, kes– elavad Eesti territooriumil;– omavad kauaaegseid, kindlaid ja kestvaid sidemeid Eestiga;– erinevad eestlastest oma etnilise kuuluvuse, kultuurilise omapära, religiooni või keele poolest;– on ajendatud soovist üheskoos alal hoida oma kultuuritavasid, religiooni või keelt, mis on aluseks nende ühisele identiteedile.",
+      "estleg:summary": {
+        "@value": "Vähemusrahvusena käesoleva seaduse mõttes käsitletakse Eesti kodanikke, kes– elavad Eesti territooriumil;– omavad kauaaegseid, kindlaid ja kestvaid sidemeid Eestiga;– erinevad eestlastest oma etnilise kuuluvuse, kultuurilise omapära, religiooni või keele poolest;– on ajendatud soovist üheskoos alal hoida oma kultuuritavasid, religiooni või keelt, mis on aluseks nende ühisele identiteedile.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vähemusrahvusena käesoleva seaduse mõttes käsitletakse Eesti kodanikke, kes– elavad Eesti territooriumil;– omavad kauaaegseid, kindlaid ja kestvaid sidemeid Eestiga;– erinevad eestlastest oma etnilise kuuluvuse, kultuurilise omapära, religiooni või keele poolest;– on ajendatud soovist üheskoos alal hoida oma kultuuritavasid, religiooni või keelt, mis on aluseks nende ühisele identiteedile.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_I"
@@ -358,10 +457,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemusrahvusena käesoleva seaduse mõttes käsitletakse Eesti kodanikke, kes– elavad Eesti territooriumil;– omavad kauaaegseid, kindlaid ja kestvaid sidemeid Eestiga;– erinevad eestlastest oma etnilise kuuluvuse, kultuurilise omapära, religiooni või keele poolest;– on ajendatud soovist üheskoos alal hoida oma kultuuritavasid, religiooni või keelt, mis on aluseks nende ühisele identiteedile.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemusrahvusena käesoleva seaduse mõttes käsitletakse Eesti kodanikke, kes– elavad Eesti territooriumil;– omavad kauaaegseid, kindlaid ja kestvaid sidemeid Eestiga;– erinevad eestlastest oma etnilise kuuluvuse, kultuurilise omapära, religiooni või keele poolest;– on ajendatud soovist üheskoos alal hoida oma kultuuritavasid, religiooni või keelt, mis on aluseks nende ühisele identiteedile.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_1"
       },
+      "rdfs:label": "§ 1 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -379,12 +480,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [(1) Vähemusrahvuse kultuuriautonoomia käesoleva seaduse mõttes on vähemusrahvuss...]",
+      "rdfs:label": {
+        "@value": "§ 2. [(1) Vähemusrahvuse kultuuriautonoomia käesoleva seaduse mõttes on vähemusrahvuss...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Vähemusrahvuse kultuuriautonoomia käesoleva seaduse mõttes on vähemusrahvusse kuuluvate isikute õigus moodustada kultuuriomavalitsusi neile põhiseadusega antud kultuurialaste õiguste teostamiseks. (2) Vähemusrahvuse kultuuriomavalitsusi võivad moodustada saksa, vene, rootsi ja juudi vähemusrahvusest isikud ja nendest vähemusrahvustest isikud, kelle arv on üle 3000.",
+      "estleg:summary": {
+        "@value": "(1) Vähemusrahvuse kultuuriautonoomia käesoleva seaduse mõttes on vähemusrahvusse kuuluvate isikute õigus moodustada kultuuriomavalitsusi neile põhiseadusega antud kultuurialaste õiguste teostamiseks. (2) Vähemusrahvuse kultuuriomavalitsusi võivad moodustada saksa, vene, rootsi ja juudi vähemusrahvusest isikud ja nendest vähemusrahvustest isikud, kelle arv on üle 3000.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vähemusrahvuse kultuuriautonoomia käesoleva seaduse mõttes on vähemusrahvusse kuuluvate isikute õigus moodustada kultuuriomavalitsusi neile põhiseadusega antud kultuurialaste õiguste teostamiseks. (2) Vähemusrahvuse kultuuriomavalitsusi võivad moodustada saksa, vene, rootsi ja juudi vähemusrahvusest isikud ja nendest vähemusrahvustest isikud, kelle arv on üle 3000.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_I"
@@ -424,10 +531,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Vähemusrahvuse kultuuriautonoomia käesoleva seaduse mõttes on vähemusrahvusse kuuluvate isikute õigus moodustada kultuuriomavalitsusi neile põhiseadusega antud kultuurialaste õiguste teostamiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Vähemusrahvuse kultuuriautonoomia käesoleva seaduse mõttes on vähemusrahvusse kuuluvate isikute õigus moodustada kultuuriomavalitsusi neile põhiseadusega antud kultuurialaste õiguste teostamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -444,10 +553,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Vähemusrahvuse kultuuriomavalitsusi võivad moodustada saksa, vene, rootsi ja juudi vähemusrahvusest isikud ja nendest vähemusrahvustest isikud, kelle arv on üle 3000.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Vähemusrahvuse kultuuriomavalitsusi võivad moodustada saksa, vene, rootsi ja juudi vähemusrahvusest isikud ja nendest vähemusrahvustest isikud, kelle arv on üle 3000.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_2"
       },
+      "rdfs:label": "§ 2 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -465,12 +576,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [(1) Vähemusrahvusse kuuluval isikul on õigus säilitada oma etniline kuuluvus, ku...]",
+      "rdfs:label": {
+        "@value": "§ 3. [(1) Vähemusrahvusse kuuluval isikul on õigus säilitada oma etniline kuuluvus, ku...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Vähemusrahvusse kuuluval isikul on õigus säilitada oma etniline kuuluvus, kultuuritavad, emakeel ja usutunnistus. (2) Keelatud on rahvuskultuuri tavade ja usukommete halvustamine ning nende täitmise takistamine, samuti tegevus, mille eesmärgiks on vähemusrahvuse sunniviisiline ümberrahvustamine.",
+      "estleg:summary": {
+        "@value": "(1) Vähemusrahvusse kuuluval isikul on õigus säilitada oma etniline kuuluvus, kultuuritavad, emakeel ja usutunnistus. (2) Keelatud on rahvuskultuuri tavade ja usukommete halvustamine ning nende täitmise takistamine, samuti tegevus, mille eesmärgiks on vähemusrahvuse sunniviisiline ümberrahvustamine.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vähemusrahvusse kuuluval isikul on õigus säilitada oma etniline kuuluvus, kultuuritavad, emakeel ja usutunnistus. (2) Keelatud on rahvuskultuuri tavade ja usukommete halvustamine ning nende täitmise takistamine, samuti tegevus, mille eesmärgiks on vähemusrahvuse sunniviisiline ümberrahvustamine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_I"
@@ -491,12 +608,12 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       },
       "estleg:hasVersion": [
         {
@@ -513,13 +630,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Vähemusrahvusse kuuluval isikul on õigus säilitada oma etniline kuuluvus, kultuuritavad, emakeel ja usutunnistus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Vähemusrahvusse kuuluval isikul on õigus säilitada oma etniline kuuluvus, kultuuritavad, emakeel ja usutunnistus.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -528,6 +644,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -536,10 +655,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Keelatud on rahvuskultuuri tavade ja usukommete halvustamine ning nende täitmise takistamine, samuti tegevus, mille eesmärgiks on vähemusrahvuse sunniviisiline ümberrahvustamine.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Keelatud on rahvuskultuuri tavade ja usukommete halvustamine ning nende täitmise takistamine, samuti tegevus, mille eesmärgiks on vähemusrahvuse sunniviisiline ümberrahvustamine.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 2"
     },
     {
       "@id": "estleg:VRKAS_Par_4",
@@ -548,13 +669,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. [Vähemusrahvusse kuuluval isikul on õigus: 1 1) moodustada ja toetada rahvuslikke...]",
+      "rdfs:label": {
+        "@value": "§ 4. [Vähemusrahvusse kuuluval isikul on õigus: 1) moodustada ja toetada rahvuslikke k...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Vähemusrahvusse kuuluval isikul on õigus: moodustada ja toetada rahvuslikke kultuuri- ja haridusasutusi ning usukogudusi; luua rahvuslikke organisatsioone; täita rahvustraditsioone ja usukultuslikke tavasid, kui see ei kahjusta avalikku korda, tervist ega kõlblust; kasutada oma emakeelt asjaajamises keeleseadusega kehtestatud piires; kirjastada rahvuskeelseid trükiseid; sõlmida koostöökokkuleppeid rahvuslike kultuuri- ja haridusasutuste ning usukoguduste vahel; levitada ja vahetada teavet oma",
-      "estleg:legalText": "Vähemusrahvusse kuuluval isikul on õigus: moodustada ja toetada rahvuslikke kultuuri- ja haridusasutusi ning usukogudusi; luua rahvuslikke organisatsioone; täita rahvustraditsioone ja usukultuslikke tavasid, kui see ei kahjusta avalikku korda, tervist ega kõlblust; kasutada oma emakeelt asjaajamises keeleseadusega kehtestatud piires; kirjastada rahvuskeelseid trükiseid; sõlmida koostöökokkuleppeid rahvuslike kultuuri- ja haridusasutuste ning usukoguduste vahel; levitada ja vahetada teavet oma emakeeles.",
+      "estleg:summary": {
+        "@value": "Vähemusrahvusse kuuluval isikul on õigus: 1) moodustada ja toetada rahvuslikke kultuuri- ja haridusasutusi ning usukogudusi; 2) luua rahvuslikke organisatsioone; 3) täita rahvustraditsioone ja usukultuslikke tavasid, kui see ei kahjusta avalikku korda, tervist ega kõlblust; 4) kasutada oma emakeelt asjaajamises keeleseadusega kehtestatud piires; 5) kirjastada rahvuskeelseid trükiseid; 6) sõlmida koostöökokkuleppeid rahvuslike kultuuri- ja haridusasutuste ning usukoguduste vahel; 7) levitada ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vähemusrahvusse kuuluval isikul on õigus: 1) moodustada ja toetada rahvuslikke kultuuri- ja haridusasutusi ning usukogudusi; 2) luua rahvuslikke organisatsioone; 3) täita rahvustraditsioone ja usukultuslikke tavasid, kui see ei kahjusta avalikku korda, tervist ega kõlblust; 4) kasutada oma emakeelt asjaajamises keeleseadusega kehtestatud piires; 5) kirjastada rahvuskeelseid trükiseid; 6) sõlmida koostöökokkuleppeid rahvuslike kultuuri- ja haridusasutuste ning usukoguduste vahel; 7) levitada ja vahetada teavet oma emakeeles.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_I"
       },
@@ -571,12 +698,12 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       },
       "estleg:hasVersion": [
         {
@@ -599,13 +726,21 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemusrahvusse kuuluval isikul on õigus: moodustada ja toetada rahvuslikke kultuuri- ja haridusasutusi ning usukogudusi; luua rahvuslikke organisatsioone; täita rahvustraditsioone ja usukultuslikke tavasid, kui see ei kahjusta avalikku korda, tervist ega kõlblust; kasutada oma emakeelt asjaajamises keeleseadusega kehtestatud piires; kirjastada rahvuskeelseid trükiseid; sõlmida koostöökokkuleppeid rahvuslike kultuuri- ja haridusasutuste ning usukoguduste vahel; levitada ja vahetada teavet oma emakeeles.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemusrahvusse kuuluval isikul on õigus: 1) moodustada ja toetada rahvuslikke kultuuri- ja haridusasutusi ning usukogudusi; 2) luua rahvuslikke organisatsioone; 3) täita rahvustraditsioone ja usukultuslikke tavasid, kui see ei kahjusta avalikku korda, tervist ega kõlblust; 4) kasutada oma emakeelt asjaajamises keeleseadusega kehtestatud piires; 5) kirjastada rahvuskeelseid trükiseid; 6) sõlmida koostöökokkuleppeid rahvuslike kultuuri- ja haridusasutuste ning usukoguduste vahel; 7) levitada ja vahetada teavet oma emakeeles.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -614,6 +749,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -623,13 +761,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. [(1) Vähemusrahvuse kultuuriomavalitsuse põhieesmärgiks on: 1 1) emakeelse õppe k...]",
+      "rdfs:label": {
+        "@value": "§ 5. [(1) Vähemusrahvuse kultuuriomavalitsuse põhieesmärgiks on: 1) emakeelse õppe kor...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Vähemusrahvuse kultuuriomavalitsuse põhieesmärgiks on: emakeelse õppe korraldamine ja järelevalve selleks ettenähtud varade kasutamise üle; vähemusrahvuse kultuuriasutuste moodustamine ja nende tegevuse korraldamine, samuti rahvuslike kultuuriürituste korraldamine; vähemusrahvuse kultuuri ja hariduse edendamiseks fondide, stipendiumide ja preemiate asutamine ning määramine. (2) Vähemusrahvusel on õigus luua rahvuskultuuri huvides oma kultuuriomavalitsusasutusi, mis järgivad oma pädevusse",
-      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse põhieesmärgiks on: emakeelse õppe korraldamine ja järelevalve selleks ettenähtud varade kasutamise üle; vähemusrahvuse kultuuriasutuste moodustamine ja nende tegevuse korraldamine, samuti rahvuslike kultuuriürituste korraldamine; vähemusrahvuse kultuuri ja hariduse edendamiseks fondide, stipendiumide ja preemiate asutamine ning määramine. (2) Vähemusrahvusel on õigus luua rahvuskultuuri huvides oma kultuuriomavalitsusasutusi, mis järgivad oma pädevusse kuuluvate küsimuste lahendamisel Eesti õigusakte.",
+      "estleg:summary": {
+        "@value": "(1) Vähemusrahvuse kultuuriomavalitsuse põhieesmärgiks on: 1) emakeelse õppe korraldamine ja järelevalve selleks ettenähtud varade kasutamise üle; 2) vähemusrahvuse kultuuriasutuste moodustamine ja nende tegevuse korraldamine, samuti rahvuslike kultuuriürituste korraldamine; 3) vähemusrahvuse kultuuri ja hariduse edendamiseks fondide, stipendiumide ja preemiate asutamine ning määramine. (2) Vähemusrahvusel on õigus luua rahvuskultuuri huvides oma kultuuriomavalitsusasutusi, mis järgivad oma",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse põhieesmärgiks on: 1) emakeelse õppe korraldamine ja järelevalve selleks ettenähtud varade kasutamise üle; 2) vähemusrahvuse kultuuriasutuste moodustamine ja nende tegevuse korraldamine, samuti rahvuslike kultuuriürituste korraldamine; 3) vähemusrahvuse kultuuri ja hariduse edendamiseks fondide, stipendiumide ja preemiate asutamine ning määramine. (2) Vähemusrahvusel on õigus luua rahvuskultuuri huvides oma kultuuriomavalitsusasutusi, mis järgivad oma pädevusse kuuluvate küsimuste lahendamisel Eesti õigusakte.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_I"
       },
@@ -649,12 +793,12 @@
           "@id": "estleg:TargetGroup_NGO"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       },
       "estleg:hasVersion": [
         {
@@ -671,10 +815,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse põhieesmärgiks on: emakeelse õppe korraldamine ja järelevalve selleks ettenähtud varade kasutamise üle; vähemusrahvuse kultuuriasutuste moodustamine ja nende tegevuse korraldamine, samuti rahvuslike kultuuriürituste korraldamine; vähemusrahvuse kultuuri ja hariduse edendamiseks fondide, stipendiumide ja preemiate asutamine ning määramine.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Vähemusrahvuse kultuuriomavalitsuse põhieesmärgiks on: 1) emakeelse õppe korraldamine ja järelevalve selleks ettenähtud varade kasutamise üle; 2) vähemusrahvuse kultuuriasutuste moodustamine ja nende tegevuse korraldamine, samuti rahvuslike kultuuriürituste korraldamine; 3) vähemusrahvuse kultuuri ja hariduse edendamiseks fondide, stipendiumide ja preemiate asutamine ning määramine.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_5"
       },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_NGO"
@@ -691,16 +842,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Vähemusrahvusel on õigus luua rahvuskultuuri huvides oma kultuuriomavalitsusasutusi, mis järgivad oma pädevusse kuuluvate küsimuste lahendamisel Eesti õigusakte.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Vähemusrahvusel on õigus luua rahvuskultuuri huvides oma kultuuriomavalitsusasutusi, mis järgivad oma pädevusse kuuluvate küsimuste lahendamisel Eesti õigusakte.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_5"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
+      "rdfs:label": "§ 5 lg 2",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -710,12 +863,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. [Vähemusrahvuse kultuuri- ja haridusasutuste ning usukoguduste tegevusest võivad...]",
+      "rdfs:label": {
+        "@value": "§ 6. [Vähemusrahvuse kultuuri- ja haridusasutuste ning usukoguduste tegevusest võivad...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Vähemusrahvuse kultuuri- ja haridusasutuste ning usukoguduste tegevusest võivad osa võtta Eestis elavad välismaalased, kuid nad ei saa valida ega olla valitud või määratud kultuuriomavalitsusasutuste juhtorganitesse.",
+      "estleg:summary": {
+        "@value": "Vähemusrahvuse kultuuri- ja haridusasutuste ning usukoguduste tegevusest võivad osa võtta Eestis elavad välismaalased, kuid nad ei saa valida ega olla valitud või määratud kultuuriomavalitsusasutuste juhtorganitesse.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vähemusrahvuse kultuuri- ja haridusasutuste ning usukoguduste tegevusest võivad osa võtta Eestis elavad välismaalased, kuid nad ei saa valida ega olla valitud või määratud kultuuriomavalitsusasutuste juhtorganitesse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_I"
@@ -740,10 +899,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemusrahvuse kultuuri- ja haridusasutuste ning usukoguduste tegevusest võivad osa võtta Eestis elavad välismaalased, kuid nad ei saa valida ega olla valitud või määratud kultuuriomavalitsusasutuste juhtorganitesse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemusrahvuse kultuuri- ja haridusasutuste ning usukoguduste tegevusest võivad osa võtta Eestis elavad välismaalased, kuid nad ei saa valida ega olla valitud või määratud kultuuriomavalitsusasutuste juhtorganitesse.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_6"
-      }
+      },
+      "rdfs:label": "§ 6 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_7",
@@ -752,13 +913,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. [(1) Vähemusrahvuse kultuuriomavalitsuse taotlemise aluseks on vähemusrahvuse rah...]",
+      "rdfs:label": {
+        "@value": "§ 7. [(1) Vähemusrahvuse kultuuriomavalitsuse taotlemise aluseks on vähemusrahvuse rah...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Vähemusrahvuse kultuuriomavalitsuse taotlemise aluseks on vähemusrahvuse rahvusnimekiri. (2) Vähemusrahvuste rahvusnimekirju koostavad rahvuslikud kultuuriühingud või nende liidud. Rahvusnimekirjade pidamise ja kasutamise korra",
-      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse taotlemise aluseks on vähemusrahvuse rahvusnimekiri. (2) Vähemusrahvuste rahvusnimekirju koostavad rahvuslikud kultuuriühingud või nende liidud. Rahvusnimekirjade pidamise ja kasutamise korra",
+      "estleg:summary": {
+        "@value": "(1) Vähemusrahvuse kultuuriomavalitsuse taotlemise aluseks on vähemusrahvuse rahvusnimekiri. (2) Vähemusrahvuste rahvusnimekirju koostavad rahvuslikud kultuuriühingud või nende liidud. Rahvusnimekirjade pidamise ja kasutamise korra kehtestab Vabariigi Valitsus .",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse taotlemise aluseks on vähemusrahvuse rahvusnimekiri. (2) Vähemusrahvuste rahvusnimekirju koostavad rahvuslikud kultuuriühingud või nende liidud. Rahvusnimekirjade pidamise ja kasutamise korra kehtestab Vabariigi Valitsus .",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_II"
       },
@@ -773,6 +940,21 @@
           "@id": "estleg:VRKAS_Par_7_Lg_2"
         }
       ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation",
       "estleg:hasVersion": [
         {
           "@id": "estleg:VRKAS_Par_7_v24535"
@@ -791,10 +973,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse taotlemise aluseks on vähemusrahvuse rahvusnimekiri.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Vähemusrahvuse kultuuriomavalitsuse taotlemise aluseks on vähemusrahvuse rahvusnimekiri.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_7"
-      }
+      },
+      "rdfs:label": "§ 7 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_7_Lg_2",
@@ -802,10 +986,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Vähemusrahvuste rahvusnimekirju koostavad rahvuslikud kultuuriühingud või nende liidud. Rahvusnimekirjade pidamise ja kasutamise korra",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Vähemusrahvuste rahvusnimekirju koostavad rahvuslikud kultuuriühingud või nende liidud. Rahvusnimekirjade pidamise ja kasutamise korra kehtestab Vabariigi Valitsus .",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_7"
-      }
+      },
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:VRKAS_Par_8",
@@ -814,13 +1015,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. [(1) Rahvusnimekirja kantakse isiku järgmised andmed: 1 1) ees- ja perekonnanimi;...]",
+      "rdfs:label": {
+        "@value": "§ 8. [(1) Rahvusnimekirja kantakse isiku järgmised andmed: 1) ees- ja perekonnanimi; 2...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Rahvusnimekirja kantakse isiku järgmised andmed: ees- ja perekonnanimi; isikukood või selle puudumisel sünniaeg; elukoht; avaldaja allkiri ja kuupäev. (2) Rahvusnimekirja kantakse vanemate soovil ka nende alla 15-aastased lapsed. (3) Rahvusnimekirja kantakse isikliku avalduse alusel. Avalduse võib saata posti teel.",
-      "estleg:legalText": "(1) Rahvusnimekirja kantakse isiku järgmised andmed: ees- ja perekonnanimi; isikukood või selle puudumisel sünniaeg; elukoht; avaldaja allkiri ja kuupäev. (2) Rahvusnimekirja kantakse vanemate soovil ka nende alla 15-aastased lapsed. (3) Rahvusnimekirja kantakse isikliku avalduse alusel. Avalduse võib saata posti teel.",
+      "estleg:summary": {
+        "@value": "(1) Rahvusnimekirja kantakse isiku järgmised andmed: 1) ees- ja perekonnanimi; 2) isikukood või selle puudumisel sünniaeg; 3) elukoht; 4) avaldaja allkiri ja kuupäev. (2) Rahvusnimekirja kantakse vanemate soovil ka nende alla 15-aastased lapsed. (3) Rahvusnimekirja kantakse isikliku avalduse alusel. Avalduse võib saata posti teel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Rahvusnimekirja kantakse isiku järgmised andmed: 1) ees- ja perekonnanimi; 2) isikukood või selle puudumisel sünniaeg; 3) elukoht; 4) avaldaja allkiri ja kuupäev. (2) Rahvusnimekirja kantakse vanemate soovil ka nende alla 15-aastased lapsed. (3) Rahvusnimekirja kantakse isikliku avalduse alusel. Avalduse võib saata posti teel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_II"
       },
@@ -843,17 +1050,12 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1057089_Par_17"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -870,10 +1072,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Rahvusnimekirja kantakse isiku järgmised andmed: ees- ja perekonnanimi; isikukood või selle puudumisel sünniaeg; elukoht; avaldaja allkiri ja kuupäev.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Rahvusnimekirja kantakse isiku järgmised andmed: 1) ees- ja perekonnanimi; 2) isikukood või selle puudumisel sünniaeg; 3) elukoht; 4) avaldaja allkiri ja kuupäev.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_8"
       },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -890,10 +1100,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Rahvusnimekirja kantakse vanemate soovil ka nende alla 15-aastased lapsed.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Rahvusnimekirja kantakse vanemate soovil ka nende alla 15-aastased lapsed.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_8"
       },
+      "rdfs:label": "§ 8 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -910,16 +1122,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(3) Rahvusnimekirja kantakse isikliku avalduse alusel. Avalduse võib saata posti teel.",
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) (3) Rahvusnimekirja kantakse isikliku avalduse alusel. Avalduse võib saata posti teel.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_8"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 8 lg 3",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -929,13 +1143,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. [Rahvusnimekirjast kustutatakse: 1 1) isiku soovil; 2 2) isiku loobumisel Eesti k...]",
+      "rdfs:label": {
+        "@value": "§ 9. [Rahvusnimekirjast kustutatakse: 1) isiku soovil; 2) isiku loobumisel Eesti kodak...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Rahvusnimekirjast kustutatakse: isiku soovil; isiku loobumisel Eesti kodakondsusest või asumisel alaliselt elama välisriiki; isiku surma korral.",
-      "estleg:legalText": "Rahvusnimekirjast kustutatakse: isiku soovil; isiku loobumisel Eesti kodakondsusest või asumisel alaliselt elama välisriiki; isiku surma korral.",
+      "estleg:summary": {
+        "@value": "Rahvusnimekirjast kustutatakse: 1) isiku soovil; 2) isiku loobumisel Eesti kodakondsusest või asumisel alaliselt elama välisriiki; 3) isiku surma korral.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Rahvusnimekirjast kustutatakse: 1) isiku soovil; 2) isiku loobumisel Eesti kodakondsusest või asumisel alaliselt elama välisriiki; 3) isiku surma korral.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_II"
       },
@@ -971,10 +1191,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvusnimekirjast kustutatakse: isiku soovil; isiku loobumisel Eesti kodakondsusest või asumisel alaliselt elama välisriiki; isiku surma korral.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusnimekirjast kustutatakse: 1) isiku soovil; 2) isiku loobumisel Eesti kodakondsusest või asumisel alaliselt elama välisriiki; 3) isiku surma korral.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_9"
       },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -992,12 +1219,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. [(1) Kultuuriomavalitsust moodustada soovivad vähemusrahvusest isikud esitavad va...]",
+      "rdfs:label": {
+        "@value": "§ 10. [(1) Kultuuriomavalitsust moodustada soovivad vähemusrahvusest isikud esitavad va...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Kultuuriomavalitsust moodustada soovivad vähemusrahvusest isikud esitavad vastava taotluse Vabariigi Valitsusele rahvusliku kultuuriühingu või ühingute liidu kaudu. (2) Taotluse esitamine toimub haldusmenetluse seaduses (RT I 2001, 58, 354) sätestatud korras.",
+      "estleg:summary": {
+        "@value": "(1) Kultuuriomavalitsust moodustada soovivad vähemusrahvusest isikud esitavad vastava taotluse Vabariigi Valitsusele rahvusliku kultuuriühingu või ühingute liidu kaudu. (2) Taotluse esitamine toimub haldusmenetluse seaduses (RT I 2001, 58, 354) sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kultuuriomavalitsust moodustada soovivad vähemusrahvusest isikud esitavad vastava taotluse Vabariigi Valitsusele rahvusliku kultuuriühingu või ühingute liidu kaudu. (2) Taotluse esitamine toimub haldusmenetluse seaduses (RT I 2001, 58, 354) sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1015,16 +1248,21 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_PublicBody"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_NGO"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:VRKAS_Par_10_v24535"
@@ -1035,11 +1273,6 @@
         {
           "@id": "estleg:VRKAS_Par_10_v113032019194"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
       ]
     },
     {
@@ -1048,10 +1281,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Kultuuriomavalitsust moodustada soovivad vähemusrahvusest isikud esitavad vastava taotluse Vabariigi Valitsusele rahvusliku kultuuriühingu või ühingute liidu kaudu.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Kultuuriomavalitsust moodustada soovivad vähemusrahvusest isikud esitavad vastava taotluse Vabariigi Valitsusele rahvusliku kultuuriühingu või ühingute liidu kaudu.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_10"
       },
+      "rdfs:label": "§ 10 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1076,10 +1311,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Taotluse esitamine toimub haldusmenetluse seaduses (RT I 2001, 58, 354) sätestatud korras.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Taotluse esitamine toimub haldusmenetluse seaduses (RT I 2001, 58, 354) sätestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_10"
-      }
+      },
+      "rdfs:label": "§ 10 lg 2"
     },
     {
       "@id": "estleg:VRKAS_Par_11",
@@ -1088,12 +1325,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. [(1) Vähemusrahvuse kultuuriomavalitsuse juhtorganid on vähemusrahvuse kultuurinõ...]",
+      "rdfs:label": {
+        "@value": "§ 11. [(1) Vähemusrahvuse kultuuriomavalitsuse juhtorganid on vähemusrahvuse kultuurinõ...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Vähemusrahvuse kultuuriomavalitsuse juhtorganid on vähemusrahvuse kultuurinõukogu ja kultuuriomavalitsusasutuste tegevust korraldavad kultuurivalitsused. (2) Kultuurinõukogu võib moodustada maakonna ja linna vähemusrahvuse kultuurivolikogu või määrata kohalikke kultuurivolinikke.",
+      "estleg:summary": {
+        "@value": "(1) Vähemusrahvuse kultuuriomavalitsuse juhtorganid on vähemusrahvuse kultuurinõukogu ja kultuuriomavalitsusasutuste tegevust korraldavad kultuurivalitsused. (2) Kultuurinõukogu võib moodustada maakonna ja linna vähemusrahvuse kultuurivolikogu või määrata kohalikke kultuurivolinikke.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse juhtorganid on vähemusrahvuse kultuurinõukogu ja kultuuriomavalitsusasutuste tegevust korraldavad kultuurivalitsused. (2) Kultuurinõukogu võib moodustada maakonna ja linna vähemusrahvuse kultuurivolikogu või määrata kohalikke kultuurivolinikke.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1109,12 +1352,12 @@
           "@id": "estleg:VRKAS_Par_11_Lg_2"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -1131,10 +1374,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse juhtorganid on vähemusrahvuse kultuurinõukogu ja kultuuriomavalitsusasutuste tegevust korraldavad kultuurivalitsused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Vähemusrahvuse kultuuriomavalitsuse juhtorganid on vähemusrahvuse kultuurinõukogu ja kultuuriomavalitsusasutuste tegevust korraldavad kultuurivalitsused.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_11"
-      }
+      },
+      "rdfs:label": "§ 11 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_11_Lg_2",
@@ -1142,16 +1387,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Kultuurinõukogu võib moodustada maakonna ja linna vähemusrahvuse kultuurivolikogu või määrata kohalikke kultuurivolinikke.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Kultuurinõukogu võib moodustada maakonna ja linna vähemusrahvuse kultuurivolikogu või määrata kohalikke kultuurivolinikke.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_11"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 11 lg 2",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1161,12 +1408,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. [Vähemusrahvuse kultuurinõukogu valitakse otsestel ja ühetaolistel valimistel sal...]",
+      "rdfs:label": {
+        "@value": "§ 12. [Vähemusrahvuse kultuurinõukogu valitakse otsestel ja ühetaolistel valimistel sal...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Vähemusrahvuse kultuurinõukogu valitakse otsestel ja ühetaolistel valimistel salajasel hääletamisel. Hääletamine toimub valimisjaoskonnas isiklikult või posti teel.",
+      "estleg:summary": {
+        "@value": "Vähemusrahvuse kultuurinõukogu valitakse otsestel ja ühetaolistel valimistel salajasel hääletamisel. Hääletamine toimub valimisjaoskonnas isiklikult või posti teel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vähemusrahvuse kultuurinõukogu valitakse otsestel ja ühetaolistel valimistel salajasel hääletamisel. Hääletamine toimub valimisjaoskonnas isiklikult või posti teel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1191,10 +1444,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemusrahvuse kultuurinõukogu valitakse otsestel ja ühetaolistel valimistel salajasel hääletamisel. Hääletamine toimub valimisjaoskonnas isiklikult või posti teel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemusrahvuse kultuurinõukogu valitakse otsestel ja ühetaolistel valimistel salajasel hääletamisel. Hääletamine toimub valimisjaoskonnas isiklikult või posti teel.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_12"
-      }
+      },
+      "rdfs:label": "§ 12 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_13",
@@ -1203,12 +1458,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. [(1) Kultuurinõukogu valimiste korraldamiseks valitakse rahvusliku kultuuriühingu...]",
+      "rdfs:label": {
+        "@value": "§ 13. [(1) Kultuurinõukogu valimiste korraldamiseks valitakse rahvusliku kultuuriühingu...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Kultuurinõukogu valimiste korraldamiseks valitakse rahvusliku kultuuriühingu või ühingute liidu poolt valimiste peakomitee, mille koosseisu kinnitab Vabariigi Valitsus, nimetades ühtlasi oma esindaja valimiseeskirjade täitmise kontrollimiseks. (2) Valimiste peakomitee moodustab vajaduse korral valimiste kohalikke komisjone ning annab välja korraldava iseloomuga juhendeid valimiste läbiviimise, kokkuvõtete tegemise ja tulemuste avaldamise korra kohta.",
+      "estleg:summary": {
+        "@value": "(1) Kultuurinõukogu valimiste korraldamiseks valitakse rahvusliku kultuuriühingu või ühingute liidu poolt valimiste peakomitee, mille koosseisu kinnitab Vabariigi Valitsus, nimetades ühtlasi oma esindaja valimiseeskirjade täitmise kontrollimiseks. (2) Valimiste peakomitee moodustab vajaduse korral valimiste kohalikke komisjone ning annab välja korraldava iseloomuga juhendeid valimiste läbiviimise, kokkuvõtete tegemise ja tulemuste avaldamise korra kohta.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kultuurinõukogu valimiste korraldamiseks valitakse rahvusliku kultuuriühingu või ühingute liidu poolt valimiste peakomitee, mille koosseisu kinnitab Vabariigi Valitsus, nimetades ühtlasi oma esindaja valimiseeskirjade täitmise kontrollimiseks. (2) Valimiste peakomitee moodustab vajaduse korral valimiste kohalikke komisjone ning annab välja korraldava iseloomuga juhendeid valimiste läbiviimise, kokkuvõtete tegemise ja tulemuste avaldamise korra kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1232,15 +1493,21 @@
           "@id": "estleg:TargetGroup_NGO"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_156488_Par_7"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VRKAS_Par_13_v24535"
@@ -1248,13 +1515,7 @@
         {
           "@id": "estleg:VRKAS_Par_13_v113032019194"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:VRKAS_Par_13_Lg_1",
@@ -1262,10 +1523,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Kultuurinõukogu valimiste korraldamiseks valitakse rahvusliku kultuuriühingu või ühingute liidu poolt valimiste peakomitee, mille koosseisu kinnitab Vabariigi Valitsus, nimetades ühtlasi oma esindaja valimiseeskirjade täitmise kontrollimiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Kultuurinõukogu valimiste korraldamiseks valitakse rahvusliku kultuuriühingu või ühingute liidu poolt valimiste peakomitee, mille koosseisu kinnitab Vabariigi Valitsus, nimetades ühtlasi oma esindaja valimiseeskirjade täitmise kontrollimiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_13"
       },
+      "rdfs:label": "§ 13 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1291,10 +1554,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Valimiste peakomitee moodustab vajaduse korral valimiste kohalikke komisjone ning annab välja korraldava iseloomuga juhendeid valimiste läbiviimise, kokkuvõtete tegemise ja tulemuste avaldamise korra kohta.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Valimiste peakomitee moodustab vajaduse korral valimiste kohalikke komisjone ning annab välja korraldava iseloomuga juhendeid valimiste läbiviimise, kokkuvõtete tegemise ja tulemuste avaldamise korra kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_13"
-      }
+      },
+      "rdfs:label": "§ 13 lg 2"
     },
     {
       "@id": "estleg:VRKAS_Par_14",
@@ -1303,13 +1568,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. [Vähemusrahvuse kultuurinõukogu valimiseeskirjad töötab välja ja kinnitab Vabarii...]",
+      "rdfs:label": {
+        "@value": "§ 14. [Vähemusrahvuse kultuurinõukogu valimiseeskirjad töötab välja ja kinnitab Vabarii...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Vähemusrahvuse kultuurinõukogu valimiseeskirjad töötab välja ja",
-      "estleg:legalText": "Vähemusrahvuse kultuurinõukogu valimiseeskirjad töötab välja ja",
+      "estleg:summary": {
+        "@value": "Vähemusrahvuse kultuurinõukogu valimiseeskirjad töötab välja ja kinnitab Vabariigi Valitsus .",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vähemusrahvuse kultuurinõukogu valimiseeskirjad töötab välja ja kinnitab Vabariigi Valitsus .",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
       },
@@ -1321,6 +1592,21 @@
           "@id": "estleg:VRKAS_Par_14_Lg_1"
         }
       ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:hasVersion": [
         {
           "@id": "estleg:VRKAS_Par_14_v24535"
@@ -1336,10 +1622,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemusrahvuse kultuurinõukogu valimiseeskirjad töötab välja ja",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemusrahvuse kultuurinõukogu valimiseeskirjad töötab välja ja kinnitab Vabariigi Valitsus .",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_14"
-      }
+      },
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VRKAS_Par_15",
@@ -1348,12 +1651,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. [Valijate nimekirja koostamise aluseks on käesoleva seaduse paragrahvis 8 sätesta...]",
+      "rdfs:label": {
+        "@value": "§ 15. [Valijate nimekirja koostamise aluseks on käesoleva seaduse paragrahvis 8 sätesta...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Valijate nimekirja koostamise aluseks on käesoleva seaduse paragrahvis 8 sätestatud vähemusrahvuse rahvusnimekiri.",
+      "estleg:summary": {
+        "@value": "Valijate nimekirja koostamise aluseks on käesoleva seaduse paragrahvis 8 sätestatud vähemusrahvuse rahvusnimekiri.",
+        "@language": "et"
+      },
       "estleg:legalText": "Valijate nimekirja koostamise aluseks on käesoleva seaduse paragrahvis 8 sätestatud vähemusrahvuse rahvusnimekiri.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1378,10 +1687,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Valijate nimekirja koostamise aluseks on käesoleva seaduse paragrahvis 8 sätestatud vähemusrahvuse rahvusnimekiri.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valijate nimekirja koostamise aluseks on käesoleva seaduse paragrahvis 8 sätestatud vähemusrahvuse rahvusnimekiri.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_15"
-      }
+      },
+      "rdfs:label": "§ 15 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_16",
@@ -1390,12 +1701,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. [(1) Valimisi ei korraldata, kui nõusoleku valijate nimekirja kandmiseks on andnu...]",
+      "rdfs:label": {
+        "@value": "§ 16. [(1) Valimisi ei korraldata, kui nõusoleku valijate nimekirja kandmiseks on andnu...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Valimisi ei korraldata, kui nõusoleku valijate nimekirja kandmiseks on andnud vähem kui pool rahvusnimekirja kantud isikutest. (2) Vähemusrahvuse kultuurinõukogu kordusvalimiste taotluse võib antud vähemusrahvus esitada pärast kolme aasta möödumist eelmisest taotlusest.",
+      "estleg:summary": {
+        "@value": "(1) Valimisi ei korraldata, kui nõusoleku valijate nimekirja kandmiseks on andnud vähem kui pool rahvusnimekirja kantud isikutest. (2) Vähemusrahvuse kultuurinõukogu kordusvalimiste taotluse võib antud vähemusrahvus esitada pärast kolme aasta möödumist eelmisest taotlusest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valimisi ei korraldata, kui nõusoleku valijate nimekirja kandmiseks on andnud vähem kui pool rahvusnimekirja kantud isikutest. (2) Vähemusrahvuse kultuurinõukogu kordusvalimiste taotluse võib antud vähemusrahvus esitada pärast kolme aasta möödumist eelmisest taotlusest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1411,12 +1728,12 @@
           "@id": "estleg:VRKAS_Par_16_Lg_2"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -1433,10 +1750,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Valimisi ei korraldata, kui nõusoleku valijate nimekirja kandmiseks on andnud vähem kui pool rahvusnimekirja kantud isikutest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Valimisi ei korraldata, kui nõusoleku valijate nimekirja kandmiseks on andnud vähem kui pool rahvusnimekirja kantud isikutest.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_16"
-      }
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_16_Lg_2",
@@ -1444,16 +1763,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Vähemusrahvuse kultuurinõukogu kordusvalimiste taotluse võib antud vähemusrahvus esitada pärast kolme aasta möödumist eelmisest taotlusest.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Vähemusrahvuse kultuurinõukogu kordusvalimiste taotluse võib antud vähemusrahvus esitada pärast kolme aasta möödumist eelmisest taotlusest.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_16"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 16 lg 2",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1463,12 +1784,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. [(1) Valijate nimekiri avaldatakse tutvumiseks vähemalt kaks kuud enne valimisi....]",
+      "rdfs:label": {
+        "@value": "§ 17. [(1) Valijate nimekiri avaldatakse tutvumiseks vähemalt kaks kuud enne valimisi....]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Valijate nimekiri avaldatakse tutvumiseks vähemalt kaks kuud enne valimisi. (2) Igal valijate nimekirja kantud isikul on õigus taotleda oma nime kustutamist hiljemalt kaks nädalat enne valimisi.",
+      "estleg:summary": {
+        "@value": "(1) Valijate nimekiri avaldatakse tutvumiseks vähemalt kaks kuud enne valimisi. (2) Igal valijate nimekirja kantud isikul on õigus taotleda oma nime kustutamist hiljemalt kaks nädalat enne valimisi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valijate nimekiri avaldatakse tutvumiseks vähemalt kaks kuud enne valimisi. (2) Igal valijate nimekirja kantud isikul on õigus taotleda oma nime kustutamist hiljemalt kaks nädalat enne valimisi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1489,18 +1816,18 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_156488_Par_11"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VRKAS_Par_17_v24535"
@@ -1516,10 +1843,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Valijate nimekiri avaldatakse tutvumiseks vähemalt kaks kuud enne valimisi.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Valijate nimekiri avaldatakse tutvumiseks vähemalt kaks kuud enne valimisi.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_17"
-      }
+      },
+      "rdfs:label": "§ 17 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_17_Lg_2",
@@ -1527,13 +1856,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Igal valijate nimekirja kantud isikul on õigus taotleda oma nime kustutamist hiljemalt kaks nädalat enne valimisi.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Igal valijate nimekirja kantud isikul on õigus taotleda oma nime kustutamist hiljemalt kaks nädalat enne valimisi.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_17"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
+      "rdfs:label": "§ 17 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1542,6 +1870,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -1551,12 +1882,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. [(1) Vähemusrahvuse kultuurinõukogu mandaatide arv määratakse kindlaks valimiste...]",
+      "rdfs:label": {
+        "@value": "§ 18. [(1) Vähemusrahvuse kultuurinõukogu mandaatide arv määratakse kindlaks valimiste...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Vähemusrahvuse kultuurinõukogu mandaatide arv määratakse kindlaks valimiste peakomitee poolt, kuid see ei või olla suurem kui 60 ega väiksem kui 20. (2) Kultuurinõukogu koosseis valitakse kolmeks aastaks.",
+      "estleg:summary": {
+        "@value": "(1) Vähemusrahvuse kultuurinõukogu mandaatide arv määratakse kindlaks valimiste peakomitee poolt, kuid see ei või olla suurem kui 60 ega väiksem kui 20. (2) Kultuurinõukogu koosseis valitakse kolmeks aastaks.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vähemusrahvuse kultuurinõukogu mandaatide arv määratakse kindlaks valimiste peakomitee poolt, kuid see ei või olla suurem kui 60 ega väiksem kui 20. (2) Kultuurinõukogu koosseis valitakse kolmeks aastaks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1572,18 +1909,18 @@
           "@id": "estleg:VRKAS_Par_18_Lg_2"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_156488_Par_2"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VRKAS_Par_18_v24535"
@@ -1599,16 +1936,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Vähemusrahvuse kultuurinõukogu mandaatide arv määratakse kindlaks valimiste peakomitee poolt, kuid see ei või olla suurem kui 60 ega väiksem kui 20.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Vähemusrahvuse kultuurinõukogu mandaatide arv määratakse kindlaks valimiste peakomitee poolt, kuid see ei või olla suurem kui 60 ega väiksem kui 20.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_18"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
+      "rdfs:label": "§ 18 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -1617,10 +1956,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Kultuurinõukogu koosseis valitakse kolmeks aastaks.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Kultuurinõukogu koosseis valitakse kolmeks aastaks.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_18"
-      }
+      },
+      "rdfs:label": "§ 18 lg 2"
     },
     {
       "@id": "estleg:VRKAS_Par_19",
@@ -1629,12 +1970,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. [Vähemusrahvuse kultuurinõukogu valimised loetakse toimunuks, kui neist võttis os...]",
+      "rdfs:label": {
+        "@value": "§ 19. [Vähemusrahvuse kultuurinõukogu valimised loetakse toimunuks, kui neist võttis os...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Vähemusrahvuse kultuurinõukogu valimised loetakse toimunuks, kui neist võttis osa üle poole valijate nimekirjadesse kantud valijatest ja valimiste läbiviimine toimus kooskõlas käesoleva seaduse ja valimiseeskirjadega.",
+      "estleg:summary": {
+        "@value": "Vähemusrahvuse kultuurinõukogu valimised loetakse toimunuks, kui neist võttis osa üle poole valijate nimekirjadesse kantud valijatest ja valimiste läbiviimine toimus kooskõlas käesoleva seaduse ja valimiseeskirjadega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vähemusrahvuse kultuurinõukogu valimised loetakse toimunuks, kui neist võttis osa üle poole valijate nimekirjadesse kantud valijatest ja valimiste läbiviimine toimus kooskõlas käesoleva seaduse ja valimiseeskirjadega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1659,10 +2006,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemusrahvuse kultuurinõukogu valimised loetakse toimunuks, kui neist võttis osa üle poole valijate nimekirjadesse kantud valijatest ja valimiste läbiviimine toimus kooskõlas käesoleva seaduse ja valimiseeskirjadega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemusrahvuse kultuurinõukogu valimised loetakse toimunuks, kui neist võttis osa üle poole valijate nimekirjadesse kantud valijatest ja valimiste läbiviimine toimus kooskõlas käesoleva seaduse ja valimiseeskirjadega.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_19"
-      }
+      },
+      "rdfs:label": "§ 19 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_20",
@@ -1671,12 +2020,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. [Protestid ja kaebused kultuurinõukogu valimiste läbiviimise kohta lahendab valim...]",
+      "rdfs:label": {
+        "@value": "§ 20. [Protestid ja kaebused kultuurinõukogu valimiste läbiviimise kohta lahendab valim...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Protestid ja kaebused kultuurinõukogu valimiste läbiviimise kohta lahendab valimiste peakomitee hiljemalt kahe nädala jooksul pärast valimistulemuste avaldamist.",
+      "estleg:summary": {
+        "@value": "Protestid ja kaebused kultuurinõukogu valimiste läbiviimise kohta lahendab valimiste peakomitee hiljemalt kahe nädala jooksul pärast valimistulemuste avaldamist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Protestid ja kaebused kultuurinõukogu valimiste läbiviimise kohta lahendab valimiste peakomitee hiljemalt kahe nädala jooksul pärast valimistulemuste avaldamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1701,10 +2056,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Protestid ja kaebused kultuurinõukogu valimiste läbiviimise kohta lahendab valimiste peakomitee hiljemalt kahe nädala jooksul pärast valimistulemuste avaldamist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Protestid ja kaebused kultuurinõukogu valimiste läbiviimise kohta lahendab valimiste peakomitee hiljemalt kahe nädala jooksul pärast valimistulemuste avaldamist.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_20"
-      }
+      },
+      "rdfs:label": "§ 20 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_21",
@@ -1713,12 +2070,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. [Hiljemalt üks kuu pärast kultuurinõukogu valimistulemuste avaldamist kutsub vali...]",
+      "rdfs:label": {
+        "@value": "§ 21. [Hiljemalt üks kuu pärast kultuurinõukogu valimistulemuste avaldamist kutsub vali...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Hiljemalt üks kuu pärast kultuurinõukogu valimistulemuste avaldamist kutsub valimiste peakomitee esimees kokku kultuurinõukogu esimese istungi ja juhatab seda kuni juhatuse valimisteni. Seejärel peakomitee kuulutab oma volitused lõppenuks.",
+      "estleg:summary": {
+        "@value": "Hiljemalt üks kuu pärast kultuurinõukogu valimistulemuste avaldamist kutsub valimiste peakomitee esimees kokku kultuurinõukogu esimese istungi ja juhatab seda kuni juhatuse valimisteni. Seejärel peakomitee kuulutab oma volitused lõppenuks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Hiljemalt üks kuu pärast kultuurinõukogu valimistulemuste avaldamist kutsub valimiste peakomitee esimees kokku kultuurinõukogu esimese istungi ja juhatab seda kuni juhatuse valimisteni. Seejärel peakomitee kuulutab oma volitused lõppenuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1752,10 +2115,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Hiljemalt üks kuu pärast kultuurinõukogu valimistulemuste avaldamist kutsub valimiste peakomitee esimees kokku kultuurinõukogu esimese istungi ja juhatab seda kuni juhatuse valimisteni. Seejärel peakomitee kuulutab oma volitused lõppenuks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hiljemalt üks kuu pärast kultuurinõukogu valimistulemuste avaldamist kutsub valimiste peakomitee esimees kokku kultuurinõukogu esimese istungi ja juhatab seda kuni juhatuse valimisteni. Seejärel peakomitee kuulutab oma volitused lõppenuks.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_21"
       },
+      "rdfs:label": "§ 21 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -1773,13 +2138,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. [Kultuurinõukogu esimesel istungil võetakse koosseisu häälteenamusega vastu kultu...]",
+      "rdfs:label": {
+        "@value": "§ 22. [Kultuurinõukogu esimesel istungil võetakse koosseisu häälteenamusega vastu kultu...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Kultuurinõukogu esimesel istungil võetakse koosseisu häälteenamusega vastu kultuuriomavalitsuse põhimäärus, millega määratakse kindlaks: kultuurinõukogu esimehe, tema asetäitjate ja juhatuse valimise kord; kultuurivolikogu moodustamise kord ja pädevus; kultuuriomavalitsusasutuste moodustamine; kultuuriomavalitsusorganite õigused ja kohustused, lähtudes käesoleva seaduse paragrahvis 5 sätestatud põhieesmärkidest; kultuuriomavalitsuse juhtorganite töökord.",
-      "estleg:legalText": "Kultuurinõukogu esimesel istungil võetakse koosseisu häälteenamusega vastu kultuuriomavalitsuse põhimäärus, millega määratakse kindlaks: kultuurinõukogu esimehe, tema asetäitjate ja juhatuse valimise kord; kultuurivolikogu moodustamise kord ja pädevus; kultuuriomavalitsusasutuste moodustamine; kultuuriomavalitsusorganite õigused ja kohustused, lähtudes käesoleva seaduse paragrahvis 5 sätestatud põhieesmärkidest; kultuuriomavalitsuse juhtorganite töökord.",
+      "estleg:summary": {
+        "@value": "Kultuurinõukogu esimesel istungil võetakse koosseisu häälteenamusega vastu kultuuriomavalitsuse põhimäärus, millega määratakse kindlaks: 1) kultuurinõukogu esimehe, tema asetäitjate ja juhatuse valimise kord; 2) kultuurivolikogu moodustamise kord ja pädevus; 3) kultuuriomavalitsusasutuste moodustamine; 4) kultuuriomavalitsusorganite õigused ja kohustused, lähtudes käesoleva seaduse paragrahvis 5 sätestatud põhieesmärkidest; 5) kultuuriomavalitsuse juhtorganite töökord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kultuurinõukogu esimesel istungil võetakse koosseisu häälteenamusega vastu kultuuriomavalitsuse põhimäärus, millega määratakse kindlaks: 1) kultuurinõukogu esimehe, tema asetäitjate ja juhatuse valimise kord; 2) kultuurivolikogu moodustamise kord ja pädevus; 3) kultuuriomavalitsusasutuste moodustamine; 4) kultuuriomavalitsusorganite õigused ja kohustused, lähtudes käesoleva seaduse paragrahvis 5 sätestatud põhieesmärkidest; 5) kultuuriomavalitsuse juhtorganite töökord.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
       },
@@ -1812,10 +2183,19 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kultuurinõukogu esimesel istungil võetakse koosseisu häälteenamusega vastu kultuuriomavalitsuse põhimäärus, millega määratakse kindlaks: kultuurinõukogu esimehe, tema asetäitjate ja juhatuse valimise kord; kultuurivolikogu moodustamise kord ja pädevus; kultuuriomavalitsusasutuste moodustamine; kultuuriomavalitsusorganite õigused ja kohustused, lähtudes käesoleva seaduse paragrahvis 5 sätestatud põhieesmärkidest; kultuuriomavalitsuse juhtorganite töökord.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurinõukogu esimesel istungil võetakse koosseisu häälteenamusega vastu kultuuriomavalitsuse põhimäärus, millega määratakse kindlaks: 1) kultuurinõukogu esimehe, tema asetäitjate ja juhatuse valimise kord; 2) kultuurivolikogu moodustamise kord ja pädevus; 3) kultuuriomavalitsusasutuste moodustamine; 4) kultuuriomavalitsusorganite õigused ja kohustused, lähtudes käesoleva seaduse paragrahvis 5 sätestatud põhieesmärkidest; 5) kultuuriomavalitsuse juhtorganite töökord.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_22"
-      }
+      },
+      "rdfs:label": "§ 22 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
     },
     {
       "@id": "estleg:VRKAS_Par_23",
@@ -1824,12 +2204,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. [Vähemusrahvuse kultuurinõukogu valimistega seotud kulud kannab vähemusrahvuse ku...]",
+      "rdfs:label": {
+        "@value": "§ 23. [Vähemusrahvuse kultuurinõukogu valimistega seotud kulud kannab vähemusrahvuse ku...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Vähemusrahvuse kultuurinõukogu valimistega seotud kulud kannab vähemusrahvuse kultuuriomavalitsus, kusjuures kultuurinõukogu valimistega seotud kulude katteks võidakse anda toetust riigi eelarvest.",
+      "estleg:summary": {
+        "@value": "Vähemusrahvuse kultuurinõukogu valimistega seotud kulud kannab vähemusrahvuse kultuuriomavalitsus, kusjuures kultuurinõukogu valimistega seotud kulude katteks võidakse anda toetust riigi eelarvest.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vähemusrahvuse kultuurinõukogu valimistega seotud kulud kannab vähemusrahvuse kultuuriomavalitsus, kusjuures kultuurinõukogu valimistega seotud kulude katteks võidakse anda toetust riigi eelarvest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_III"
@@ -1854,10 +2240,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemusrahvuse kultuurinõukogu valimistega seotud kulud kannab vähemusrahvuse kultuuriomavalitsus, kusjuures kultuurinõukogu valimistega seotud kulude katteks võidakse anda toetust riigi eelarvest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemusrahvuse kultuurinõukogu valimistega seotud kulud kannab vähemusrahvuse kultuuriomavalitsus, kusjuures kultuurinõukogu valimistega seotud kulude katteks võidakse anda toetust riigi eelarvest.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_23"
-      }
+      },
+      "rdfs:label": "§ 23 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_24",
@@ -1866,13 +2254,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. [Kultuuriomavalitsusasutused on: 1 1) rahvuskeelsed või rahvuskultuuri süvaõppega...]",
+      "rdfs:label": {
+        "@value": "§ 24. [Kultuuriomavalitsusasutused on: 1) rahvuskeelsed või rahvuskultuuri süvaõppega õ...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Kultuuriomavalitsusasutused on: rahvuskeelsed või rahvuskultuuri süvaõppega õppeasutused (lastehoiud, lasteaiad ja koolid); rahvuskultuuriasutused; rahvuskultuuri ettevõtted ja kirjastused; rahvuslikud hoolekandeasutused.",
-      "estleg:legalText": "Kultuuriomavalitsusasutused on: rahvuskeelsed või rahvuskultuuri süvaõppega õppeasutused (lastehoiud, lasteaiad ja koolid); rahvuskultuuriasutused; rahvuskultuuri ettevõtted ja kirjastused; rahvuslikud hoolekandeasutused.",
+      "estleg:summary": {
+        "@value": "Kultuuriomavalitsusasutused on: 1) rahvuskeelsed või rahvuskultuuri süvaõppega õppeasutused (lastehoiud, lasteaiad ja koolid); 2) rahvuskultuuriasutused; 3) rahvuskultuuri ettevõtted ja kirjastused; 4) rahvuslikud hoolekandeasutused.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kultuuriomavalitsusasutused on: 1) rahvuskeelsed või rahvuskultuuri süvaõppega õppeasutused (lastehoiud, lasteaiad ja koolid); 2) rahvuskultuuriasutused; 3) rahvuskultuuri ettevõtted ja kirjastused; 4) rahvuslikud hoolekandeasutused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_IV"
       },
@@ -1894,6 +2288,9 @@
         "@type": "xsd:decimal"
       },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:alusharidusseadus_Map"
+        },
         {
           "@id": "estleg:alusharidusseadus_Par_78"
         }
@@ -1922,10 +2319,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kultuuriomavalitsusasutused on: rahvuskeelsed või rahvuskultuuri süvaõppega õppeasutused (lastehoiud, lasteaiad ja koolid); rahvuskultuuriasutused; rahvuskultuuri ettevõtted ja kirjastused; rahvuslikud hoolekandeasutused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuuriomavalitsusasutused on: 1) rahvuskeelsed või rahvuskultuuri süvaõppega õppeasutused (lastehoiud, lasteaiad ja koolid); 2) rahvuskultuuriasutused; 3) rahvuskultuuri ettevõtted ja kirjastused; 4) rahvuslikud hoolekandeasutused.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_24"
       },
+      "rdfs:label": "§ 24 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1943,12 +2348,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. [Vähemusrahvuse kooli (klassi) avamine ja selle töö korraldamine toimub erakoolis...]",
+      "rdfs:label": {
+        "@value": "§ 25. [Vähemusrahvuse kooli (klassi) avamine ja selle töö korraldamine toimub erakoolis...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Vähemusrahvuse kooli (klassi) avamine ja selle töö korraldamine toimub erakooliseadusega sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Vähemusrahvuse kooli (klassi) avamine ja selle töö korraldamine toimub erakooliseadusega sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vähemusrahvuse kooli (klassi) avamine ja selle töö korraldamine toimub erakooliseadusega sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_IV"
@@ -1982,10 +2393,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemusrahvuse kooli (klassi) avamine ja selle töö korraldamine toimub erakooliseadusega sätestatud korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemusrahvuse kooli (klassi) avamine ja selle töö korraldamine toimub erakooliseadusega sätestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_25"
       },
+      "rdfs:label": "§ 25 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2003,19 +2416,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 26.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 26.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_IV"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VRKAS_IV"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:VRKAS_Par_26_v24535"
@@ -2032,13 +2451,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. [(1) Vähemusrahvuse kultuuriomavalitsuse ja tema asutuste rahalised vahendid mood...]",
+      "rdfs:label": {
+        "@value": "§ 27. [(1) Vähemusrahvuse kultuuriomavalitsuse ja tema asutuste rahalised vahendid mood...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "(1) Vähemusrahvuse kultuuriomavalitsuse ja tema asutuste rahalised vahendid moodustuvad: eraldistest riigieelarvest vastavalt seadusele ja sihtotstarbelistest toetustest; kohaliku omavalitsuse eelarvest kultuuriomavalitsuse õppe-, kultuuri- ja hoolekandeasutustele eraldatud sihtotstarbelistest toetustest; kultuuriomavalitsuse osamaksust, mille suuruse määrab kultuurinõukogu; toetustest, annetustest ja pärandustest; välisorganisatsioonide toetustest.",
-      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse ja tema asutuste rahalised vahendid moodustuvad: eraldistest riigieelarvest vastavalt seadusele ja sihtotstarbelistest toetustest; kohaliku omavalitsuse eelarvest kultuuriomavalitsuse õppe-, kultuuri- ja hoolekandeasutustele eraldatud sihtotstarbelistest toetustest; kultuuriomavalitsuse osamaksust, mille suuruse määrab kultuurinõukogu; toetustest, annetustest ja pärandustest; välisorganisatsioonide toetustest. (2) Vähemusrahvuse kultuuriomavalitsus võib talle sihtotstarbeliselt eraldatud varasid kasutada ainult selleks ettenähtud korras ja otstarbel. Kontrolli varade kasutamise üle teostatakse kooskõlas kehtivate õigusaktidega selleks volitatud riiklike kontrolliorganite poolt.",
+      "estleg:summary": {
+        "@value": "(1) Vähemusrahvuse kultuuriomavalitsuse ja tema asutuste rahalised vahendid moodustuvad: 1) eraldistest riigieelarvest vastavalt seadusele ja sihtotstarbelistest toetustest; 2) kohaliku omavalitsuse eelarvest kultuuriomavalitsuse õppe-, kultuuri- ja hoolekandeasutustele eraldatud sihtotstarbelistest toetustest; 3) kultuuriomavalitsuse osamaksust, mille suuruse määrab kultuurinõukogu; 4) toetustest, annetustest ja pärandustest; 5) välisorganisatsioonide toetustest.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse ja tema asutuste rahalised vahendid moodustuvad: 1) eraldistest riigieelarvest vastavalt seadusele ja sihtotstarbelistest toetustest; 2) kohaliku omavalitsuse eelarvest kultuuriomavalitsuse õppe-, kultuuri- ja hoolekandeasutustele eraldatud sihtotstarbelistest toetustest; 3) kultuuriomavalitsuse osamaksust, mille suuruse määrab kultuurinõukogu; 4) toetustest, annetustest ja pärandustest; 5) välisorganisatsioonide toetustest. (2) Vähemusrahvuse kultuuriomavalitsus võib talle sihtotstarbeliselt eraldatud varasid kasutada ainult selleks ettenähtud korras ja otstarbel. Kontrolli varade kasutamise üle teostatakse kooskõlas kehtivate õigusaktidega selleks volitatud riiklike kontrolliorganite poolt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_IV"
       },
@@ -2062,17 +2487,20 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:VRKAS_Par_27_v24535"
         },
         {
           "@id": "estleg:VRKAS_Par_27_v113032019194"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ]
     },
@@ -2082,10 +2510,19 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsuse ja tema asutuste rahalised vahendid moodustuvad: eraldistest riigieelarvest vastavalt seadusele ja sihtotstarbelistest toetustest; kohaliku omavalitsuse eelarvest kultuuriomavalitsuse õppe-, kultuuri- ja hoolekandeasutustele eraldatud sihtotstarbelistest toetustest; kultuuriomavalitsuse osamaksust, mille suuruse määrab kultuurinõukogu; toetustest, annetustest ja pärandustest; välisorganisatsioonide toetustest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) (1) Vähemusrahvuse kultuuriomavalitsuse ja tema asutuste rahalised vahendid moodustuvad: 1) eraldistest riigieelarvest vastavalt seadusele ja sihtotstarbelistest toetustest; 2) kohaliku omavalitsuse eelarvest kultuuriomavalitsuse õppe-, kultuuri- ja hoolekandeasutustele eraldatud sihtotstarbelistest toetustest; 3) kultuuriomavalitsuse osamaksust, mille suuruse määrab kultuurinõukogu; 4) toetustest, annetustest ja pärandustest; 5) välisorganisatsioonide toetustest.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_27"
       },
+      "rdfs:label": "§ 27 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2107,16 +2544,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "(2) Vähemusrahvuse kultuuriomavalitsus võib talle sihtotstarbeliselt eraldatud varasid kasutada ainult selleks ettenähtud korras ja otstarbel. Kontrolli varade kasutamise üle teostatakse kooskõlas kehtivate õigusaktidega selleks volitatud riiklike kontrolliorganite poolt.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) (2) Vähemusrahvuse kultuuriomavalitsus võib talle sihtotstarbeliselt eraldatud varasid kasutada ainult selleks ettenähtud korras ja otstarbel. Kontrolli varade kasutamise üle teostatakse kooskõlas kehtivate õigusaktidega selleks volitatud riiklike kontrolliorganite poolt.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_27"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 27 lg 2",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2126,13 +2565,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. [Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetab Vabariigi Valitsus:...]",
+      "rdfs:label": {
+        "@value": "§ 28. [Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetab Vabariigi Valitsus:...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetab Vabariigi Valitsus: kui vähemusrahvuse rahvusnimekirja andmetel on Eestis alaliselt elavate vähemusrahvusse kuuluvate isikute arv viimase viie aasta jooksul alla 3000; kui kahel järgneval kultuurinõukogu valimistel ei suudeta koostada nõuetekohast valijate nimekirja; kui kahel järgneval kultuurinõukogu valimistel osaleb vähem kui pool valijate nimekirjadesse kantud isikutest; kultuurinõukogu ettepanekul.",
-      "estleg:legalText": "Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetab Vabariigi Valitsus: kui vähemusrahvuse rahvusnimekirja andmetel on Eestis alaliselt elavate vähemusrahvusse kuuluvate isikute arv viimase viie aasta jooksul alla 3000; kui kahel järgneval kultuurinõukogu valimistel ei suudeta koostada nõuetekohast valijate nimekirja; kui kahel järgneval kultuurinõukogu valimistel osaleb vähem kui pool valijate nimekirjadesse kantud isikutest; kultuurinõukogu ettepanekul.",
+      "estleg:summary": {
+        "@value": "Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetab Vabariigi Valitsus: 1) kui vähemusrahvuse rahvusnimekirja andmetel on Eestis alaliselt elavate vähemusrahvusse kuuluvate isikute arv viimase viie aasta jooksul alla 3000; 2) kui kahel järgneval kultuurinõukogu valimistel ei suudeta koostada nõuetekohast valijate nimekirja; 3) kui kahel järgneval kultuurinõukogu valimistel osaleb vähem kui pool valijate nimekirjadesse kantud isikutest; 4) kultuurinõukogu ettepanekul.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetab Vabariigi Valitsus: 1) kui vähemusrahvuse rahvusnimekirja andmetel on Eestis alaliselt elavate vähemusrahvusse kuuluvate isikute arv viimase viie aasta jooksul alla 3000; 2) kui kahel järgneval kultuurinõukogu valimistel ei suudeta koostada nõuetekohast valijate nimekirja; 3) kui kahel järgneval kultuurinõukogu valimistel osaleb vähem kui pool valijate nimekirjadesse kantud isikutest; 4) kultuurinõukogu ettepanekul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_V"
       },
@@ -2146,9 +2591,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -2156,6 +2598,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:hasVersion": [
         {
           "@id": "estleg:VRKAS_Par_28_v24535"
@@ -2169,13 +2617,7 @@
         {
           "@id": "estleg:VRKAS_Par_28_v113032019194"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:VRKAS_Par_28_Lg_1",
@@ -2183,10 +2625,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetab Vabariigi Valitsus: kui vähemusrahvuse rahvusnimekirja andmetel on Eestis alaliselt elavate vähemusrahvusse kuuluvate isikute arv viimase viie aasta jooksul alla 3000; kui kahel järgneval kultuurinõukogu valimistel ei suudeta koostada nõuetekohast valijate nimekirja; kui kahel järgneval kultuurinõukogu valimistel osaleb vähem kui pool valijate nimekirjadesse kantud isikutest; kultuurinõukogu ettepanekul.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsusasutuste tegevuse lõpetab Vabariigi Valitsus: 1) kui vähemusrahvuse rahvusnimekirja andmetel on Eestis alaliselt elavate vähemusrahvusse kuuluvate isikute arv viimase viie aasta jooksul alla 3000; 2) kui kahel järgneval kultuurinõukogu valimistel ei suudeta koostada nõuetekohast valijate nimekirja; 3) kui kahel järgneval kultuurinõukogu valimistel osaleb vähem kui pool valijate nimekirjadesse kantud isikutest; 4) kultuurinõukogu ettepanekul.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_28"
       },
+      "rdfs:label": "§ 28 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2210,12 +2660,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. [Vähemusrahvuse kultuuriomavalitsusasutuse tegevuse lõpetamisel antakse talle kuu...]",
+      "rdfs:label": {
+        "@value": "§ 29. [Vähemusrahvuse kultuuriomavalitsusasutuse tegevuse lõpetamisel antakse talle kuu...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "Vähemusrahvuse kultuuriomavalitsusasutuse tegevuse lõpetamisel antakse talle kuulunud varad üle kultuurinõukogu otsusega määratud korras.",
+      "estleg:summary": {
+        "@value": "Vähemusrahvuse kultuuriomavalitsusasutuse tegevuse lõpetamisel antakse talle kuulunud varad üle kultuurinõukogu otsusega määratud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vähemusrahvuse kultuuriomavalitsusasutuse tegevuse lõpetamisel antakse talle kuulunud varad üle kultuurinõukogu otsusega määratud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_V"
@@ -2240,10 +2696,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemusrahvuse kultuuriomavalitsusasutuse tegevuse lõpetamisel antakse talle kuulunud varad üle kultuurinõukogu otsusega määratud korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemusrahvuse kultuuriomavalitsusasutuse tegevuse lõpetamisel antakse talle kuulunud varad üle kultuurinõukogu otsusega määratud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_29"
-      }
+      },
+      "rdfs:label": "§ 29 lg 1"
     },
     {
       "@id": "estleg:VRKAS_Par_30",
@@ -2252,12 +2710,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. [[Käesolevast tekstist välja jäetud.] [Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 30. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vähemusrahvuse kultuuriautonoomia seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VRKAS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VRKAS_VI"
@@ -2285,9 +2749,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) [Käesolevast tekstist välja jäetud.]",
       "estleg:parentProvision": {
         "@id": "estleg:VRKAS_Par_30"
+      },
+      "rdfs:label": "§ 30 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/512092025002",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:VRKAS_Map"
+      },
+      "rdfs:label": {
+        "@value": "National Minorities Cultural Autonomy Act",
+        "@language": "en"
       }
     }
   ]

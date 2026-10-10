@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Uljaste maastikukaitseala kaitse-eeskiri (määrus)",
+      "rdfs:label": {
+        "@value": "Uljaste maastikukaitseala kaitse-eeskiri (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -40,19 +47,21 @@
           "@id": "estleg:Reg_1038414_Annex_2"
         }
       ],
-      "estleg:entryIntoForce": {
-        "@value": "2017-04-14",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2017-04-04",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
+      "dcterms:title": "Uljaste maastikukaitseala kaitse-eeskiri",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:transposesDirectiveAsserted": [
+        {
+          "@id": "estleg:EU_31992L0043"
+        }
+      ],
       "estleg:issuedUnder": [
         {
           "@id": "estleg:LKS_Map"
@@ -84,7 +93,16 @@
         {
           "@id": "http://eurovoc.europa.eu/2442"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2017-04-14",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2017-04-04",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1038414_Annex_1",
@@ -92,7 +110,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Uljaste maastikukaitseala",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -101,7 +122,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -111,28 +135,52 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Uljaste maastikukaitseala kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Uljaste maastikukaitseala kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "1 (1) Uljaste maastikukaitseala2 (edaspidi kaitseala) eesmärk on kaitsta: 1 1) eriilmelisi maastikuelemente: oosi, järve ja raba, maastiku ja elustiku mitmekesisust ning kaitsealuste liikide elupaiku; 2 2) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liiva-alade vähetoitelised järved (3110)3, huumustoitelised järved ja järvikud (3160), looduslikus seisundis rab",
-      "estleg:legalText": "1 (1) Uljaste maastikukaitseala2 (edaspidi kaitseala) eesmärk on kaitsta: 1 1) eriilmelisi maastikuelemente: oosi, järve ja raba, maastiku ja elustiku mitmekesisust ning kaitsealuste liikide elupaiku; 2 2) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liiva-alade vähetoitelised järved (3110)3, huumustoitelised järved ja järvikud (3160), looduslikus seisundis rabad (7110*), vanad loodusmetsad (9010*), vanad laialehised metsad (9020*), rohunditerikkad kuusikud (9050), okasmetsad oosidel ja moreenikuhjatistel (9060), soostuvad ja soo-lehtmetsad (9080*) ning siirdesoo- ja rabametsad (91D0*); 3 3) kaitsealuseid taimeliike vesilobeeliat (Lobelia dortmanna) ja järv-lahnarohtu (Isoetes lacustris) ning nende elupaiku. Uljaste maastikukaitseala2 (edaspidi kaitseala) eesmärk on kaitsta: eriilmelisi maastikuelemente: oosi, järve ja raba, maastiku ja elustiku mitmekesisust ning kaitsealuste liikide elupaiku; elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liiva-alade vähetoitelised järved (3110)3, huumustoitelised järved ja järvikud (3160), looduslikus seisundis rabad (7110*), vanad loodusmetsad (9010*), vanad laialehised metsad (9020*), rohunditerikkad kuusikud (9050), okasmetsad oosidel ja moreenikuhjatistel (9060), soostuvad ja soo-lehtmetsad (9080*) ning siirdesoo- ja rabametsad (91D0*); kaitsealuseid taimeliike vesilobeeliat (Lobelia dortmanna) ja järv-lahnarohtu (Isoetes lacustris) ning nende elupaiku. 2 (2) Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kaheks sihtkaitsevööndiks ja üheks piiranguvööndiks. Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kaheks sihtkaitsevööndiks ja üheks piiranguvööndiks. 3 (3) Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega. Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega.",
+      "estleg:summary": {
+        "@value": "1 (1) Uljaste maastikukaitseala2 (edaspidi kaitseala) eesmärk on kaitsta: 1 1) eriilmelisi maastikuelemente: oosi, järve ja raba, maastiku ja elustiku mitmekesisust ning kaitsealuste liikide elupaiku; 2 2) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Uljaste maastikukaitseala2 (edaspidi kaitseala) eesmärk on kaitsta: 1 1) eriilmelisi maastikuelemente: oosi, järve ja raba, maastiku ja elustiku mitmekesisust ning kaitsealuste liikide elupaiku; 2 2) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liiva-alade vähetoitelised järved (3110)3, huumustoitelised järved ja järvikud (3160), looduslikus seisundis rabad (7110*), vanad loodusmetsad (9010*), vanad laialehised metsad (9020*), rohunditerikkad kuusikud (9050), okasmetsad oosidel ja moreenikuhjatistel (9060), soostuvad ja soo-lehtmetsad (9080*) ning siirdesoo- ja rabametsad (91D0*); 3 3) kaitsealuseid taimeliike vesilobeeliat (Lobelia dortmanna) ja järv-lahnarohtu (Isoetes lacustris) ning nende elupaiku. 2 (2) Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kaheks sihtkaitsevööndiks ja üheks piiranguvööndiks. 3 (3) Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1038414_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1038414_Par_1_Lg_3"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1018083_Par_1"
         },
         {
-          "@id": "estleg:Reg_1026762_Par_1"
+          "@id": "estleg:Reg_1018085_Par_1"
         },
         {
-          "@id": "estleg:Reg_1044045_Par_1"
+          "@id": "estleg:Reg_1037432_Par_1"
         },
         {
-          "@id": "estleg:Reg_1053338_Par_1"
+          "@id": "estleg:Reg_1044960_Par_1"
         },
         {
-          "@id": "estleg:Reg_1055097_Par_1"
+          "@id": "estleg:Reg_1048343_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -142,19 +190,84 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1038414_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Uljaste maastikukaitseala² (edaspidi kaitseala) eesmärk on kaitsta: 1) eriilmelisi maastikuelemente: oosi, järve ja raba, maastiku ja elustiku mitmekesisust ning kaitsealuste liikide elupaiku; 2) elupaigatüüpe, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas. Need on liiva-alade vähetoitelised järved (3110)³, huumustoitelised järved ja järvikud (3160), looduslikus seisundis rabad (7110*), vanad loodusmetsad (9010*), vanad laialehised metsad (9020*), rohunditerikkad kuusikud (9050), okasmetsad oosidel ja moreenikuhjatistel (9060), soostuvad ja soo-lehtmetsad (9080*) ning siirdesoo- ja rabametsad (91D0*); 3) kaitsealuseid taimeliike vesilobeeliat (Lobelia dortmanna) ja järv-lahnarohtu (Isoetes lacustris) ning nende elupaiku.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele kaheks sihtkaitsevööndiks ja üheks piiranguvööndiks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
       "@id": "estleg:Reg_1038414_Par_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kaitseala asukoht",
+      "rdfs:label": {
+        "@value": "§ 2. Kaitseala asukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala asub Ida-Viru maakonnas Sonda vallas Uljaste külas ning Lääne-Viru maakonnas Rägavere vallas Uljaste ja Viru-Kabala külas. Kaitseala asub Ida-Viru maakonnas Sonda vallas Uljaste külas ning Lääne-Viru maakonnas Rägavere vallas Uljaste ja Viru-Kabala külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4. Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
-      "estleg:legalText": "1 (1) Kaitseala asub Ida-Viru maakonnas Sonda vallas Uljaste külas ning Lääne-Viru maakonnas Rägavere vallas Uljaste ja Viru-Kabala külas. Kaitseala asub Ida-Viru maakonnas Sonda vallas Uljaste külas ning Lääne-Viru maakonnas Rägavere vallas Uljaste ja Viru-Kabala külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4. Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala asub Ida-Viru maakonnas Sonda vallas Uljaste külas ning Lääne-Viru maakonnas Rägavere vallas Uljaste ja Viru-Kabala külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala asub Ida-Viru maakonnas Sonda vallas Uljaste külas ning Lääne-Viru maakonnas Rägavere vallas Uljaste ja Viru-Kabala külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1038414_Par_2_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1026762_Par_2"
@@ -179,19 +292,51 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1038414_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala asub Ida-Viru maakonnas Sonda vallas Uljaste külas ning Lääne-Viru maakonnas Rägavere vallas Uljaste ja Viru-Kabala külas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas⁴.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1038414_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kaitseala valitseja",
+      "rdfs:label": {
+        "@value": "§ 3. Kaitseala valitseja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "Kaitseala valitseja on Keskkonnaamet.",
-      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet. Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja on Keskkonnaamet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -201,11 +346,43 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_3_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_3_v1038414"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_keskkonnaamet"
@@ -219,28 +396,39 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kaitse alla võtmise ja piirangute põhjendused",
+      "rdfs:label": {
+        "@value": "§ 4. Kaitse alla võtmise ja piirangute põhjendused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "Määruse seletuskirjas5 on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välispiiri ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta. Määruse seletuskirjas5 on esitatud põhjendused: kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; loodusobjekti kaitse alla võtmis",
-      "estleg:legalText": "Määruse seletuskirjas5 on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välispiiri ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta. Määruse seletuskirjas5 on esitatud põhjendused: kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; loodusobjekti kaitse alla võtmise otstarbekuse kohta; kaitstava loodusobjekti tüübi valiku kohta; kaitstava loodusobjekti välispiiri ja vööndite piiride kulgemise kohta; kaitsekorra kohta.",
+      "estleg:summary": {
+        "@value": "Määruse seletuskirjas5 on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välispiiri ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määruse seletuskirjas5 on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välispiiri ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_4_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1031605_Par_4"
+        },
+        {
+          "@id": "estleg:Reg_1034786_Par_4"
+        },
+        {
+          "@id": "estleg:Reg_1035420_Par_4"
+        },
         {
           "@id": "estleg:Reg_1038603_Par_4"
         },
         {
           "@id": "estleg:Reg_1041785_Par_4"
-        },
-        {
-          "@id": "estleg:Reg_1043878_Par_4"
-        },
-        {
-          "@id": "estleg:Reg_1044457_Par_4"
-        },
-        {
-          "@id": "estleg:Reg_1050892_Par_4"
         }
       ],
       "estleg:hasVersion": [
@@ -250,48 +438,191 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1038414_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruse seletuskirjas⁵ on esitatud põhjendused: 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3) kaitstava loodusobjekti tüübi valiku kohta; 4) kaitstava loodusobjekti välispiiri ja vööndite piiride kulgemise kohta; 5) kaitsekorra kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
       "@id": "estleg:Reg_1038414_Par_5",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 5. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "1 (1) Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Kaitsealal on lubatud jahipidamine jahimaal ja kalapüük. Kaitsealal on lubatud jahipidamine jahimaal ja kalapüük. 3 (3) Telkimine ja lõkketegemine on lubatud õuemaal ja kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Telkimine ja lõkketegemine on luba",
-      "estleg:legalText": "1 (1) Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Kaitsealal on lubatud jahipidamine jahimaal ja kalapüük. Kaitsealal on lubatud jahipidamine jahimaal ja kalapüük. 3 (3) Telkimine ja lõkketegemine on lubatud õuemaal ja kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. Telkimine ja lõkketegemine on lubatud õuemaal ja kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. 4 (4) Kaitsealal on lubatud sõidukiga sõitmine teedel. Jalgrattaga sõitmine on lubatud ka radadel. Sõidukiga sõitmine väljaspool teid ja maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel ning kaitse-eeskirjaga lubatud töödel, sealhulgas Uljaste piiranguvööndis ja Uljaste oosi sihtkaitsevööndis liinirajatiste hooldamisel ning Uljaste piiranguvööndis metsa- ja põllumajandustöödel. Kaitsealal on lubatud sõidukiga sõitmine teedel. Jalgrattaga sõitmine on lubatud ka radadel. Sõidukiga sõitmine väljaspool teid ja maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel ning kaitse-eeskirjaga lubatud töödel, sealhulgas Uljaste piiranguvööndis ja Uljaste oosi sihtkaitsevööndis liinirajatiste hooldamisel ning Uljaste piiranguvööndis metsa- ja põllumajandustöödel. 5 (5) Kaitseala veekogudel on lubatud sõita sisepõlemismootorita ujuvvahendiga. Sisepõlemismootoriga ujuvvahendiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel ning kaitseala valitseja nõusolekul teostataval teadustegevusel. Kaitseala veekogudel on lubatud sõita sisepõlemismootorita ujuvvahendiga. Sisepõlemismootoriga ujuvvahendiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel ning kaitseala valitseja nõusolekul teostataval teadustegevusel.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Kaitsealal on lubatud jahipidamine jahimaal ja kalapüük. 3 (3) Telkimine ja lõkketegemine on lubatud õuemaal ja kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. 4 (4) Kaitsealal on lubatud sõidukiga sõitmine teedel. Jalgrattaga sõitmine on lubatud ka radadel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Kaitsealal on lubatud jahipidamine jahimaal ja kalapüük. 3 (3) Telkimine ja lõkketegemine on lubatud õuemaal ja kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud. 4 (4) Kaitsealal on lubatud sõidukiga sõitmine teedel. Jalgrattaga sõitmine on lubatud ka radadel. Sõidukiga sõitmine väljaspool teid ja maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel ning kaitse-eeskirjaga lubatud töödel, sealhulgas Uljaste piiranguvööndis ja Uljaste oosi sihtkaitsevööndis liinirajatiste hooldamisel ning Uljaste piiranguvööndis metsa- ja põllumajandustöödel. 5 (5) Kaitseala veekogudel on lubatud sõita sisepõlemismootorita ujuvvahendiga. Sisepõlemismootoriga ujuvvahendiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel ning kaitseala valitseja nõusolekul teostataval teadustegevusel.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1037431_Par_5"
+          "@id": "estleg:Reg_1038414_Par_5_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1038491_Par_5"
+          "@id": "estleg:Reg_1038414_Par_5_Lg_2"
         },
         {
-          "@id": "estleg:Reg_1039314_Par_5"
+          "@id": "estleg:Reg_1038414_Par_5_Lg_3"
         },
         {
-          "@id": "estleg:Reg_1044960_Par_7"
+          "@id": "estleg:Reg_1038414_Par_5_Lg_4"
         },
         {
-          "@id": "estleg:Reg_1056373_Par_5"
+          "@id": "estleg:Reg_1038414_Par_5_Lg_5"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1038491_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1040654_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1041146_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1044960_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1047591_Par_5"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_5_v1038414"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Inimestel on lubatud viibida ning korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on lubatud jahipidamine jahimaal ja kalapüük.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Telkimine ja lõkketegemine on lubatud õuemaal ja kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kaitsealal on lubatud sõidukiga sõitmine teedel. Jalgrattaga sõitmine on lubatud ka radadel. Sõidukiga sõitmine väljaspool teid ja maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel ning kaitse-eeskirjaga lubatud töödel, sealhulgas Uljaste piiranguvööndis ja Uljaste oosi sihtkaitsevööndis liinirajatiste hooldamisel ning Uljaste piiranguvööndis metsa- ja põllumajandustöödel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kaitseala veekogudel on lubatud sõita sisepõlemismootorita ujuvvahendiga. Sisepõlemismootoriga ujuvvahendiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel ning kaitseala valitseja nõusolekul teostataval teadustegevusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:Reg_1038414_Par_6",
@@ -300,13 +631,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 6. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruu",
-      "estleg:legalText": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8 8) jahiulukeid lisasööta. Kaitseala valitseja nõusolekuta on kaitsealal keelatud: muuta katastriüksuse kõlvikute piire ja sihtotstarvet; koostada maakorralduskava ja teha maakorraldustoiminguid; kehtestada detailplaneeringut ja üldplaneeringut; lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; anda projekteerimistingimusi; anda ehitusluba; rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; jahiulukeid lisasööta.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8 8) jahiulukeid lisasööta.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_6_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1031605_Par_6"
@@ -324,18 +673,41 @@
           "@id": "estleg:Reg_1038527_Par_7"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_6_v1038414"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3) kehtestada detailplaneeringut ja üldplaneeringut; 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada lautrit või paadisilda; 5) anda projekteerimistingimusi; 6) anda ehitusluba; 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8) jahiulukeid lisasööta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_1038414_Par_7",
@@ -344,25 +716,40 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Tegevuse kooskõlastamine",
+      "rdfs:label": {
+        "@value": "§ 7. Tegevuse kooskõlastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud k",
-      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes. Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1038414_Par_7_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1000133_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_1015353_Par_7"
-        },
         {
           "@id": "estleg:Reg_1015857_Par_7"
         },
@@ -371,20 +758,61 @@
         },
         {
           "@id": "estleg:Reg_1017814_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1018083_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1018084_Par_8"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_7_v1038414"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1038414_Par_8",
@@ -393,13 +821,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Sihtkaitsevööndi määratlus",
+      "rdfs:label": {
+        "@value": "§ 8. Sihtkaitsevööndi määratlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike koosluste säilitamiseks. Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike koosluste säilitamiseks. 2 (2) Kaitsealal on kaks sihtkaitsevööndit: 1 1) Uljaste raba sihtkaitsevöönd; 2 2) Uljaste oosi sihtkaitsevöönd. Kaitsealal on kaks sihtkaitsevööndit: Uljaste raba sihtkaitsevöönd; Uljaste oosi sihtkaitsevöönd.",
-      "estleg:legalText": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike koosluste säilitamiseks. Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike koosluste säilitamiseks. 2 (2) Kaitsealal on kaks sihtkaitsevööndit: 1 1) Uljaste raba sihtkaitsevöönd; 2 2) Uljaste oosi sihtkaitsevöönd. Kaitsealal on kaks sihtkaitsevööndit: Uljaste raba sihtkaitsevöönd; Uljaste oosi sihtkaitsevöönd.",
+      "estleg:summary": {
+        "@value": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike koosluste säilitamiseks. 2 (2) Kaitsealal on kaks sihtkaitsevööndit: 1 1) Uljaste raba sihtkaitsevöönd; 2 2) Uljaste oosi sihtkaitsevöönd.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike koosluste säilitamiseks. 2 (2) Kaitsealal on kaks sihtkaitsevööndit: 1 1) Uljaste raba sihtkaitsevöönd; 2 2) Uljaste oosi sihtkaitsevöönd.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1038414_Par_8_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1018088_Par_8"
@@ -424,25 +866,69 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1038414_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike koosluste säilitamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on kaks sihtkaitsevööndit: 1) Uljaste raba sihtkaitsevöönd; 2) Uljaste oosi sihtkaitsevöönd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
       "@id": "estleg:Reg_1038414_Par_9",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Sihtkaitsevööndi kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 9. Sihtkaitsevööndi kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "1 (1) Uljaste raba sihtkaitsevööndi kaitse-eesmärk on metsa- ja sooökosüsteemide arengu tagamine üksnes loodusliku protsessina ning loodusdirektiivi elupaigatüüpide kaitse. Uljaste raba sihtkaitsevööndi kaitse-eesmärk on metsa- ja sooökosüsteemide arengu tagamine üksnes loodusliku protsessina ning loodusdirektiivi elupaigatüüpide kaitse. 2 (2) Uljaste oosi sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine, kaitsealuste liikide ja nende elupaikade ning loodusdi",
-      "estleg:legalText": "1 (1) Uljaste raba sihtkaitsevööndi kaitse-eesmärk on metsa- ja sooökosüsteemide arengu tagamine üksnes loodusliku protsessina ning loodusdirektiivi elupaigatüüpide kaitse. Uljaste raba sihtkaitsevööndi kaitse-eesmärk on metsa- ja sooökosüsteemide arengu tagamine üksnes loodusliku protsessina ning loodusdirektiivi elupaigatüüpide kaitse. 2 (2) Uljaste oosi sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine, kaitsealuste liikide ja nende elupaikade ning loodusdirektiivi elupaigatüüpide kaitse. Uljaste oosi sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine, kaitsealuste liikide ja nende elupaikade ning loodusdirektiivi elupaigatüüpide kaitse.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Uljaste raba sihtkaitsevööndi kaitse-eesmärk on metsa- ja sooökosüsteemide arengu tagamine üksnes loodusliku protsessina ning loodusdirektiivi elupaigatüüpide kaitse. 2 (2) Uljaste oosi sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine, kaitsealuste liikide ja nende elupaikade ning loodusdirektiivi elupaigatüüpide kaitse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Uljaste raba sihtkaitsevööndi kaitse-eesmärk on metsa- ja sooökosüsteemide arengu tagamine üksnes loodusliku protsessina ning loodusdirektiivi elupaigatüüpide kaitse. 2 (2) Uljaste oosi sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine, kaitsealuste liikide ja nende elupaikade ning loodusdirektiivi elupaigatüüpide kaitse.",
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1038528_Par_9"
+          "@id": "estleg:Reg_1038414_Par_9_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1040746_Par_9"
+          "@id": "estleg:Reg_1038414_Par_9_Lg_2"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1026762_Par_9"
+        },
+        {
+          "@id": "estleg:Reg_1043878_Par_9"
         },
         {
           "@id": "estleg:Reg_306034_Par_8"
@@ -461,19 +947,66 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1038414_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Uljaste raba sihtkaitsevööndi kaitse-eesmärk on metsa- ja sooökosüsteemide arengu tagamine üksnes loodusliku protsessina ning loodusdirektiivi elupaigatüüpide kaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Uljaste oosi sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse ja maastikuilme säilitamine, kaitsealuste liikide ja nende elupaikade ning loodusdirektiivi elupaigatüüpide kaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1038414_Par_10",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 10. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "1 (1) Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud, ning kuni 30 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud, ning kuni 30 osalejaga rahvaürituse korraldamine s",
-      "estleg:legalText": "1 (1) Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud, ning kuni 30 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud, ning kuni 30 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud; 2 2) rohkem kui 30 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 3 3) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 4 4) Uljaste oosi sihtkaitsevööndis koosluse kujundamine vastavalt kaitse-eesmärgile; 5 5) rajatise püstitamine kaitseala tarbeks; 6 6) olemasolevate rajatiste hooldustööd. Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: rohkem kui 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud; rohkem kui 30 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; Uljaste oosi sihtkaitsevööndis koosluse kujundamine vastavalt kaitse-eesmärgile; rajatise püstitamine kaitseala tarbeks; olemasolevate rajatiste hooldustööd.",
+      "estleg:summary": {
+        "@value": "1 (1) Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud, ning kuni 30 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud;…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud, ning kuni 30 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud; 2 2) rohkem kui 30 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 3 3) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 4 4) Uljaste oosi sihtkaitsevööndis koosluse kujundamine vastavalt kaitse-eesmärgile; 5 5) rajatise püstitamine kaitseala tarbeks; 6 6) olemasolevate rajatiste hooldustööd.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1038414_Par_10_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1028299_Par_14"
@@ -485,23 +1018,57 @@
           "@id": "estleg:Reg_1035870_Par_10"
         },
         {
-          "@id": "estleg:Reg_1038491_Par_10"
+          "@id": "estleg:Reg_1043878_Par_10"
         },
         {
-          "@id": "estleg:Reg_1043878_Par_10"
+          "@id": "estleg:Reg_1044956_Par_10"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_10_v1038414"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevööndis on lubatud kuni 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud, ning kuni 30 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1) rohkem kui 50 osalejaga rahvaürituse korraldamine kohas, mis on kaitseala valitseja nõusolekul selleks ette valmistatud ja tähistatud; 2) rohkem kui 30 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 3) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 4) Uljaste oosi sihtkaitsevööndis koosluse kujundamine vastavalt kaitse-eesmärgile; 5) rajatise püstitamine kaitseala tarbeks; 6) olemasolevate rajatiste hooldustööd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -511,13 +1078,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 11. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine. Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: majandustegevus; loodusvarade kasutamine; olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine.",
-      "estleg:legalText": "Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine. Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: majandustegevus; loodusvarade kasutamine; olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine.",
+      "estleg:summary": {
+        "@value": "Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_11_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1033626_Par_11"
@@ -535,18 +1120,36 @@
           "@id": "estleg:Reg_1038670_Par_11"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_11_v1038414"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: 1) majandustegevus; 2) loodusvarade kasutamine; 3) olemasolevate maaparandussüsteemide hoiutööd ja veerežiimi taastamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_1038414_Par_12",
@@ -555,13 +1158,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Piiranguvööndi määratlus",
+      "rdfs:label": {
+        "@value": "§ 12. Piiranguvööndi määratlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on Uljaste piiranguvöönd. Kaitsealal on Uljaste piiranguvöönd.",
-      "estleg:legalText": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on Uljaste piiranguvöönd. Kaitsealal on Uljaste piiranguvöönd.",
+      "estleg:summary": {
+        "@value": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on Uljaste piiranguvöönd.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on Uljaste piiranguvöönd.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1038414_Par_12_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1015353_Par_12"
@@ -586,19 +1203,56 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1038414_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on Uljaste piiranguvöönd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1038414_Par_13",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Piiranguvööndi kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 13. Piiranguvööndi kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "Piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme säilitamine.",
-      "estleg:legalText": "Piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme säilitamine. Piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme säilitamine.",
+      "estleg:summary": {
+        "@value": "Piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme säilitamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme säilitamine.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_13_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158626_Par_14"
@@ -623,48 +1277,142 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1038414_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme säilitamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1038414_Par_14",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 14. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus, arvestades käesoleva määrusega sätestatud erisusi; 2 2) kuni 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. Piiranguvööndis on lubatud: majandustegevus, arvestades käesoleva määrusega sätestatud erisusi; kuni 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Piiranguvööndis on kaitseala valitseja n",
-      "estleg:legalText": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus, arvestades käesoleva määrusega sätestatud erisusi; 2 2) kuni 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. Piiranguvööndis on lubatud: majandustegevus, arvestades käesoleva määrusega sätestatud erisusi; kuni 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Piiranguvööndis on kaitseala valitseja nõusolekul lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 2 2) ehitiste püstitamine olemasoleval õuemaal; 3 3) tee ja tehnovõrgurajatise või tootmisotstarbeta rajatise püstitamine kaitsealal paikneva kinnistu või kaitseala tarbeks; 4 4) lageraie hall-lepikutes langi suurusega kuni üks hektar ja lageraie kuusikutes; 5 5) turberaie. Piiranguvööndis on kaitseala valitseja nõusolekul lubatud: rohkem kui 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; ehitiste püstitamine olemasoleval õuemaal; tee ja tehnovõrgurajatise või tootmisotstarbeta rajatise püstitamine kaitsealal paikneva kinnistu või kaitseala tarbeks; lageraie hall-lepikutes langi suurusega kuni üks hektar ja lageraie kuusikutes; turberaie. 3 (3) Raiete tegemisel tuleb säilitada koosluse looduslik tasakaal ning liigiline ja vanuseline mitmekesisus. Raiete tegemisel tuleb säilitada koosluse looduslik tasakaal ning liigiline ja vanuseline mitmekesisus.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus, arvestades käesoleva määrusega sätestatud erisusi; 2 2) kuni 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Piiranguvööndis on kaitseala valitseja nõusolekul lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 2 2) ehitiste püstitamine olemasoleval õuemaal; 3 3) tee ja…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Piiranguvööndis on lubatud: 1 1) majandustegevus, arvestades käesoleva määrusega sätestatud erisusi; 2 2) kuni 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas. 2 (2) Piiranguvööndis on kaitseala valitseja nõusolekul lubatud: 1 1) rohkem kui 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 2 2) ehitiste püstitamine olemasoleval õuemaal; 3 3) tee ja tehnovõrgurajatise või tootmisotstarbeta rajatise püstitamine kaitsealal paikneva kinnistu või kaitseala tarbeks; 4 4) lageraie hall-lepikutes langi suurusega kuni üks hektar ja lageraie kuusikutes; 5 5) turberaie. 3 (3) Raiete tegemisel tuleb säilitada koosluse looduslik tasakaal ning liigiline ja vanuseline mitmekesisus.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1033074_Par_15"
+          "@id": "estleg:Reg_1038414_Par_14_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1038491_Par_15"
+          "@id": "estleg:Reg_1038414_Par_14_Lg_2"
         },
         {
-          "@id": "estleg:Reg_1040746_Par_14"
-        },
-        {
-          "@id": "estleg:Reg_1042653_Par_15"
-        },
-        {
-          "@id": "estleg:Reg_1043878_Par_14"
+          "@id": "estleg:Reg_1038414_Par_14_Lg_3"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1031605_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_1035870_Par_14"
+        },
+        {
+          "@id": "estleg:Reg_1038527_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_1040746_Par_14"
+        },
+        {
+          "@id": "estleg:Reg_1043878_Par_14"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_14_v1038414"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on lubatud: 1) majandustegevus, arvestades käesoleva määrusega sätestatud erisusi; 2) kuni 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Piiranguvööndis on kaitseala valitseja nõusolekul lubatud: 1) rohkem kui 50 osalejaga rahvaürituse korraldamine selleks ette valmistamata ja kaitseala valitseja nõusolekul tähistamata kohas; 2) ehitiste püstitamine olemasoleval õuemaal; 3) tee ja tehnovõrgurajatise või tootmisotstarbeta rajatise püstitamine kaitsealal paikneva kinnistu või kaitseala tarbeks; 4) lageraie hall-lepikutes langi suurusega kuni üks hektar ja lageraie kuusikutes; 5) turberaie.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Raiete tegemisel tuleb säilitada koosluse looduslik tasakaal ning liigiline ja vanuseline mitmekesisus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:Reg_1038414_Par_15",
@@ -673,42 +1421,104 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 15. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "1 (1) Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) veekogude veetaseme ja kaldajoone muutmine; 3 3) maavara kaevandamine; 4 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5 5) biotsiidi, taimekaitsevahendi ja väetise kasutamine, välja arvatud õue- ja põllumaal; 6 6) puidu kokku- ja väljavedu külmumata pinnaselt. Piiranguvööndis on keelatud: uue maaparandussüsteemi rajamine; veekogude veetaseme ja kaldajoone muutmine; maavara kaevandamine; puhtpuistute kujund",
-      "estleg:legalText": "1 (1) Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) veekogude veetaseme ja kaldajoone muutmine; 3 3) maavara kaevandamine; 4 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5 5) biotsiidi, taimekaitsevahendi ja väetise kasutamine, välja arvatud õue- ja põllumaal; 6 6) puidu kokku- ja väljavedu külmumata pinnaselt. Piiranguvööndis on keelatud: uue maaparandussüsteemi rajamine; veekogude veetaseme ja kaldajoone muutmine; maavara kaevandamine; puhtpuistute kujundamine ja energiapuistute rajamine; biotsiidi, taimekaitsevahendi ja väetise kasutamine, välja arvatud õue- ja põllumaal; puidu kokku- ja väljavedu külmumata pinnaselt. 2 (2) Kaitseala valitseja võib lubada puidu kokku- ja väljavedu, kui pinnas seda võimaldab. Kaitseala valitseja võib lubada puidu kokku- ja väljavedu, kui pinnas seda võimaldab.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) veekogude veetaseme ja kaldajoone muutmine; 3 3) maavara kaevandamine; 4 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5 5) biotsiidi, taimekaitsevahendi ja väetise kasutamine, välja arvatud õue- ja põllumaal; 6 6) puidu kokku- ja väljavedu külmumata pinnaselt. 2 (2) Kaitseala valitseja võib lubada puidu kokku- ja väljavedu, kui pinnas seda võimaldab.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) veekogude veetaseme ja kaldajoone muutmine; 3 3) maavara kaevandamine; 4 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5 5) biotsiidi, taimekaitsevahendi ja väetise kasutamine, välja arvatud õue- ja põllumaal; 6 6) puidu kokku- ja väljavedu külmumata pinnaselt. 2 (2) Kaitseala valitseja võib lubada puidu kokku- ja väljavedu, kui pinnas seda võimaldab.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1026762_Par_15"
+          "@id": "estleg:Reg_1038414_Par_15_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1028704_Par_16"
-        },
-        {
-          "@id": "estleg:Reg_1040655_Par_16"
-        },
-        {
-          "@id": "estleg:Reg_1043878_Par_15"
-        },
-        {
-          "@id": "estleg:Reg_338374_Par_15"
+          "@id": "estleg:Reg_1038414_Par_15_Lg_2"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1017814_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_1028704_Par_16"
+        },
+        {
+          "@id": "estleg:Reg_1031810_Par_16"
+        },
+        {
+          "@id": "estleg:Reg_1044455_Par_16"
+        },
+        {
+          "@id": "estleg:Reg_1047663_Par_16"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_15_v1038414"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on keelatud: 1) uue maaparandussüsteemi rajamine; 2) veekogude veetaseme ja kaldajoone muutmine; 3) maavara kaevandamine; 4) puhtpuistute kujundamine ja energiapuistute rajamine; 5) biotsiidi, taimekaitsevahendi ja väetise kasutamine, välja arvatud õue- ja põllumaal; 6) puidu kokku- ja väljavedu külmumata pinnaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala valitseja võib lubada puidu kokku- ja väljavedu, kui pinnas seda võimaldab.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:Reg_1038414_Par_16",
@@ -717,18 +1527,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 16. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
-      "estleg:legalText": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist. Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_16_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_16_v1038414"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:Reg_1038414_Par_17",
@@ -737,16 +1571,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Määruse muutmine",
+      "rdfs:label": {
+        "@value": "§ 17. Määruse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "Vabariigi Valitsuse 5. mai 2005. a määruses nr 93 „Hoiualade kaitse alla võtmine Ida-Viru maakonnas” tehakse järgmised muudatused:",
+      "estleg:summary": {
+        "@value": "Vabariigi Valitsuse 5. mai 2005. a määruses nr 93 „Hoiualade kaitse alla võtmine Ida-Viru maakonnas” tehakse järgmised muudatused:",
+        "@language": "et"
+      },
       "estleg:legalText": "Vabariigi Valitsuse 5. mai 2005. a määruses nr 93 „Hoiualade kaitse alla võtmine Ida-Viru maakonnas” tehakse järgmised muudatused:",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -766,18 +1615,9 @@
           "@id": "estleg:Reg_1038527_Par_18"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_17_v1038414"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
         }
       ]
     },
@@ -788,13 +1628,29 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Menetluse läbiviimine",
+      "rdfs:label": {
+        "@value": "§ 18. Menetluse läbiviimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "Määruse menetlus viidi läbi keskkonnaministri 19. veebruari 2015. a käskkirjaga nr 179 algatatud haldusmenetluses. Menetluse ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas.",
-      "estleg:legalText": "Määruse menetlus viidi läbi keskkonnaministri 19. veebruari 2015. a käskkirjaga nr 179 algatatud haldusmenetluses. Menetluse ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas. Määruse menetlus viidi läbi keskkonnaministri 19. veebruari 2015. a käskkirjaga nr 179 algatatud haldusmenetluses. Menetluse ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas.",
+      "estleg:summary": {
+        "@value": "Määruse menetlus viidi läbi keskkonnaministri 19. veebruari 2015. a käskkirjaga nr 179 algatatud haldusmenetluses. Menetluse ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määruse menetlus viidi läbi keskkonnaministri 19. veebruari 2015. a käskkirjaga nr 179 algatatud haldusmenetluses. Menetluse ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_18_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1030482_Par_7"
@@ -816,7 +1672,20 @@
         {
           "@id": "estleg:Reg_1038414_Par_18_v1038414"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruse menetlus viidi läbi keskkonnaministri 19. veebruari 2015. a käskkirjaga nr 179 algatatud haldusmenetluses. Menetluse ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_keskkonnaminister"
@@ -830,44 +1699,82 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 19. Vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Uljaste maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1038414_Map"
       },
-      "estleg:summary": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
-      "estleg:legalText": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist. Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
+      "estleg:summary": {
+        "@value": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1017814_Par_18"
-        },
-        {
-          "@id": "estleg:Reg_1018083_Par_20"
-        },
-        {
-          "@id": "estleg:Reg_1018084_Par_12"
-        },
-        {
-          "@id": "estleg:Reg_1018085_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_1018086_Par_10"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1038414_Par_19_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_halduskohus"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1015353_Par_19"
+        },
+        {
+          "@id": "estleg:Reg_1015354_Par_12"
+        },
+        {
+          "@id": "estleg:Reg_1015857_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1017162_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1017814_Par_18"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1038414_Par_19_v1038414"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1038414_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1038414_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_halduskohus"

@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Isikuankeedi vorm (määrus)",
+      "rdfs:label": {
+        "@value": "Isikuankeedi vorm (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Isikuankeedi vorm",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -38,6 +45,42 @@
         },
         {
           "@id": "estleg:Reg_340215_Annex_2"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Isikuankeedi vorm",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:issuedUnder": [
+        {
+          "@id": "estleg:POLITS_Map"
+        }
+      ],
+      "estleg:implementsCitation": [
+        {
+          "@id": "estleg:Citation_Reg_340215_Map_1"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2162"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/668"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/2162"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/668"
         }
       ],
       "estleg:entryIntoForce": {
@@ -72,36 +115,6 @@
         {
           "@id": "estleg:Amendment_Reg_340215_d1fd86541e"
         }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.55",
-        "@type": "xsd:decimal"
-      },
-      "estleg:issuedUnder": [
-        {
-          "@id": "estleg:POLITS_Map"
-        }
-      ],
-      "estleg:implementsCitation": [
-        {
-          "@id": "estleg:Citation_Reg_340215_Map_1"
-        }
-      ],
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2162"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/668"
-        }
-      ],
-      "eli:is_about": [
-        {
-          "@id": "http://eurovoc.europa.eu/2162"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/668"
-        }
       ]
     },
     {
@@ -110,7 +123,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Isikuankeet\n\t\t\t\n\t\t\t\t\n\t\t\t\t\tRT I\n\t\t\t\t\t2023-12-28\n\t\t\t\t\t1\n\t\t\t\t\t128122023001\n\t\t\t\t\n\t\t\t\t2024-01-01",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -119,7 +135,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -129,35 +148,65 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikuankeedi vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_340215_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse politseiteenistusse kandideeriva isiku, politsei või piirivalve erialale kutseharidus- või rakenduskõrgharidusõppesse õppima kandideeriva isiku või politseiametniku ametikohale sisekaitselises rakenduskõrgkoolis kandideeriva isiku isikuankeedi vorm (lisa).",
-      "estleg:legalText": "Määrusega kehtestatakse politseiteenistusse kandideeriva isiku, politsei või piirivalve erialale kutseharidus- või rakenduskõrgharidusõppesse õppima kandideeriva isiku või politseiametniku ametikohale sisekaitselises rakenduskõrgkoolis kandideeriva isiku isikuankeedi vorm (lisa). Määrusega kehtestatakse politseiteenistusse kandideeriva isiku, politsei või piirivalve erialale kutseharidus- või rakenduskõrgharidusõppesse õppima kandideeriva isiku või politseiametniku ametikohale sisekaitselises rakenduskõrgkoolis kandideeriva isiku isikuankeedi vorm (lisa).",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse politseiteenistusse kandideeriva isiku, politsei või piirivalve erialale kutseharidus- või rakenduskõrgharidusõppesse õppima kandideeriva isiku või politseiametniku ametikohale sisekaitselises rakenduskõrgkoolis kandideeriva isiku isikuankeedi vorm (lisa).",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse politseiteenistusse kandideeriva isiku, politsei või piirivalve erialale kutseharidus- või rakenduskõrgharidusõppesse õppima kandideeriva isiku või politseiametniku ametikohale sisekaitselises rakenduskõrgkoolis kandideeriva isiku isikuankeedi vorm (lisa).",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1054547_Par_1"
-        },
-        {
-          "@id": "estleg:Reg_1056002_Par_1"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_340215_Par_1_Lg_1"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1054547_Par_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_340215_Par_1_v340215"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_340215_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse politseiteenistusse kandideeriva isiku, politsei või piirivalve erialale kutseharidus- või rakenduskõrgharidusõppesse õppima kandideeriva isiku või politseiametniku ametikohale sisekaitselises rakenduskõrgkoolis kandideeriva isiku isikuankeedi vorm (lisa).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_340215_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_340215_Par_2",
@@ -166,17 +215,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Isikuankeetide hoidmine ja isikuankeedis küsitud andmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 2. Isikuankeetide hoidmine ja isikuankeedis küsitud andmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikuankeedi vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_340215_Map"
       },
-      "estleg:summary": "1 (1) Isikuankeete hoitakse vastavalt Politsei- ja Piirivalveameti või Kaitsepolitseiameti valve- ja tulekahjusignalisatsiooniga varustatud ruumis, tulekindlas seifis või tulekahjusignalisatsiooniga varustatud ruumis asuvas raudkapis. Isikuankeete hoitakse vastavalt Politsei- ja Piirivalveameti või Kaitsepolitseiameti valve- ja tulekahjusignalisatsiooniga varustatud ruumis, tulekindlas seifis või tulekahjusignalisatsiooniga varustatud ruumis asuvas raudkapis. 2 (2) Isikuankeedis küsitud andmeid ",
-      "estleg:legalText": "1 (1) Isikuankeete hoitakse vastavalt Politsei- ja Piirivalveameti või Kaitsepolitseiameti valve- ja tulekahjusignalisatsiooniga varustatud ruumis, tulekindlas seifis või tulekahjusignalisatsiooniga varustatud ruumis asuvas raudkapis. Isikuankeete hoitakse vastavalt Politsei- ja Piirivalveameti või Kaitsepolitseiameti valve- ja tulekahjusignalisatsiooniga varustatud ruumis, tulekindlas seifis või tulekahjusignalisatsiooniga varustatud ruumis asuvas raudkapis. 2 (2) Isikuankeedis küsitud andmeid säilitatakse viis aastat isiku politseiteenistusse kandideerimisest või politseiteenistusest lahkumisest. RT I 2018-09-18 1 118092018001 2018-09-21 Isikuankeedis küsitud andmeid säilitatakse viis aastat isiku politseiteenistusse kandideerimisest või politseiteenistusest lahkumisest.",
+      "estleg:summary": {
+        "@value": "1 (1) Isikuankeete hoitakse vastavalt Politsei- ja Piirivalveameti või Kaitsepolitseiameti valve- ja tulekahjusignalisatsiooniga varustatud ruumis, tulekindlas seifis või tulekahjusignalisatsiooniga varustatud ruumis asuvas raudkapis. 2 (2) Isikuankeedis küsitud andmeid säilitatakse viis aastat isiku politseiteenistusse kandideerimisest või politseiteenistusest lahkumisest. RT I 2018-09-18 1 118092018001 2018-09-21",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Isikuankeete hoitakse vastavalt Politsei- ja Piirivalveameti või Kaitsepolitseiameti valve- ja tulekahjusignalisatsiooniga varustatud ruumis, tulekindlas seifis või tulekahjusignalisatsiooniga varustatud ruumis asuvas raudkapis. 2 (2) Isikuankeedis küsitud andmeid säilitatakse viis aastat isiku politseiteenistusse kandideerimisest või politseiteenistusest lahkumisest. RT I 2018-09-18 1 118092018001 2018-09-21",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
@@ -185,11 +237,49 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_340215_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_340215_Par_2_Lg_2"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
+        },
+        {
+          "@id": "estleg:Institution_kaitsepolitseiamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_340215_Par_2_v340215"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_340215_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikuankeete hoitakse vastavalt Politsei- ja Piirivalveameti või Kaitsepolitseiameti valve- ja tulekahjusignalisatsiooniga varustatud ruumis, tulekindlas seifis või tulekahjusignalisatsiooniga varustatud ruumis asuvas raudkapis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_340215_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
@@ -200,24 +290,70 @@
       ]
     },
     {
+      "@id": "estleg:Reg_340215_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Isikuankeedis küsitud andmeid säilitatakse viis aastat isiku politseiteenistusse kandideerimisest või politseiteenistusest lahkumisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_340215_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
       "@id": "estleg:Reg_340215_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 3. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikuankeedi vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_340215_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. jaanuaril 2010.",
-      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2010. Määrus jõustub 1. jaanuaril 2010.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. jaanuaril 2010.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2010.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_340215_Par_3_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_340215_Par_3_v340215"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_340215_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. jaanuaril 2010.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_340215_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_340215_Map_1",

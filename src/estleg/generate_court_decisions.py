@@ -49,6 +49,15 @@ from pathlib import Path
 
 import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 
+from estleg.ingest_overlay import (
+    IngestLayer,
+    add_replace_overlays_argument,
+    load_existing_doc,
+    log_replace_overlays_mode,
+    keep_refined,
+    max_int,
+    prepare_write,
+)
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     CONTEXT,
@@ -78,6 +87,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 RK_DIR = KRR_DIR / "riigikohus"
 RK_DIR.mkdir(parents=True, exist_ok=True)
+# #697: frozen allowlist of the Riigikohus IRI collisions (second document of
+# a caseNumber that already holds the short IRI).
+RK_IRI_COLLISIONS_PATH = REPO_ROOT / "data" / "rk_iri_collisions.json"
 
 NS = "https://w3id.org/estleg/"
 
@@ -1031,20 +1043,192 @@ def _typed_any_uri(url: str) -> dict:
     return {"@value": url, "@type": "xsd:anyURI"}
 
 
-def _build_node_id(dec: dict) -> str | None:
-    """Build a deterministic ``@id`` for a decision.
+def rk_short_iri(case_nr: str) -> str:
+    """THE frozen Riigikohus IRI (#697): ``estleg:RK_<sanitize(caseNumber)>``.
 
-    The IRI is built from ``(case_nr, object_id)`` so two decisions
-    sharing the same ``case_nr`` always produce distinct, stable
-    IRIs across runs (no run-order-dependent flipping). When
-    ``object_id`` is missing we log a WARNING and skip the
-    decision because there is no other reliable disambiguator.
+    Changing this formula re-mints every committed court IRI and is a MAJOR
+    change (docs/ARCHITECTURE.md, docs/STABILITY.md).
+    """
+    return f"estleg:RK_{sanitize_id(case_nr.strip())}"
+
+
+def rk_collision_iri(case_nr: str, object_id: str) -> str:
+    """IRI for the 2nd+ document of a caseNumber: ``<short>_<sanitize(oid)>``."""
+    return f"{rk_short_iri(case_nr)}_{sanitize_id(object_id.strip())}"
+
+
+def _oid_sort_key(oid: str) -> tuple[int, int, str]:
+    oid = oid.strip()
+    return (0, int(oid), oid) if oid.isdigit() else (1, 0, oid)
+
+
+def load_rk_iri_collisions(path: Path | None = None) -> dict[tuple[str, str], str]:
+    """``{(caseNumber, rikObjectId): iri}`` from the frozen allowlist."""
+    target = path if path is not None else RK_IRI_COLLISIONS_PATH
+    try:
+        with open(target, encoding="utf-8") as fh:
+            data = json.load(fh)
+    except FileNotFoundError:
+        return {}
+    out: dict[tuple[str, str], str] = {}
+    for entry in data.get("collisions", []):
+        out[(entry["caseNumber"], entry["rikObjectId"])] = entry["iri"]
+    return out
+
+
+def frozen_rk_iri(
+    case_nr: str, object_id: str, collisions: dict[tuple[str, str], str]
+) -> str:
+    """The committed IRI for ``(caseNumber, rikObjectId)`` under the frozen scheme."""
+    return collisions.get((case_nr, object_id)) or rk_short_iri(case_nr)
+
+
+class RkIriScheme:
+    """Mint Riigikohus decision IRIs under the frozen #697 scheme.
+
+    * ``(caseNumber, oid)`` on the frozen allowlist -> the listed IRI (the
+      121 committed long-form twins, reproduced byte for byte);
+    * otherwise the short form ``estleg:RK_<sanitize(caseNumber)>`` — unless
+      a different oid already holds it (seeded from the existing peep, or
+      planned for this run), in which case the NEW collision gets
+      ``<short>_<oid>``, is logged at WARNING and recorded in
+      :attr:`new_collisions` for the caller to append to the allowlist.
+
+    :meth:`plan` makes a fresh run order-independent: within one caseNumber
+    with no holder yet, the lowest oid claims the short form.
+    """
+
+    def __init__(self, collisions: dict[tuple[str, str], str] | None = None) -> None:
+        self.collisions: dict[tuple[str, str], str] = dict(collisions or {})
+        self.holders: dict[str, str] = {}
+        self.new_collisions: list[dict[str, str]] = []
+
+    @classmethod
+    def frozen(cls, path: Path | None = None) -> "RkIriScheme":
+        scheme = cls(load_rk_iri_collisions(path))
+        target = path if path is not None else RK_IRI_COLLISIONS_PATH
+        try:
+            entries = json.loads(target.read_text(encoding="utf-8")).get("collisions", [])
+        except FileNotFoundError:
+            entries = []
+        for entry in entries:
+            holder = entry.get("shortFormHolder")
+            if holder:
+                scheme.holders[rk_short_iri(entry["caseNumber"])] = str(holder)
+        return scheme
+
+    def seed_from_graph(self, graph: object) -> None:
+        """Record which oid holds each short IRI in an existing peep graph."""
+        if not isinstance(graph, list):
+            return
+        for node in graph:
+            if not isinstance(node, dict):
+                continue
+            case_nr = node.get("estleg:caseNumber")
+            oid = _unwrap_literal(node.get("estleg:rikObjectId"))
+            if not isinstance(case_nr, str) or not oid:
+                continue
+            if node.get("@id") == rk_short_iri(case_nr):
+                self.holders.setdefault(rk_short_iri(case_nr), oid)
+
+    def plan(self, decisions: list[dict]) -> None:
+        """Pre-assign unheld short IRIs to the lowest oid of each caseNumber."""
+        groups: dict[str, list[str]] = {}
+        for dec in decisions:
+            case_nr = (dec.get("case_nr") or "").strip()
+            oid = (dec.get("object_id") or "").strip()
+            if not case_nr or not oid or (case_nr, oid) in self.collisions:
+                continue
+            groups.setdefault(case_nr, []).append(oid)
+        for case_nr, oids in groups.items():
+            self.holders.setdefault(rk_short_iri(case_nr), min(oids, key=_oid_sort_key))
+
+    def mint(self, case_nr: str, object_id: str) -> str:
+        case_nr = case_nr.strip()
+        object_id = object_id.strip()
+        listed = self.collisions.get((case_nr, object_id))
+        if listed:
+            return listed
+        short = rk_short_iri(case_nr)
+        holder = self.holders.setdefault(short, object_id)
+        if holder == object_id:
+            return short
+        iri = rk_collision_iri(case_nr, object_id)
+        logger.warning(
+            "RK IRI collision: %s is held by rikObjectId %s; minting %s for "
+            "rikObjectId %s and adding it to %s",
+            short, holder, iri, object_id, RK_IRI_COLLISIONS_PATH.name,
+        )
+        self.collisions[(case_nr, object_id)] = iri
+        self.new_collisions.append(
+            {
+                "caseNumber": case_nr,
+                "rikObjectId": object_id,
+                "iri": iri,
+                "shortFormHolder": holder,
+            }
+        )
+        return iri
+
+
+def write_rk_iri_collisions(
+    collisions: dict[tuple[str, str], str],
+    holders: dict[str, str] | None = None,
+    path: Path | None = None,
+) -> Path:
+    """Persist the allowlist (sorted, deterministic). Existing entries are kept."""
+    target = path if path is not None else RK_IRI_COLLISIONS_PATH
+    previous: dict[tuple[str, str], dict] = {}
+    try:
+        with open(target, encoding="utf-8") as fh:
+            for entry in json.load(fh).get("collisions", []):
+                previous[(entry["caseNumber"], entry["rikObjectId"])] = entry
+    except FileNotFoundError:
+        pass
+    entries = []
+    for (case_nr, oid), iri in collisions.items():
+        entry = dict(previous.get((case_nr, oid), {}))
+        entry.update({"caseNumber": case_nr, "rikObjectId": oid, "iri": iri})
+        holder = (holders or {}).get(rk_short_iri(case_nr))
+        if holder and "shortFormHolder" not in entry:
+            entry["shortFormHolder"] = holder
+        entries.append(entry)
+    for key, entry in previous.items():
+        if key not in collisions:
+            entries.append(entry)
+    entries.sort(key=lambda e: (e["caseNumber"], _oid_sort_key(e["rikObjectId"])))
+    doc = {
+        "description": (
+            "Frozen Riigikohus IRI collision allowlist (#697). The IRI scheme is "
+            "estleg:RK_<sanitize(caseNumber)>; a second document with the same "
+            "caseNumber (different rikObjectId) keeps the IRI listed here "
+            "(<short>_<sanitize(rikObjectId)>). generate_court_decisions "
+            "consults this file and appends new collisions; never edit or "
+            "re-mint an existing entry (MAJOR change)."
+        ),
+        "scheme": "estleg:RK_<sanitize(caseNumber)>",
+        "collisionScheme": "estleg:RK_<sanitize(caseNumber)>_<sanitize(rikObjectId)>",
+        "collisions": entries,
+    }
+    save_json(target, doc)
+    return target
+
+
+def _build_node_id(dec: dict, iri_scheme: RkIriScheme | None = None) -> str | None:
+    """Build the frozen ``@id`` for a decision (#697).
+
+    With an :class:`RkIriScheme` the full collision policy applies. Without
+    one, the stateless frozen formula is used (allowlist, else short form)
+    and :func:`decision_to_node` resolves in-run collisions through its
+    ``seen_ids`` (first row holds the short form). Production paths
+    (:func:`build_year_doc`) always pass a scheme. When ``object_id`` is
+    missing we log a WARNING and skip the decision because there is no
+    reliable disambiguator.
     """
     case_nr = (dec.get("case_nr") or "").strip()
     if not case_nr:
         logger.warning("decision_to_node: skipping decision with empty case_nr: %r", dec)
         return None
-    case_id = sanitize_id(case_nr)
     obj_id = (dec.get("object_id") or "").strip()
     if not obj_id:
         logger.warning(
@@ -1052,7 +1236,19 @@ def _build_node_id(dec: dict) -> str | None:
             case_nr,
         )
         return None
-    return f"estleg:RK_{case_id}_{sanitize_id(obj_id)}"
+    if iri_scheme is not None:
+        return iri_scheme.mint(case_nr, obj_id)
+    return frozen_rk_iri(case_nr, obj_id, _default_rk_collisions())
+
+
+_DEFAULT_RK_COLLISIONS: dict[tuple[str, str], str] | None = None
+
+
+def _default_rk_collisions() -> dict[tuple[str, str], str]:
+    global _DEFAULT_RK_COLLISIONS
+    if _DEFAULT_RK_COLLISIONS is None:
+        _DEFAULT_RK_COLLISIONS = load_rk_iri_collisions()
+    return _DEFAULT_RK_COLLISIONS
 
 
 def _decision_content_key(dec: dict) -> tuple[str, str, str]:
@@ -1099,8 +1295,21 @@ def court_decision_content_key_from_node(
 
 
 def choose_canonical_decision(nodes: list[dict]) -> dict:
-    """Keep the shortest @id (no extra rikObjectId suffix), then lexical min."""
-    return min(nodes, key=lambda n: (len(str(n.get("@id") or "")), str(n.get("@id") or "")))
+    """Pick the canonical node among true duplicates (#392, #697).
+
+    Under the frozen scheme the canonical node is the one carrying the short
+    IRI ``estleg:RK_<sanitize(caseNumber)>`` of its own caseNumber; ties (or
+    groups with no short-form node) fall back to the shortest, then the
+    lexically smallest ``@id``.
+    """
+
+    def _key(node: dict) -> tuple[int, int, str]:
+        nid = str(node.get("@id") or "")
+        case_nr = node.get("estleg:caseNumber")
+        is_short = isinstance(case_nr, str) and nid == rk_short_iri(case_nr)
+        return (0 if is_short else 1, len(nid), nid)
+
+    return min(nodes, key=_key)
 
 
 def dedupe_court_decision_graph(
@@ -1194,6 +1403,8 @@ def decision_to_node(
     year: int,
     seen_ids: set[str],
     seen_keys: set[tuple[str, str, str]] | None = None,
+    *,
+    iri_scheme: RkIriScheme | None = None,
 ) -> dict | None:
     """Convert a decision dict to a JSON-LD node.
 
@@ -1208,10 +1419,45 @@ def decision_to_node(
     emitted as two+ nodes with different ``rikObjectId``. Passing
     ``None`` (the default) disables content-level dedup and keeps the
     legacy "one node per distinct ``@id``" behaviour.
+
+    ``iri_scheme`` applies the frozen #697 IRI scheme with its collision
+    policy (see :class:`RkIriScheme`); the content-duplicate check runs
+    first so a skipped duplicate row never registers an IRI collision.
+
+    Literal forms (plain-string ``rdfs:label`` / ``estleg:summary``,
+    ``decisionLink`` with ``/`` unescaped, no ``dcterms:source``) are the
+    ones every committed Riigikohus peep carries, so a re-ingest is
+    byte-stable (#697).
     """
-    node_id = _build_node_id(dec)
+    content_key = _decision_content_key(dec)
+    if seen_keys is not None and content_key in seen_keys:
+        # Distinct object_id, identical real document — the rikos API
+        # returned the same decision twice. Keep the first; skip this
+        # duplicate so interpretsLaw links cannot land on a phantom
+        # second node non-deterministically (issue #392).
+        logger.warning(
+            "decision_to_node: duplicate decision %r (case_nr/date/type "
+            "match, distinct object_id %r) — skipping duplicate row",
+            content_key,
+            (dec.get("object_id") or "").strip(),
+        )
+        return None
+    node_id = _build_node_id(dec, iri_scheme)
     if node_id is None:
         return None
+    reservation: str | None = None
+    if iri_scheme is None:
+        # Stateless fallback: the first row of a caseNumber holds the short
+        # IRI and reserves its own long form, so a repeat of the SAME
+        # (case_nr, object_id) is caught as a duplicate below while a
+        # different object_id gets ``<short>_<oid>``.
+        case_nr = dec["case_nr"].strip()
+        oid = dec["object_id"].strip()
+        if node_id == rk_short_iri(case_nr):
+            if node_id in seen_ids:
+                node_id = rk_collision_iri(case_nr, oid)
+            else:
+                reservation = rk_collision_iri(case_nr, oid)
     if node_id in seen_ids:
         # Same (case_nr, object_id) twice in one feed — extremely
         # rare. Keep the first; surface the dup at WARNING.
@@ -1221,29 +1467,17 @@ def decision_to_node(
         )
         return None
     if seen_keys is not None:
-        content_key = _decision_content_key(dec)
-        if content_key in seen_keys:
-            # Distinct object_id, identical real document — the rikos API
-            # returned the same decision twice. Keep the first; skip this
-            # duplicate so interpretsLaw links cannot land on a phantom
-            # second node non-deterministically (issue #392).
-            logger.warning(
-                "decision_to_node: duplicate decision %r (case_nr/date/type "
-                "match, distinct object_id %r) — skipping duplicate node %s",
-                content_key,
-                (dec.get("object_id") or "").strip(),
-                node_id,
-            )
-            return None
         seen_keys.add(content_key)
     seen_ids.add(node_id)
+    if reservation is not None:
+        seen_ids.add(reservation)
 
     type_id, _type_et, _type_en = classify_case(dec["case_nr"])
 
     node: dict = {
         "@id": node_id,
         "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
-        "rdfs:label": {"@value": f"RK {dec['case_nr']}", "@language": "et"},
+        "rdfs:label": f"RK {dec['case_nr']}",
         "estleg:caseNumber": dec["case_nr"],
         "estleg:caseType": {"@id": f"estleg:CaseType_{type_id}"},
     }
@@ -1281,23 +1515,24 @@ def decision_to_node(
     if dec.get("summary"):
         summary_text, summary_findings = screen_personal_data(dec["summary"])
         summary_masked = len(summary_findings)
-        node["estleg:summary"] = {"@value": summary_text[:800], "@language": "et"}
+        node["estleg:summary"] = summary_text[:800]
     else:
         summary_text = ""
 
-    # Link — URL-encoded query string so case_nr containing '#'/'/'/spaces
-    # never silently breaks the resulting URL. ``urlencode`` plus
-    # ``quote(safe='')`` is belt-and-suspenders here: ``urlencode``
-    # alone already escapes '#', '/', and spaces in values.
+    # Link — URL-encoded query string so a case_nr containing '#' or
+    # spaces never silently breaks the resulting URL. '/' stays literal
+    # (``safe="/"``): it is legal in a query and every committed
+    # ``decisionLink`` carries it unescaped (#697). The search-row href is
+    # not emitted as ``dcterms:source``; ``estleg:rikosUrl`` (from the
+    # object id) is the stable rikos pointer.
     if dec.get("link"):
         encoded_query = urllib.parse.urlencode(
-            {"asjaNr": dec["case_nr"]}, quote_via=urllib.parse.quote
+            {"asjaNr": dec["case_nr"]}, quote_via=urllib.parse.quote, safe="/"
         )
         riigikohus_link = (
             f"https://www.riigikohus.ee/et/lahendid/?{encoded_query}"
         )
         node["estleg:decisionLink"] = {"@value": riigikohus_link, "@type": "xsd:anyURI"}
-        node["dcterms:source"] = {"@id": dec["link"]}
 
     # RIK object ID + direct rikos document URL (#442).
     if dec.get("object_id"):
@@ -1329,6 +1564,146 @@ def decision_to_node(
     stamp_personal_data_screening(node, summary_masked)
 
     return node
+
+
+# #697: what the Riigikohus search-table ingest owns. Everything else on a
+# year peep is overlay and survives a re-scrape: full text + chamber/judge
+# (--fetch-full-text), interpretsLaw / interpretsVersion / staleness
+# (extract_court_provision_links, derive_court_interpretation_staleness),
+# Citation nodes, and the #579 text-derived case type.
+RK_INGEST_LAYER = IngestLayer(
+    name="generate_court_decisions",
+    raw_keys=frozenset(
+        {
+            "rdfs:label",
+            "dc:description",
+            "dc:source",
+            "dcterms:source",
+            "estleg:caseNumber",
+            "estleg:decisionType",
+            "estleg:decisionDate",
+            "estleg:ecliIdentifier",
+            "estleg:summary",
+            "estleg:decisionLink",
+            "estleg:rikObjectId",
+            "estleg:rikosUrl",
+            "estleg:personalDataScreened",
+        }
+    ),
+    raw_node_types=frozenset({"estleg:CourtDecision", "owl:Ontology"}),
+    union_keys=frozenset({"estleg:derivationMethod", "rdfs:seeAlso"}),
+    # detect_referenced_laws emits raw genitive tokens; #596
+    # (normalize_court_referenced_law) owns the value once a node exists.
+    seed_keys=frozenset({"estleg:referencedLaw"}),
+    combiners={
+        # #683: the full-text pass adds its masked codes to the summary's.
+        "estleg:personalDataMaskedCount": max_int,
+        # #579: the legacy III-3/III-4 chambers are typed from legalText.
+        "estleg:caseType": keep_refined({"@id": "estleg:CaseType_Other"}),
+    },
+)
+
+
+def year_map_node(year: int, decision_count: int) -> dict:
+    """The ``estleg:Riigikohus_<year>_Map`` header node of a year peep."""
+    return {
+        "@id": f"estleg:Riigikohus_{year}_Map",
+        "@type": ["owl:Ontology"],
+        "rdfs:label": f"Riigikohtu lahendid {year}",
+        "dc:description": f"Riigikohtu lahendid aastast {year} ({decision_count} lahendit)",
+        "dc:source": "Riigikohus – rikos.rik.ee",
+    }
+
+
+def _preferred_duplicate_rows(decisions: list[dict], iri_scheme: RkIriScheme) -> set[int]:
+    """Row indexes to keep: one per (case_nr, date, decision_type) (#392).
+
+    Among true duplicates the row whose object id holds the short IRI wins,
+    so dedup never leaves a decision under its ``_<oid>`` collision IRI;
+    otherwise the first row is kept (the pre-#697 behaviour).
+    """
+    groups: dict[tuple[str, str, str], list[int]] = {}
+    for index, dec in enumerate(decisions):
+        groups.setdefault(_decision_content_key(dec), []).append(index)
+    keep: set[int] = set()
+    for indexes in groups.values():
+        chosen = indexes[0]
+        for index in indexes:
+            dec = decisions[index]
+            case_nr = (dec.get("case_nr") or "").strip()
+            oid = (dec.get("object_id") or "").strip()
+            if case_nr and iri_scheme.holders.get(rk_short_iri(case_nr)) == oid:
+                chosen = index
+                break
+        keep.add(chosen)
+    return keep
+
+
+def build_year_doc(
+    year: int,
+    decisions: list[dict],
+    iri_scheme: RkIriScheme,
+) -> tuple[dict, list[dict], int]:
+    """Raw-layer year peep from search-table rows (#697).
+
+    Returns ``(doc, emitted_rows, skipped)``. Pure: no I/O. Call
+    ``iri_scheme.seed_from_graph`` with the existing peep first so committed
+    short-form holders keep their IRI; this function plans the rest.
+    """
+    iri_scheme.plan(decisions)
+    graph: list[dict] = []
+    seen_ids: set[str] = set()
+    # Content-level dedup within the year file: drops rikos rows that
+    # repeat the same (case_nr, date, decision_type) under a different
+    # object_id, i.e. the same real document returned twice (#392).
+    seen_keys: set[tuple[str, str, str]] = set()
+    # Track only the decisions that actually produced a node. Rows that
+    # decision_to_node drops as duplicates or as unbuildable must NOT feed
+    # the index counts (#398).
+    emitted: list[dict] = []
+    skipped = 0
+    preferred = _preferred_duplicate_rows(decisions, iri_scheme)
+    for index, dec in enumerate(decisions):
+        if index not in preferred:
+            # A true duplicate (#392) of a row that holds the short IRI.
+            logger.warning(
+                "build_year_doc: duplicate decision %r — keeping the short-IRI holder's row",
+                _decision_content_key(dec),
+            )
+            skipped += 1
+            continue
+        node = decision_to_node(dec, year, seen_ids, seen_keys, iri_scheme=iri_scheme)
+        if node is None:
+            skipped += 1
+            continue
+        graph.append(node)
+        emitted.append(dec)
+    # The header counts the decisions the peep holds, not the raw rikos rows
+    # (the same #398 invariant as the index; #697).
+    graph.insert(0, year_map_node(year, len(emitted)))
+    return {"@context": CONTEXT, "@graph": graph}, emitted, skipped
+
+
+def write_year_peep(
+    out_path: Path,
+    doc: dict,
+    *,
+    replace_overlays: bool = False,
+    existing_doc: dict | None = None,
+) -> dict:
+    """Persist a year peep, keeping the existing overlay unless told not to."""
+    merged, report = prepare_write(
+        out_path,
+        doc,
+        RK_INGEST_LAYER,
+        replace_overlays=replace_overlays,
+        existing_doc=existing_doc,
+        log=logger,
+    )
+    if report.nodes_merged and not replace_overlays:
+        logger.info("%s: %s", out_path.name, report.summary())
+    save_json(out_path, merged)
+    return merged
 
 
 def backfill_ecli_on_node(node: dict) -> bool:
@@ -1898,6 +2273,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "aborts the run before the index is rewritten."
         ),
     )
+    add_replace_overlays_argument(parser)
     args = parser.parse_args(argv)
     if args.evaluation_date is not None:
         try:
@@ -1960,6 +2336,15 @@ def main(argv: list[str] | None = None):
     all_decisions: list[dict] = []
     year_stats: dict[int, int] = {}
     partial_years: list[int] = []
+    log_replace_overlays_mode(RK_INGEST_LAYER, args.replace_overlays, logger)
+    iri_scheme = RkIriScheme.frozen()
+    # The feed is processed newest year first. Reserve every published short
+    # IRI before minting anything: a new decision may share a case number with
+    # a holder in an older year (including one outside this fetch's range).
+    for path in sorted(RK_DIR.glob("riigikohus_*_peep.json")):
+        existing = load_existing_doc(path)
+        if existing is not None:
+            iri_scheme.seed_from_graph(existing.get("@graph"))
 
     for year in range(end_year, start_year - 1, -1):
         print(f"\n--- Year {year} ---")
@@ -1981,50 +2366,30 @@ def main(argv: list[str] | None = None):
             print("  No decisions found")
             continue
 
-        # Generate per-year file
-        graph: list[dict] = [
-            {
-                "@id": f"estleg:Riigikohus_{year}_Map",
-                "@type": ["owl:Ontology"],
-                "rdfs:label": {"@value": f"Riigikohtu lahendid {year}", "@language": "et"},
-                "dc:description": {"@value": f"Riigikohtu lahendid aastast {year} ({len(decisions)} lahendit)", "@language": "et"},
-                "dc:source": "Riigikohus – rikos.rik.ee",
-            },
-        ]
-
-        seen_ids: set[str] = set()
-        # Content-level dedup within the year file: drops rikos rows that
-        # repeat the same (case_nr, date, decision_type) under a different
-        # object_id, i.e. the same real document returned twice (#392).
-        seen_keys: set[tuple[str, str, str]] = set()
-        skipped_in_year = 0
-        # Track only the decisions that actually produced a node. Rows that
-        # decision_to_node drops as duplicates (seen_ids / seen_keys) or as
-        # unbuildable (no stable IRI) must NOT feed the index counts, or the
-        # index would advertise more decisions than the emitted graph holds
-        # (#398). The index total + case_type_counts + per-year breakdown are
-        # tallied from this emitted set below, matching the de-duplicated peep
-        # graph (the same invariant the archived #342 rederive pass enforced).
-        emitted_in_year: list[dict] = []
-        for dec in decisions:
-            node = decision_to_node(dec, year, seen_ids, seen_keys)
-            if node is None:
-                skipped_in_year += 1
-                continue
-            graph.append(node)
-            emitted_in_year.append(dec)
+        # Generate per-year file (#697: raw layer, merged onto the overlay).
+        out_path = RK_DIR / f"riigikohus_{year}_peep.json"
+        existing = load_existing_doc(out_path)
+        if existing is not None:
+            iri_scheme.seed_from_graph(existing.get("@graph"))
+        doc, emitted_in_year, skipped_in_year = build_year_doc(year, decisions, iri_scheme)
         if skipped_in_year:
             print(f"  Skipped {skipped_in_year} unsalvageable decisions for {year}")
-
-        doc = {"@context": CONTEXT, "@graph": graph}
-        out_path = RK_DIR / f"riigikohus_{year}_peep.json"
-        save_json(out_path, doc)
-        print(f"  Saved: {out_path.name} ({len(graph)} nodes)")
+        merged = write_year_peep(
+            out_path, doc, replace_overlays=args.replace_overlays, existing_doc=existing
+        )
+        print(f"  Saved: {out_path.name} ({len(merged['@graph'])} nodes)")
 
         # Count emitted decisions (post-dedup), not the raw rikos rows (#398).
         year_stats[year] = len(emitted_in_year)
         all_decisions.extend(emitted_in_year)
         time.sleep(RATE_DELAY)
+
+    if iri_scheme.new_collisions:
+        path = write_rk_iri_collisions(iri_scheme.collisions, iri_scheme.holders)
+        print(
+            f"  WARNING: {len(iri_scheme.new_collisions)} new RK IRI collision(s) "
+            f"appended to {_rel_to_repo(path)}"
+        )
 
     # Generate index
     print("\n--- Generating index ---")

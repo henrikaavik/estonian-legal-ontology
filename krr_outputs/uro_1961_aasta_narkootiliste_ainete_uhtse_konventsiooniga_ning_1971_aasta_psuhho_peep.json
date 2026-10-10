@@ -5,54 +5,67 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:UNAUKPAK1961_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga ning 1971. aasta psühhotroopsete ainete konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga ning 1971. aasta psühhotroopsete ainete konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga ning 1971. aasta psühhotroopsete ainete konventsiooniga ühinemise seadus",
       "dcterms:title": "ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga ning 1971. aasta psühhotroopsete ainete konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/25124.xml"
+        "@id": "https://www.riigiteataja.ee/akt/25124"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/25124/xml"
+      },
+      "estleg:globalId": "25124",
+      "eli:id_local": "25124",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "151857",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "17ce896824cbed87a03084b10a58e2d6699aed81738dfe6cbd6053754b360a23",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
         "@type": "xsd:boolean"
       },
-      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
-    },
-    {
-      "@id": "estleg:UNAUKPAK1961_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga ning 1971. aasta psühhotroopsete ainete konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_UNAUKPAK1961_default"
-        }
-      ]
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528).",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1996-06-26",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_UNAUKPAK1961_default",
@@ -61,12 +74,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:UNAUKPAK1961_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:UNAUKPAK1961_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga ning 1971. aasta psühhotroopsete ainete konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_UNAUKPAK1961_default"
+        }
+      ]
     },
     {
       "@id": "estleg:UNAUKPAK1961_Par_1",
@@ -75,13 +109,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga ning 1971. aasta psühhotroopsete ainete konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UNAUKPAK1961_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on sõlmitud 1961. aasta 30. märtsil New Yorgis ning mida on parandatud 1972. aasta 25. märtsil Genfis.",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1961. aasta 30. märtsil New Yorgis ning mida on parandatud 1972. aasta 25. märtsil Genfis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga , mis on sõlmitud 1961. aasta 30. märtsil New Yorgis ning mida on parandatud 1972. aasta 25. märtsil Genfis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga , mis on sõlmitud 1961. aasta 30. märtsil New Yorgis ning mida on parandatud 1972. aasta 25. märtsil Genfis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UNAUKPAK1961_default"
       },
@@ -95,13 +135,13 @@
           "@id": "estleg:OKVKOKAMPU_Par_1"
         },
         {
+          "@id": "estleg:PVRKU_Par_1"
+        },
+        {
           "@id": "estleg:RPSIKU_Par_1"
         },
         {
           "@id": "estleg:VUTKU_Par_1"
-        },
-        {
-          "@id": "estleg:euroopa_tuumauuringute_organisatsiooni_a_Par_2"
         }
       ],
       "estleg:hasVersion": [
@@ -116,10 +156,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1961. aasta 30. märtsil New Yorgis ning mida on parandatud 1972. aasta 25. märtsil Genfis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga , mis on sõlmitud 1961. aasta 30. märtsil New Yorgis ning mida on parandatud 1972. aasta 25. märtsil Genfis.",
       "estleg:parentProvision": {
         "@id": "estleg:UNAUKPAK1961_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:UNAUKPAK1961_Par_2",
@@ -128,13 +170,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ühineda juurdelisatud ÜRO 1971. aasta psühhotroopsete ainete konventsiooniga./13...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ühineda juurdelisatud ÜRO 1971. aasta psühhotroopsete ainete konventsiooniga , m...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "ÜRO 1961. aasta narkootiliste ainete ühtse konventsiooniga ning 1971. aasta psühhotroopsete ainete konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UNAUKPAK1961_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on sõlmitud 1971. aasta 21. veebruaril Viinis.",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1971. aasta 21. veebruaril Viinis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud ÜRO 1971. aasta psühhotroopsete ainete konventsiooniga , mis on sõlmitud 1971. aasta 21. veebruaril Viinis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud ÜRO 1971. aasta psühhotroopsete ainete konventsiooniga , mis on sõlmitud 1971. aasta 21. veebruaril Viinis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UNAUKPAK1961_default"
       },
@@ -145,19 +193,19 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:AKEKR_Par_1"
+          "@id": "estleg:ASKU_Par_1"
         },
         {
-          "@id": "estleg:EAKKR_Par_1"
+          "@id": "estleg:OKVKOKAMPU_Par_1"
         },
         {
-          "@id": "estleg:OKVKOKAMPU_Par_2"
+          "@id": "estleg:PVRKU_Par_1"
         },
         {
-          "@id": "estleg:PRJKKKR_Par_2"
+          "@id": "estleg:VUTKU_Par_1"
         },
         {
-          "@id": "estleg:UKKKR_Par_2"
+          "@id": "estleg:narkootiliste_ja_psuhhotroopsete_ainete_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -172,10 +220,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1971. aasta 21. veebruaril Viinis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud ÜRO 1971. aasta psühhotroopsete ainete konventsiooniga , mis on sõlmitud 1971. aasta 21. veebruaril Viinis.",
       "estleg:parentProvision": {
         "@id": "estleg:UNAUKPAK1961_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

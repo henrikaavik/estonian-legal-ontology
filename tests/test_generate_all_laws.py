@@ -79,7 +79,9 @@ def test_law_stub_preserves_no_body_act():
     assert ontology["estleg:contentStatus"] == "noStructuredBody"
     assert "estleg:Act" in ontology["@type"]
     assert "estleg:Law" in ontology["@type"]
-    assert ontology["dcterms:source"]["@id"].endswith("/akt/123.xml")
+    assert ontology["dcterms:source"]["@id"] == "https://www.riigiteataja.ee/akt/123"
+    assert ontology["estleg:sourceXml"]["@id"].endswith("/public-api/api/v1/akt/123/xml")
+    assert ontology["estleg:globalId"] == "123"
 
 
 def test_merge_existing_enrichments_skips_stale_requested_cluster(tmp_path):
@@ -1312,6 +1314,8 @@ class TestStaleOsaReconciledOutsideToGenerate:
                         "@value": tid,
                         "@type": "xsd:string",
                     },
+                    # The redaction _patch_common's search row names (#692).
+                    "estleg:globalId": "1",
                 },
                 {"@id": f"Par_{osa_nr}", "@type": ["owl:NamedIndividual"]},
             ],
@@ -2337,8 +2341,11 @@ class TestWriteLawOutput:
 
     def test_refresh_rewrites_changed(self, tmp_path):
         p = tmp_path / "x_peep.json"
-        p.write_text(json.dumps({"@graph": [{"@id": "estleg:Old"}]}), encoding="utf-8")
-        new_doc = {"@graph": [{"@id": "estleg:New"}]}
+        # #697: a node of a generator-owned type that the new build no longer
+        # emits is dropped (an untyped node would be kept as overlay).
+        old_node = {"@id": "estleg:Old", "@type": ["estleg:LegalProvision"]}
+        p.write_text(json.dumps({"@graph": [old_node]}), encoding="utf-8")
+        new_doc = {"@graph": [{"@id": "estleg:New", "@type": ["estleg:LegalProvision"]}]}
         assert generate_all_laws.write_law_output(p, new_doc, mode="refresh") == "refreshed"
         assert json.loads(p.read_text(encoding="utf-8")) == new_doc
 

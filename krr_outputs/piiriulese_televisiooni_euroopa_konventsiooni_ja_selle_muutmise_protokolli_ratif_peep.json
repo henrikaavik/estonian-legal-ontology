@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:PTEKSMPR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus",
       "dcterms:title": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/26144.xml"
+        "@id": "https://www.riigiteataja.ee/akt/26144"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/26144/xml"
+      },
+      "estleg:globalId": "26144",
+      "eli:id_local": "26144",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "152623",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "0ea84f8cc86a8e045d5ec4975b0789fa4bdb616514f252d9bd4cafc752b5efa7",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -56,19 +68,20 @@
         {
           "@id": "http://eurovoc.europa.eu/2924"
         }
-      ]
-    },
-    {
-      "@id": "estleg:PTEKSMPR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_PTEKSMPR_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1999-12-29",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_PTEKSMPR_default",
@@ -77,12 +90,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PTEKSMPR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:PTEKSMPR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_PTEKSMPR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:PTEKSMPR_Par_1",
@@ -91,13 +125,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud piiriülese televisiooni Euroopa konventsioon ./7938...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud piiriülese televisiooni Euroopa konventsioon , mis...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PTEKSMPR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1989. aasta 5. mail Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 9. veebruaril, ning , mis on koostatud 1998. aasta 9. septembril Strasbourg'is.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1989. aasta 5. mail Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 9. veebruaril, ning , mis on koostatud 1998. aasta 9. septembril Strasbourg'is.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud piiriülese televisiooni Euroopa konventsioon , mis on koostatud 1989. aasta 5. mail Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 9. veebruaril, ning piiriülese televisiooni Euroopa konventsiooni muutmise protokoll , mis on koostatud 1998. aasta 9. septembril Strasbourg'is.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud piiriülese televisiooni Euroopa konventsioon , mis on koostatud 1989. aasta 5. mail Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 9. veebruaril, ning piiriülese televisiooni Euroopa konventsiooni muutmise protokoll , mis on koostatud 1998. aasta 9. septembril Strasbourg'is.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PTEKSMPR_default"
       },
@@ -114,13 +154,13 @@
           "@id": "estleg:IATIKKMPR_Par_1"
         },
         {
-          "@id": "estleg:IENKR_Par_1"
-        },
-        {
-          "@id": "estleg:LKSASKEKENKR_Par_1"
-        },
-        {
           "@id": "estleg:RONUKR_Par_1"
+        },
+        {
+          "@id": "estleg:bioloogilise_mitmekesisuse_konventsiooni_Par_1"
+        },
+        {
+          "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konventsiooni_protokolli_nr_16_rat_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -135,10 +175,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1989. aasta 5. mail Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 9. veebruaril, ning , mis on koostatud 1998. aasta 9. septembril Strasbourg'is.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud piiriülese televisiooni Euroopa konventsioon , mis on koostatud 1989. aasta 5. mail Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 9. veebruaril, ning piiriülese televisiooni Euroopa konventsiooni muutmise protokoll , mis on koostatud 1998. aasta 9. septembril Strasbourg'is.",
       "estleg:parentProvision": {
         "@id": "estleg:PTEKSMPR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:PTEKSMPR_Par_2",
@@ -147,12 +189,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroop...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroop...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PTEKSMPR_Map"
       },
-      "estleg:summary": "Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroopa konventsiooni artikli 19 lõike 2 tähenduses.",
+      "estleg:summary": {
+        "@value": "Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroopa konventsiooni artikli 19 lõike 2 tähenduses.",
+        "@language": "et"
+      },
       "estleg:legalText": "Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroopa konventsiooni artikli 19 lõike 2 tähenduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PTEKSMPR_default"
@@ -162,31 +210,14 @@
           "@id": "estleg:PTEKSMPR_Par_2_Lg_1"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:EVERASGN_Par_2"
-        },
-        {
-          "@id": "estleg:IATIKKR_Par_3"
-        },
-        {
-          "@id": "estleg:UKOTTKU_Par_3"
-        },
-        {
-          "@id": "estleg:VUTKU_Par_2"
-        },
-        {
-          "@id": "estleg:rahvusvahelise_uute_taimesortide_kaitse_Par_2"
+          "@id": "estleg:Institution_kultuuriministeerium"
         }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:PTEKSMPR_Par_2_v26144"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kultuuriministeerium"
         }
       ]
     },
@@ -196,10 +227,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroopa konventsiooni artikli 19 lõike 2 tähenduses.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroopa konventsiooni artikli 19 lõike 2 tähenduses.",
       "estleg:parentProvision": {
         "@id": "estleg:PTEKSMPR_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kultuuriministeerium"

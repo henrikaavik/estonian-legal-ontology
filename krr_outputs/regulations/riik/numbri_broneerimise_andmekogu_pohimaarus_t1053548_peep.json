@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Numbri broneerimise andmekogu põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Numbri broneerimise andmekogu põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,27 +39,15 @@
       "estleg:globalId": "127122024009",
       "estleg:terviktekstId": "1053548",
       "estleg:preambleText": "Määrus kehtestatakse elektroonilise side seaduse § 28",
-      "estleg:entryIntoForce": {
-        "@value": "2022-02-18",
-        "@type": "xsd:date"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2024-12-13",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2022-02-15",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Amendment_Reg_1053548_9f74a9ae13"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Numbri broneerimise andmekogu põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "estleg:issuedUnder": [
         {
@@ -85,6 +80,24 @@
         {
           "@id": "http://eurovoc.europa.eu/5050"
         }
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2022-02-18",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2024-12-13",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2022-02-15",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_Reg_1053548_9f74a9ae13"
+        }
       ]
     },
     {
@@ -94,18 +107,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Andmekogu nimetus",
+      "rdfs:label": {
+        "@value": "§ 1. Andmekogu nimetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu nimetus on „Numbri broneerimise andmekogu” (edaspidi andmekogu). Andmekogu nimetus on „Numbri broneerimise andmekogu” (edaspidi andmekogu). 2 (2) Andmekogu inglise keelne nimetus on Numbering Management Database. Andmekogu inglise keelne nimetus on Numbering Management Database.",
-      "estleg:legalText": "1 (1) Andmekogu nimetus on „Numbri broneerimise andmekogu” (edaspidi andmekogu). Andmekogu nimetus on „Numbri broneerimise andmekogu” (edaspidi andmekogu). 2 (2) Andmekogu inglise keelne nimetus on Numbering Management Database. Andmekogu inglise keelne nimetus on Numbering Management Database.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu nimetus on „Numbri broneerimise andmekogu” (edaspidi andmekogu). 2 (2) Andmekogu inglise keelne nimetus on Numbering Management Database.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu nimetus on „Numbri broneerimise andmekogu” (edaspidi andmekogu). 2 (2) Andmekogu inglise keelne nimetus on Numbering Management Database.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_1_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_1_v1053548"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu nimetus on „Numbri broneerimise andmekogu” (edaspidi andmekogu).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu inglise keelne nimetus on Numbering Management Database.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_1053548_Par_2",
@@ -114,13 +167,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Andmekogu vastutav töötleja ja tema ülesanded",
+      "rdfs:label": {
+        "@value": "§ 2. Andmekogu vastutav töötleja ja tema ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu vastutav töötleja on Tarbijakaitse ja Tehnilise Järelevalve Amet. Andmekogu vastutav töötleja on Tarbijakaitse ja Tehnilise Järelevalve Amet. 2 (2) Andmekogu vastutav töötleja tagab: 1 1) andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; 2 2) andmekogu toimingute õiguspärasuse; 3 3) andmekogust andmete väljastamise nõuetekohasuse; 4 4) andmekogu kasutajatoe olemasolu; 5 5) õigustatud isikutele juurdepääsu andmekogule ning selles sisaldavatele andmetele; 6 6) isikuand",
-      "estleg:legalText": "1 (1) Andmekogu vastutav töötleja on Tarbijakaitse ja Tehnilise Järelevalve Amet. Andmekogu vastutav töötleja on Tarbijakaitse ja Tehnilise Järelevalve Amet. 2 (2) Andmekogu vastutav töötleja tagab: 1 1) andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; 2 2) andmekogu toimingute õiguspärasuse; 3 3) andmekogust andmete väljastamise nõuetekohasuse; 4 4) andmekogu kasutajatoe olemasolu; 5 5) õigustatud isikutele juurdepääsu andmekogule ning selles sisaldavatele andmetele; 6 6) isikuandmete töötlemise nõuete täitmise. Andmekogu vastutav töötleja tagab: andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; andmekogu toimingute õiguspärasuse; andmekogust andmete väljastamise nõuetekohasuse; andmekogu kasutajatoe olemasolu; õigustatud isikutele juurdepääsu andmekogule ning selles sisaldavatele andmetele; isikuandmete töötlemise nõuete täitmise.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu vastutav töötleja on Tarbijakaitse ja Tehnilise Järelevalve Amet. 2 (2) Andmekogu vastutav töötleja tagab: 1 1) andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; 2 2) andmekogu toimingute õiguspärasuse; 3 3) andmekogust andmete väljastamise nõuetekohasuse; 4 4) andmekogu kasutajatoe olemasolu; 5 5) õigustatud isikutele juurdepääsu andmekogule ning selles sisaldavatele andmetele; 6 6) isikuandmete töötlemise nõuete täitmise.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu vastutav töötleja on Tarbijakaitse ja Tehnilise Järelevalve Amet. 2 (2) Andmekogu vastutav töötleja tagab: 1 1) andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; 2 2) andmekogu toimingute õiguspärasuse; 3 3) andmekogust andmete väljastamise nõuetekohasuse; 4 4) andmekogu kasutajatoe olemasolu; 5 5) õigustatud isikutele juurdepääsu andmekogule ning selles sisaldavatele andmetele; 6 6) isikuandmete töötlemise nõuete täitmise.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -129,15 +188,32 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_2_Lg_2"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1032302_Par_4"
         },
         {
-          "@id": "estleg:Reg_1032303_Par_4"
+          "@id": "estleg:Reg_1032305_Par_3_4"
         },
         {
-          "@id": "estleg:Reg_1032305_Par_3_4"
+          "@id": "estleg:Reg_1032308_Par_4"
         },
         {
           "@id": "estleg:Reg_1050868_Par_7"
@@ -146,20 +222,71 @@
           "@id": "estleg:Reg_1053731_Par_3"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_2_v1053548"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu vastutav töötleja on Tarbijakaitse ja Tehnilise Järelevalve Amet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu vastutav töötleja tagab: 1) andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; 2) andmekogu toimingute õiguspärasuse; 3) andmekogust andmete väljastamise nõuetekohasuse; 4) andmekogu kasutajatoe olemasolu; 5) õigustatud isikutele juurdepääsu andmekogule ning selles sisaldavatele andmetele; 6) isikuandmete töötlemise nõuete täitmise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1053548_Par_3",
@@ -168,17 +295,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Andmekogu volitatud töötleja",
+      "rdfs:label": {
+        "@value": "§ 3. Andmekogu volitatud töötleja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu volitatud töötleja on numbriloa omanikust sideettevõtja või numbriloa omanikust ettevõtja, kes ei ole sideettevõtja; Andmekogu volitatud töötleja on numbriloa omanikust sideettevõtja või numbriloa omanikust ettevõtja, kes ei ole sideettevõtja; 2 (2) Andmekogu sideettevõtjast volitatud töötleja täidab järgmisi ülesandeid: 1 1) numbriloa andmete kooskõlastamine; 2 2) numbrite broneerimine ja vabastamine; 3 3) broneeritud numbrite marsruutimisnumbrite haldamine; 4 4) oma äriühingu k",
-      "estleg:legalText": "1 (1) Andmekogu volitatud töötleja on numbriloa omanikust sideettevõtja või numbriloa omanikust ettevõtja, kes ei ole sideettevõtja; Andmekogu volitatud töötleja on numbriloa omanikust sideettevõtja või numbriloa omanikust ettevõtja, kes ei ole sideettevõtja; 2 (2) Andmekogu sideettevõtjast volitatud töötleja täidab järgmisi ülesandeid: 1 1) numbriloa andmete kooskõlastamine; 2 2) numbrite broneerimine ja vabastamine; 3 3) broneeritud numbrite marsruutimisnumbrite haldamine; 4 4) oma äriühingu kohta päringute tegemine; 5 5) broneeritud numbrite andmebaasi ja selle muudatuste alla laadimine; 6 6) oma äriühinguga seotud numbri liikuvuse toimingute tegemine ja teabevahetus. Andmekogu sideettevõtjast volitatud töötleja täidab järgmisi ülesandeid: numbriloa andmete kooskõlastamine; numbrite broneerimine ja vabastamine; broneeritud numbrite marsruutimisnumbrite haldamine; oma äriühingu kohta päringute tegemine; broneeritud numbrite andmebaasi ja selle muudatuste alla laadimine; oma äriühinguga seotud numbri liikuvuse toimingute tegemine ja teabevahetus. 3 (3) Andmekogu volitatud töötleja, kes ei ole sideettevõtja, täidab järgmisi ülesandeid: 1 1) numbriloa andmete kooskõlastamine; 2 2) numbrite broneerimiseks vabastamine; 3 3) broneeritud numbrite marsruutimisnumbrite haldamine; 4 4) oma äriühingu kohta kehtivate andmete infopäringute esitamine; 5 5) oma äriühinguga seotud numbri liikuvuse toimingute tegemine ja teabevahetus. Andmekogu volitatud töötleja, kes ei ole sideettevõtja, täidab järgmisi ülesandeid: numbriloa andmete kooskõlastamine; numbrite broneerimiseks vabastamine; broneeritud numbrite marsruutimisnumbrite haldamine; oma äriühingu kohta kehtivate andmete infopäringute esitamine; oma äriühinguga seotud numbri liikuvuse toimingute tegemine ja teabevahetus.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu volitatud töötleja on numbriloa omanikust sideettevõtja või numbriloa omanikust ettevõtja, kes ei ole sideettevõtja; 2 (2) Andmekogu sideettevõtjast volitatud töötleja täidab järgmisi ülesandeid: 1 1) numbriloa andmete kooskõlastamine; 2 2) numbrite broneerimine ja vabastamine; 3 3) broneeritud numbrite marsruutimisnumbrite haldamine; 4 4) oma äriühingu kohta päringute tegemine; 5 5) broneeritud numbrite andmebaasi ja selle muudatuste alla laadimine; 6 6) oma äriühinguga seotud…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu volitatud töötleja on numbriloa omanikust sideettevõtja või numbriloa omanikust ettevõtja, kes ei ole sideettevõtja; 2 (2) Andmekogu sideettevõtjast volitatud töötleja täidab järgmisi ülesandeid: 1 1) numbriloa andmete kooskõlastamine; 2 2) numbrite broneerimine ja vabastamine; 3 3) broneeritud numbrite marsruutimisnumbrite haldamine; 4 4) oma äriühingu kohta päringute tegemine; 5 5) broneeritud numbrite andmebaasi ja selle muudatuste alla laadimine; 6 6) oma äriühinguga seotud numbri liikuvuse toimingute tegemine ja teabevahetus. 3 (3) Andmekogu volitatud töötleja, kes ei ole sideettevõtja, täidab järgmisi ülesandeid: 1 1) numbriloa andmete kooskõlastamine; 2 2) numbrite broneerimiseks vabastamine; 3 3) broneeritud numbrite marsruutimisnumbrite haldamine; 4 4) oma äriühingu kohta kehtivate andmete infopäringute esitamine; 5 5) oma äriühinguga seotud numbri liikuvuse toimingute tegemine ja teabevahetus.",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -187,11 +317,103 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_3_Lg_3"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_3_v1053548"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu volitatud töötleja on numbriloa omanikust sideettevõtja või numbriloa omanikust ettevõtja, kes ei ole sideettevõtja;",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu sideettevõtjast volitatud töötleja täidab järgmisi ülesandeid: 1) numbriloa andmete kooskõlastamine; 2) numbrite broneerimine ja vabastamine; 3) broneeritud numbrite marsruutimisnumbrite haldamine; 4) oma äriühingu kohta päringute tegemine; 5) broneeritud numbrite andmebaasi ja selle muudatuste alla laadimine; 6) oma äriühinguga seotud numbri liikuvuse toimingute tegemine ja teabevahetus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogu volitatud töötleja, kes ei ole sideettevõtja, täidab järgmisi ülesandeid: 1) numbriloa andmete kooskõlastamine; 2) numbrite broneerimiseks vabastamine; 3) broneeritud numbrite marsruutimisnumbrite haldamine; 4) oma äriühingu kohta kehtivate andmete infopäringute esitamine; 5) oma äriühinguga seotud numbri liikuvuse toimingute tegemine ja teabevahetus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1053548_Par_4",
@@ -200,38 +422,126 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Andmekogu kasutajad",
+      "rdfs:label": {
+        "@value": "§ 4. Andmekogu kasutajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu vastutav töötlejal on õigus: 1 1) sisestada andmekogusse volitatud töötleja kontaktandmed, moodustada kasutaja rollid ja korraldada andmekogule juurdepääs, sealhulgas administreerida kasutajaliidest; 2 2) korraldada ja hallata andmekogus numbriplaani; 3 3) teha andmekogus numbrilubade haldamise toiminguid; 4 4) kasutada andekogus olevaid andmeid numbriloa, numbri kasutamise ja numbriliikuvuse järelevalvel; 5 5) esitada andmekogus sisalduvate andmete kohta info- ning statistikapär",
-      "estleg:legalText": "1 (1) Andmekogu vastutav töötlejal on õigus: 1 1) sisestada andmekogusse volitatud töötleja kontaktandmed, moodustada kasutaja rollid ja korraldada andmekogule juurdepääs, sealhulgas administreerida kasutajaliidest; 2 2) korraldada ja hallata andmekogus numbriplaani; 3 3) teha andmekogus numbrilubade haldamise toiminguid; 4 4) kasutada andekogus olevaid andmeid numbriloa, numbri kasutamise ja numbriliikuvuse järelevalvel; 5 5) esitada andmekogus sisalduvate andmete kohta info- ning statistikapäringuid. Andmekogu vastutav töötlejal on õigus: sisestada andmekogusse volitatud töötleja kontaktandmed, moodustada kasutaja rollid ja korraldada andmekogule juurdepääs, sealhulgas administreerida kasutajaliidest; korraldada ja hallata andmekogus numbriplaani; teha andmekogus numbrilubade haldamise toiminguid; kasutada andekogus olevaid andmeid numbriloa, numbri kasutamise ja numbriliikuvuse järelevalvel; esitada andmekogus sisalduvate andmete kohta info- ning statistikapäringuid. 2 (2) Andmekogu volitatud töötleja täidab § 3 lõigetes 2 ja 3 nimetatud ülesandeid. Andmekogu volitatud töötleja täidab § 3 lõigetes 2 ja 3 nimetatud ülesandeid. 3 (3) Andmekogu autoriseerimata tavakasutajal on õigus teostada infopäringuid numbri kuuluvuse ja teisaldamise protsessi hetkeseisu kajastavate andmete kohta. Andmekogu autoriseerimata tavakasutajal on õigus teostada infopäringuid numbri kuuluvuse ja teisaldamise protsessi hetkeseisu kajastavate andmete kohta.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu vastutav töötlejal on õigus: 1 1) sisestada andmekogusse volitatud töötleja kontaktandmed, moodustada kasutaja rollid ja korraldada andmekogule juurdepääs, sealhulgas administreerida kasutajaliidest; 2 2) korraldada ja hallata andmekogus numbriplaani; 3 3) teha andmekogus numbrilubade haldamise toiminguid; 4 4) kasutada andekogus olevaid andmeid numbriloa, numbri kasutamise ja numbriliikuvuse järelevalvel; 5 5) esitada andmekogus sisalduvate andmete kohta info- ning…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu vastutav töötlejal on õigus: 1 1) sisestada andmekogusse volitatud töötleja kontaktandmed, moodustada kasutaja rollid ja korraldada andmekogule juurdepääs, sealhulgas administreerida kasutajaliidest; 2 2) korraldada ja hallata andmekogus numbriplaani; 3 3) teha andmekogus numbrilubade haldamise toiminguid; 4 4) kasutada andekogus olevaid andmeid numbriloa, numbri kasutamise ja numbriliikuvuse järelevalvel; 5 5) esitada andmekogus sisalduvate andmete kohta info- ning statistikapäringuid. 2 (2) Andmekogu volitatud töötleja täidab § 3 lõigetes 2 ja 3 nimetatud ülesandeid. 3 (3) Andmekogu autoriseerimata tavakasutajal on õigus teostada infopäringuid numbri kuuluvuse ja teisaldamise protsessi hetkeseisu kajastavate andmete kohta.",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1053731_Par_5"
+          "@id": "estleg:Reg_1053548_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_4_Lg_3"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1053731_Par_5"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_4_v1053548"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu vastutav töötlejal on õigus: 1) sisestada andmekogusse volitatud töötleja kontaktandmed, moodustada kasutaja rollid ja korraldada andmekogule juurdepääs, sealhulgas administreerida kasutajaliidest; 2) korraldada ja hallata andmekogus numbriplaani; 3) teha andmekogus numbrilubade haldamise toiminguid; 4) kasutada andekogus olevaid andmeid numbriloa, numbri kasutamise ja numbriliikuvuse järelevalvel; 5) esitada andmekogus sisalduvate andmete kohta info- ning statistikapäringuid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu volitatud töötleja täidab § 3 lõigetes 2 ja 3 nimetatud ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogu autoriseerimata tavakasutajal on õigus teostada infopäringuid numbri kuuluvuse ja teisaldamise protsessi hetkeseisu kajastavate andmete kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
     },
     {
       "@id": "estleg:Reg_1053548_Par_5",
@@ -240,13 +550,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Andmekogu pidamine",
+      "rdfs:label": {
+        "@value": "§ 5. Andmekogu pidamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu pidamisel kasutatakse automatiseeritud andmetöötlust ning kõik andmed säilitatakse elektroonselt. Andmekogu pidamisel kasutatakse automatiseeritud andmetöötlust ning kõik andmed säilitatakse elektroonselt. 2 (2) Andmete turbeaste on keskmine (M) ja andmekogu turvaklass on K2T2S1. Andmete turbeaste on keskmine (M) ja andmekogu turvaklass on K2T2S1.",
-      "estleg:legalText": "1 (1) Andmekogu pidamisel kasutatakse automatiseeritud andmetöötlust ning kõik andmed säilitatakse elektroonselt. Andmekogu pidamisel kasutatakse automatiseeritud andmetöötlust ning kõik andmed säilitatakse elektroonselt. 2 (2) Andmete turbeaste on keskmine (M) ja andmekogu turvaklass on K2T2S1. Andmete turbeaste on keskmine (M) ja andmekogu turvaklass on K2T2S1.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu pidamisel kasutatakse automatiseeritud andmetöötlust ning kõik andmed säilitatakse elektroonselt. 2 (2) Andmete turbeaste on keskmine (M) ja andmekogu turvaklass on K2T2S1.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu pidamisel kasutatakse automatiseeritud andmetöötlust ning kõik andmed säilitatakse elektroonselt. 2 (2) Andmete turbeaste on keskmine (M) ja andmekogu turvaklass on K2T2S1.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_5_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1039220_Par_8"
@@ -271,19 +595,51 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1053548_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu pidamisel kasutatakse automatiseeritud andmetöötlust ning kõik andmed säilitatakse elektroonselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmete turbeaste on keskmine (M) ja andmekogu turvaklass on K2T2S1.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1053548_Par_6",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Andmekogu koosseis ja andmekogusse kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 6. Andmekogu koosseis ja andmekogusse kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu koosseisu kuuluvad: 1 1) broneeritud numbrite andmebaas; 2 2) numbri liikuvuse toimingute andmebaas. Andmekogu koosseisu kuuluvad: broneeritud numbrite andmebaas; numbri liikuvuse toimingute andmebaas. 2 (2) Broneeritud numbrite andmebaasi kantakse järgmised andmed: 1 1) numbriloa omaniku nimi ja isiku- või registrikood; 2 2) numbriloa omaniku poolt volitatud andmekogu kasutaja nimi, isikukood, kontaktandmed; 3 3) numbriloa omaniku tegevusalana telefoni-, mobiiltelefoni- või muu ",
-      "estleg:legalText": "1 (1) Andmekogu koosseisu kuuluvad: 1 1) broneeritud numbrite andmebaas; 2 2) numbri liikuvuse toimingute andmebaas. Andmekogu koosseisu kuuluvad: broneeritud numbrite andmebaas; numbri liikuvuse toimingute andmebaas. 2 (2) Broneeritud numbrite andmebaasi kantakse järgmised andmed: 1 1) numbriloa omaniku nimi ja isiku- või registrikood; 2 2) numbriloa omaniku poolt volitatud andmekogu kasutaja nimi, isikukood, kontaktandmed; 3 3) numbriloa omaniku tegevusalana telefoni-, mobiiltelefoni- või muu teenuse osutamine; 4 4) numbriliik; 5 5) numbriloa väljastamise aeg; 6 6) numbriloa kehtivuse aeg; 7 7) numbriloal märgitud numbrite arv; 8 8) numbriloa omaniku broneeritud numbrid; 9 9) numbriloa omanikule eraldatud tunnuskoodid või lühinumbrid; 10 10) numbriloa omanikule broneerimiseks kuuluvad vabad numbrid; 11 11) numbriloa omanikule eraldamisele kuuluvad vabad lühinumbrid ja tunnuskoodid; 12 12) broneeritud numbrite marsruutimisnumbrid. Broneeritud numbrite andmebaasi kantakse järgmised andmed: numbriloa omaniku nimi ja isiku- või registrikood; numbriloa omaniku poolt volitatud andmekogu kasutaja nimi, isikukood, kontaktandmed; numbriloa omaniku tegevusalana telefoni-, mobiiltelefoni- või muu teenuse osutamine; numbriliik; numbriloa väljastamise aeg; numbriloa kehtivuse aeg; numbriloal märgitud numbrite arv; numbriloa omaniku broneeritud numbrid; numbriloa omanikule eraldatud tunnuskoodid või lühinumbrid; numbriloa omanikule broneerimiseks kuuluvad vabad numbrid; numbriloa omanikule eraldamisele kuuluvad vabad lühinumbrid ja tunnuskoodid; broneeritud numbrite marsruutimisnumbrid. 3 (3) Numbri liikuvuse toimingute andmebaasi kantakse järgmised andmed: 1 1) teisaldatava numbri vastuvõtjaoperaatori nimi ja registrikood; 2 2) teisaldatava numbri doonoroperaatori nimi ja registrikood; 3 3) teisaldatav number; 4 4) numbrit teisaldava kliendi nimi ja isikukood; 5 5) teisaldamise taotluse number ja esitamise kuupäev; 6 6) teisaldatava numbri marsruutimisnumber; 7 7) numbri teisaldamise kuupäev ja kellaaeg; 8 8) volitatud isiku nimi ja isikukood; 9 9) volitaja nimi ja isikukood; 10 10) tühistamise liik ja tagasilükkamise põhjus; 11 11) taotluse seisund. Numbri liikuvuse toimingute andmebaasi kantakse järgmised andmed: teisaldatava numbri vastuvõtjaoperaatori nimi ja registrikood; teisaldatava numbri doonoroperaatori nimi ja registrikood; teisaldatav number; numbrit teisaldava kliendi nimi ja isikukood; teisaldamise taotluse number ja esitamise kuupäev; teisaldatava numbri marsruutimisnumber; numbri teisaldamise kuupäev ja kellaaeg; volitatud isiku nimi ja isikukood; volitaja nimi ja isikukood; tühistamise liik ja tagasilükkamise põhjus; taotluse seisund.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu koosseisu kuuluvad: 1 1) broneeritud numbrite andmebaas; 2 2) numbri liikuvuse toimingute andmebaas. 2 (2) Broneeritud numbrite andmebaasi kantakse järgmised andmed: 1 1) numbriloa omaniku nimi ja isiku- või registrikood; 2 2) numbriloa omaniku poolt volitatud andmekogu kasutaja nimi, isikukood, kontaktandmed; 3 3) numbriloa omaniku tegevusalana telefoni-, mobiiltelefoni- või muu teenuse osutamine; 4 4) numbriliik; 5 5) numbriloa väljastamise aeg; 6 6) numbriloa kehtivuse aeg; 7…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu koosseisu kuuluvad: 1 1) broneeritud numbrite andmebaas; 2 2) numbri liikuvuse toimingute andmebaas. 2 (2) Broneeritud numbrite andmebaasi kantakse järgmised andmed: 1 1) numbriloa omaniku nimi ja isiku- või registrikood; 2 2) numbriloa omaniku poolt volitatud andmekogu kasutaja nimi, isikukood, kontaktandmed; 3 3) numbriloa omaniku tegevusalana telefoni-, mobiiltelefoni- või muu teenuse osutamine; 4 4) numbriliik; 5 5) numbriloa väljastamise aeg; 6 6) numbriloa kehtivuse aeg; 7 7) numbriloal märgitud numbrite arv; 8 8) numbriloa omaniku broneeritud numbrid; 9 9) numbriloa omanikule eraldatud tunnuskoodid või lühinumbrid; 10 10) numbriloa omanikule broneerimiseks kuuluvad vabad numbrid; 11 11) numbriloa omanikule eraldamisele kuuluvad vabad lühinumbrid ja tunnuskoodid; 12 12) broneeritud numbrite marsruutimisnumbrid. 3 (3) Numbri liikuvuse toimingute andmebaasi kantakse järgmised andmed: 1 1) teisaldatava numbri vastuvõtjaoperaatori nimi ja registrikood; 2 2) teisaldatava numbri doonoroperaatori nimi ja registrikood; 3 3) teisaldatav number; 4 4) numbrit teisaldava kliendi nimi ja isikukood; 5 5) teisaldamise taotluse number ja esitamise kuupäev; 6 6) teisaldatava numbri marsruutimisnumber; 7 7) numbri teisaldamise kuupäev ja kellaaeg; 8 8) volitatud isiku nimi ja isikukood; 9 9) volitaja nimi ja isikukood; 10 10) tühistamise liik ja tagasilükkamise põhjus; 11 11) taotluse seisund.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -293,11 +649,110 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_6_Lg_3"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_6_v1053548"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu koosseisu kuuluvad: 1) broneeritud numbrite andmebaas; 2) numbri liikuvuse toimingute andmebaas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Broneeritud numbrite andmebaasi kantakse järgmised andmed: 1) numbriloa omaniku nimi ja isiku- või registrikood; 2) numbriloa omaniku poolt volitatud andmekogu kasutaja nimi, isikukood, kontaktandmed; 3) numbriloa omaniku tegevusalana telefoni-, mobiiltelefoni- või muu teenuse osutamine; 4) numbriliik; 5) numbriloa väljastamise aeg; 6) numbriloa kehtivuse aeg; 7) numbriloal märgitud numbrite arv; 8) numbriloa omaniku broneeritud numbrid; 9) numbriloa omanikule eraldatud tunnuskoodid või lühinumbrid; 10) numbriloa omanikule broneerimiseks kuuluvad vabad numbrid; 11) numbriloa omanikule eraldamisele kuuluvad vabad lühinumbrid ja tunnuskoodid; 12) broneeritud numbrite marsruutimisnumbrid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Numbri liikuvuse toimingute andmebaasi kantakse järgmised andmed: 1) teisaldatava numbri vastuvõtjaoperaatori nimi ja registrikood; 2) teisaldatava numbri doonoroperaatori nimi ja registrikood; 3) teisaldatav number; 4) numbrit teisaldava kliendi nimi ja isikukood; 5) teisaldamise taotluse number ja esitamise kuupäev; 6) teisaldatava numbri marsruutimisnumber; 7) numbri teisaldamise kuupäev ja kellaaeg; 8) volitatud isiku nimi ja isikukood; 9) volitaja nimi ja isikukood; 10) tühistamise liik ja tagasilükkamise põhjus; 11) taotluse seisund.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1053548_Par_7",
@@ -306,13 +761,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Andmekogu alusdokumendid",
+      "rdfs:label": {
+        "@value": "§ 7. Andmekogu alusdokumendid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "Andmete andmekogusse kandmise alusdokumentideks on: 1 1) numbriloa taotlus; 2 2) numbriloa omaniku volitus andmekogule juurdepääsu tagamiseks ning andmekogus numbrite teisaldamise, broneerimise või tühistamise toimingute tegemise kasutaja määramiseks; 3 3) numbriloa andmise otsus; 4 4) Eesti numeratsiooniplaan; 5 5) kliendi numbri teisaldamise taotlus. Andmete andmekogusse kandmise alusdokumentideks on: numbriloa taotlus; numbriloa omaniku volitus andmekogule juurdepääsu tagamiseks ning andmekog",
-      "estleg:legalText": "Andmete andmekogusse kandmise alusdokumentideks on: 1 1) numbriloa taotlus; 2 2) numbriloa omaniku volitus andmekogule juurdepääsu tagamiseks ning andmekogus numbrite teisaldamise, broneerimise või tühistamise toimingute tegemise kasutaja määramiseks; 3 3) numbriloa andmise otsus; 4 4) Eesti numeratsiooniplaan; 5 5) kliendi numbri teisaldamise taotlus. Andmete andmekogusse kandmise alusdokumentideks on: numbriloa taotlus; numbriloa omaniku volitus andmekogule juurdepääsu tagamiseks ning andmekogus numbrite teisaldamise, broneerimise või tühistamise toimingute tegemise kasutaja määramiseks; numbriloa andmise otsus; Eesti numeratsiooniplaan; kliendi numbri teisaldamise taotlus.",
+      "estleg:summary": {
+        "@value": "Andmete andmekogusse kandmise alusdokumentideks on: 1 1) numbriloa taotlus; 2 2) numbriloa omaniku volitus andmekogule juurdepääsu tagamiseks ning andmekogus numbrite teisaldamise, broneerimise või tühistamise toimingute tegemise kasutaja määramiseks; 3 3) numbriloa andmise otsus; 4 4) Eesti numeratsiooniplaan; 5 5) kliendi numbri teisaldamise taotlus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmete andmekogusse kandmise alusdokumentideks on: 1 1) numbriloa taotlus; 2 2) numbriloa omaniku volitus andmekogule juurdepääsu tagamiseks ning andmekogus numbrite teisaldamise, broneerimise või tühistamise toimingute tegemise kasutaja määramiseks; 3 3) numbriloa andmise otsus; 4 4) Eesti numeratsiooniplaan; 5 5) kliendi numbri teisaldamise taotlus.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -322,11 +783,45 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_7_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_7_v1053548"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmete andmekogusse kandmise alusdokumentideks on: 1) numbriloa taotlus; 2) numbriloa omaniku volitus andmekogule juurdepääsu tagamiseks ning andmekogus numbrite teisaldamise, broneerimise või tühistamise toimingute tegemise kasutaja määramiseks; 3) numbriloa andmise otsus; 4) Eesti numeratsiooniplaan; 5) kliendi numbri teisaldamise taotlus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1053548_Par_8",
@@ -335,13 +830,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Andmete andmekogusse kandmine",
+      "rdfs:label": {
+        "@value": "§ 8. Andmete andmekogusse kandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu vastutav töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 1–7 ja 9–11 ning lõike 3 punktides 1, 2 ja 11 nimetatud andmed. Andmekogu vastutav töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 1–7 ja 9–11 ning lõike 3 punktides 1, 2 ja 11 nimetatud andmed. 2 (2) Andmekogu volitatud töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 8 ja 12 ning lõike 3 punktides 1–10 nimetatud andmed. Andmekogu volitatud töötleja kannab andme",
-      "estleg:legalText": "1 (1) Andmekogu vastutav töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 1–7 ja 9–11 ning lõike 3 punktides 1, 2 ja 11 nimetatud andmed. Andmekogu vastutav töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 1–7 ja 9–11 ning lõike 3 punktides 1, 2 ja 11 nimetatud andmed. 2 (2) Andmekogu volitatud töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 8 ja 12 ning lõike 3 punktides 1–10 nimetatud andmed. Andmekogu volitatud töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 8 ja 12 ning lõike 3 punktides 1–10 nimetatud andmed. 3 (3) Andmed kantakse andmekogusse masinatevahelise side (Machine to Machine Communications), veebiliidese või tarbijakaitse ja tehnilise järelevalve infosüsteemi vahendusel. Andmevahetus toimub läbi riigi infosüsteemi andmevahetuskihi. Andmed kantakse andmekogusse masinatevahelise side (Machine to Machine Communications), veebiliidese või tarbijakaitse ja tehnilise järelevalve infosüsteemi vahendusel. Andmevahetus toimub läbi riigi infosüsteemi andmevahetuskihi. 4 (4) Andmete kandja vastutab enda poolt andmekogusse kantud andmete õigsuse eest. Andmete kandja vastutab enda poolt andmekogusse kantud andmete õigsuse eest.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu vastutav töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 1–7 ja 9–11 ning lõike 3 punktides 1, 2 ja 11 nimetatud andmed. 2 (2) Andmekogu volitatud töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 8 ja 12 ning lõike 3 punktides 1–10 nimetatud andmed. 3 (3) Andmed kantakse andmekogusse masinatevahelise side (Machine to Machine Communications), veebiliidese või tarbijakaitse ja tehnilise järelevalve infosüsteemi vahendusel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu vastutav töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 1–7 ja 9–11 ning lõike 3 punktides 1, 2 ja 11 nimetatud andmed. 2 (2) Andmekogu volitatud töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 8 ja 12 ning lõike 3 punktides 1–10 nimetatud andmed. 3 (3) Andmed kantakse andmekogusse masinatevahelise side (Machine to Machine Communications), veebiliidese või tarbijakaitse ja tehnilise järelevalve infosüsteemi vahendusel. Andmevahetus toimub läbi riigi infosüsteemi andmevahetuskihi. 4 (4) Andmete kandja vastutab enda poolt andmekogusse kantud andmete õigsuse eest.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -350,32 +851,113 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1027701_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_1032308_Par_3"
-        },
-        {
-          "@id": "estleg:Reg_1037179_Par_5_7"
-        },
-        {
-          "@id": "estleg:Reg_1039676_Par_44"
-        },
-        {
-          "@id": "estleg:Reg_344417_Par_7"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_8_Lg_4"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1049166_Par_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_8_v1053548"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu vastutav töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 1–7 ja 9–11 ning lõike 3 punktides 1, 2 ja 11 nimetatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu volitatud töötleja kannab andmekogusse käesoleva määruse § 6 lõike 2 punktides 8 ja 12 ning lõike 3 punktides 1–10 nimetatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmed kantakse andmekogusse masinatevahelise side (Machine to Machine Communications), veebiliidese või tarbijakaitse ja tehnilise järelevalve infosüsteemi vahendusel. Andmevahetus toimub läbi riigi infosüsteemi andmevahetuskihi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmete kandja vastutab enda poolt andmekogusse kantud andmete õigsuse eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
     },
     {
       "@id": "estleg:Reg_1053548_Par_9",
@@ -384,17 +966,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Andmete töötlemine",
+      "rdfs:label": {
+        "@value": "§ 9. Andmete töötlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu kande muutmine toimub §-s 7 nimetatud kande aluseks oleval alusdokumendil esitatud andmete muutumisel, andmekogu volitatud töötleja poolt numbrite broneeringute muutmisel numbriloal märgitud arvu piires või numbri teisaldamisest tingitud broneeritud numbri omaniku muutumisel. Andmekogu kande muutmine toimub §-s 7 nimetatud kande aluseks oleval alusdokumendil esitatud andmete muutumisel, andmekogu volitatud töötleja poolt numbrite broneeringute muutmisel numbriloal märgitud arvu p",
-      "estleg:legalText": "1 (1) Andmekogu kande muutmine toimub §-s 7 nimetatud kande aluseks oleval alusdokumendil esitatud andmete muutumisel, andmekogu volitatud töötleja poolt numbrite broneeringute muutmisel numbriloal märgitud arvu piires või numbri teisaldamisest tingitud broneeritud numbri omaniku muutumisel. Andmekogu kande muutmine toimub §-s 7 nimetatud kande aluseks oleval alusdokumendil esitatud andmete muutumisel, andmekogu volitatud töötleja poolt numbrite broneeringute muutmisel numbriloal märgitud arvu piires või numbri teisaldamisest tingitud broneeritud numbri omaniku muutumisel. 2 (2) Ebaõigete andmete avastamisel andmekogus parandab andmekogu vastutav töötleja need kahe tööpäeva jooksul. Ebaõigete andmete avastamisel andmekogus parandab andmekogu vastutav töötleja need kahe tööpäeva jooksul. 3 (3) Paragrahvis § 7 nimetatud kande aluseks oleva alusdokumendi äralangemisel muudab andmekogu vastutav töötleja vastavad andmed mitteaktiivseks, arhiveerib ning teave andmekogu andmete kohta säilitatakse märkena andmekogu vastava toimingu ajaloos. Paragrahvis § 7 nimetatud kande aluseks oleva alusdokumendi äralangemisel muudab andmekogu vastutav töötleja vastavad andmed mitteaktiivseks, arhiveerib ning teave andmekogu andmete kohta säilitatakse märkena andmekogu vastava toimingu ajaloos. 4 (4) Andmekogu andmete sisestamisi, muutmisi, kustutamisi ja vaatamisi logitakse. Logi sisaldab kirje looja ja loomise aja ning viimase muutja ja viimase muutmise aja andmeid. Andmekogu andmete sisestamisi, muutmisi, kustutamisi ja vaatamisi logitakse. Logi sisaldab kirje looja ja loomise aja ning viimase muutja ja viimase muutmise aja andmeid.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu kande muutmine toimub §-s 7 nimetatud kande aluseks oleval alusdokumendil esitatud andmete muutumisel, andmekogu volitatud töötleja poolt numbrite broneeringute muutmisel numbriloal märgitud arvu piires või numbri teisaldamisest tingitud broneeritud numbri omaniku muutumisel. 2 (2) Ebaõigete andmete avastamisel andmekogus parandab andmekogu vastutav töötleja need kahe tööpäeva jooksul.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu kande muutmine toimub §-s 7 nimetatud kande aluseks oleval alusdokumendil esitatud andmete muutumisel, andmekogu volitatud töötleja poolt numbrite broneeringute muutmisel numbriloal märgitud arvu piires või numbri teisaldamisest tingitud broneeritud numbri omaniku muutumisel. 2 (2) Ebaõigete andmete avastamisel andmekogus parandab andmekogu vastutav töötleja need kahe tööpäeva jooksul. 3 (3) Paragrahvis § 7 nimetatud kande aluseks oleva alusdokumendi äralangemisel muudab andmekogu vastutav töötleja vastavad andmed mitteaktiivseks, arhiveerib ning teave andmekogu andmete kohta säilitatakse märkena andmekogu vastava toimingu ajaloos. 4 (4) Andmekogu andmete sisestamisi, muutmisi, kustutamisi ja vaatamisi logitakse. Logi sisaldab kirje looja ja loomise aja ning viimase muutja ja viimase muutmise aja andmeid.",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -403,11 +988,104 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_9_Lg_4"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_9_v1053548"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu kande muutmine toimub §-s 7 nimetatud kande aluseks oleval alusdokumendil esitatud andmete muutumisel, andmekogu volitatud töötleja poolt numbrite broneeringute muutmisel numbriloal märgitud arvu piires või numbri teisaldamisest tingitud broneeritud numbri omaniku muutumisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ebaõigete andmete avastamisel andmekogus parandab andmekogu vastutav töötleja need kahe tööpäeva jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Paragrahvis § 7 nimetatud kande aluseks oleva alusdokumendi äralangemisel muudab andmekogu vastutav töötleja vastavad andmed mitteaktiivseks, arhiveerib ning teave andmekogu andmete kohta säilitatakse märkena andmekogu vastava toimingu ajaloos.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmekogu andmete sisestamisi, muutmisi, kustutamisi ja vaatamisi logitakse. Logi sisaldab kirje looja ja loomise aja ning viimase muutja ja viimase muutmise aja andmeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
     },
     {
       "@id": "estleg:Reg_1053548_Par_10",
@@ -416,35 +1094,101 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Juurdepääs andmekogule ja andmekogusse kantud andmetele",
+      "rdfs:label": {
+        "@value": "§ 10. Juurdepääs andmekogule ja andmekogusse kantud andmetele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Juurdepääsu andmekogule ja andmekogusse kantud andmetele omavad isikud vastavalt §-s 4 sätestatud õiguste ja rollipõhise määratluse alusel ning piires. Juurdepääsu andmekogule ja andmekogusse kantud andmetele omavad isikud vastavalt §-s 4 sätestatud õiguste ja rollipõhise määratluse alusel ning piires. 2 (2) Andmekogule igakordsel juurdepääsul toimub andmekogu vastutava töötleja ja volitatud töötleja poolt volitatud kasutaja isikusamasuse tuvastamine riigi autentimisteenuse vahendusel. And",
-      "estleg:legalText": "1 (1) Juurdepääsu andmekogule ja andmekogusse kantud andmetele omavad isikud vastavalt §-s 4 sätestatud õiguste ja rollipõhise määratluse alusel ning piires. Juurdepääsu andmekogule ja andmekogusse kantud andmetele omavad isikud vastavalt §-s 4 sätestatud õiguste ja rollipõhise määratluse alusel ning piires. 2 (2) Andmekogule igakordsel juurdepääsul toimub andmekogu vastutava töötleja ja volitatud töötleja poolt volitatud kasutaja isikusamasuse tuvastamine riigi autentimisteenuse vahendusel. Andmekogule igakordsel juurdepääsul toimub andmekogu vastutava töötleja ja volitatud töötleja poolt volitatud kasutaja isikusamasuse tuvastamine riigi autentimisteenuse vahendusel. 3 (3) Juurdepääsu ei piirata numbrikuuluvuse ja numbri teisaldamise hetkeseisu kajastavale andmetele. Huvitatud isikutele võimaldatakse juurdepääs nimetatud andmetele veebiliidese kaudu ööpäevaringselt. Andmeid ei avalikustata ühtse kogumina ega masinloetaval kujul. Juurdepääsu ei piirata numbrikuuluvuse ja numbri teisaldamise hetkeseisu kajastavale andmetele. Huvitatud isikutele võimaldatakse juurdepääs nimetatud andmetele veebiliidese kaudu ööpäevaringselt. Andmeid ei avalikustata ühtse kogumina ega masinloetaval kujul.",
+      "estleg:summary": {
+        "@value": "1 (1) Juurdepääsu andmekogule ja andmekogusse kantud andmetele omavad isikud vastavalt §-s 4 sätestatud õiguste ja rollipõhise määratluse alusel ning piires. 2 (2) Andmekogule igakordsel juurdepääsul toimub andmekogu vastutava töötleja ja volitatud töötleja poolt volitatud kasutaja isikusamasuse tuvastamine riigi autentimisteenuse vahendusel. 3 (3) Juurdepääsu ei piirata numbrikuuluvuse ja numbri teisaldamise hetkeseisu kajastavale andmetele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Juurdepääsu andmekogule ja andmekogusse kantud andmetele omavad isikud vastavalt §-s 4 sätestatud õiguste ja rollipõhise määratluse alusel ning piires. 2 (2) Andmekogule igakordsel juurdepääsul toimub andmekogu vastutava töötleja ja volitatud töötleja poolt volitatud kasutaja isikusamasuse tuvastamine riigi autentimisteenuse vahendusel. 3 (3) Juurdepääsu ei piirata numbrikuuluvuse ja numbri teisaldamise hetkeseisu kajastavale andmetele. Huvitatud isikutele võimaldatakse juurdepääs nimetatud andmetele veebiliidese kaudu ööpäevaringselt. Andmeid ei avalikustata ühtse kogumina ega masinloetaval kujul.",
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_Business"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1053731_Par_10"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_10_Lg_3"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_10_v1053548"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juurdepääsu andmekogule ja andmekogusse kantud andmetele omavad isikud vastavalt §-s 4 sätestatud õiguste ja rollipõhise määratluse alusel ning piires.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogule igakordsel juurdepääsul toimub andmekogu vastutava töötleja ja volitatud töötleja poolt volitatud kasutaja isikusamasuse tuvastamine riigi autentimisteenuse vahendusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Juurdepääsu ei piirata numbrikuuluvuse ja numbri teisaldamise hetkeseisu kajastavale andmetele. Huvitatud isikutele võimaldatakse juurdepääs nimetatud andmetele veebiliidese kaudu ööpäevaringselt. Andmeid ei avalikustata ühtse kogumina ega masinloetaval kujul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
     },
     {
       "@id": "estleg:Reg_1053548_Par_11",
@@ -453,16 +1197,37 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Andmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 11. Andmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Andmekogusse kantud andmete alusdokumente säilitatakse kooskõlas vastutava töötleja dokumendihalduses kehtestatud säilitustähtaegadega. Andmekogusse kantud andmete alusdokumente säilitatakse kooskõlas vastutava töötleja dokumendihalduses kehtestatud säilitustähtaegadega. 2 (2) Andmekogusse andmete sisestamise, muutmise, kustutamise ja vaatamise logi säilitatakse kolm aastat vastava logi loomise päevast arvates. Andmekogusse andmete sisestamise, muutmise, kustutamise ja vaatamise logi säili",
-      "estleg:legalText": "1 (1) Andmekogusse kantud andmete alusdokumente säilitatakse kooskõlas vastutava töötleja dokumendihalduses kehtestatud säilitustähtaegadega. Andmekogusse kantud andmete alusdokumente säilitatakse kooskõlas vastutava töötleja dokumendihalduses kehtestatud säilitustähtaegadega. 2 (2) Andmekogusse andmete sisestamise, muutmise, kustutamise ja vaatamise logi säilitatakse kolm aastat vastava logi loomise päevast arvates. Andmekogusse andmete sisestamise, muutmise, kustutamise ja vaatamise logi säilitatakse kolm aastat vastava logi loomise päevast arvates. 3 (3) Andmed hävitatakse säilitustähtaja möödumisel. Andmed hävitatakse säilitustähtaja möödumisel.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogusse kantud andmete alusdokumente säilitatakse kooskõlas vastutava töötleja dokumendihalduses kehtestatud säilitustähtaegadega. 2 (2) Andmekogusse andmete sisestamise, muutmise, kustutamise ja vaatamise logi säilitatakse kolm aastat vastava logi loomise päevast arvates. 3 (3) Andmed hävitatakse säilitustähtaja möödumisel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogusse kantud andmete alusdokumente säilitatakse kooskõlas vastutava töötleja dokumendihalduses kehtestatud säilitustähtaegadega. 2 (2) Andmekogusse andmete sisestamise, muutmise, kustutamise ja vaatamise logi säilitatakse kolm aastat vastava logi loomise päevast arvates. 3 (3) Andmed hävitatakse säilitustähtaja möödumisel.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_11_Lg_3"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -471,20 +1236,61 @@
         },
         {
           "@id": "estleg:Reg_1053731_Par_11"
-        },
-        {
-          "@id": "estleg:Reg_1061968_Par_9"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_11_v1053548"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantud andmete alusdokumente säilitatakse kooskõlas vastutava töötleja dokumendihalduses kehtestatud säilitustähtaegadega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogusse andmete sisestamise, muutmise, kustutamise ja vaatamise logi säilitatakse kolm aastat vastava logi loomise päevast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmed hävitatakse säilitustähtaja möödumisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
     },
     {
       "@id": "estleg:Reg_1053548_Par_12",
@@ -493,13 +1299,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Andmekogu pidamise üle järelevalvet teostama õigustatud isikud ja järelevalve teostamise kord",
+      "rdfs:label": {
+        "@value": "§ 12. Andmekogu pidamise üle järelevalvet teostama õigustatud isikud ja järelevalve teostamise kord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Järelevalvet andmekogu pidamise üle tehakse avaliku teabe seaduses sätestatud korras. Järelevalvet andmekogu pidamise üle tehakse avaliku teabe seaduses sätestatud korras. 2 (2) Järelevalvet andmekogus töödeldavate andmete õigsuse ja töötlemise üle teeb Tarbijakaitse ja Tehnilise Järelevalve Amet. Järelevalvet andmekogus töödeldavate andmete õigsuse ja töötlemise üle teeb Tarbijakaitse ja Tehnilise Järelevalve Amet.",
-      "estleg:legalText": "1 (1) Järelevalvet andmekogu pidamise üle tehakse avaliku teabe seaduses sätestatud korras. Järelevalvet andmekogu pidamise üle tehakse avaliku teabe seaduses sätestatud korras. 2 (2) Järelevalvet andmekogus töödeldavate andmete õigsuse ja töötlemise üle teeb Tarbijakaitse ja Tehnilise Järelevalve Amet. Järelevalvet andmekogus töödeldavate andmete õigsuse ja töötlemise üle teeb Tarbijakaitse ja Tehnilise Järelevalve Amet.",
+      "estleg:summary": {
+        "@value": "1 (1) Järelevalvet andmekogu pidamise üle tehakse avaliku teabe seaduses sätestatud korras. 2 (2) Järelevalvet andmekogus töödeldavate andmete õigsuse ja töötlemise üle teeb Tarbijakaitse ja Tehnilise Järelevalve Amet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Järelevalvet andmekogu pidamise üle tehakse avaliku teabe seaduses sätestatud korras. 2 (2) Järelevalvet andmekogus töödeldavate andmete õigsuse ja töötlemise üle teeb Tarbijakaitse ja Tehnilise Järelevalve Amet.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -508,12 +1320,26 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_12_Lg_2"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1028462_Par_3"
-        },
-        {
-          "@id": "estleg:Reg_1044313_Par_17"
         },
         {
           "@id": "estleg:Reg_1047743_Par_21"
@@ -523,17 +1349,54 @@
         },
         {
           "@id": "estleg:Reg_1053731_Par_12"
+        },
+        {
+          "@id": "estleg:Reg_1056682_Par_5"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:Reg_1053548_Par_12_v1053548"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Järelevalvet andmekogu pidamise üle tehakse avaliku teabe seaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Järelevalvet andmekogus töödeldavate andmete õigsuse ja töötlemise üle teeb Tarbijakaitse ja Tehnilise Järelevalve Amet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:Reg_1053548_Par_12_v1053548"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
@@ -547,13 +1410,29 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Andmekogu pidamise rahastamine",
+      "rdfs:label": {
+        "@value": "§ 13. Andmekogu pidamise rahastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "Andmekogu pidamist rahastatakse riigieelarvest Justiits- ja Digiministeeriumi valitsemisala eelarve kaudu. RT I 2024-12-27 1 127122024001 2025-01-01",
-      "estleg:legalText": "Andmekogu pidamist rahastatakse riigieelarvest Justiits- ja Digiministeeriumi valitsemisala eelarve kaudu. RT I 2024-12-27 1 127122024001 2025-01-01 Andmekogu pidamist rahastatakse riigieelarvest Justiits- ja Digiministeeriumi valitsemisala eelarve kaudu.",
+      "estleg:summary": {
+        "@value": "Andmekogu pidamist rahastatakse riigieelarvest Justiits- ja Digiministeeriumi valitsemisala eelarve kaudu. RT I 2024-12-27 1 127122024001 2025-01-01",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu pidamist rahastatakse riigieelarvest Justiits- ja Digiministeeriumi valitsemisala eelarve kaudu. RT I 2024-12-27 1 127122024001 2025-01-01",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_13_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1012583_Par_13"
@@ -565,17 +1444,30 @@
           "@id": "estleg:Reg_1053731_Par_13"
         },
         {
-          "@id": "estleg:Reg_1059782_Par_13"
+          "@id": "estleg:Reg_1062713_Par_41"
         },
         {
-          "@id": "estleg:Reg_1062713_Par_41"
+          "@id": "estleg:Reg_1064429_Par_14"
         }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053548_Par_13_v1053548"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu pidamist rahastatakse riigieelarvest Justiits- ja Digiministeeriumi valitsemisala eelarve kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
@@ -589,13 +1481,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Andmekogu muutmine ja lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 14. Andmekogu muutmine ja lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Numbri broneerimise andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053548_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu pidamise lõpetamine otsustatakse seadusega. Andmekogu pidamise lõpetamine otsustatakse seadusega. 2 (2) Andmekogu laiendamine, ühendamine ja lõpetamine ning andmete üleandmine teise andmekogusse, riiklikku või riigiasutuse arhiivi või nende hävitamine toimub kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega. Andmekogu laiendamine, ühendamine ja lõpetamine ning andmete üleandmine teise andmekogusse, riiklikku või riigiasutuse arhiivi või nende hävitamine toim",
-      "estleg:legalText": "1 (1) Andmekogu pidamise lõpetamine otsustatakse seadusega. Andmekogu pidamise lõpetamine otsustatakse seadusega. 2 (2) Andmekogu laiendamine, ühendamine ja lõpetamine ning andmete üleandmine teise andmekogusse, riiklikku või riigiasutuse arhiivi või nende hävitamine toimub kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega. Andmekogu laiendamine, ühendamine ja lõpetamine ning andmete üleandmine teise andmekogusse, riiklikku või riigiasutuse arhiivi või nende hävitamine toimub kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu pidamise lõpetamine otsustatakse seadusega. 2 (2) Andmekogu laiendamine, ühendamine ja lõpetamine ning andmete üleandmine teise andmekogusse, riiklikku või riigiasutuse arhiivi või nende hävitamine toimub kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu pidamise lõpetamine otsustatakse seadusega. 2 (2) Andmekogu laiendamine, ühendamine ja lõpetamine ning andmete üleandmine teise andmekogusse, riiklikku või riigiasutuse arhiivi või nende hävitamine toimub kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053548_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053548_Par_14_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1012583_Par_14"
@@ -604,13 +1510,13 @@
           "@id": "estleg:Reg_1014554_Par_11"
         },
         {
-          "@id": "estleg:Reg_1021361_Par_18"
-        },
-        {
           "@id": "estleg:Reg_1030042_Par_41"
         },
         {
           "@id": "estleg:Reg_1053731_Par_14"
+        },
+        {
+          "@id": "estleg:Reg_1054743_Par_16"
         }
       ],
       "estleg:hasVersion": [
@@ -618,6 +1524,32 @@
           "@id": "estleg:Reg_1053548_Par_14_v1053548"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu pidamise lõpetamine otsustatakse seadusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1053548_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu laiendamine, ühendamine ja lõpetamine ning andmete üleandmine teise andmekogusse, riiklikku või riigiasutuse arhiivi või nende hävitamine toimub kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053548_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
     },
     {
       "@id": "estleg:Citation_Reg_1053548_Map_1",

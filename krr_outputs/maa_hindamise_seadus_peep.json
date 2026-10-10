@@ -5,52 +5,61 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:MHS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Maa hindamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Maa hindamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Maa hindamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Maa hindamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Land Valuation Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Maa hindamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/104122024015.xml"
+        "@id": "https://www.riigiteataja.ee/akt/104122024015"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/104122024015/xml"
+      },
+      "estleg:globalId": "104122024015",
+      "eli:id_local": "104122024015",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "159231",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "022579db3b4a7c31bcc69d8f0d123a728adafed4b94a3e52a4d25f9c36ebefcf",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-01-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/529122024020"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/529122024020"
       },
       "estleg:references": [
         {
           "@id": "estleg:MHS_Par_10"
+        },
+        {
+          "@id": "estleg:MHS_Par_4_2_Lg_1"
         },
         {
           "@id": "estleg:MaaRS_Par_6"
@@ -59,54 +68,225 @@
           "@id": "estleg:MHS_Par_9"
         }
       ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/4630"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/4630"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2475"
+        }
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "1994-03-05",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2024-12-04",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_MHS_743f181815"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_2651337f77"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_3b814ef5fa"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_bf800d6575"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_fff97f3cf2"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_7a537fda8d"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_2223fec6d3"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_607967686d"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_acad8660b8"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_bb26e052ec"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_d139bda9cd"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_a4b69463de"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_70f38420ee"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_55e913f636"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_1661337e49"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_be0160315c"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_c3359f98de"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_aa85a0458e"
+        },
+        {
+          "@id": "estleg:Amendment_MHS_86c30dd1d4"
+        }
+      ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:Reg_1041811_Map"
+        },
+        {
           "@id": "estleg:Reg_1041811_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_1041811_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1044486_Map"
         },
         {
           "@id": "estleg:Reg_1044486_Par_2"
         },
         {
+          "@id": "estleg:Reg_1044486_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1043170_Map"
+        },
+        {
           "@id": "estleg:Reg_1043170_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_1043170_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1046014_Map"
         },
         {
           "@id": "estleg:Reg_1046014_Par_1"
         },
         {
-          "@id": "estleg:Reg_1034683_Par_1"
+          "@id": "estleg:Reg_1048287_Map"
         },
         {
           "@id": "estleg:Reg_1048287_Par_5"
         },
         {
-          "@id": "estleg:Reg_1042879_Par_2"
+          "@id": "estleg:Reg_1048287_Par_5_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1051541_Par_1"
+          "@id": "estleg:Reg_1053590_Map"
         },
         {
           "@id": "estleg:Reg_1053590_Par_4"
         },
         {
+          "@id": "estleg:Reg_1053590_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042962_Map"
+        },
+        {
           "@id": "estleg:Reg_1042962_Par_4"
+        },
+        {
+          "@id": "estleg:Reg_1042962_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042734_Map"
         },
         {
           "@id": "estleg:Reg_1042734_Par_1"
         },
         {
+          "@id": "estleg:Reg_1041764_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1051459_Map"
+        },
+        {
           "@id": "estleg:Reg_1051459_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1051459_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042637_Map"
         },
         {
           "@id": "estleg:Reg_1042637_Par_2"
         },
         {
+          "@id": "estleg:Reg_1042637_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1051562_Map"
+        },
+        {
           "@id": "estleg:Reg_1051562_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1051562_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042961_Map"
         },
         {
           "@id": "estleg:Reg_1042961_Par_6_6"
         },
         {
+          "@id": "estleg:Reg_1042961_Par_6_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042300_Map"
+        },
+        {
           "@id": "estleg:Reg_1042300_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_1042300_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042252_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:MHS_Map"
         },
         {
           "@id": "estleg:MHS_Par_10"
@@ -125,6 +305,17 @@
         },
         {
           "@id": "estleg:MHS_Par_2_Lg_2"
+        }
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_3_1_65_15"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_41_03"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_33_03"
         }
       ],
       "estleg:implementedBy": [
@@ -147,36 +338,37 @@
           "@id": "estleg:Reg_160529_Map"
         }
       ],
-      "estleg:implementedByCount": 6,
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/4630"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2475"
-        }
+      "estleg:implementedByCount": 6
+    },
+    {
+      "@id": "estleg:Cluster_MHS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "eli:is_about": [
-        {
-          "@id": "http://eurovoc.europa.eu/4630"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2475"
-        }
-      ]
+      "rdfs:label": {
+        "@value": "§1–4 ÜLDOSA",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 ÜLDOSA",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:MHS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:MHS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Maa hindamise seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Maa hindamise seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_MHS_1"
@@ -196,26 +388,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_MHS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 ÜLDOSA",
-      "skos:prefLabel": "§1–4 ÜLDOSA",
-      "skos:inScheme": {
-        "@id": "estleg:MHS_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_MHS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDOSA",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDOSA",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
@@ -235,12 +416,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§4–7 KORRALINE HINDAMINE",
-      "skos:prefLabel": "§4–7 KORRALINE HINDAMINE",
+      "rdfs:label": {
+        "@value": "§4–7 KORRALINE HINDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§4–7 KORRALINE HINDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MHS_TopicScheme"
       },
-      "estleg:provisionCount": 4
+      "estleg:provisionCount": 10
     },
     {
       "@id": "estleg:Chapter_MHS_2",
@@ -248,7 +435,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – KORRALINE HINDAMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – KORRALINE HINDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
@@ -268,12 +458,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§8–8 ERAKORRALINE HINDAMINE",
-      "skos:prefLabel": "§8–8 ERAKORRALINE HINDAMINE",
+      "rdfs:label": {
+        "@value": "§8–8 ERAKORRALINE HINDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§8–8 ERAKORRALINE HINDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MHS_TopicScheme"
       },
-      "estleg:provisionCount": 1
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:Chapter_MHS_3",
@@ -281,7 +477,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – ERAKORRALINE HINDAMINE",
+      "rdfs:label": {
+        "@value": "3. peatükk – ERAKORRALINE HINDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
@@ -301,8 +500,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§9–11 ÕIGUSVASTASELT VÕÕRANDATUD MAA HINDAMINE",
-      "skos:prefLabel": "§9–11 ÕIGUSVASTASELT VÕÕRANDATUD MAA HINDAMINE",
+      "rdfs:label": {
+        "@value": "§9–11 ÕIGUSVASTASELT VÕÕRANDATUD MAA HINDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§9–11 ÕIGUSVASTASELT VÕÕRANDATUD MAA HINDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MHS_TopicScheme"
       },
@@ -314,7 +519,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – ÕIGUSVASTASELT VÕÕRANDATUD MAA HINDAMINE",
+      "rdfs:label": {
+        "@value": "4. peatükk – ÕIGUSVASTASELT VÕÕRANDATUD MAA HINDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
@@ -334,12 +542,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§12–14 LÕPPSÄTTED",
-      "skos:prefLabel": "§12–14 LÕPPSÄTTED",
+      "rdfs:label": {
+        "@value": "§12–14 LÕPPSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§12–14 LÕPPSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MHS_TopicScheme"
       },
-      "estleg:provisionCount": 3
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:Chapter_MHS_5",
@@ -347,7 +561,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – LÕPPSÄTTED",
+      "rdfs:label": {
+        "@value": "5. peatükk – LÕPPSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
@@ -367,12 +584,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse ülesanne",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse ülesanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Käesolev seadus määrab kindlaks maa hindamise alused ja korra. Hindamise tulemusi kasutatakse tehingute tegemisel, maa korraldamisel, maksustamisel ja erastamisel, õigusvastaselt võõrandatud maa kompenseerimisel ning muudel eesmärkidel.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus määrab kindlaks maa hindamise alused ja korra. Hindamise tulemusi kasutatakse tehingute tegemisel, maa korraldamisel, maksustamisel ja erastamisel, õigusvastaselt võõrandatud maa kompenseerimisel ning muudel eesmärkidel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus määrab kindlaks maa hindamise alused ja korra. Hindamise tulemusi kasutatakse tehingute tegemisel, maa korraldamisel, maksustamisel ja erastamisel, õigusvastaselt võõrandatud maa kompenseerimisel ning muudel eesmärkidel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_1"
@@ -385,6 +608,11 @@
           "@id": "estleg:MHS_Par_1_Lg_1"
         }
       ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_3_1_65_15"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_1_v22273"
@@ -395,11 +623,6 @@
         {
           "@id": "estleg:MHS_Par_1_v110032022029"
         }
-      ],
-      "estleg:interpretedBy": [
-        {
-          "@id": "estleg:RK_3_3_1_65_15"
-        }
       ]
     },
     {
@@ -408,10 +631,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus määrab kindlaks maa hindamise alused ja korra. Hindamise tulemusi kasutatakse tehingute tegemisel, maa korraldamisel, maksustamisel ja erastamisel, õigusvastaselt võõrandatud maa kompenseerimisel ning muudel eesmärkidel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus määrab kindlaks maa hindamise alused ja korra. Hindamise tulemusi kasutatakse tehingute tegemisel, maa korraldamisel, maksustamisel ja erastamisel, õigusvastaselt võõrandatud maa kompenseerimisel ning muudel eesmärkidel.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:MHS_Par_1_1",
@@ -420,12 +645,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1¹.",
-      "rdfs:label": "§ 1¹. Haldusmenetluse seaduse kohaldamine",
+      "rdfs:label": {
+        "@value": "§ 1¹. Haldusmenetluse seaduse kohaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:summary": {
+        "@value": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_1"
@@ -470,10 +701,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_1_1"
-      }
+      },
+      "rdfs:label": "§ 1¹ lg 1"
     },
     {
       "@id": "estleg:MHS_Par_2",
@@ -482,12 +715,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Hindamise objekt",
+      "rdfs:label": {
+        "@value": "§ 2. Hindamise objekt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Hindamise objektiks on maatükk ilma sellel asuvate ehitiste, kasvava metsa, muude taimede ja päraldisteta. Erakorralisel hindamisel võib hindamise objektiks olla ka maatükk koos selle oluliste osade ja päraldistega. (2) Käesoleva seaduse §-s 10 sätestatud juhul on hindamise objektiks maatükk koos sellel kasvanud metsaga.",
+      "estleg:summary": {
+        "@value": "(1) Hindamise objektiks on maatükk ilma sellel asuvate ehitiste, kasvava metsa, muude taimede ja päraldisteta. Erakorralisel hindamisel võib hindamise objektiks olla ka maatükk koos selle oluliste osade ja päraldistega. (2) Käesoleva seaduse §-s 10 sätestatud juhul on hindamise objektiks maatükk koos sellel kasvanud metsaga.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Hindamise objektiks on maatükk ilma sellel asuvate ehitiste, kasvava metsa, muude taimede ja päraldisteta. Erakorralisel hindamisel võib hindamise objektiks olla ka maatükk koos selle oluliste osade ja päraldistega. (2) Käesoleva seaduse §-s 10 sätestatud juhul on hindamise objektiks maatükk koos sellel kasvanud metsaga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_1"
@@ -503,9 +742,6 @@
           "@id": "estleg:MHS_Par_2_Lg_2"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -515,6 +751,9 @@
           "@id": "estleg:MHS_Par_10"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_2_v22273"
@@ -533,12 +772,12 @@
         "@id": "estleg:MHS_Par_2"
       },
       "rdfs:label": "§ 2 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -566,12 +805,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Hindamise alus, eesmärk, metoodika ja liigid",
+      "rdfs:label": {
+        "@value": "§ 3. Hindamise alus, eesmärk, metoodika ja liigid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Maa hindamisel lähtutakse kinnisasja hindamise headest tavadest ja rahvusvaheliselt tunnustatud põhimõtetest. (2) Hindamise eesmärgiks on maa hariliku väärtuse leidmine. (3) Hindamisel kasutatakse võrdlus-, tulu- ja kulumeetodit ning nende meetodite kombinatsioone. (4) Maa hindamine jaguneb korraliseks, erakorraliseks ja õigusvastaselt võõrandatud maa hindamiseks.",
+      "estleg:summary": {
+        "@value": "(1) Maa hindamisel lähtutakse kinnisasja hindamise headest tavadest ja rahvusvaheliselt tunnustatud põhimõtetest. (2) Hindamise eesmärgiks on maa hariliku väärtuse leidmine. (3) Hindamisel kasutatakse võrdlus-, tulu- ja kulumeetodit ning nende meetodite kombinatsioone. (4) Maa hindamine jaguneb korraliseks, erakorraliseks ja õigusvastaselt võõrandatud maa hindamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maa hindamisel lähtutakse kinnisasja hindamise headest tavadest ja rahvusvaheliselt tunnustatud põhimõtetest. (2) Hindamise eesmärgiks on maa hariliku väärtuse leidmine. (3) Hindamisel kasutatakse võrdlus-, tulu- ja kulumeetodit ning nende meetodite kombinatsioone. (4) Maa hindamine jaguneb korraliseks, erakorraliseks ja õigusvastaselt võõrandatud maa hindamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_1"
@@ -593,17 +838,17 @@
           "@id": "estleg:MHS_Par_3_Lg_4"
         }
       ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_3_1_65_15"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_3_v22273"
         },
         {
           "@id": "estleg:MHS_Par_3_v110032022029"
-        }
-      ],
-      "estleg:interpretedBy": [
-        {
-          "@id": "estleg:RK_3_3_1_65_15"
         }
       ]
     },
@@ -666,12 +911,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Maa hindaja",
+      "rdfs:label": {
+        "@value": "§ 4. Maa hindaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Maa hindaja (edaspidi hindaja) on isik, kellel on kutseseaduse alusel antud ja kehtiv vara hindaja 7. taseme kutse. Eluotstarbeliste varade hindaja võib olla ka isik, kellel on kutseseaduse alusel antud ja kehtiv kinnisvara hindaja 6. taseme kutse. Õigusaktides sätestatud juhtudel on hindajaks Maa- ja Ruumiamet. (1¹) Hindajana võib tegutseda ka välisriigi kutsekvalifikatsiooni omandanud isik, kui tema kutsekvalifikatsiooni on tunnustatud välisriigi kutsekvalifikatsiooni tunnustamise seaduse",
+      "estleg:summary": {
+        "@value": "(1) Maa hindaja (edaspidi hindaja) on isik, kellel on kutseseaduse alusel antud ja kehtiv vara hindaja 7. taseme kutse. Eluotstarbeliste varade hindaja võib olla ka isik, kellel on kutseseaduse alusel antud ja kehtiv kinnisvara hindaja 6. taseme kutse. Õigusaktides sätestatud juhtudel on hindajaks Maa- ja Ruumiamet. (1¹) Hindajana võib tegutseda ka välisriigi kutsekvalifikatsiooni omandanud isik, kui tema kutsekvalifikatsiooni on tunnustatud välisriigi kutsekvalifikatsiooni tunnustamise seaduse",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maa hindaja (edaspidi hindaja) on isik, kellel on kutseseaduse alusel antud ja kehtiv vara hindaja 7. taseme kutse. Eluotstarbeliste varade hindaja võib olla ka isik, kellel on kutseseaduse alusel antud ja kehtiv kinnisvara hindaja 6. taseme kutse. Õigusaktides sätestatud juhtudel on hindajaks Maa- ja Ruumiamet. (1¹) Hindajana võib tegutseda ka välisriigi kutsekvalifikatsiooni omandanud isik, kui tema kutsekvalifikatsiooni on tunnustatud välisriigi kutsekvalifikatsiooni tunnustamise seaduse kohaselt. Välisriigi kutsekvalifikatsiooni tunnustamise seaduse § 7 lõikes 2 sätestatud pädev asutus on Maa- ja Ruumiamet. (2) Hindajal on õigus nõuda omanikult või valdajalt ning kõigilt riigi- ja kohaliku omavalitsuse asutustelt maa hindamiseks vajalikke andmeid. (3) Hindaja on kohustatud hoidma temale seoses hindamisega teatavaks saanud ameti- ja ärisaladusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_1"
@@ -695,19 +946,24 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maa_ja_ruumiamet"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1054545_Map"
@@ -745,14 +1001,6 @@
         {
           "@id": "estleg:MHS_Par_4_v104122024015"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_maa_ja_ruumiamet"
-        },
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
       ]
     },
     {
@@ -767,9 +1015,6 @@
         "@id": "estleg:MHS_Par_4"
       },
       "rdfs:label": "§ 4 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -778,6 +1023,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -797,9 +1045,6 @@
         "@id": "estleg:MHS_Par_4"
       },
       "rdfs:label": "§ 4 lg 1¹",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -814,6 +1059,9 @@
           "@id": "estleg:VKT_Par_7_Lg_2"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maa_ja_ruumiamet"
@@ -832,9 +1080,6 @@
         "@id": "estleg:MHS_Par_4"
       },
       "rdfs:label": "§ 4 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -843,6 +1088,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       },
       "estleg:mentionsInstitution": [
         {
@@ -862,9 +1110,6 @@
         "@id": "estleg:MHS_Par_4"
       },
       "rdfs:label": "§ 4 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -873,6 +1118,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -882,18 +1130,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4¹.",
-      "rdfs:label": "§ 4¹. Korraline hindamine ja maa maksustamishind",
+      "rdfs:label": {
+        "@value": "§ 4¹. Korraline hindamine ja maa maksustamishind",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Korraline hindamine on andmekogude andmetele tuginev turupõhine maa hindamine, mille tulemusena määratakse igale katastriüksusele maa maksustamishind. (2) Korralist hindamist teeb Maa- ja Ruumiamet, kaasates erialaspetsialiste, sealhulgas kutselisi hindajaid. (3) Korraline hindamine toimub igal neljandal aastal.",
+      "estleg:summary": {
+        "@value": "(1) Korraline hindamine on andmekogude andmetele tuginev turupõhine maa hindamine, mille tulemusena määratakse igale katastriüksusele maa maksustamishind. (2) Korralist hindamist teeb Maa- ja Ruumiamet, kaasates erialaspetsialiste, sealhulgas kutselisi hindajaid. (3) Korraline hindamine toimub igal neljandal aastal.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Korraline hindamine on andmekogude andmetele tuginev turupõhine maa hindamine, mille tulemusena määratakse igale katastriüksusele maa maksustamishind. (2) Korralist hindamist teeb Maa- ja Ruumiamet, kaasates erialaspetsialiste, sealhulgas kutselisi hindajaid. (3) Korraline hindamine toimub igal neljandal aastal.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MHS_1"
+        "@id": "estleg:Cluster_MHS_2"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MHS_1"
+        "@id": "estleg:Chapter_MHS_2"
       },
       "estleg:hasSubsection": [
         {
@@ -906,17 +1160,17 @@
           "@id": "estleg:MHS_Par_4_1_Lg_3"
         }
       ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maa_ja_ruumiamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_4_1_v110032022029"
         },
         {
           "@id": "estleg:MHS_Par_4_1_v104122024015"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_maa_ja_ruumiamet"
         }
       ]
     },
@@ -971,18 +1225,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4².",
-      "rdfs:label": "§ 4². Korralisel hindamisel kasutatavad andmed",
+      "rdfs:label": {
+        "@value": "§ 4². Korralisel hindamisel kasutatavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Korralisel hindamisel võetakse aluseks järgmised andmed: tehingute andmed maakatastri tehingute andmebaasis hindamise aasta 30. juuni seisuga; maa omadusi kirjeldavad andmed maakatastri maa väärtuse kaardil; kinnisvaraturu analüüsiks vajalikud andmed. (2) Kui pärast korralist hindamist kantakse maakatastrisse uus katastriüksus või muutuvad käesoleva paragrahvi lõike 1 punktis 2 nimetatud andmed, määratakse katastriüksusele maa maksustamishind muutunud andmete alusel.",
-      "estleg:legalText": "(1) Korralisel hindamisel võetakse aluseks järgmised andmed: tehingute andmed maakatastri tehingute andmebaasis hindamise aasta 30. juuni seisuga; maa omadusi kirjeldavad andmed maakatastri maa väärtuse kaardil; kinnisvaraturu analüüsiks vajalikud andmed. (2) Kui pärast korralist hindamist kantakse maakatastrisse uus katastriüksus või muutuvad käesoleva paragrahvi lõike 1 punktis 2 nimetatud andmed, määratakse katastriüksusele maa maksustamishind muutunud andmete alusel.",
+      "estleg:summary": {
+        "@value": "(1) Korralisel hindamisel võetakse aluseks järgmised andmed: 1) tehingute andmed maakatastri tehingute andmebaasis hindamise aasta 30. juuni seisuga; 2) maa omadusi kirjeldavad andmed maakatastri maa väärtuse kaardil; 3) kinnisvaraturu analüüsiks vajalikud andmed. (2) Kui pärast korralist hindamist kantakse maakatastrisse uus katastriüksus või muutuvad käesoleva paragrahvi lõike 1 punktis 2 nimetatud andmed, määratakse katastriüksusele maa maksustamishind muutunud andmete alusel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Korralisel hindamisel võetakse aluseks järgmised andmed: 1) tehingute andmed maakatastri tehingute andmebaasis hindamise aasta 30. juuni seisuga; 2) maa omadusi kirjeldavad andmed maakatastri maa väärtuse kaardil; 3) kinnisvaraturu analüüsiks vajalikud andmed. (2) Kui pärast korralist hindamist kantakse maakatastrisse uus katastriüksus või muutuvad käesoleva paragrahvi lõike 1 punktis 2 nimetatud andmed, määratakse katastriüksusele maa maksustamishind muutunud andmete alusel.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MHS_1"
+        "@id": "estleg:Cluster_MHS_2"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MHS_1"
+        "@id": "estleg:Chapter_MHS_2"
       },
       "estleg:hasSubsection": [
         {
@@ -1005,11 +1265,27 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Korralisel hindamisel võetakse aluseks järgmised andmed: tehingute andmed maakatastri tehingute andmebaasis hindamise aasta 30. juuni seisuga; maa omadusi kirjeldavad andmed maakatastri maa väärtuse kaardil; kinnisvaraturu analüüsiks vajalikud andmed.",
+      "estleg:legalText": "(1) Korralisel hindamisel võetakse aluseks järgmised andmed: 1) tehingute andmed maakatastri tehingute andmebaasis hindamise aasta 30. juuni seisuga; 2) maa omadusi kirjeldavad andmed maakatastri maa väärtuse kaardil; 3) kinnisvaraturu analüüsiks vajalikud andmed.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_4_2"
       },
-      "rdfs:label": "§ 4² lg 1"
+      "rdfs:label": "§ 4² lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MHS_Map"
+        },
+        {
+          "@id": "estleg:MHS_Par_4_3"
+        },
+        {
+          "@id": "estleg:MHS_Par_4_3_Lg_1"
+        }
+      ]
     },
     {
       "@id": "estleg:MHS_Par_4_2_Lg_2",
@@ -1023,7 +1299,12 @@
         "@id": "estleg:MHS_Par_4_2"
       },
       "rdfs:label": "§ 4² lg 2",
-      "estleg:itemNumber": "2"
+      "estleg:itemNumber": "2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MHS_Par_12_Lg_7"
+        }
+      ]
     },
     {
       "@id": "estleg:MHS_Par_4_3",
@@ -1032,18 +1313,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4³.",
-      "rdfs:label": "§ 4³. Korralise hindamise metoodika",
+      "rdfs:label": {
+        "@value": "§ 4³. Korralise hindamise metoodika",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Korralisel hindamisel: analüüsitakse käesoleva seaduse § 42 lõikes 1 nimetatud andmeid; rühmitatakse katastriüksused sarnaste tunnuste alusel; rakendatakse igale katastriüksusele vastava rühma või rühmade hindamismudelit ja arvutatakse maa maksustamishind. (2) Maa väärtust mõjutavad tegurid on asukoht, kasutus ja selle piirangud, taristu, pindala, maa kvaliteet ja ehitusõigus. (3) Korralisel hindamisel ei arvestata üüri- ja rendilepingute ega kinnistusraamatusse kantud piiratud asjaõiguste",
-      "estleg:legalText": "(1) Korralisel hindamisel: analüüsitakse käesoleva seaduse § 42 lõikes 1 nimetatud andmeid; rühmitatakse katastriüksused sarnaste tunnuste alusel; rakendatakse igale katastriüksusele vastava rühma või rühmade hindamismudelit ja arvutatakse maa maksustamishind. (2) Maa väärtust mõjutavad tegurid on asukoht, kasutus ja selle piirangud, taristu, pindala, maa kvaliteet ja ehitusõigus. (3) Korralisel hindamisel ei arvestata üüri- ja rendilepingute ega kinnistusraamatusse kantud piiratud asjaõiguste ning märgete mõju maa väärtusele. (4) Korralisel hindamisel ei tehta paikvaatlusi. (5) kehtestab määrusega: tehingute arvestamist välistavad tingimused; tehinguandmete kohandamise alused; andmed, mida võib kasutada kinnisvaraturu analüüsil; maa väärtust mõjutavate tegurite arvestamise erisused; piirkonnad, kus arvestatakse ehitusõiguse mõju maa väärtusele; sarnaste tunnustega katastriüksuste rühmade ja hindamismudelite kirjeldused; maa maksustamishinna arvutuskäigus esitatavad andmed; maa maksustamishinna esitamise täpsuse.",
+      "estleg:summary": {
+        "@value": "(1) Korralisel hindamisel: 1) analüüsitakse käesoleva seaduse § 4² lõikes 1 nimetatud andmeid; 2) rühmitatakse katastriüksused sarnaste tunnuste alusel; 3) rakendatakse igale katastriüksusele vastava rühma või rühmade hindamismudelit ja arvutatakse maa maksustamishind. (2) Maa väärtust mõjutavad tegurid on asukoht, kasutus ja selle piirangud, taristu, pindala, maa kvaliteet ja ehitusõigus. (3) Korralisel hindamisel ei arvestata üüri- ja rendilepingute ega kinnistusraamatusse kantud piiratud",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Korralisel hindamisel: 1) analüüsitakse käesoleva seaduse § 4² lõikes 1 nimetatud andmeid; 2) rühmitatakse katastriüksused sarnaste tunnuste alusel; 3) rakendatakse igale katastriüksusele vastava rühma või rühmade hindamismudelit ja arvutatakse maa maksustamishind. (2) Maa väärtust mõjutavad tegurid on asukoht, kasutus ja selle piirangud, taristu, pindala, maa kvaliteet ja ehitusõigus. (3) Korralisel hindamisel ei arvestata üüri- ja rendilepingute ega kinnistusraamatusse kantud piiratud asjaõiguste ning märgete mõju maa väärtusele. (4) Korralisel hindamisel ei tehta paikvaatlusi. (5) Valdkonna eest vastutav minister kehtestab määrusega: 1) tehingute arvestamist välistavad tingimused; 2) tehinguandmete kohandamise alused; 3) andmed, mida võib kasutada kinnisvaraturu analüüsil; 4) maa väärtust mõjutavate tegurite arvestamise erisused; 5) piirkonnad, kus arvestatakse ehitusõiguse mõju maa väärtusele; 6) sarnaste tunnustega katastriüksuste rühmade ja hindamismudelite kirjeldused; 7) maa maksustamishinna arvutuskäigus esitatavad andmed; 8) maa maksustamishinna esitamise täpsuse.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MHS_1"
+        "@id": "estleg:Cluster_MHS_2"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MHS_1"
+        "@id": "estleg:Chapter_MHS_2"
       },
       "estleg:hasSubsection": [
         {
@@ -1062,6 +1349,23 @@
           "@id": "estleg:MHS_Par_4_3_Lg_5"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:references": [
+        {
+          "@id": "estleg:MHS_Par_4_2_Lg_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_4_3_v110032022029"
@@ -1075,11 +1379,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Korralisel hindamisel: analüüsitakse käesoleva seaduse § 42 lõikes 1 nimetatud andmeid; rühmitatakse katastriüksused sarnaste tunnuste alusel; rakendatakse igale katastriüksusele vastava rühma või rühmade hindamismudelit ja arvutatakse maa maksustamishind.",
+      "estleg:legalText": "(1) Korralisel hindamisel: 1) analüüsitakse käesoleva seaduse § 4² lõikes 1 nimetatud andmeid; 2) rühmitatakse katastriüksused sarnaste tunnuste alusel; 3) rakendatakse igale katastriüksusele vastava rühma või rühmade hindamismudelit ja arvutatakse maa maksustamishind.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_4_3"
       },
-      "rdfs:label": "§ 4³ lg 1"
+      "rdfs:label": "§ 4³ lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:MHS_Par_4_2_Lg_1"
+        }
+      ]
     },
     {
       "@id": "estleg:MHS_Par_4_3_Lg_2",
@@ -1127,17 +1441,32 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) kehtestab määrusega: tehingute arvestamist välistavad tingimused; tehinguandmete kohandamise alused; andmed, mida võib kasutada kinnisvaraturu analüüsil; maa väärtust mõjutavate tegurite arvestamise erisused; piirkonnad, kus arvestatakse ehitusõiguse mõju maa väärtusele; sarnaste tunnustega katastriüksuste rühmade ja hindamismudelite kirjeldused; maa maksustamishinna arvutuskäigus esitatavad andmed; maa maksustamishinna esitamise täpsuse.",
+      "estleg:legalText": "(5) Valdkonna eest vastutav minister kehtestab määrusega: 1) tehingute arvestamist välistavad tingimused; 2) tehinguandmete kohandamise alused; 3) andmed, mida võib kasutada kinnisvaraturu analüüsil; 4) maa väärtust mõjutavate tegurite arvestamise erisused; 5) piirkonnad, kus arvestatakse ehitusõiguse mõju maa väärtusele; 6) sarnaste tunnustega katastriüksuste rühmade ja hindamismudelite kirjeldused; 7) maa maksustamishinna arvutuskäigus esitatavad andmed; 8) maa maksustamishinna esitamise täpsuse.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_4_3"
       },
       "rdfs:label": "§ 4³ lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
       }
     },
     {
@@ -1147,18 +1476,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4⁴.",
-      "rdfs:label": "§ 4⁴. Maa maksustamishindade avalikustamine ja kasutusele võtmine",
+      "rdfs:label": {
+        "@value": "§ 4⁴. Maa maksustamishindade avalikustamine ja kasutusele võtmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Maa maksustamishind koos arvutuskäiguga avalikustatakse maakatastris hiljemalt hindamise aasta 31. oktoobril ja võetakse kasutusele sama aasta 31. detsembril.",
+      "estleg:summary": {
+        "@value": "Maa maksustamishind koos arvutuskäiguga avalikustatakse maakatastris hiljemalt hindamise aasta 31. oktoobril ja võetakse kasutusele sama aasta 31. detsembril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Maa maksustamishind koos arvutuskäiguga avalikustatakse maakatastris hiljemalt hindamise aasta 31. oktoobril ja võetakse kasutusele sama aasta 31. detsembril.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MHS_1"
+        "@id": "estleg:Cluster_MHS_2"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MHS_1"
+        "@id": "estleg:Chapter_MHS_2"
       },
       "estleg:hasSubsection": [
         {
@@ -1177,10 +1512,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Maa maksustamishind koos arvutuskäiguga avalikustatakse maakatastris hiljemalt hindamise aasta 31. oktoobril ja võetakse kasutusele sama aasta 31. detsembril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maa maksustamishind koos arvutuskäiguga avalikustatakse maakatastris hiljemalt hindamise aasta 31. oktoobril ja võetakse kasutusele sama aasta 31. detsembril.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_4_4"
-      }
+      },
+      "rdfs:label": "§ 4⁴ lg 1"
     },
     {
       "@id": "estleg:MHS_Par_5",
@@ -1189,18 +1526,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Korralise hindamise mõiste ja alused",
+      "rdfs:label": {
+        "@value": "§ 5. Korralise hindamise mõiste ja alused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 5. Korralise hindamise mõiste ja alused",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_2"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_MHS_2"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:provisionRepealed": true,
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_3_1_41_03"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_33_03"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_65_15"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
       },
       "estleg:hasVersion": [
         {
@@ -1224,17 +1585,6 @@
         {
           "@id": "estleg:MHS_Par_5_v110032022029"
         }
-      ],
-      "estleg:interpretedBy": [
-        {
-          "@id": "estleg:RK_3_3_1_41_03"
-        },
-        {
-          "@id": "estleg:RK_3_3_1_33_03"
-        },
-        {
-          "@id": "estleg:RK_3_3_1_65_15"
-        }
       ]
     },
     {
@@ -1244,19 +1594,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5¹.",
-      "rdfs:label": "§ 5¹. Korralise hindamise läbiviimine",
+      "rdfs:label": {
+        "@value": "§ 5¹. Korralise hindamise läbiviimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 5¹. Korralise hindamise läbiviimine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_2"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_MHS_2"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_5_1_v22273"
@@ -1282,67 +1638,147 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Maatüki maksustamishind",
+      "rdfs:label": {
+        "@value": "§ 6. Maatüki maksustamishind",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 6. Maatüki maksustamishind",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_2"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_MHS_2"
       },
+      "estleg:provisionRepealed": true,
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_3_1_33_03"
+        }
+      ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:Reg_1041811_Map"
+        },
+        {
           "@id": "estleg:Reg_1041811_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_1041811_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1044486_Map"
         },
         {
           "@id": "estleg:Reg_1044486_Par_2"
         },
         {
+          "@id": "estleg:Reg_1044486_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1043170_Map"
+        },
+        {
           "@id": "estleg:Reg_1043170_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_1043170_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1046014_Map"
         },
         {
           "@id": "estleg:Reg_1046014_Par_1"
         },
         {
-          "@id": "estleg:Reg_1034683_Par_1"
+          "@id": "estleg:Reg_1048287_Map"
         },
         {
           "@id": "estleg:Reg_1048287_Par_5"
         },
         {
-          "@id": "estleg:Reg_1042879_Par_2"
+          "@id": "estleg:Reg_1048287_Par_5_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1051541_Par_1"
+          "@id": "estleg:Reg_1053590_Map"
         },
         {
           "@id": "estleg:Reg_1053590_Par_4"
         },
         {
+          "@id": "estleg:Reg_1053590_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042962_Map"
+        },
+        {
           "@id": "estleg:Reg_1042962_Par_4"
+        },
+        {
+          "@id": "estleg:Reg_1042962_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042734_Map"
         },
         {
           "@id": "estleg:Reg_1042734_Par_1"
         },
         {
+          "@id": "estleg:Reg_1041764_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1051459_Map"
+        },
+        {
           "@id": "estleg:Reg_1051459_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1051459_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042637_Map"
         },
         {
           "@id": "estleg:Reg_1042637_Par_2"
         },
         {
+          "@id": "estleg:Reg_1042637_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1051562_Map"
+        },
+        {
           "@id": "estleg:Reg_1051562_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1051562_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042961_Map"
         },
         {
           "@id": "estleg:Reg_1042961_Par_6_6"
         },
         {
+          "@id": "estleg:Reg_1042961_Par_6_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042300_Map"
+        },
+        {
           "@id": "estleg:Reg_1042300_Par_2"
+        },
+        {
+          "@id": "estleg:Reg_1042300_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1042252_Par_1_Lg_1"
         }
       ],
       "estleg:implementedBy": [
@@ -1382,11 +1818,6 @@
         {
           "@id": "estleg:MHS_Par_6_v110032022029"
         }
-      ],
-      "estleg:interpretedBy": [
-        {
-          "@id": "estleg:RK_3_3_1_33_03"
-        }
       ]
     },
     {
@@ -1396,19 +1827,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6¹.",
-      "rdfs:label": "§ 6¹. Maa keskmine väärtus",
+      "rdfs:label": {
+        "@value": "§ 6¹. Maa keskmine väärtus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 6¹. Maa keskmine väärtus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_2"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_MHS_2"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_6_1_v13278375"
@@ -1425,19 +1862,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6².",
-      "rdfs:label": "§ 6². Tehnovõrkudealuse maa maksustamishind",
+      "rdfs:label": {
+        "@value": "§ 6². Tehnovõrkudealuse maa maksustamishind",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 6². Tehnovõrkudealuse maa maksustamishind",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_2"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_MHS_2"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_6_2_v129062018025"
@@ -1454,19 +1897,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Maa korralise hindamisega seotud vaidluste lahendamine halduskorras",
+      "rdfs:label": {
+        "@value": "§ 7. Maa korralise hindamisega seotud vaidluste lahendamine halduskorras",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 7. Maa korralise hindamisega seotud vaidluste lahendamine halduskorras",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_2"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_MHS_2"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_7_v22273"
@@ -1492,13 +1941,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Erakorraline hindamine",
+      "rdfs:label": {
+        "@value": "§ 8. Erakorraline hindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Erakorraline hindamine on hindamise objekti maksumuse kindlaksmääramine tehingu teostamiseks või muul eesmärgil. (2) Erakorralise hindamise korra, sealhulgas kasvava metsa hindamise metoodika, kehtestab määrusega. (3) [Kehtetu] (4) Erakorraline hindamine toimub tellija kulul. (5) Kehtetu -",
-      "estleg:legalText": "(1) Erakorraline hindamine on hindamise objekti maksumuse kindlaksmääramine tehingu teostamiseks või muul eesmärgil. (2) Erakorralise hindamise korra, sealhulgas kasvava metsa hindamise metoodika, kehtestab määrusega. (3) [Kehtetu] (4) Erakorraline hindamine toimub tellija kulul. (5) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Erakorraline hindamine on hindamise objekti maksumuse kindlaksmääramine tehingu teostamiseks või muul eesmärgil. (2) Erakorralise hindamise korra, sealhulgas kasvava metsa hindamise metoodika, kehtestab Vabariigi Valitsus määrusega. (3) [Kehtetu] (4) Erakorraline hindamine toimub tellija kulul.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Erakorraline hindamine on hindamise objekti maksumuse kindlaksmääramine tehingu teostamiseks või muul eesmärgil. (2) Erakorralise hindamise korra, sealhulgas kasvava metsa hindamise metoodika, kehtestab Vabariigi Valitsus määrusega. (3) [Kehtetu] (4) Erakorraline hindamine toimub tellija kulul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_3"
       },
@@ -1517,11 +1972,23 @@
         },
         {
           "@id": "estleg:MHS_Par_8_Lg_4"
-        },
-        {
-          "@id": "estleg:MHS_Par_8_Lg_5"
         }
       ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation",
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_8_v22273"
@@ -1563,14 +2030,38 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Erakorralise hindamise korra, sealhulgas kasvava metsa hindamise metoodika, kehtestab määrusega.",
+      "estleg:legalText": "(2) Erakorralise hindamise korra, sealhulgas kasvava metsa hindamise metoodika, kehtestab Vabariigi Valitsus määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_8"
       },
       "rdfs:label": "§ 8 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation",
       "estleg:referencedBy": [
         {
+          "@id": "estleg:LKS_Par_44_1_Lg_9"
+        },
+        {
+          "@id": "estleg:Reg_157948_Map"
+        },
+        {
           "@id": "estleg:Reg_157948_Par_7_11"
+        },
+        {
+          "@id": "estleg:Reg_157948_Par_7_11_Lg_1"
         }
       ],
       "estleg:implementedBy": [
@@ -1607,31 +2098,24 @@
       "rdfs:label": "§ 8 lg 4"
     },
     {
-      "@id": "estleg:MHS_Par_8_Lg_5",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MHS_Par_8"
-      },
-      "rdfs:label": "§ 8 lg 5"
-    },
-    {
       "@id": "estleg:MHS_Par_8_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8¹.",
-      "rdfs:label": "§ 8¹. Tehnovõrgu ja -rajatise ning tee kasutustasu",
+      "rdfs:label": {
+        "@value": "§ 8¹. Tehnovõrgu ja -rajatise ning tee kasutustasu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Tehnovõrgu ja -rajatise või tee eelduslikuks kasutustasuks määratakse kolm protsenti maa turuväärtusest või maksustamishinnast, kui viimane vastab turuväärtusele. Kasutustasule lisandub kasutusala ulatuses hüvitis maamaksu eest.",
+      "estleg:summary": {
+        "@value": "Tehnovõrgu ja -rajatise või tee eelduslikuks kasutustasuks määratakse kolm protsenti maa turuväärtusest või maksustamishinnast, kui viimane vastab turuväärtusele. Kasutustasule lisandub kasutusala ulatuses hüvitis maamaksu eest.",
+        "@language": "et"
+      },
       "estleg:legalText": "Tehnovõrgu ja -rajatise või tee eelduslikuks kasutustasuks määratakse kolm protsenti maa turuväärtusest või maksustamishinnast, kui viimane vastab turuväärtusele. Kasutustasule lisandub kasutusala ulatuses hüvitis maamaksu eest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_3"
@@ -1656,10 +2140,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tehnovõrgu ja -rajatise või tee eelduslikuks kasutustasuks määratakse kolm protsenti maa turuväärtusest või maksustamishinnast, kui viimane vastab turuväärtusele. Kasutustasule lisandub kasutusala ulatuses hüvitis maamaksu eest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tehnovõrgu ja -rajatise või tee eelduslikuks kasutustasuks määratakse kolm protsenti maa turuväärtusest või maksustamishinnast, kui viimane vastab turuväärtusele. Kasutustasule lisandub kasutusala ulatuses hüvitis maamaksu eest.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_8_1"
-      }
+      },
+      "rdfs:label": "§ 8¹ lg 1"
     },
     {
       "@id": "estleg:MHS_Par_8_2",
@@ -1668,12 +2154,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8².",
-      "rdfs:label": "§ 8². Kinnisasja hariliku väärtuse ja kasutustasu väljaselgitamine",
+      "rdfs:label": {
+        "@value": "§ 8². Kinnisasja hariliku väärtuse ja kasutustasu väljaselgitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Kui õigusakti järgi võib kinnisasja hariliku väärtuse või kasutustasu välja selgitada Maa- ja Ruumiamet, võib ta selleks alusena kasutada maakatastri tehingute andmebaasi ajakohaste andmete alusel arvutatud maa maksustamishinda.",
+      "estleg:summary": {
+        "@value": "Kui õigusakti järgi võib kinnisasja hariliku väärtuse või kasutustasu välja selgitada Maa- ja Ruumiamet, võib ta selleks alusena kasutada maakatastri tehingute andmebaasi ajakohaste andmete alusel arvutatud maa maksustamishinda.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui õigusakti järgi võib kinnisasja hariliku väärtuse või kasutustasu välja selgitada Maa- ja Ruumiamet, võib ta selleks alusena kasutada maakatastri tehingute andmebaasi ajakohaste andmete alusel arvutatud maa maksustamishinda.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_3"
@@ -1686,24 +2178,24 @@
           "@id": "estleg:MHS_Par_8_2_Lg_1"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maa_ja_ruumiamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_8_2_v110032022029"
         },
         {
           "@id": "estleg:MHS_Par_8_2_v104122024015"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_maa_ja_ruumiamet"
         }
       ]
     },
@@ -1713,16 +2205,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui õigusakti järgi võib kinnisasja hariliku väärtuse või kasutustasu välja selgitada Maa- ja Ruumiamet, võib ta selleks alusena kasutada maakatastri tehingute andmebaasi ajakohaste andmete alusel arvutatud maa maksustamishinda.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui õigusakti järgi võib kinnisasja hariliku väärtuse või kasutustasu välja selgitada Maa- ja Ruumiamet, võib ta selleks alusena kasutada maakatastri tehingute andmebaasi ajakohaste andmete alusel arvutatud maa maksustamishinda.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_8_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 8² lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1737,13 +2231,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Õigusvastaselt võõrandatud maa hindamine",
+      "rdfs:label": {
+        "@value": "§ 9. Õigusvastaselt võõrandatud maa hindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Õigusvastaselt võõrandatud maa maksumus määratakse maareformi seaduse § 6 2. lõike alusel mittetagastatava maa kompenseerimiseks ja maareformi seaduse alusel riigile tasumisele kuuluva võla suuruse kindlaksmääramiseks maa tagastamise korral nõudeõigusest suuremas osas. (2) Kehtetu - (3) Õigusvastaselt võõrandatud maa maksumus määratakse, lähtudes maa võõrandamisaegsest üldpindalast. Õigusvastaselt võõrandatud kinnistu 1940. aasta üldpind määratakse kinnistusraamatu sissekannete, maksualuste",
-      "estleg:legalText": "(1) Õigusvastaselt võõrandatud maa maksumus määratakse maareformi seaduse § 6 2. lõike alusel mittetagastatava maa kompenseerimiseks ja maareformi seaduse alusel riigile tasumisele kuuluva võla suuruse kindlaksmääramiseks maa tagastamise korral nõudeõigusest suuremas osas. (2) Kehtetu - (3) Õigusvastaselt võõrandatud maa maksumus määratakse, lähtudes maa võõrandamisaegsest üldpindalast. Õigusvastaselt võõrandatud kinnistu 1940. aasta üldpind määratakse kinnistusraamatu sissekannete, maksualuste maade nimekirjade või ostu-müügilepingute, kohtuotsuste, kinkelepingute, pärandite vastuvõtudokumentide või muude maa suurust tõendavate dokumentide alusel. Erinevate andmete korral võetakse aluseks kinnistusraamatu sissekanne, selle puudumisel hilisem dokument. (4) Hajaasustusega alal paikneva õigusvastaselt võõrandatud maa maksumuse määramise aluseks on maa asukohajärgse valla üldpinna hektari kaalutud keskmine maksustamishind, arvestamata maa maksustamishinda vähendavaid soodustusi. (5) Tiheasustusega alal paikneva õigusvastaselt võõrandatud maa maksumuse määramise aluseks on maa asukohajärgse hinnatsooni maa maksustamishind elamumaa ruutmeetri kohta, arvestamata maa maksustamishinda vähendavaid soodustusi. Kuni 0,5 ha õigusvastaselt võõrandatud maa maksumus määratakse maa maksustamishinna alusel. Kui õigusvastaselt võõrandatud maa pindala on suurem kui 0,5 ha, korrutatakse ülejäänud õigusvastaselt võõrandatud maa maksumuse määramiseks maa maksustamishind koefitsiendiga 0,1. Kui maa tagastatakse osaliselt, kuid tagastatava maa pindala on väiksem kui 0,5 ha, siis õigusvastaselt võõrandatud maa maksumuse saamiseks määratakse tagastatava maa ja 0,5 ha vahe maksumus maa maksustamishinna alusel ning ülejäänud tagastamata jääva maa maksumuse leidmiseks korrutatakse maa maksustamishind koefitsiendiga 0,1. Kui õigusvastaselt võõrandatud maa tagastatakse osaliselt, kuid tagastatava maa pindala on 0,5 ha või suurem, siis tagastamata jääva maa maksumuse leidmiseks korrutatakse maa maksustamishind koefitsiendiga 0,1. Kui õigusvastaselt võõrandatud maa asub mitmes hinnatsoonis, võetakse maa maksumuse määramisel aluseks selle maatüki kaalutud keskmine maksustamishind. (6) Tiheasustusega aladena käesoleva seaduse tähenduses käsitatakse linnade, alevite ja alevike territooriume ning maavanema poolt kuni 2001. aasta 1. maini seaduse alusel kohaliku omavalitsuse volikogu ettepanekul kinnitatud kompaktse hoonestusega alasid ja määratud tiheasustusega alasid. (7) Kui õigusvastaselt võõrandatud maa paikneb Ida-Petserimaal või Narva jõe tagusel Virumaal, võetakse õigusvastaselt võõrandatud maa maksumuse määramisel Ida-Petserimaa osas aluseks Põlva ja Võru maakondade maa hektari kaalutud keskmine maksustamishind ja Narva jõe taguse Virumaa osas Ida-Viru maakonna kaalutud keskmine maksustamishind. Petseri linnas paikneva maa maksumuse määramisel võetakse aluseks Räpina linna maa kaalutud keskmine maksustamishind ja Jaanilinnas paikneva maa maksumuse määramisel Narva linna maa kaalutud keskmine maksustamishind. (8) Käesoleva paragrahvi 4., 5. ja 7. lõikes märgitud maa maksustamishinnad õigusvastaselt võõrandatud maa maksumuse määramiseks kinnitab , lähtudes 1993. aasta korralise hindamise tulemustest. (9) [Kehtetu]",
+      "estleg:summary": {
+        "@value": "(1) Õigusvastaselt võõrandatud maa maksumus määratakse maareformi seaduse § 6 2. lõike alusel mittetagastatava maa kompenseerimiseks ja maareformi seaduse alusel riigile tasumisele kuuluva võla suuruse kindlaksmääramiseks maa tagastamise korral nõudeõigusest suuremas osas. (3) Õigusvastaselt võõrandatud maa maksumus määratakse, lähtudes maa võõrandamisaegsest üldpindalast. Õigusvastaselt võõrandatud kinnistu 1940. aasta üldpind määratakse kinnistusraamatu sissekannete, maksualuste maade",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Õigusvastaselt võõrandatud maa maksumus määratakse maareformi seaduse § 6 2. lõike alusel mittetagastatava maa kompenseerimiseks ja maareformi seaduse alusel riigile tasumisele kuuluva võla suuruse kindlaksmääramiseks maa tagastamise korral nõudeõigusest suuremas osas. (3) Õigusvastaselt võõrandatud maa maksumus määratakse, lähtudes maa võõrandamisaegsest üldpindalast. Õigusvastaselt võõrandatud kinnistu 1940. aasta üldpind määratakse kinnistusraamatu sissekannete, maksualuste maade nimekirjade või ostu-müügilepingute, kohtuotsuste, kinkelepingute, pärandite vastuvõtudokumentide või muude maa suurust tõendavate dokumentide alusel. Erinevate andmete korral võetakse aluseks kinnistusraamatu sissekanne, selle puudumisel hilisem dokument. (4) Hajaasustusega alal paikneva õigusvastaselt võõrandatud maa maksumuse määramise aluseks on maa asukohajärgse valla üldpinna hektari kaalutud keskmine maksustamishind, arvestamata maa maksustamishinda vähendavaid soodustusi. (5) Tiheasustusega alal paikneva õigusvastaselt võõrandatud maa maksumuse määramise aluseks on maa asukohajärgse hinnatsooni maa maksustamishind elamumaa ruutmeetri kohta, arvestamata maa maksustamishinda vähendavaid soodustusi. Kuni 0,5 ha õigusvastaselt võõrandatud maa maksumus määratakse maa maksustamishinna alusel. Kui õigusvastaselt võõrandatud maa pindala on suurem kui 0,5 ha, korrutatakse ülejäänud õigusvastaselt võõrandatud maa maksumuse määramiseks maa maksustamishind koefitsiendiga 0,1. Kui maa tagastatakse osaliselt, kuid tagastatava maa pindala on väiksem kui 0,5 ha, siis õigusvastaselt võõrandatud maa maksumuse saamiseks määratakse tagastatava maa ja 0,5 ha vahe maksumus maa maksustamishinna alusel ning ülejäänud tagastamata jääva maa maksumuse leidmiseks korrutatakse maa maksustamishind koefitsiendiga 0,1. Kui õigusvastaselt võõrandatud maa tagastatakse osaliselt, kuid tagastatava maa pindala on 0,5 ha või suurem, siis tagastamata jääva maa maksumuse leidmiseks korrutatakse maa maksustamishind koefitsiendiga 0,1. Kui õigusvastaselt võõrandatud maa asub mitmes hinnatsoonis, võetakse maa maksumuse määramisel aluseks selle maatüki kaalutud keskmine maksustamishind. (6) Tiheasustusega aladena käesoleva seaduse tähenduses käsitatakse linnade, alevite ja alevike territooriume ning maavanema poolt kuni 2001. aasta 1. maini seaduse alusel kohaliku omavalitsuse volikogu ettepanekul kinnitatud kompaktse hoonestusega alasid ja määratud tiheasustusega alasid. (7) Kui õigusvastaselt võõrandatud maa paikneb Ida-Petserimaal või Narva jõe tagusel Virumaal, võetakse õigusvastaselt võõrandatud maa maksumuse määramisel Ida-Petserimaa osas aluseks Põlva ja Võru maakondade maa hektari kaalutud keskmine maksustamishind ja Narva jõe taguse Virumaa osas Ida-Viru maakonna kaalutud keskmine maksustamishind. Petseri linnas paikneva maa maksumuse määramisel võetakse aluseks Räpina linna maa kaalutud keskmine maksustamishind ja Jaanilinnas paikneva maa maksumuse määramisel Narva linna maa kaalutud keskmine maksustamishind. (8) Käesoleva paragrahvi 4., 5. ja 7. lõikes märgitud maa maksustamishinnad õigusvastaselt võõrandatud maa maksumuse määramiseks kinnitab Vabariigi Valitsus , lähtudes 1993. aasta korralise hindamise tulemustest. (9) [Kehtetu]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_4"
       },
@@ -1753,9 +2253,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:MHS_Par_9_Lg_1"
-        },
-        {
-          "@id": "estleg:MHS_Par_9_Lg_2"
         },
         {
           "@id": "estleg:MHS_Par_9_Lg_3"
@@ -1788,17 +2285,31 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:MaaRS_Par_6"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:MaaRS_Par_6"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:MaaRS_Par_6"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MHS_Map"
+        },
         {
           "@id": "estleg:MHS_Par_10"
         },
@@ -1828,11 +2339,6 @@
         {
           "@id": "estleg:MHS_Par_9_v129062018024"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
       ]
     },
     {
@@ -1847,29 +2353,16 @@
         "@id": "estleg:MHS_Par_9"
       },
       "rdfs:label": "§ 9 lg 1",
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:MaaRS_Par_6"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:MaaRS_Par_6"
         }
-      ]
-    },
-    {
-      "@id": "estleg:MHS_Par_9_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
       ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MHS_Par_9"
-      },
-      "rdfs:label": "§ 9 lg 2"
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:MaaRS_Par_6"
+        }
+      ]
     },
     {
       "@id": "estleg:MHS_Par_9_Lg_3",
@@ -1941,14 +2434,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MHS_Par_12_Lg_5"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MHS_Par_12_Lg_5"
         }
       ]
     },
@@ -1972,7 +2465,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "8",
-      "estleg:legalText": "(8) Käesoleva paragrahvi 4., 5. ja 7. lõikes märgitud maa maksustamishinnad õigusvastaselt võõrandatud maa maksumuse määramiseks kinnitab , lähtudes 1993. aasta korralise hindamise tulemustest.",
+      "estleg:legalText": "(8) Käesoleva paragrahvi 4., 5. ja 7. lõikes märgitud maa maksustamishinnad õigusvastaselt võõrandatud maa maksumuse määramiseks kinnitab Vabariigi Valitsus , lähtudes 1993. aasta korralise hindamise tulemustest.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_9"
       },
@@ -1984,7 +2477,22 @@
         {
           "@id": "estleg:RK_3_2_1_87_14"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:MHS_Par_9_Lg_9",
@@ -2006,12 +2514,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Õigusvastaselt võõrandatud maaga lahutamatult seotud loodusobjektide hindamine",
+      "rdfs:label": {
+        "@value": "§ 10. Õigusvastaselt võõrandatud maaga lahutamatult seotud loodusobjektide hindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Õigusvastaselt võõrandatud maal kasvanud metsa maksumuse kompenseerimiseks liidetakse käesoleva seaduse § 9 4. ja 7. lõikes nimetatud maade maksumusele maa kompenseerimise korral kuni 30% kompenseerimisele kuuluva maa maksumusest Vabariigi Valitsuse kehtestatud korras. (2) Muud õigusvastaselt võõrandamise ajal maaga seotud loodusobjektid hindamisele ei kuulu. (3) Õigusvastaselt võõrandatud maa ja sellel kasvanud metsa eest kompensatsiooni määramisega seotud vaidlused lahendatakse",
+      "estleg:summary": {
+        "@value": "(1) Õigusvastaselt võõrandatud maal kasvanud metsa maksumuse kompenseerimiseks liidetakse käesoleva seaduse § 9 4. ja 7. lõikes nimetatud maade maksumusele maa kompenseerimise korral kuni 30% kompenseerimisele kuuluva maa maksumusest Vabariigi Valitsuse kehtestatud korras. (2) Muud õigusvastaselt võõrandamise ajal maaga seotud loodusobjektid hindamisele ei kuulu. (3) Õigusvastaselt võõrandatud maa ja sellel kasvanud metsa eest kompensatsiooni määramisega seotud vaidlused lahendatakse",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Õigusvastaselt võõrandatud maal kasvanud metsa maksumuse kompenseerimiseks liidetakse käesoleva seaduse § 9 4. ja 7. lõikes nimetatud maade maksumusele maa kompenseerimise korral kuni 30% kompenseerimisele kuuluva maa maksumusest Vabariigi Valitsuse kehtestatud korras. (2) Muud õigusvastaselt võõrandamise ajal maaga seotud loodusobjektid hindamisele ei kuulu. (3) Õigusvastaselt võõrandatud maa ja sellel kasvanud metsa eest kompensatsiooni määramisega seotud vaidlused lahendatakse omandireformi aluste seaduses sätestatud korras. (4) Vaidlused maa hindamise ja tulemuste üle lahendatakse kohtu korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_4"
@@ -2047,7 +2561,15 @@
           "@id": "estleg:MHS_Par_9"
         }
       ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MHS_Map"
+        },
         {
           "@id": "estleg:MHS_Par_2"
         },
@@ -2058,11 +2580,6 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_10_v22273"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
         }
       ]
     },
@@ -2153,12 +2670,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Õigusvastaselt võõrandatud maa kompenseerimine",
+      "rdfs:label": {
+        "@value": "§ 11. Õigusvastaselt võõrandatud maa kompenseerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Õigusvastaselt võõrandatud maa maksumuse määramine toimub käesoleva seaduse §-de 9 ja 10 alusel õigusvastaselt võõrandatud vara maksumuse määramise ja kompenseerimise seaduses sätestatud korras. (2) Ida-Petserimaal ja Narva jõe tagusel Virumaal paikneva õigusvastaselt võõrandatud maa eest määrab kompensatsiooni Ida-Petserimaa osas õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise Võru maakonnakomisjon ning Narva jõe taguse Virumaa osas õigusvastaselt võõrandatud vara",
+      "estleg:summary": {
+        "@value": "(1) Õigusvastaselt võõrandatud maa maksumuse määramine toimub käesoleva seaduse §-de 9 ja 10 alusel õigusvastaselt võõrandatud vara maksumuse määramise ja kompenseerimise seaduses sätestatud korras. (2) Ida-Petserimaal ja Narva jõe tagusel Virumaal paikneva õigusvastaselt võõrandatud maa eest määrab kompensatsiooni Ida-Petserimaa osas õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise Võru maakonnakomisjon ning Narva jõe taguse Virumaa osas õigusvastaselt võõrandatud vara",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Õigusvastaselt võõrandatud maa maksumuse määramine toimub käesoleva seaduse §-de 9 ja 10 alusel õigusvastaselt võõrandatud vara maksumuse määramise ja kompenseerimise seaduses sätestatud korras. (2) Ida-Petserimaal ja Narva jõe tagusel Virumaal paikneva õigusvastaselt võõrandatud maa eest määrab kompensatsiooni Ida-Petserimaa osas õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise Võru maakonnakomisjon ning Narva jõe taguse Virumaa osas õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise Ida-Viru maakonnakomisjon. (3) [Kehtetu] (4) [Kehtetu] (5) [Kehtetu]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_4"
@@ -2183,12 +2706,12 @@
           "@id": "estleg:MHS_Par_11_Lg_5"
         }
       ],
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:MHS_Par_9"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:MHS_Par_9"
         }
@@ -2220,12 +2743,12 @@
         "@id": "estleg:MHS_Par_11"
       },
       "rdfs:label": "§ 11 lg 1",
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:MHS_Par_9"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:MHS_Par_9"
         }
@@ -2290,13 +2813,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Seaduse rakendamine",
+      "rdfs:label": {
+        "@value": "§ 12. Seaduse rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Esimeseks korraliseks hindamiseks loetakse maa maksustamishinna kindlaksmääramine 1993. aastal. Selle alusel toimub õigusvastaselt võõrandatud maa maksumuse määramine kompenseerimisel. (2) Erastatava maa maksumus või alghind määratakse kindlaks maa korralise hindamise tulemusena saadud maa maksustamishinna alusel. Erastataval maal asuva metsa maksumus määratakse kehtestatud korras ja liidetakse erastatava maa maksumusele või alghinnale.",
-      "estleg:legalText": "(1) Esimeseks korraliseks hindamiseks loetakse maa maksustamishinna kindlaksmääramine 1993. aastal. Selle alusel toimub õigusvastaselt võõrandatud maa maksumuse määramine kompenseerimisel. (2) Erastatava maa maksumus või alghind määratakse kindlaks maa korralise hindamise tulemusena saadud maa maksustamishinna alusel. Erastataval maal asuva metsa maksumus määratakse kehtestatud korras ja liidetakse erastatava maa maksumusele või alghinnale. (3) [Kehtetu] (4) [Kehtetu] (5) Kui õigusvastaselt võõrandatud maa paiknes maa kompenseerimise otsuse vastuvõtmise ajal käesoleva seaduse § 9 lõikes 6 sätestatud tiheasustusega alal, kuid kompensatsioon määrati valla üldpinna kaalutud keskmise maksustamishinna alusel, on kompensatsiooni saanud isikul õigus kuni 2001. aasta 1. septembrini taotleda kompensatsiooni ümberarvutamist ja lisakompensatsiooni määramist. (6) Järgmine maa korraline hindamine korraldatakse 2022. aastal. (7) 2022. aasta maa korralisel hindamisel määratud maa maksustamishinnad ja käesoleva seaduse § 42 lõike 2 alusel enne 2024. aasta 1. jaanuari määratud maa maksustamishinnad võetakse kasutusele 2024. aasta 1. jaanuaril. (8) Kuni 2022. aasta maa korralise hindamise tulemuste kasutusele võtmiseni kohaldatakse maakatastriseaduse § 181 lõikes 10 sätestatud mäetööstusmaale ja lõikes 11 sätestatud turbatööstusmaale 2001. aasta korralise hindamise tulemusena määratud mäetööstusmaa väärtusi.",
+      "estleg:summary": {
+        "@value": "(1) Esimeseks korraliseks hindamiseks loetakse maa maksustamishinna kindlaksmääramine 1993. aastal. Selle alusel toimub õigusvastaselt võõrandatud maa maksumuse määramine kompenseerimisel. (2) Erastatava maa maksumus või alghind määratakse kindlaks maa korralise hindamise tulemusena saadud maa maksustamishinna alusel. Erastataval maal asuva metsa maksumus määratakse Vabariigi Valitsuse kehtestatud korras ja liidetakse erastatava maa maksumusele või alghinnale.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Esimeseks korraliseks hindamiseks loetakse maa maksustamishinna kindlaksmääramine 1993. aastal. Selle alusel toimub õigusvastaselt võõrandatud maa maksumuse määramine kompenseerimisel. (2) Erastatava maa maksumus või alghind määratakse kindlaks maa korralise hindamise tulemusena saadud maa maksustamishinna alusel. Erastataval maal asuva metsa maksumus määratakse Vabariigi Valitsuse kehtestatud korras ja liidetakse erastatava maa maksumusele või alghinnale. (3) [Kehtetu] (4) [Kehtetu] (5) Kui õigusvastaselt võõrandatud maa paiknes maa kompenseerimise otsuse vastuvõtmise ajal käesoleva seaduse § 9 lõikes 6 sätestatud tiheasustusega alal, kuid kompensatsioon määrati valla üldpinna kaalutud keskmise maksustamishinna alusel, on kompensatsiooni saanud isikul õigus kuni 2001. aasta 1. septembrini taotleda kompensatsiooni ümberarvutamist ja lisakompensatsiooni määramist. (6) Järgmine maa korraline hindamine korraldatakse 2022. aastal. (7) 2022. aasta maa korralisel hindamisel määratud maa maksustamishinnad ja käesoleva seaduse § 4² lõike 2 alusel enne 2024. aasta 1. jaanuari määratud maa maksustamishinnad võetakse kasutusele 2024. aasta 1. jaanuaril. (8) Kuni 2022. aasta maa korralise hindamise tulemuste kasutusele võtmiseni kohaldatakse maakatastriseaduse § 18¹ lõikes 10 sätestatud mäetööstusmaale ja lõikes 11 sätestatud turbatööstusmaale 2001. aasta korralise hindamise tulemusena määratud mäetööstusmaa väärtusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_5"
       },
@@ -2331,13 +2860,18 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MHS_Par_12_v22273"
@@ -2379,11 +2913,25 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Erastatava maa maksumus või alghind määratakse kindlaks maa korralise hindamise tulemusena saadud maa maksustamishinna alusel. Erastataval maal asuva metsa maksumus määratakse kehtestatud korras ja liidetakse erastatava maa maksumusele või alghinnale.",
+      "estleg:legalText": "(2) Erastatava maa maksumus või alghind määratakse kindlaks maa korralise hindamise tulemusena saadud maa maksustamishinna alusel. Erastataval maal asuva metsa maksumus määratakse Vabariigi Valitsuse kehtestatud korras ja liidetakse erastatava maa maksumusele või alghinnale.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_12"
       },
       "rdfs:label": "§ 12 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_160529_Map"
@@ -2464,11 +3012,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "7",
-      "estleg:legalText": "(7) 2022. aasta maa korralisel hindamisel määratud maa maksustamishinnad ja käesoleva seaduse § 42 lõike 2 alusel enne 2024. aasta 1. jaanuari määratud maa maksustamishinnad võetakse kasutusele 2024. aasta 1. jaanuaril.",
+      "estleg:legalText": "(7) 2022. aasta maa korralisel hindamisel määratud maa maksustamishinnad ja käesoleva seaduse § 4² lõike 2 alusel enne 2024. aasta 1. jaanuari määratud maa maksustamishinnad võetakse kasutusele 2024. aasta 1. jaanuaril.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 7"
+      "rdfs:label": "§ 12 lg 7",
+      "estleg:references": [
+        {
+          "@id": "estleg:MHS_Par_4_2_Lg_2"
+        }
+      ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:MHS_Par_4_2_Lg_2"
+        }
+      ]
     },
     {
       "@id": "estleg:MHS_Par_12_Lg_8",
@@ -2477,11 +3035,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "8",
-      "estleg:legalText": "(8) Kuni 2022. aasta maa korralise hindamise tulemuste kasutusele võtmiseni kohaldatakse maakatastriseaduse § 181 lõikes 10 sätestatud mäetööstusmaale ja lõikes 11 sätestatud turbatööstusmaale 2001. aasta korralise hindamise tulemusena määratud mäetööstusmaa väärtusi.",
+      "estleg:legalText": "(8) Kuni 2022. aasta maa korralise hindamise tulemuste kasutusele võtmiseni kohaldatakse maakatastriseaduse § 18¹ lõikes 10 sätestatud mäetööstusmaale ja lõikes 11 sätestatud turbatööstusmaale 2001. aasta korralise hindamise tulemusena määratud mäetööstusmaa väärtusi.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 8"
+      "rdfs:label": "§ 12 lg 8",
+      "estleg:references": [
+        {
+          "@id": "estleg:MaaKatS_Par_18_1_Lg_10"
+        }
+      ]
     },
     {
       "@id": "estleg:MHS_Par_12_1",
@@ -2490,12 +3053,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12¹.",
-      "rdfs:label": "§ 12¹. 1993., 1996. ja 2001. aasta korralise hindamise tulemuste rakendamine",
+      "rdfs:label": {
+        "@value": "§ 12¹. 1993., 1996. ja 2001. aasta korralise hindamise tulemuste rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "(1) Maa maksustamishinna arvutamisel rakendatakse 2001. aasta maa korralise hindamise tulemusi kuni 2023. aasta 31. detsembrini. (2) Alates 2024. aasta 1. jaanuarist rakendatakse maa maksustamishinna arvutamisel 1993., 1996. ja 2001. aasta maa korralise hindamise tulemusi vaid õigusaktides sätestatud juhtudel. (3) Käesoleva paragrahvi lõigetes 1 ja 2 sätestatud juhtudel arvutab maa maksustamishinna kohalik omavalitsus 2021. aasta 31. detsembrini kehtinud alustel ja korras.",
+      "estleg:summary": {
+        "@value": "(1) Maa maksustamishinna arvutamisel rakendatakse 2001. aasta maa korralise hindamise tulemusi kuni 2023. aasta 31. detsembrini. (2) Alates 2024. aasta 1. jaanuarist rakendatakse maa maksustamishinna arvutamisel 1993., 1996. ja 2001. aasta maa korralise hindamise tulemusi vaid õigusaktides sätestatud juhtudel. (3) Käesoleva paragrahvi lõigetes 1 ja 2 sätestatud juhtudel arvutab maa maksustamishinna kohalik omavalitsus 2021. aasta 31. detsembrini kehtinud alustel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maa maksustamishinna arvutamisel rakendatakse 2001. aasta maa korralise hindamise tulemusi kuni 2023. aasta 31. detsembrini. (2) Alates 2024. aasta 1. jaanuarist rakendatakse maa maksustamishinna arvutamisel 1993., 1996. ja 2001. aasta maa korralise hindamise tulemusi vaid õigusaktides sätestatud juhtudel. (3) Käesoleva paragrahvi lõigetes 1 ja 2 sätestatud juhtudel arvutab maa maksustamishinna kohalik omavalitsus 2021. aasta 31. detsembrini kehtinud alustel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_5"
@@ -2523,14 +3092,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MHS_Par_12_1_v110032022029"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MHS_Par_12_1_v110032022029"
         }
       ]
     },
@@ -2585,6 +3154,23 @@
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Reg_1062508_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063136_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063847_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1064497_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1043528_Par_1_Lg_1"
+        }
       ]
     },
     {
@@ -2594,12 +3180,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Kehtivuse kaotanud ja muutmisele kuuluvad õigusaktid",
+      "rdfs:label": {
+        "@value": "§ 13. Kehtivuse kaotanud ja muutmisele kuuluvad õigusaktid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_5"
@@ -2623,12 +3215,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 14. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maa hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MHS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgnevast päevast.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgnevast päevast.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgnevast päevast.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MHS_5"
@@ -2659,55 +3257,28 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgnevast päevast.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub Riigi Teatajas avaldamisele järgnevast päevast.",
       "estleg:parentProvision": {
         "@id": "estleg:MHS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/529122024020",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:MHS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Land Valuation Act",
+        "@language": "en"
       }
-    },
-    {
-      "@id": "estleg:Citation_MHS_P_4_3_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MHS_Par_4_3"
-      },
-      "estleg:citationText": "käesoleva seaduse § 42 lõikes 1"
-    },
-    {
-      "@id": "estleg:Citation_MHS_P_4_3_Lg_1_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MHS_Par_4_3_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse § 42 lõikes 1"
-    },
-    {
-      "@id": "estleg:Citation_MHS_P_12_Lg_7_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MHS_Par_12_Lg_7"
-      },
-      "estleg:citationText": "käesoleva seaduse § 42 lõike 2"
-    },
-    {
-      "@id": "estleg:Citation_MHS_P_12_Lg_8_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MHS_Par_12_Lg_8"
-      },
-      "estleg:citationDetail": "maakatastriseadus",
-      "estleg:citationText": "maakatastriseaduse § 181 lõikes 10"
     }
   ]
 }

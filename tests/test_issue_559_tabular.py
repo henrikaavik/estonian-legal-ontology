@@ -280,7 +280,10 @@ def test_committed_sample_csv_headers_and_rows() -> None:
 
     for name in st.TABLE_COLUMNS:
         path = EXPORTS / f"{name}.csv"
-        assert path.stat().st_size < 1_000_000, f"{path} must stay under 1 MB"
+        # Weight guard for the committed sample, not a content rule. Raised
+        # from 1 MB when #722 gave regulations one estleg:Subsection per lõige
+        # (the sample's provisions table grew by 544 lõige rows, 2026-10-09).
+        assert path.stat().st_size < 1_500_000, f"{path} must stay under 1.5 MB"
 
 
 def test_readme_documents_tabular_export() -> None:

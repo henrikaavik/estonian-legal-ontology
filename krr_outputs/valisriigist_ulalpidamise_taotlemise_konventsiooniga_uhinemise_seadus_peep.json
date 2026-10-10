@@ -5,54 +5,67 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VUTKU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus",
       "dcterms:title": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/25190.xml"
+        "@id": "https://www.riigiteataja.ee/akt/25190"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/25190/xml"
+      },
+      "estleg:globalId": "25190",
+      "eli:id_local": "25190",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "151896",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "e6a56186efb4e5d4a9a5b18118717f44e09cf0c0764b1a51e321010a7d3748ee",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
         "@type": "xsd:boolean"
       },
-      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
-    },
-    {
-      "@id": "estleg:VUTKU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_VUTKU_default"
-        }
-      ]
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528).",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1996-12-02",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_VUTKU_default",
@@ -61,12 +74,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VUTKU_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:VUTKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_VUTKU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:VUTKU_Par_1",
@@ -75,13 +109,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud välisriigist ülalpidamise taotlemise konventsiooniga./1308...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud välisriigist ülalpidamise taotlemise konventsiooniga , mis...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUTKU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on sõlmitud 1956. aasta 20. juunil New Yorgis.",
-      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1956. aasta 20. juunil New Yorgis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud välisriigist ülalpidamise taotlemise konventsiooniga , mis on sõlmitud 1956. aasta 20. juunil New Yorgis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud välisriigist ülalpidamise taotlemise konventsiooniga , mis on sõlmitud 1956. aasta 20. juunil New Yorgis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUTKU_default"
       },
@@ -95,13 +135,13 @@
           "@id": "estleg:ASKU_Par_1"
         },
         {
-          "@id": "estleg:OKVKOKAMPU_Par_1"
-        },
-        {
-          "@id": "estleg:TVKOKU_Par_1"
+          "@id": "estleg:PVRKU_Par_1"
         },
         {
           "@id": "estleg:UNAUKPAK1961_Par_1"
+        },
+        {
+          "@id": "estleg:UNAUKPAK1961_Par_2"
         }
       ],
       "estleg:hasVersion": [
@@ -116,10 +156,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1956. aasta 20. juunil New Yorgis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud välisriigist ülalpidamise taotlemise konventsiooniga , mis on sõlmitud 1956. aasta 20. juunil New Yorgis.",
       "estleg:parentProvision": {
         "@id": "estleg:VUTKU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:VUTKU_Par_2",
@@ -128,12 +170,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja art...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja art...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUTKU_Map"
       },
-      "estleg:summary": "Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja artikli 2 lõike 2 järgi vastuvõtuasutuseks Justiitsministeerium.",
+      "estleg:summary": {
+        "@value": "Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja artikli 2 lõike 2 järgi vastuvõtuasutuseks Justiitsministeerium.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja artikli 2 lõike 2 järgi vastuvõtuasutuseks Justiitsministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUTKU_default"
@@ -143,31 +191,31 @@
           "@id": "estleg:VUTKU_Par_2_Lg_1"
         }
       ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:EVEIRERESFR_Par_2"
+          "@id": "estleg:TKKKDVKKU_Par_2"
         },
         {
-          "@id": "estleg:PEVAKVKTEKSP_Par_4"
+          "@id": "estleg:TRKKU_Par_2"
         },
         {
-          "@id": "estleg:PRJKKKR_Par_2"
+          "@id": "estleg:UKOTTKU_Par_2"
         },
         {
-          "@id": "estleg:UKOTTKU_Par_3"
+          "@id": "estleg:VKKLKAPKOATK_Par_2"
         },
         {
-          "@id": "estleg:UNAUKPAK1961_Par_2"
+          "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis_Par_2"
         }
       ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:VUTKU_Par_2_v25190"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -177,10 +225,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja artikli 2 lõike 2 järgi vastuvõtuasutuseks Justiitsministeerium.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja artikli 2 lõike 2 järgi vastuvõtuasutuseks Justiitsministeerium.",
       "estleg:parentProvision": {
         "@id": "estleg:VUTKU_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiitsministeerium"

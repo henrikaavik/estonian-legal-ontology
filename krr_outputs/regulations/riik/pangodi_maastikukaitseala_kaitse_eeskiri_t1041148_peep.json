@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Pangodi maastikukaitseala kaitse-eeskiri (määrus)",
+      "rdfs:label": {
+        "@value": "Pangodi maastikukaitseala kaitse-eeskiri (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -40,19 +47,21 @@
           "@id": "estleg:Reg_1041148_Annex_2"
         }
       ],
-      "estleg:entryIntoForce": {
-        "@value": "2017-12-29",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2017-12-19",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
+      "dcterms:title": "Pangodi maastikukaitseala kaitse-eeskiri",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:transposesDirectiveAsserted": [
+        {
+          "@id": "estleg:EU_31992L0043"
+        }
+      ],
       "estleg:issuedUnder": [
         {
           "@id": "estleg:LKS_Map"
@@ -84,7 +93,16 @@
         {
           "@id": "http://eurovoc.europa.eu/2442"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2017-12-29",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2017-12-19",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1041148_Annex_1",
@@ -92,7 +110,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Pangodi maastikukaitseala",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -101,7 +122,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -111,25 +135,49 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Pangodi maastikukaitseala kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Pangodi maastikukaitseala kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "1 (1) Pangodi maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) säilitada ja tutvustada Pangodi järvestiku järvesid ning neid ümbritsevate moreenkattega mõhnade loodus- ja pärandmaastikke, sealhulgas sürjametsi ja niite, ning looduse mitmekesisust; 2 2) kaitsta ja säilitada Kodijärve mõisa parki; 3 3) kaitsta ja säilitada elupaigatüüpi looduslikult rohketoitelised järved (3150)3, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse ",
-      "estleg:legalText": "1 (1) Pangodi maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) säilitada ja tutvustada Pangodi järvestiku järvesid ning neid ümbritsevate moreenkattega mõhnade loodus- ja pärandmaastikke, sealhulgas sürjametsi ja niite, ning looduse mitmekesisust; 2 2) kaitsta ja säilitada Kodijärve mõisa parki; 3 3) kaitsta ja säilitada elupaigatüüpi looduslikult rohketoitelised järved (3150)3, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas; 4 4) kaitsta liigi, keda nõukogu direktiiv 92/43/EMÜ nimetab II lisas, elupaika. See liik on vingerjas (Misgurnus fossiilis); 5 5) kaitsta kaitsealuseid taimeliike võsu-liivsibulat (Jovibarba sobolifera) ja harilikku käokulda (Helichrysum arenarium) ning nende kasvukohti. Pangodi maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: säilitada ja tutvustada Pangodi järvestiku järvesid ning neid ümbritsevate moreenkattega mõhnade loodus- ja pärandmaastikke, sealhulgas sürjametsi ja niite, ning looduse mitmekesisust; kaitsta ja säilitada Kodijärve mõisa parki; kaitsta ja säilitada elupaigatüüpi looduslikult rohketoitelised järved (3150)3, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas; kaitsta liigi, keda nõukogu direktiiv 92/43/EMÜ nimetab II lisas, elupaika. See liik on vingerjas (Misgurnus fossiilis); kaitsta kaitsealuseid taimeliike võsu-liivsibulat (Jovibarba sobolifera) ja harilikku käokulda (Helichrysum arenarium) ning nende kasvukohti. 2 (2) Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele üheks sihtkaitsevööndiks ja kaheks piiranguvööndiks. Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele üheks sihtkaitsevööndiks ja kaheks piiranguvööndiks. 3 (3) Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega. Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Pangodi maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) säilitada ja tutvustada Pangodi järvestiku järvesid ning neid ümbritsevate moreenkattega mõhnade loodus- ja pärandmaastikke, sealhulgas sürjametsi ja niite, ning looduse mitmekesisust; 2 2) kaitsta ja säilitada Kodijärve mõisa parki; 3 3) kaitsta ja säilitada elupaigatüüpi looduslikult rohketoitelised järved (3150)3, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Pangodi maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) säilitada ja tutvustada Pangodi järvestiku järvesid ning neid ümbritsevate moreenkattega mõhnade loodus- ja pärandmaastikke, sealhulgas sürjametsi ja niite, ning looduse mitmekesisust; 2 2) kaitsta ja säilitada Kodijärve mõisa parki; 3 3) kaitsta ja säilitada elupaigatüüpi looduslikult rohketoitelised järved (3150)3, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas; 4 4) kaitsta liigi, keda nõukogu direktiiv 92/43/EMÜ nimetab II lisas, elupaika. See liik on vingerjas (Misgurnus fossiilis); 5 5) kaitsta kaitsealuseid taimeliike võsu-liivsibulat (Jovibarba sobolifera) ja harilikku käokulda (Helichrysum arenarium) ning nende kasvukohti. 2 (2) Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele üheks sihtkaitsevööndiks ja kaheks piiranguvööndiks. 3 (3) Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega.",
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1021971_Par_1"
+          "@id": "estleg:Reg_1041148_Par_1_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1026762_Par_1"
+          "@id": "estleg:Reg_1041148_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_1_Lg_3"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1018088_Par_1"
         },
         {
           "@id": "estleg:Reg_1028705_Par_1"
         },
         {
           "@id": "estleg:Reg_1047591_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_1048343_Par_1"
         },
         {
           "@id": "estleg:Reg_1052007_Par_1"
@@ -142,19 +190,86 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041148_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pangodi maastikukaitseala² (edaspidi kaitseala) kaitse-eesmärk on: 1) säilitada ja tutvustada Pangodi järvestiku järvesid ning neid ümbritsevate moreenkattega mõhnade loodus- ja pärandmaastikke, sealhulgas sürjametsi ja niite, ning looduse mitmekesisust; 2) kaitsta ja säilitada Kodijärve mõisa parki; 3) kaitsta ja säilitada elupaigatüüpi looduslikult rohketoitelised järved (3150)³, mida nõukogu direktiiv 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta (EÜT L 206, 22.07.1992, lk 7–50) nimetab I lisas; 4) kaitsta liigi, keda nõukogu direktiiv 92/43/EMÜ nimetab II lisas, elupaika. See liik on vingerjas (Misgurnus fossiilis); 5) kaitsta kaitsealuseid taimeliike võsu-liivsibulat (Jovibarba sobolifera) ja harilikku käokulda (Helichrysum arenarium) ning nende kasvukohti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele üheks sihtkaitsevööndiks ja kaheks piiranguvööndiks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitsealal tuleb arvestada looduskaitseseaduses sätestatud piiranguid käesolevas määruses ettenähtud erisustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
       "@id": "estleg:Reg_1041148_Par_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kaitseala asukoht",
+      "rdfs:label": {
+        "@value": "§ 2. Kaitseala asukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala asub Tartu maakonnas Kambja vallas Pangodi, Kodijärve ja Palumäe külas. Kaitseala asub Tartu maakonnas Kambja vallas Pangodi, Kodijärve ja Palumäe külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4. Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
-      "estleg:legalText": "1 (1) Kaitseala asub Tartu maakonnas Kambja vallas Pangodi, Kodijärve ja Palumäe külas. Kaitseala asub Tartu maakonnas Kambja vallas Pangodi, Kodijärve ja Palumäe külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4. Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala asub Tartu maakonnas Kambja vallas Pangodi, Kodijärve ja Palumäe külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala asub Tartu maakonnas Kambja vallas Pangodi, Kodijärve ja Palumäe külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_2_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1035420_Par_2"
@@ -179,19 +294,51 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041148_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala asub Tartu maakonnas Kambja vallas Pangodi, Kodijärve ja Palumäe külas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas⁴.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1041148_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kaitseala valitseja",
+      "rdfs:label": {
+        "@value": "§ 3. Kaitseala valitseja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Kaitseala valitseja on Keskkonnaamet.",
-      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet. Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja on Keskkonnaamet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -201,11 +348,43 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_3_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_keskkonnaamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_3_v1041148"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_keskkonnaamet"
@@ -219,28 +398,39 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kaitse alla võtmise ja piirangute põhjendused",
+      "rdfs:label": {
+        "@value": "§ 4. Kaitse alla võtmise ja piirangute põhjendused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Määruse seletuskirjas5 on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta. Määruse seletuskirjas5 on esitatud põhjendused: kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; loodusobjekti kaitse alla võtmise ot",
-      "estleg:legalText": "Määruse seletuskirjas5 on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta. Määruse seletuskirjas5 on esitatud põhjendused: kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; loodusobjekti kaitse alla võtmise otstarbekuse kohta; kaitstava loodusobjekti tüübi valiku kohta; kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; kaitsekorra kohta.",
+      "estleg:summary": {
+        "@value": "Määruse seletuskirjas5 on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määruse seletuskirjas5 on esitatud põhjendused: 1 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3 3) kaitstava loodusobjekti tüübi valiku kohta; 4 4) kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; 5 5) kaitsekorra kohta.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_4_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:Reg_1036012_Par_4"
+          "@id": "estleg:Reg_1031810_Par_4"
         },
         {
-          "@id": "estleg:Reg_1036601_Par_4"
+          "@id": "estleg:Reg_1033074_Par_4"
         },
         {
-          "@id": "estleg:Reg_1037432_Par_4"
+          "@id": "estleg:Reg_1035867_Par_5"
         },
         {
-          "@id": "estleg:Reg_1037433_Par_4"
+          "@id": "estleg:Reg_1035868_Par_4"
         },
         {
-          "@id": "estleg:Reg_1037434_Par_4"
+          "@id": "estleg:Reg_1035870_Par_4"
         }
       ],
       "estleg:hasVersion": [
@@ -250,53 +440,209 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041148_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruse seletuskirjas⁵ on esitatud põhjendused: 1) kaitse alla võtmise eesmärkide vastavuse kohta kaitse alla võtmise eeldustele; 2) loodusobjekti kaitse alla võtmise otstarbekuse kohta; 3) kaitstava loodusobjekti tüübi valiku kohta; 4) kaitstava loodusobjekti välis- ja vööndite piiride kulgemise kohta; 5) kaitsekorra kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
       "@id": "estleg:Reg_1041148_Par_5",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 5. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "1 (1) Inimestel on lubatud viibida kogu kaitsealal, välja arvatud ratsutada sihtkaitsevööndis väljaspool teed. Kogu kaitsealal on inimestel lubatud korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala ja pidada jahti. Inimestel on lubatud viibida kogu kaitsealal, välja arvatud ratsutada sihtkaitsevööndis väljaspool teed. Kogu kaitsealal on inimestel lubatud korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala ja pidada jahti. 2 (2) Kaitsealal on lubatud: 1 1) sõidukiga võ",
-      "estleg:legalText": "1 (1) Inimestel on lubatud viibida kogu kaitsealal, välja arvatud ratsutada sihtkaitsevööndis väljaspool teed. Kogu kaitsealal on inimestel lubatud korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala ja pidada jahti. Inimestel on lubatud viibida kogu kaitsealal, välja arvatud ratsutada sihtkaitsevööndis väljaspool teed. Kogu kaitsealal on inimestel lubatud korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala ja pidada jahti. 2 (2) Kaitsealal on lubatud: 1 1) sõidukiga või maastikusõidukiga sõitmine teedel; 2 2) sõidukiga või maastikusõidukiga sõitmine väljaspool teid järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel ning kaitse-eeskirjaga lubatud töödel. Kaitsealal on lubatud: sõidukiga või maastikusõidukiga sõitmine teedel; sõidukiga või maastikusõidukiga sõitmine väljaspool teid järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel ning kaitse-eeskirjaga lubatud töödel. 3 (3) Kaitseala järvedel on lubatud sisepõlemismootorita ujuvvahendiga sõitmine. Sisepõlemismootoriga ujuvvahendiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel ning kaitseala valitseja nõusolekul teostataval teadustegevusel. Kaitseala järvedel on lubatud sisepõlemismootorita ujuvvahendiga sõitmine. Sisepõlemismootoriga ujuvvahendiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel ning kaitseala valitseja nõusolekul teostataval teadustegevusel. 4 (4) Kaitsealal on lubatud telkimine ja lõkketegemine: 1 1) kinnisasja omaniku ja kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohas või kinnisasja omaniku loal õuemaal; 2 2) põllumajandus- ja metsamajandustöödel ning kaitse korraldamisega seotud töödel. Kaitsealal on lubatud telkimine ja lõkketegemine: kinnisasja omaniku ja kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohas või kinnisasja omaniku loal õuemaal; põllumajandus- ja metsamajandustöödel ning kaitse korraldamisega seotud töödel. 5 (5) Kaitsealal on lubatud rahvaürituse korraldamine kaitseala valitseja nõusolekul selleks ettevalmistatud kohas ja õuemaadel ning kuni 50 osalejaga rahvaürituse korraldamine ettevalmistamata kohas. Muudel juhtudel on rahvaürituse korraldamine lubatud üksnes kaitseala valitseja nõusolekul. Kaitsealal on lubatud rahvaürituse korraldamine kaitseala valitseja nõusolekul selleks ettevalmistatud kohas ja õuemaadel ning kuni 50 osalejaga rahvaürituse korraldamine ettevalmistamata kohas. Muudel juhtudel on rahvaürituse korraldamine lubatud üksnes kaitseala valitseja nõusolekul.",
+      "estleg:summary": {
+        "@value": "1 (1) Inimestel on lubatud viibida kogu kaitsealal, välja arvatud ratsutada sihtkaitsevööndis väljaspool teed. Kogu kaitsealal on inimestel lubatud korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala ja pidada jahti. 2 (2) Kaitsealal on lubatud: 1 1) sõidukiga või maastikusõidukiga sõitmine teedel; 2 2) sõidukiga või maastikusõidukiga sõitmine väljaspool teid järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Inimestel on lubatud viibida kogu kaitsealal, välja arvatud ratsutada sihtkaitsevööndis väljaspool teed. Kogu kaitsealal on inimestel lubatud korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala ja pidada jahti. 2 (2) Kaitsealal on lubatud: 1 1) sõidukiga või maastikusõidukiga sõitmine teedel; 2 2) sõidukiga või maastikusõidukiga sõitmine väljaspool teid järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel ning kaitse-eeskirjaga lubatud töödel. 3 (3) Kaitseala järvedel on lubatud sisepõlemismootorita ujuvvahendiga sõitmine. Sisepõlemismootoriga ujuvvahendiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel ning kaitseala valitseja nõusolekul teostataval teadustegevusel. 4 (4) Kaitsealal on lubatud telkimine ja lõkketegemine: 1 1) kinnisasja omaniku ja kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohas või kinnisasja omaniku loal õuemaal; 2 2) põllumajandus- ja metsamajandustöödel ning kaitse korraldamisega seotud töödel. 5 (5) Kaitsealal on lubatud rahvaürituse korraldamine kaitseala valitseja nõusolekul selleks ettevalmistatud kohas ja õuemaadel ning kuni 50 osalejaga rahvaürituse korraldamine ettevalmistamata kohas. Muudel juhtudel on rahvaürituse korraldamine lubatud üksnes kaitseala valitseja nõusolekul.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1028704_Par_5"
+          "@id": "estleg:Reg_1041148_Par_5_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1031810_Par_5"
+          "@id": "estleg:Reg_1041148_Par_5_Lg_2"
         },
         {
-          "@id": "estleg:Reg_1041785_Par_5"
+          "@id": "estleg:Reg_1041148_Par_5_Lg_3"
         },
         {
-          "@id": "estleg:Reg_1043907_Par_7"
+          "@id": "estleg:Reg_1041148_Par_5_Lg_4"
         },
         {
-          "@id": "estleg:Reg_1048134_Par_5"
+          "@id": "estleg:Reg_1041148_Par_5_Lg_5"
         }
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1033165_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1044457_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1048134_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1053343_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1054978_Par_5"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_5_v1041148"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Inimestel on lubatud viibida kogu kaitsealal, välja arvatud ratsutada sihtkaitsevööndis väljaspool teed. Kogu kaitsealal on inimestel lubatud korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala ja pidada jahti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on lubatud: 1) sõidukiga või maastikusõidukiga sõitmine teedel; 2) sõidukiga või maastikusõidukiga sõitmine väljaspool teid järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel, kaitseala valitseja nõusolekul teostataval teadustegevusel ning kaitse-eeskirjaga lubatud töödel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitseala järvedel on lubatud sisepõlemismootorita ujuvvahendiga sõitmine. Sisepõlemismootoriga ujuvvahendiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitseala valitsemise ja kaitse korraldamisega seotud tegevusel ning kaitseala valitseja nõusolekul teostataval teadustegevusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kaitsealal on lubatud telkimine ja lõkketegemine: 1) kinnisasja omaniku ja kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohas või kinnisasja omaniku loal õuemaal; 2) põllumajandus- ja metsamajandustöödel ning kaitse korraldamisega seotud töödel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kaitsealal on lubatud rahvaürituse korraldamine kaitseala valitseja nõusolekul selleks ettevalmistatud kohas ja õuemaadel ning kuni 50 osalejaga rahvaürituse korraldamine ettevalmistamata kohas. Muudel juhtudel on rahvaürituse korraldamine lubatud üksnes kaitseala valitseja nõusolekul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:Reg_1041148_Par_6",
@@ -305,13 +651,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 6. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, ku",
-      "estleg:legalText": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8 8) jahiulukeid lisasööta. Kaitseala valitseja nõusolekuta on kaitsealal keelatud: muuta katastriüksuse kõlvikute piire ja sihtotstarvet; koostada maakorralduskava ja teha maakorraldustoiminguid; kehtestada detailplaneeringut ja üldplaneeringut; lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada paadisilda; anda projekteerimistingimusi; anda ehitusluba; rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; jahiulukeid lisasööta.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit,…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3 3) kehtestada detailplaneeringut ja üldplaneeringut; 4 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada paadisilda; 5 5) anda projekteerimistingimusi; 6 6) anda ehitusluba; 7 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8 8) jahiulukeid lisasööta.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_6_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1035221_Par_6"
@@ -329,18 +693,41 @@
           "@id": "estleg:Reg_1039314_Par_6"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_6_v1041148"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2) koostada maakorralduskava ja teha maakorraldustoiminguid; 3) kehtestada detailplaneeringut ja üldplaneeringut; 4) lubada ehitada ehitusteatise kohustusega või ehitusloakohustuslikku ehitist, sealhulgas lubada püstitada või laiendada paadisilda; 5) anda projekteerimistingimusi; 6) anda ehitusluba; 7) rajada uut veekogu, mille pindala on suurem kui viis ruutmeetrit, kui selleks ei ole vaja anda vee erikasutusluba, ehitusluba ega esitada ehitusteatist; 8) jahiulukeid lisasööta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_1041148_Par_7",
@@ -349,25 +736,40 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Tegevuse kooskõlastamine",
+      "rdfs:label": {
+        "@value": "§ 7. Tegevuse kooskõlastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud k",
-      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes. Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_7_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1000133_Par_7"
-        },
-        {
-          "@id": "estleg:Reg_1015353_Par_7"
-        },
         {
           "@id": "estleg:Reg_1015857_Par_7"
         },
@@ -376,20 +778,61 @@
         },
         {
           "@id": "estleg:Reg_1017814_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1018083_Par_7"
+        },
+        {
+          "@id": "estleg:Reg_1018084_Par_8"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_7_v1041148"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja ei kooskõlasta tegevust, mis kaitse-eeskirja kohaselt vajab kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmise korral tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või kaitseala seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt haldusmenetluse seadusele õiguspärast ootust sellise tegevuse õiguspärasuse suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1041148_Par_8",
@@ -398,13 +841,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Sihtkaitsevööndi määratlus",
+      "rdfs:label": {
+        "@value": "§ 8. Sihtkaitsevööndi määratlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. 2 (2) Kaitsealal on Palumägede sihtkaitsevöönd. Kaitsealal on Palumägede sihtkaitsevöönd.",
-      "estleg:legalText": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. 2 (2) Kaitsealal on Palumägede sihtkaitsevöönd. Kaitsealal on Palumägede sihtkaitsevöönd.",
+      "estleg:summary": {
+        "@value": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. 2 (2) Kaitsealal on Palumägede sihtkaitsevöönd.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks. 2 (2) Kaitsealal on Palumägede sihtkaitsevöönd.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_8_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1033074_Par_8"
@@ -429,19 +886,56 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041148_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate koosluste säilitamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on Palumägede sihtkaitsevöönd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1041148_Par_9",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Sihtkaitsevööndi kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 9. Sihtkaitsevööndi kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Palumägede sihtkaitsevööndi eesmärk on pärand- ja loodusmaastiku, sealhulgas vaadete, kaitsealuste liikide hariliku käokulla ja võsu-liivsibula ja nende elupaikade kaitse ning sürjametsade säilitamine.",
-      "estleg:legalText": "Palumägede sihtkaitsevööndi eesmärk on pärand- ja loodusmaastiku, sealhulgas vaadete, kaitsealuste liikide hariliku käokulla ja võsu-liivsibula ja nende elupaikade kaitse ning sürjametsade säilitamine. Palumägede sihtkaitsevööndi eesmärk on pärand- ja loodusmaastiku, sealhulgas vaadete, kaitsealuste liikide hariliku käokulla ja võsu-liivsibula ja nende elupaikade kaitse ning sürjametsade säilitamine.",
+      "estleg:summary": {
+        "@value": "Palumägede sihtkaitsevööndi eesmärk on pärand- ja loodusmaastiku, sealhulgas vaadete, kaitsealuste liikide hariliku käokulla ja võsu-liivsibula ja nende elupaikade kaitse ning sürjametsade säilitamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Palumägede sihtkaitsevööndi eesmärk on pärand- ja loodusmaastiku, sealhulgas vaadete, kaitsealuste liikide hariliku käokulla ja võsu-liivsibula ja nende elupaikade kaitse ning sürjametsade säilitamine.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_9_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1033626_Par_9"
@@ -466,19 +960,43 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041148_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Palumägede sihtkaitsevööndi eesmärk on pärand- ja loodusmaastiku, sealhulgas vaadete, kaitsealuste liikide hariliku käokulla ja võsu-liivsibula ja nende elupaikade kaitse ning sürjametsade säilitamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1041148_Par_10",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Lubatud tegevus sihtkaitsevööndis",
+      "rdfs:label": {
+        "@value": "§ 10. Lubatud tegevus sihtkaitsevööndis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 2 2) koosluste kujundamine vastavalt kaitse-eesmärgile; 3 3) tee, tehnovõrgu rajatise või tootmisotstarbeta ehitise püstitamine kaitseala tarbeks; 4 4) olemasolevate ehitiste hooldustööd. Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; koosluste kujundamine vastavalt kaitse-eesmärgile; te",
-      "estleg:legalText": "Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 2 2) koosluste kujundamine vastavalt kaitse-eesmärgile; 3 3) tee, tehnovõrgu rajatise või tootmisotstarbeta ehitise püstitamine kaitseala tarbeks; 4 4) olemasolevate ehitiste hooldustööd. Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; koosluste kujundamine vastavalt kaitse-eesmärgile; tee, tehnovõrgu rajatise või tootmisotstarbeta ehitise püstitamine kaitseala tarbeks; olemasolevate ehitiste hooldustööd.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 2 2) koosluste kujundamine vastavalt kaitse-eesmärgile; 3 3) tee, tehnovõrgu rajatise või tootmisotstarbeta ehitise püstitamine kaitseala tarbeks; 4 4) olemasolevate ehitiste hooldustööd.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 2 2) koosluste kujundamine vastavalt kaitse-eesmärgile; 3 3) tee, tehnovõrgu rajatise või tootmisotstarbeta ehitise püstitamine kaitseala tarbeks; 4 4) olemasolevate ehitiste hooldustööd.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_10_Lg_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1033626_Par_10"
@@ -487,10 +1005,10 @@
           "@id": "estleg:Reg_1048134_Par_10"
         },
         {
-          "@id": "estleg:Reg_1055097_Par_10"
+          "@id": "estleg:Reg_158623_Par_9"
         },
         {
-          "@id": "estleg:Reg_158623_Par_9"
+          "@id": "estleg:Reg_158913_Par_8"
         },
         {
           "@id": "estleg:Reg_306836_Par_9"
@@ -503,24 +1021,67 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041148_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1) kaitsealuste liikide elutingimuste säilitamiseks vajalik tegevus; 2) koosluste kujundamine vastavalt kaitse-eesmärgile; 3) tee, tehnovõrgu rajatise või tootmisotstarbeta ehitise püstitamine kaitseala tarbeks; 4) olemasolevate ehitiste hooldustööd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
       "@id": "estleg:Reg_1041148_Par_11",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Vajalik tegevus",
+      "rdfs:label": {
+        "@value": "§ 11. Vajalik tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Sihtkaitsevööndis on vajalikud raied vaadete avamiseks.",
-      "estleg:legalText": "Sihtkaitsevööndis on vajalikud raied vaadete avamiseks. Sihtkaitsevööndis on vajalikud raied vaadete avamiseks.",
+      "estleg:summary": {
+        "@value": "Sihtkaitsevööndis on vajalikud raied vaadete avamiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sihtkaitsevööndis on vajalikud raied vaadete avamiseks.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_11_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_11_v1041148"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevööndis on vajalikud raied vaadete avamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
     },
     {
       "@id": "estleg:Reg_1041148_Par_12",
@@ -529,13 +1090,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Keelatud tegevus sihtkaitsevööndis",
+      "rdfs:label": {
+        "@value": "§ 12. Keelatud tegevus sihtkaitsevööndis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine. Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: majandustegevus; loodusvarade kasutamine.",
-      "estleg:legalText": "Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine. Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: majandustegevus; loodusvarade kasutamine.",
+      "estleg:summary": {
+        "@value": "Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: 1 1) majandustegevus; 2 2) loodusvarade kasutamine.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_12_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1033626_Par_11"
@@ -553,18 +1132,35 @@
           "@id": "estleg:Reg_1038670_Par_11"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_12_v1041148"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevööndis on keelatud, arvestades käesoleva määrusega sätestatud erisusi: 1) majandustegevus; 2) loodusvarade kasutamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_1041148_Par_13",
@@ -573,13 +1169,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Piiranguvööndi määratlus",
+      "rdfs:label": {
+        "@value": "§ 13. Piiranguvööndi määratlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on kaks piiranguvööndit: 1 1) Pangodi piiranguvöönd; 2 2) Kodijärve mõisapargi piiranguvöönd. Kaitsealal on kaks piiranguvööndit: Pangodi piiranguvöönd; Kodijärve mõisapargi piiranguvöönd.",
-      "estleg:legalText": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on kaks piiranguvööndit: 1 1) Pangodi piiranguvöönd; 2 2) Kodijärve mõisapargi piiranguvöönd. Kaitsealal on kaks piiranguvööndit: Pangodi piiranguvöönd; Kodijärve mõisapargi piiranguvöönd.",
+      "estleg:summary": {
+        "@value": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on kaks piiranguvööndit: 1 1) Pangodi piiranguvöönd; 2 2) Kodijärve mõisapargi piiranguvöönd.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on kaks piiranguvööndit: 1 1) Pangodi piiranguvöönd; 2 2) Kodijärve mõisapargi piiranguvöönd.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_13_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1025716_Par_12"
@@ -604,22 +1214,61 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041148_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvöönd on kaitseala osa, mis ei kuulu sihtkaitsevööndisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on kaks piiranguvööndit: 1) Pangodi piiranguvöönd; 2) Kodijärve mõisapargi piiranguvöönd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
       "@id": "estleg:Reg_1041148_Par_14",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Piiranguvööndi kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 14. Piiranguvööndi kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "1 (1) Pangodi piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme, sealhulgas põllumajandusliku maakasutuse ja asustusstruktuuri, metsade, järvede ja niidukoosluste säilitamine, ning kaitse-eesmärgiks seatud kalaliigi vingerja elupaiga kaitse. Pangodi piiranguvööndis kaitstav elupaigatüüp on looduslikult rohketoitelised järved. Pangodi piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme, sealhulgas põllumajandusliku maakasutuse ja asustusstruktuuri, metsade,",
-      "estleg:legalText": "1 (1) Pangodi piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme, sealhulgas põllumajandusliku maakasutuse ja asustusstruktuuri, metsade, järvede ja niidukoosluste säilitamine, ning kaitse-eesmärgiks seatud kalaliigi vingerja elupaiga kaitse. Pangodi piiranguvööndis kaitstav elupaigatüüp on looduslikult rohketoitelised järved. Pangodi piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme, sealhulgas põllumajandusliku maakasutuse ja asustusstruktuuri, metsade, järvede ja niidukoosluste säilitamine, ning kaitse-eesmärgiks seatud kalaliigi vingerja elupaiga kaitse. Pangodi piiranguvööndis kaitstav elupaigatüüp on looduslikult rohketoitelised järved. 2 (2) Kodijärve mõisapargi piiranguvööndi kaitse-eesmärk on säilitada ja arendada Kodijärve mõisapargi ajalooliselt kujunenud planeeringut, dendroloogiliselt liigirikast, kultuurilooliselt, esteetiliselt ja puhkemajanduslikult väärtuslikku puistut ning pargi- ja aiakunsti kujunduselemente. Kodijärve mõisapargi piiranguvööndi kaitse-eesmärk on säilitada ja arendada Kodijärve mõisapargi ajalooliselt kujunenud planeeringut, dendroloogiliselt liigirikast, kultuurilooliselt, esteetiliselt ja puhkemajanduslikult väärtuslikku puistut ning pargi- ja aiakunsti kujunduselemente.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "1 (1) Pangodi piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme, sealhulgas põllumajandusliku maakasutuse ja asustusstruktuuri, metsade, järvede ja niidukoosluste säilitamine, ning kaitse-eesmärgiks seatud kalaliigi vingerja elupaiga kaitse. Pangodi piiranguvööndis kaitstav elupaigatüüp on looduslikult rohketoitelised järved. 2 (2) Kodijärve mõisapargi piiranguvööndi kaitse-eesmärk on säilitada ja arendada Kodijärve mõisapargi ajalooliselt kujunenud planeeringut,…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Pangodi piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme, sealhulgas põllumajandusliku maakasutuse ja asustusstruktuuri, metsade, järvede ja niidukoosluste säilitamine, ning kaitse-eesmärgiks seatud kalaliigi vingerja elupaiga kaitse. Pangodi piiranguvööndis kaitstav elupaigatüüp on looduslikult rohketoitelised järved. 2 (2) Kodijärve mõisapargi piiranguvööndi kaitse-eesmärk on säilitada ja arendada Kodijärve mõisapargi ajalooliselt kujunenud planeeringut, dendroloogiliselt liigirikast, kultuurilooliselt, esteetiliselt ja puhkemajanduslikult väärtuslikku puistut ning pargi- ja aiakunsti kujunduselemente.",
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1021971_Par_13"
+          "@id": "estleg:Reg_1041148_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_14_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -629,19 +1278,78 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041148_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pangodi piiranguvööndi kaitse-eesmärk on looduse mitmekesisuse ja maastikuilme, sealhulgas põllumajandusliku maakasutuse ja asustusstruktuuri, metsade, järvede ja niidukoosluste säilitamine, ning kaitse-eesmärgiks seatud kalaliigi vingerja elupaiga kaitse. Pangodi piiranguvööndis kaitstav elupaigatüüp on looduslikult rohketoitelised järved.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kodijärve mõisapargi piiranguvööndi kaitse-eesmärk on säilitada ja arendada Kodijärve mõisapargi ajalooliselt kujunenud planeeringut, dendroloogiliselt liigirikast, kultuurilooliselt, esteetiliselt ja puhkemajanduslikult väärtuslikku puistut ning pargi- ja aiakunsti kujunduselemente.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1041148_Par_15",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Lubatud tegevus piiranguvööndis",
+      "rdfs:label": {
+        "@value": "§ 15. Lubatud tegevus piiranguvööndis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "1 (1) Piiranguvööndis on lubatud majandustegevus, arvestades käesoleva määrusega sätestatud erisusi. Piiranguvööndis on lubatud majandustegevus, arvestades käesoleva määrusega sätestatud erisusi. 2 (2) Piiranguvööndis on lubatud: 1 1) ehitusteatise kohustusega ehitise püstitamine õuemaal; 2 2) biotsiidi, taimekaitsevahendi ja väetise kasutamine põllumaal ja õuemaal. Piiranguvööndis on lubatud: ehitusteatise kohustusega ehitise püstitamine õuemaal; biotsiidi, taimekaitsevahendi ja väetise kasutam",
-      "estleg:legalText": "1 (1) Piiranguvööndis on lubatud majandustegevus, arvestades käesoleva määrusega sätestatud erisusi. Piiranguvööndis on lubatud majandustegevus, arvestades käesoleva määrusega sätestatud erisusi. 2 (2) Piiranguvööndis on lubatud: 1 1) ehitusteatise kohustusega ehitise püstitamine õuemaal; 2 2) biotsiidi, taimekaitsevahendi ja väetise kasutamine põllumaal ja õuemaal. Piiranguvööndis on lubatud: ehitusteatise kohustusega ehitise püstitamine õuemaal; biotsiidi, taimekaitsevahendi ja väetise kasutamine põllumaal ja õuemaal. 3 (3) Lõikes 2 nimetamata juhul on ehitise, kaasa arvatud ajutise ehitise püstitamine piiranguvööndis lubatud ainult kaitseala valitseja nõusolekul. Lõikes 2 nimetamata juhul on ehitise, kaasa arvatud ajutise ehitise püstitamine piiranguvööndis lubatud ainult kaitseala valitseja nõusolekul. 4 (4) Pangodi piiranguvööndis on kaitseala valitseja nõusolekul lubatud: 1 1) lageraie kuusikutes, haavikutes ja hall-lepikutes kuni 1 hektari suuruse langina; 2 2) turberaie kuni 5 hektari suuruse langina; 3 3) puidu kokku- ja väljavedu külmumata pinnaselt; 4 4) veekogude veetaseme ja kaldajoone muutmine veekogude hooldustöödel, ehitamisel ja vee erikasutusel. Pangodi piiranguvööndis on kaitseala valitseja nõusolekul lubatud: lageraie kuusikutes, haavikutes ja hall-lepikutes kuni 1 hektari suuruse langina; turberaie kuni 5 hektari suuruse langina; puidu kokku- ja väljavedu külmumata pinnaselt; veekogude veetaseme ja kaldajoone muutmine veekogude hooldustöödel, ehitamisel ja vee erikasutusel. 5 (5) Pangodi piiranguvööndis raiete tegemisel metsamaal tuleb säilitada puistu liikide ja vanuse mitmekesisus. Elustiku mitmekesisuse säilitamiseks tuleb jätta raielangile hektari kohta alles vähemalt 20 tihumeetrit puid, mida ei koristata ja mis jäävad metsa alatiseks. Elustiku mitmekesisuse tagamiseks alles jäetavad puud valitakse eri puuliikide suurima diameetriga puude hulgast, eelistades kõvalehtpuid, mände ja haabasid, samuti eritunnustega, nagu põlemisjälgede, õõnsuste, tuuleluudade või suurte okstega puid. Pangodi piiranguvööndis raiete tegemisel metsamaal tuleb säilitada puistu liikide ja vanuse mitmekesisus. Elustiku mitmekesisuse säilitamiseks tuleb jätta raielangile hektari kohta alles vähemalt 20 tihumeetrit puid, mida ei koristata ja mis jäävad metsa alatiseks. Elustiku mitmekesisuse tagamiseks alles jäetavad puud valitakse eri puuliikide suurima diameetriga puude hulgast, eelistades kõvalehtpuid, mände ja haabasid, samuti eritunnustega, nagu põlemisjälgede, õõnsuste, tuuleluudade või suurte okstega puid. 6 (6) Kodijärve mõisapargi piiranguvööndis on kaitseala valitseja nõusolekul lubatud puuvõrade ja põõsaste kujundamine ning puittaimestiku istutamine ja raie. Kodijärve mõisapargi piiranguvööndis on kaitseala valitseja nõusolekul lubatud puuvõrade ja põõsaste kujundamine ning puittaimestiku istutamine ja raie.",
+      "estleg:summary": {
+        "@value": "1 (1) Piiranguvööndis on lubatud majandustegevus, arvestades käesoleva määrusega sätestatud erisusi. 2 (2) Piiranguvööndis on lubatud: 1 1) ehitusteatise kohustusega ehitise püstitamine õuemaal; 2 2) biotsiidi, taimekaitsevahendi ja väetise kasutamine põllumaal ja õuemaal. 3 (3) Lõikes 2 nimetamata juhul on ehitise, kaasa arvatud ajutise ehitise püstitamine piiranguvööndis lubatud ainult kaitseala valitseja nõusolekul.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Piiranguvööndis on lubatud majandustegevus, arvestades käesoleva määrusega sätestatud erisusi. 2 (2) Piiranguvööndis on lubatud: 1 1) ehitusteatise kohustusega ehitise püstitamine õuemaal; 2 2) biotsiidi, taimekaitsevahendi ja väetise kasutamine põllumaal ja õuemaal. 3 (3) Lõikes 2 nimetamata juhul on ehitise, kaasa arvatud ajutise ehitise püstitamine piiranguvööndis lubatud ainult kaitseala valitseja nõusolekul. 4 (4) Pangodi piiranguvööndis on kaitseala valitseja nõusolekul lubatud: 1 1) lageraie kuusikutes, haavikutes ja hall-lepikutes kuni 1 hektari suuruse langina; 2 2) turberaie kuni 5 hektari suuruse langina; 3 3) puidu kokku- ja väljavedu külmumata pinnaselt; 4 4) veekogude veetaseme ja kaldajoone muutmine veekogude hooldustöödel, ehitamisel ja vee erikasutusel. 5 (5) Pangodi piiranguvööndis raiete tegemisel metsamaal tuleb säilitada puistu liikide ja vanuse mitmekesisus. Elustiku mitmekesisuse säilitamiseks tuleb jätta raielangile hektari kohta alles vähemalt 20 tihumeetrit puid, mida ei koristata ja mis jäävad metsa alatiseks. Elustiku mitmekesisuse tagamiseks alles jäetavad puud valitakse eri puuliikide suurima diameetriga puude hulgast, eelistades kõvalehtpuid, mände ja haabasid, samuti eritunnustega, nagu põlemisjälgede, õõnsuste, tuuleluudade või suurte okstega puid. 6 (6) Kodijärve mõisapargi piiranguvööndis on kaitseala valitseja nõusolekul lubatud puuvõrade ja põõsaste kujundamine ning puittaimestiku istutamine ja raie.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_15_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_15_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_15_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_15_Lg_6"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1038670_Par_14"
@@ -650,27 +1358,129 @@
           "@id": "estleg:Reg_1045057_Par_15"
         },
         {
-          "@id": "estleg:Reg_1055807_Par_14"
+          "@id": "estleg:Reg_1048139_Par_15"
         },
         {
           "@id": "estleg:Reg_1056373_Par_14"
         },
         {
-          "@id": "estleg:Reg_1056385_Par_14"
+          "@id": "estleg:Reg_312613_Par_14"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_15_v1041148"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on lubatud majandustegevus, arvestades käesoleva määrusega sätestatud erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Piiranguvööndis on lubatud: 1) ehitusteatise kohustusega ehitise püstitamine õuemaal; 2) biotsiidi, taimekaitsevahendi ja väetise kasutamine põllumaal ja õuemaal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lõikes 2 nimetamata juhul on ehitise, kaasa arvatud ajutise ehitise püstitamine piiranguvööndis lubatud ainult kaitseala valitseja nõusolekul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_15_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Pangodi piiranguvööndis on kaitseala valitseja nõusolekul lubatud: 1) lageraie kuusikutes, haavikutes ja hall-lepikutes kuni 1 hektari suuruse langina; 2) turberaie kuni 5 hektari suuruse langina; 3) puidu kokku- ja väljavedu külmumata pinnaselt; 4) veekogude veetaseme ja kaldajoone muutmine veekogude hooldustöödel, ehitamisel ja vee erikasutusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_15_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Pangodi piiranguvööndis raiete tegemisel metsamaal tuleb säilitada puistu liikide ja vanuse mitmekesisus. Elustiku mitmekesisuse säilitamiseks tuleb jätta raielangile hektari kohta alles vähemalt 20 tihumeetrit puid, mida ei koristata ja mis jäävad metsa alatiseks. Elustiku mitmekesisuse tagamiseks alles jäetavad puud valitakse eri puuliikide suurima diameetriga puude hulgast, eelistades kõvalehtpuid, mände ja haabasid, samuti eritunnustega, nagu põlemisjälgede, õõnsuste, tuuleluudade või suurte okstega puid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 5",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_15_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kodijärve mõisapargi piiranguvööndis on kaitseala valitseja nõusolekul lubatud puuvõrade ja põõsaste kujundamine ning puittaimestiku istutamine ja raie.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 6"
     },
     {
       "@id": "estleg:Reg_1041148_Par_16",
@@ -679,13 +1489,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Vajalik tegevus",
+      "rdfs:label": {
+        "@value": "§ 16. Vajalik tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "1 (1) Pangodi piiranguvööndis on vajalikud raied vaadete avamiseks. Pangodi piiranguvööndis on vajalikud raied vaadete avamiseks. 2 (2) Kodijärve mõisapargi piiranguvööndis on pargi ilme ja liigikoosseisu säilimise tagamiseks vajalik pargi niitmine ning puu- ja põõsarinde kujundamine. Kodijärve mõisapargi piiranguvööndis on pargi ilme ja liigikoosseisu säilimise tagamiseks vajalik pargi niitmine ning puu- ja põõsarinde kujundamine.",
-      "estleg:legalText": "1 (1) Pangodi piiranguvööndis on vajalikud raied vaadete avamiseks. Pangodi piiranguvööndis on vajalikud raied vaadete avamiseks. 2 (2) Kodijärve mõisapargi piiranguvööndis on pargi ilme ja liigikoosseisu säilimise tagamiseks vajalik pargi niitmine ning puu- ja põõsarinde kujundamine. Kodijärve mõisapargi piiranguvööndis on pargi ilme ja liigikoosseisu säilimise tagamiseks vajalik pargi niitmine ning puu- ja põõsarinde kujundamine.",
+      "estleg:summary": {
+        "@value": "1 (1) Pangodi piiranguvööndis on vajalikud raied vaadete avamiseks. 2 (2) Kodijärve mõisapargi piiranguvööndis on pargi ilme ja liigikoosseisu säilimise tagamiseks vajalik pargi niitmine ning puu- ja põõsarinde kujundamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Pangodi piiranguvööndis on vajalikud raied vaadete avamiseks. 2 (2) Kodijärve mõisapargi piiranguvööndis on pargi ilme ja liigikoosseisu säilimise tagamiseks vajalik pargi niitmine ning puu- ja põõsarinde kujundamine.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041148_Par_16_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1028299_Par_20"
@@ -710,19 +1534,63 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041148_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pangodi piiranguvööndis on vajalikud raied vaadete avamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kodijärve mõisapargi piiranguvööndis on pargi ilme ja liigikoosseisu säilimise tagamiseks vajalik pargi niitmine ning puu- ja põõsarinde kujundamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1041148_Par_17",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Keelatud tegevus piiranguvööndis",
+      "rdfs:label": {
+        "@value": "§ 17. Keelatud tegevus piiranguvööndis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) maavara kaevandamine; 3 3) puhtpuistute kujundamine ja energiapuistute rajamine. Piiranguvööndis on keelatud: uue maaparandussüsteemi rajamine; maavara kaevandamine; puhtpuistute kujundamine ja energiapuistute rajamine.",
-      "estleg:legalText": "Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) maavara kaevandamine; 3 3) puhtpuistute kujundamine ja energiapuistute rajamine. Piiranguvööndis on keelatud: uue maaparandussüsteemi rajamine; maavara kaevandamine; puhtpuistute kujundamine ja energiapuistute rajamine.",
+      "estleg:summary": {
+        "@value": "Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) maavara kaevandamine; 3 3) puhtpuistute kujundamine ja energiapuistute rajamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Piiranguvööndis on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) maavara kaevandamine; 3 3) puhtpuistute kujundamine ja energiapuistute rajamine.",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_17_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1023508_Par_16"
@@ -740,18 +1608,36 @@
           "@id": "estleg:Reg_1045057_Par_17"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_17_v1041148"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on keelatud: 1) uue maaparandussüsteemi rajamine; 2) maavara kaevandamine; 3) puhtpuistute kujundamine ja energiapuistute rajamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:Reg_1041148_Par_18",
@@ -760,18 +1646,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 18. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
-      "estleg:legalText": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist. Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_18_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_18_v1041148"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub kümnendal päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
     },
     {
       "@id": "estleg:Reg_1041148_Par_19",
@@ -780,13 +1690,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 19. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Vabariigi Valitsuse 30. oktoobri 2001. a määrus nr 334 „Pangodi maastikukaitseala kaitse-eeskiri” tunnistatakse kehtetuks.",
-      "estleg:legalText": "Vabariigi Valitsuse 30. oktoobri 2001. a määrus nr 334 „Pangodi maastikukaitseala kaitse-eeskiri” tunnistatakse kehtetuks. Vabariigi Valitsuse 30. oktoobri 2001. a määrus nr 334 „Pangodi maastikukaitseala kaitse-eeskiri” tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Vabariigi Valitsuse 30. oktoobri 2001. a määrus nr 334 „Pangodi maastikukaitseala kaitse-eeskiri” tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vabariigi Valitsuse 30. oktoobri 2001. a määrus nr 334 „Pangodi maastikukaitseala kaitse-eeskiri” tunnistatakse kehtetuks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -796,11 +1712,43 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_19_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_19_v1041148"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsuse 30. oktoobri 2001. a määrus nr 334 „Pangodi maastikukaitseala kaitse-eeskiri” tunnistatakse kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
@@ -814,13 +1762,29 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Menetluse läbiviimine",
+      "rdfs:label": {
+        "@value": "§ 20. Menetluse läbiviimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Määruse menetlus viidi läbi keskkonnaministri 16. mai 2016. a käskkirjaga nr 1-2/16/459 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas.",
-      "estleg:legalText": "Määruse menetlus viidi läbi keskkonnaministri 16. mai 2016. a käskkirjaga nr 1-2/16/459 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas. Määruse menetlus viidi läbi keskkonnaministri 16. mai 2016. a käskkirjaga nr 1-2/16/459 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas.",
+      "estleg:summary": {
+        "@value": "Määruse menetlus viidi läbi keskkonnaministri 16. mai 2016. a käskkirjaga nr 1-2/16/459 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määruse menetlus viidi läbi keskkonnaministri 16. mai 2016. a käskkirjaga nr 1-2/16/459 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_20_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1031810_Par_19"
@@ -842,7 +1806,20 @@
         {
           "@id": "estleg:Reg_1041148_Par_20_v1041148"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruse menetlus viidi läbi keskkonnaministri 16. mai 2016. a käskkirjaga nr 1-2/16/459 algatatud haldusmenetluses, mille ülevaade koos ärakuulamise tulemustega on esitatud käesoleva määruse seletuskirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_keskkonnaminister"
@@ -856,44 +1833,82 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 21. Vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pangodi maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041148_Map"
       },
-      "estleg:summary": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
-      "estleg:legalText": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist. Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
+      "estleg:summary": {
+        "@value": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1017814_Par_18"
-        },
-        {
-          "@id": "estleg:Reg_1018083_Par_20"
-        },
-        {
-          "@id": "estleg:Reg_1018084_Par_12"
-        },
-        {
-          "@id": "estleg:Reg_1018085_Par_10"
-        },
-        {
-          "@id": "estleg:Reg_1018086_Par_10"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041148_Par_21_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_halduskohus"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1015353_Par_19"
+        },
+        {
+          "@id": "estleg:Reg_1015354_Par_12"
+        },
+        {
+          "@id": "estleg:Reg_1015857_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1017162_Par_10"
+        },
+        {
+          "@id": "estleg:Reg_1017814_Par_18"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041148_Par_21_v1041148"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041148_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrust on võimalik vaidlustada, esitades kaebuse halduskohtusse halduskohtumenetluse seadustikus sätestatud korras, osas, millest tulenevad kinnisasja omanikule või valdajale õigused ja kohustused, mis puudutavad kinnisasja kasutamist või käsutamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041148_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_halduskohus"

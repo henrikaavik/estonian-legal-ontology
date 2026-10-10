@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:KPMS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus",
       "dcterms:title": "Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/129062014128.xml"
+        "@id": "https://www.riigiteataja.ee/akt/129062014128"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/129062014128/xml"
+      },
+      "estleg:globalId": "129062014128",
+      "eli:id_local": "129062014128",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "328670",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "bd1bb0390cb215a29deb34c6831f719fd08eb777baf4adba4bd06666329aeb6f",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2014-07-01",
-        "@type": "xsd:date"
       },
       "estleg:references": [
         {
@@ -62,17 +74,38 @@
         {
           "@id": "http://eurovoc.europa.eu/527"
         }
-      ]
-    },
-    {
-      "@id": "estleg:KPMS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:entryIntoForce": {
+        "@value": "2009-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2014-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2014-06-29",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_KPMS_default"
+          "@id": "estleg:Amendment_KPMS_6c02892d43"
+        },
+        {
+          "@id": "estleg:Amendment_KPMS_89c3cfe781"
+        },
+        {
+          "@id": "estleg:Amendment_KPMS_a121084ae4"
+        },
+        {
+          "@id": "estleg:Amendment_KPMS_e61ff1eace"
+        },
+        {
+          "@id": "estleg:Amendment_KPMS_2e47a88f47"
+        },
+        {
+          "@id": "estleg:Amendment_KPMS_a4b69463de"
         }
       ]
     },
@@ -83,12 +116,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus",
-      "skos:prefLabel": "§1–2 Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus",
+      "rdfs:label": {
+        "@value": "§1–2 Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KPMS_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:KPMS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_KPMS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:KPMS_Par_1",
@@ -97,13 +151,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Eesti keskmise palgaga seotud ametipalkade maksmine aastatel 2009–2013",
+      "rdfs:label": {
+        "@value": "§ 1. Eesti keskmise palgaga seotud ametipalkade maksmine aastatel 2009–2013",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KPMS_Map"
       },
-      "estleg:summary": "Kuni 2013. aasta 31. detsembrini on: Vabariigi Presidendi ametipalk Eesti keskmise palga ning Vabariigi Presidendi ametihüve seaduse §-s 2 sätestatud koefitsiendi korrutis, kuid mitte suurem kui 2007. aasta neljanda kvartali Eesti keskmise palga ning nimetatud seaduse §-s 2 sätestatud koefitsiendi ning koefitsiendi 0,92 korrutis; peaministri, ministri, riigikontrolöri ja õiguskantsleri ametipalk Eesti keskmise palga ning Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike",
-      "estleg:legalText": "Kuni 2013. aasta 31. detsembrini on: Vabariigi Presidendi ametipalk Eesti keskmise palga ning Vabariigi Presidendi ametihüve seaduse §-s 2 sätestatud koefitsiendi korrutis, kuid mitte suurem kui 2007. aasta neljanda kvartali Eesti keskmise palga ning nimetatud seaduse §-s 2 sätestatud koefitsiendi ning koefitsiendi 0,92 korrutis; peaministri, ministri, riigikontrolöri ja õiguskantsleri ametipalk Eesti keskmise palga ning Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seaduses sätestatud vastava koefitsiendi korrutis, kuid mitte suurem kui 2007. aasta Eesti keskmise palga ning nimetatud seaduses sätestatud vastava koefitsiendi ning koefitsiendi 0,92 korrutis; soolise võrdõiguslikkuse ja võrdse kohtlemise voliniku ametipalk Eesti keskmise palga ja koefitsiendi 3,2 korrutis, kuid mitte suurem kui 2007. aasta Eesti keskmise palga ja koefitsiendi 3,2 ning koefitsiendi 0,92 korrutis. Voliniku ametipalka korrigeeritakse iga aasta 1. märtsist järgnevaks 12. kuuks, võttes aluseks Statistikaameti poolt avalikustatud eelmise aasta neljanda kvartali Eesti keskmise palga. Soolise võrdõiguslikkuse ja võrdse kohtlemise volinikule ei laiene avaliku teenistuse seaduse § 61 lõikes 5 sätestatud muutuvpalk; riigisekretär töötasustamisel võrdsustatud ministriga. kehtetu -",
+      "estleg:summary": {
+        "@value": "Kuni 2013. aasta 31. detsembrini on: 1) Vabariigi Presidendi ametipalk Eesti keskmise palga ning Vabariigi Presidendi ametihüve seaduse §-s 2 sätestatud koefitsiendi korrutis, kuid mitte suurem kui 2007. aasta neljanda kvartali Eesti keskmise palga ning nimetatud seaduse §-s 2 sätestatud koefitsiendi ning koefitsiendi 0,92 korrutis; 2) peaministri, ministri, riigikontrolöri ja õiguskantsleri ametipalk Eesti keskmise palga ning Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kuni 2013. aasta 31. detsembrini on: 1) Vabariigi Presidendi ametipalk Eesti keskmise palga ning Vabariigi Presidendi ametihüve seaduse §-s 2 sätestatud koefitsiendi korrutis, kuid mitte suurem kui 2007. aasta neljanda kvartali Eesti keskmise palga ning nimetatud seaduse §-s 2 sätestatud koefitsiendi ning koefitsiendi 0,92 korrutis; 2) peaministri, ministri, riigikontrolöri ja õiguskantsleri ametipalk Eesti keskmise palga ning Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seaduses sätestatud vastava koefitsiendi korrutis, kuid mitte suurem kui 2007. aasta Eesti keskmise palga ning nimetatud seaduses sätestatud vastava koefitsiendi ning koefitsiendi 0,92 korrutis; 3) soolise võrdõiguslikkuse ja võrdse kohtlemise voliniku ametipalk Eesti keskmise palga ja koefitsiendi 3,2 korrutis, kuid mitte suurem kui 2007. aasta Eesti keskmise palga ja koefitsiendi 3,2 ning koefitsiendi 0,92 korrutis. Voliniku ametipalka korrigeeritakse iga aasta 1. märtsist järgnevaks 12. kuuks, võttes aluseks Statistikaameti poolt avalikustatud eelmise aasta neljanda kvartali Eesti keskmise palga. Soolise võrdõiguslikkuse ja võrdse kohtlemise volinikule ei laiene avaliku teenistuse seaduse § 61 lõikes 5 sätestatud muutuvpalk; 4) riigisekretär töötasustamisel võrdsustatud ministriga. 5)",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KPMS_default"
       },
@@ -117,14 +177,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:NRAPS_Par_14_15"
-        },
-        {
-          "@id": "estleg:RLS_Par_60_1"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -132,6 +184,28 @@
       "estleg:references": [
         {
           "@id": "estleg:VPA_Par_2"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        },
+        {
+          "@id": "estleg:Institution_peaminister"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:NRAPS_Par_14_15"
+        },
+        {
+          "@id": "estleg:RLS_Par_60_1"
         }
       ],
       "estleg:hasVersion": [
@@ -162,20 +236,6 @@
         {
           "@id": "estleg:KPMS_Par_1_v129062014128"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigipresident"
-        },
-        {
-          "@id": "estleg:Institution_peaminister"
-        },
-        {
-          "@id": "estleg:Institution_riigikogu"
-        },
-        {
-          "@id": "estleg:Institution_statistikaamet"
-        }
       ]
     },
     {
@@ -184,10 +244,19 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kuni 2013. aasta 31. detsembrini on: Vabariigi Presidendi ametipalk Eesti keskmise palga ning Vabariigi Presidendi ametihüve seaduse §-s 2 sätestatud koefitsiendi korrutis, kuid mitte suurem kui 2007. aasta neljanda kvartali Eesti keskmise palga ning nimetatud seaduse §-s 2 sätestatud koefitsiendi ning koefitsiendi 0,92 korrutis; peaministri, ministri, riigikontrolöri ja õiguskantsleri ametipalk Eesti keskmise palga ning Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seaduses sätestatud vastava koefitsiendi korrutis, kuid mitte suurem kui 2007. aasta Eesti keskmise palga ning nimetatud seaduses sätestatud vastava koefitsiendi ning koefitsiendi 0,92 korrutis; soolise võrdõiguslikkuse ja võrdse kohtlemise voliniku ametipalk Eesti keskmise palga ja koefitsiendi 3,2 korrutis, kuid mitte suurem kui 2007. aasta Eesti keskmise palga ja koefitsiendi 3,2 ning koefitsiendi 0,92 korrutis. Voliniku ametipalka korrigeeritakse iga aasta 1. märtsist järgnevaks 12. kuuks, võttes aluseks Statistikaameti poolt avalikustatud eelmise aasta neljanda kvartali Eesti keskmise palga. Soolise võrdõiguslikkuse ja võrdse kohtlemise volinikule ei laiene avaliku teenistuse seaduse § 61 lõikes 5 sätestatud muutuvpalk; riigisekretär töötasustamisel võrdsustatud ministriga. kehtetu -",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kuni 2013. aasta 31. detsembrini on: 1) Vabariigi Presidendi ametipalk Eesti keskmise palga ning Vabariigi Presidendi ametihüve seaduse §-s 2 sätestatud koefitsiendi korrutis, kuid mitte suurem kui 2007. aasta neljanda kvartali Eesti keskmise palga ning nimetatud seaduse §-s 2 sätestatud koefitsiendi ning koefitsiendi 0,92 korrutis; 2) peaministri, ministri, riigikontrolöri ja õiguskantsleri ametipalk Eesti keskmise palga ning Riigikogu ja Vabariigi Presidendi poolt nimetatavate riigiametnike ametipalkade seaduses sätestatud vastava koefitsiendi korrutis, kuid mitte suurem kui 2007. aasta Eesti keskmise palga ning nimetatud seaduses sätestatud vastava koefitsiendi ning koefitsiendi 0,92 korrutis; 3) soolise võrdõiguslikkuse ja võrdse kohtlemise voliniku ametipalk Eesti keskmise palga ja koefitsiendi 3,2 korrutis, kuid mitte suurem kui 2007. aasta Eesti keskmise palga ja koefitsiendi 3,2 ning koefitsiendi 0,92 korrutis. Voliniku ametipalka korrigeeritakse iga aasta 1. märtsist järgnevaks 12. kuuks, võttes aluseks Statistikaameti poolt avalikustatud eelmise aasta neljanda kvartali Eesti keskmise palga. Soolise võrdõiguslikkuse ja võrdse kohtlemise volinikule ei laiene avaliku teenistuse seaduse § 61 lõikes 5 sätestatud muutuvpalk; 4) riigisekretär töötasustamisel võrdsustatud ministriga. 5)",
       "estleg:parentProvision": {
         "@id": "estleg:KPMS_Par_1"
       },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -227,12 +296,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 2. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti keskmise palgaga seotud ametipalkade maksmise ajutise korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KPMS_Map"
       },
-      "estleg:summary": "Seadus jõustub 2009. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "Seadus jõustub 2009. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Seadus jõustub 2009. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KPMS_default"
@@ -254,10 +329,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Seadus jõustub 2009. aasta 1. jaanuaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Seadus jõustub 2009. aasta 1. jaanuaril.",
       "estleg:parentProvision": {
         "@id": "estleg:KPMS_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

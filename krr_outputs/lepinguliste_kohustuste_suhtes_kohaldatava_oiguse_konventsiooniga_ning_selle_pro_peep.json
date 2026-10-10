@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning selle protokollidega ühinemise konventsiooni ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning selle protokollidega ühinemise konventsiooni ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning selle protokollidega ühinemise konventsiooni ratifitseerimise seadus",
       "dcterms:title": "Lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning selle protokollidega ühinemise konventsiooni ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/1026913.xml"
+        "@id": "https://www.riigiteataja.ee/akt/1026913"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/1026913/xml"
+      },
+      "estleg:globalId": "1026913",
+      "eli:id_local": "1026913",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "304200",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "db52d25c212912df22fce2b4991b3cae3ba3ce6efd45bbb23a821c26836ec12e",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2006-05-28",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -56,17 +68,23 @@
         {
           "@id": "http://eurovoc.europa.eu/525"
         }
-      ]
-    },
-    {
-      "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning selle protokollidega ühinemise konventsiooni ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:entryIntoForce": {
+        "@value": "2006-05-28",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2006-05-28",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2006-05-18",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_lepinguliste_kohustuste_suhtes_kohaldata_default"
+          "@id": "estleg:Amendment_lepinguliste_kohustuste_suhtes_kohaldata_a4b69463de"
         }
       ]
     },
@@ -77,12 +95,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning selle protokollidega ühinemise konventsiooni ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_lepinguliste_kohustuste_suhtes_kohaldata_default"
+        }
+      ]
     },
     {
       "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_Par_1",
@@ -91,12 +130,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida 2005. aasta 14. aprillil Luxembourgis koostatud konventsioon Tšeh...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida 2005. aasta 14. aprillil Luxembourgis koostatud konventsioon Tšeh...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning selle protokollidega ühinemise konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_Map"
       },
-      "estleg:summary": "Ratifitseerida 2005. aasta 14. aprillil Luxembourgis koostatud konventsioon Tšehhi Vabariigi, Eesti Vabariigi, Küprose Vabariigi, Läti Vabariigi, Leedu Vabariigi, Ungari Vabariigi, Malta Vabariigi, Poola Vabariigi, Sloveenia Vabariigi ja Slovaki Vabariigi ühinemise kohta 19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning esimese ja teise protokolliga selle Euroopa Ühenduste Kohtus tõlgendamise kohta.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida 2005. aasta 14. aprillil Luxembourgis koostatud konventsioon Tšehhi Vabariigi, Eesti Vabariigi, Küprose Vabariigi, Läti Vabariigi, Leedu Vabariigi, Ungari Vabariigi, Malta Vabariigi, Poola Vabariigi, Sloveenia Vabariigi ja Slovaki Vabariigi ühinemise kohta 19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning esimese ja teise protokolliga selle Euroopa Ühenduste Kohtus tõlgendamise kohta.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida 2005. aasta 14. aprillil Luxembourgis koostatud konventsioon Tšehhi Vabariigi, Eesti Vabariigi, Küprose Vabariigi, Läti Vabariigi, Leedu Vabariigi, Ungari Vabariigi, Malta Vabariigi, Poola Vabariigi, Sloveenia Vabariigi ja Slovaki Vabariigi ühinemise kohta 19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning esimese ja teise protokolliga selle Euroopa Ühenduste Kohtus tõlgendamise kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_lepinguliste_kohustuste_suhtes_kohaldata_default"
@@ -127,10 +172,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida 2005. aasta 14. aprillil Luxembourgis koostatud konventsioon Tšehhi Vabariigi, Eesti Vabariigi, Küprose Vabariigi, Läti Vabariigi, Leedu Vabariigi, Ungari Vabariigi, Malta Vabariigi, Poola Vabariigi, Sloveenia Vabariigi ja Slovaki Vabariigi ühinemise kohta 19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning esimese ja teise protokolliga selle Euroopa Ühenduste Kohtus tõlgendamise kohta.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida 2005. aasta 14. aprillil Luxembourgis koostatud konventsioon Tšehhi Vabariigi, Eesti Vabariigi, Küprose Vabariigi, Läti Vabariigi, Leedu Vabariigi, Ungari Vabariigi, Malta Vabariigi, Poola Vabariigi, Sloveenia Vabariigi ja Slovaki Vabariigi ühinemise kohta 19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning esimese ja teise protokolliga selle Euroopa Ühenduste Kohtus tõlgendamise kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_Par_1"
       },
+      "rdfs:label": "§ 1 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -148,13 +195,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste...]",
+      "rdfs:label": {
+        "@value": "§ 2. [19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooniga ning selle protokollidega ühinemise konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_Map"
       },
-      "estleg:summary": "19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooni esimese protokolli artikli 2 punktis a nimetatud kohtute otsuseid ja punktis b nimetatud kohtute tähtsaid otsuseid edastab Euroopa Ühenduste Kohtule Justiitsministeerium. Esimese protokolli artikli 3 lõikes 1 nimetatud pädevaks asutuseks on Justiitsministeerium ning lõikes 3 nimetatud pädevaks ametiisikuks on valdkonna eest vastutav minister.",
-      "estleg:legalText": "19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooni esimese protokolli artikli 2 punktis a nimetatud kohtute otsuseid ja punktis b nimetatud kohtute tähtsaid otsuseid edastab Euroopa Ühenduste Kohtule Justiitsministeerium. Esimese protokolli artikli 3 lõikes 1 nimetatud pädevaks asutuseks on Justiitsministeerium ning lõikes 3 nimetatud pädevaks ametiisikuks on valdkonna eest vastutav minister. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"justiitsminister\" sõnadega \"valdkonna eest vastutav minister\".",
+      "estleg:summary": {
+        "@value": "19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooni esimese protokolli artikli 2 punktis a nimetatud kohtute otsuseid ja punktis b nimetatud kohtute tähtsaid otsuseid edastab Euroopa Ühenduste Kohtule Justiitsministeerium. Esimese protokolli artikli 3 lõikes 1 nimetatud pädevaks asutuseks on Justiitsministeerium ning lõikes 3 nimetatud pädevaks ametiisikuks on valdkonna eest vastutav minister.",
+        "@language": "et"
+      },
+      "estleg:legalText": "19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooni esimese protokolli artikli 2 punktis a nimetatud kohtute otsuseid ja punktis b nimetatud kohtute tähtsaid otsuseid edastab Euroopa Ühenduste Kohtule Justiitsministeerium. Esimese protokolli artikli 3 lõikes 1 nimetatud pädevaks asutuseks on Justiitsministeerium ning lõikes 3 nimetatud pädevaks ametiisikuks on valdkonna eest vastutav minister.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_lepinguliste_kohustuste_suhtes_kohaldata_default"
       },
@@ -175,17 +228,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_Par_2_v1026913"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiitsministeerium"
-        },
+        }
+      ],
+      "estleg:hasVersion": [
         {
-          "@id": "estleg:Institution_justiitsminister"
+          "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_Par_2_v1026913"
         }
       ]
     },
@@ -195,10 +245,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooni esimese protokolli artikli 2 punktis a nimetatud kohtute otsuseid ja punktis b nimetatud kohtute tähtsaid otsuseid edastab Euroopa Ühenduste Kohtule Justiitsministeerium. Esimese protokolli artikli 3 lõikes 1 nimetatud pädevaks asutuseks on Justiitsministeerium ning lõikes 3 nimetatud pädevaks ametiisikuks on valdkonna eest vastutav minister. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"justiitsminister\" sõnadega \"valdkonna eest vastutav minister\".",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) 19. juunil 1980. aastal Roomas allakirjutamiseks avatud lepinguliste kohustuste suhtes kohaldatava õiguse konventsiooni esimese protokolli artikli 2 punktis a nimetatud kohtute otsuseid ja punktis b nimetatud kohtute tähtsaid otsuseid edastab Euroopa Ühenduste Kohtule Justiitsministeerium. Esimese protokolli artikli 3 lõikes 1 nimetatud pädevaks asutuseks on Justiitsministeerium ning lõikes 3 nimetatud pädevaks ametiisikuks on valdkonna eest vastutav minister.",
       "estleg:parentProvision": {
         "@id": "estleg:lepinguliste_kohustuste_suhtes_kohaldata_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -211,17 +263,9 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
-        {
-          "@id": "estleg:VABARI_Par_107_3_Lg_4"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiitsministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsminister"
         }
       ]
     }

@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:EELPR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Euroopa energiaharta lepingu ja protokolli ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Euroopa energiaharta lepingu ja protokolli ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Euroopa energiaharta lepingu ja protokolli ratifitseerimise seadus",
       "dcterms:title": "Euroopa energiaharta lepingu ja protokolli ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/78836.xml"
+        "@id": "https://www.riigiteataja.ee/akt/78836"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/78836/xml"
+      },
+      "estleg:globalId": "78836",
+      "eli:id_local": "78836",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "118753",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "eb8e032061a4e09d036e24bd4c44772e96434c93fee7dc78a275792c9e4ea186",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -51,23 +63,24 @@
           "@id": "http://eurovoc.europa.eu/3474"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1998-03-13",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_RAM14_1206"
         }
-      ]
-    },
-    {
-      "@id": "estleg:EELPR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Euroopa energiaharta lepingu ja protokolli ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_EELPR_default"
-        }
-      ]
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_EELPR_default",
@@ -76,12 +89,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EELPR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:EELPR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Euroopa energiaharta lepingu ja protokolli ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EELPR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:EELPR_Par_1",
@@ -90,13 +124,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud Euroopa energiaharta leping./78831, mis on koostatu...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud Euroopa energiaharta leping , mis on koostatud 1994...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa energiaharta lepingu ja protokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EELPR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud Euroopa energiaharta leping , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud Euroopa energiaharta leping , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EELPR_default"
       },
@@ -110,10 +150,10 @@
           "@id": "estleg:AKR_Par_1"
         },
         {
-          "@id": "estleg:ENFKKUR_Par_1"
+          "@id": "estleg:UPKLR_2_Par_1"
         },
         {
-          "@id": "estleg:UPKLR_2_Par_1"
+          "@id": "estleg:UPKLR_Par_1"
         },
         {
           "@id": "estleg:ulemaailmse_postiliidu_ar_riy_i_erakorra_Par_1"
@@ -134,10 +174,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud Euroopa energiaharta leping , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud.",
       "estleg:parentProvision": {
         "@id": "estleg:EELPR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:EELPR_Par_2",
@@ -146,13 +188,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ratifitseerida juurdelisatud Euroopa energiaharta protokoll energiakasutuse tõhu...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ratifitseerida juurdelisatud Euroopa energiaharta protokoll energiakasutuse tõhu...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa energiaharta lepingu ja protokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EELPR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud. Akti metaandmed ja sisu tehniliselt korrastatud.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud. Akti metaandmed ja sisu tehniliselt korrastatud.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud Euroopa energiaharta protokoll energiakasutuse tõhustamise ja sellega seotud keskkonnakaitseküsimuste kohta , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud. Akti metaandmed ja sisu tehniliselt korrastatud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud Euroopa energiaharta protokoll energiakasutuse tõhustamise ja sellega seotud keskkonnakaitseküsimuste kohta , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud. Akti metaandmed ja sisu tehniliselt korrastatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EELPR_default"
       },
@@ -163,7 +211,7 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:AVHVUKPALPH_Par_2"
+          "@id": "estleg:AKR_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -178,10 +226,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud. Akti metaandmed ja sisu tehniliselt korrastatud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud Euroopa energiaharta protokoll energiakasutuse tõhustamise ja sellega seotud keskkonnakaitseküsimuste kohta , mis on koostatud 1994. aasta 17. detsembril Lissabonis ja millele Eesti Vabariik on samas alla kirjutanud. Akti metaandmed ja sisu tehniliselt korrastatud.",
       "estleg:parentProvision": {
         "@id": "estleg:EELPR_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

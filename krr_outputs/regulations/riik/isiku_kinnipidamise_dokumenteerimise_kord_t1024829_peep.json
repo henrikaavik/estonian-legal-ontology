@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Isiku kinnipidamise dokumenteerimise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Isiku kinnipidamise dokumenteerimise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Isiku kinnipidamise dokumenteerimise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -52,15 +59,12 @@
           "@id": "estleg:Reg_1024829_Annex_6"
         }
       ],
-      "estleg:entryIntoForce": {
-        "@value": "2014-07-01",
+      "dcterms:title": "Isiku kinnipidamise dokumenteerimise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2014-06-26",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:issuedUnder": [
         {
           "@id": "estleg:KORS_Map"
@@ -71,6 +75,10 @@
           "@id": "estleg:Citation_Reg_1024829_Map_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/557"
@@ -86,7 +94,16 @@
         {
           "@id": "http://eurovoc.europa.eu/217"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2014-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2014-06-26",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1024829_Annex_1",
@@ -94,7 +111,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Isiku kinnipidamise protokoll",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -103,7 +123,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -112,7 +135,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 3",
+      "rdfs:label": {
+        "@value": "Lisa 3 – Õiend isiku kinnipidamise kohta",
+        "@language": "et"
+      },
       "estleg:annexNumber": "3"
     },
     {
@@ -121,7 +147,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 4",
+      "rdfs:label": {
+        "@value": "Lisa 4",
+        "@language": "et"
+      },
       "estleg:annexNumber": "4"
     },
     {
@@ -130,7 +159,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 5",
+      "rdfs:label": {
+        "@value": "Lisa 5 – Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokoll",
+        "@language": "et"
+      },
       "estleg:annexNumber": "5"
     },
     {
@@ -139,7 +171,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 6",
+      "rdfs:label": {
+        "@value": "Lisa 6",
+        "@language": "et"
+      },
       "estleg:annexNumber": "6"
     },
     {
@@ -149,24 +184,41 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Dokumenteerimise viisid",
+      "rdfs:label": {
+        "@value": "§ 1. Dokumenteerimise viisid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku kinnipidamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1024829_Map"
       },
-      "estleg:summary": "1 (1) Isiku kinnipidamine dokumenteeritakse isiku kinnipidamise protokollis, mis on esitatud määruse lisas 1. Isiku kinnipidamine dokumenteeritakse isiku kinnipidamise protokollis, mis on esitatud määruse lisas 1. 2 (2) Kui isiku kinnipidamine kestab vähem kui kolm tundi, isiku suhtes ei kasutata relva või erivahendit ja isik ise ei nõua protokolli koostamist, võib korrakaitseorgan jätta isiku kinnipidamise määruse lisas 1 vormi kohaselt protokollimata, säilitades vähemalt järgmised andmed: 1 1)",
-      "estleg:legalText": "1 (1) Isiku kinnipidamine dokumenteeritakse isiku kinnipidamise protokollis, mis on esitatud määruse lisas 1. Isiku kinnipidamine dokumenteeritakse isiku kinnipidamise protokollis, mis on esitatud määruse lisas 1. 2 (2) Kui isiku kinnipidamine kestab vähem kui kolm tundi, isiku suhtes ei kasutata relva või erivahendit ja isik ise ei nõua protokolli koostamist, võib korrakaitseorgan jätta isiku kinnipidamise määruse lisas 1 vormi kohaselt protokollimata, säilitades vähemalt järgmised andmed: 1 1) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; 2 2) kinnipidamise õiguslik alus; 3 3) kinnipidamise kuupäev, kellaaeg. Kui isiku kinnipidamine kestab vähem kui kolm tundi, isiku suhtes ei kasutata relva või erivahendit ja isik ise ei nõua protokolli koostamist, võib korrakaitseorgan jätta isiku kinnipidamise määruse lisas 1 vormi kohaselt protokollimata, säilitades vähemalt järgmised andmed: kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; kinnipidamise õiguslik alus; kinnipidamise kuupäev, kellaaeg. 3 (3) Kui massilise korratuse käigus ei ole võimalik kohe isiku kinnipidamist protokollida, koostatakse isiku kinnipidamise kohta õiend, mille vorm on esitatud määruse lisas 2. Kui kinnipidamine kestab kauem kui kolm tundi või seda nõuab kinnipeetud isik, on lõikes 1 nimetatud protokolli koostamine kohustuslik. Kui massilise korratuse käigus ei ole võimalik kohe isiku kinnipidamist protokollida, koostatakse isiku kinnipidamise kohta õiend, mille vorm on esitatud määruse lisas 2. Kui kinnipidamine kestab kauem kui kolm tundi või seda nõuab kinnipeetud isik, on lõikes 1 nimetatud protokolli koostamine kohustuslik.",
+      "estleg:summary": {
+        "@value": "1 (1) Isiku kinnipidamine dokumenteeritakse isiku kinnipidamise protokollis, mis on esitatud määruse lisas 1. 2 (2) Kui isiku kinnipidamine kestab vähem kui kolm tundi, isiku suhtes ei kasutata relva või erivahendit ja isik ise ei nõua protokolli koostamist, võib korrakaitseorgan jätta isiku kinnipidamise määruse lisas 1 vormi kohaselt protokollimata, säilitades vähemalt järgmised andmed: 1 1) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; 2 2)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Isiku kinnipidamine dokumenteeritakse isiku kinnipidamise protokollis, mis on esitatud määruse lisas 1. 2 (2) Kui isiku kinnipidamine kestab vähem kui kolm tundi, isiku suhtes ei kasutata relva või erivahendit ja isik ise ei nõua protokolli koostamist, võib korrakaitseorgan jätta isiku kinnipidamise määruse lisas 1 vormi kohaselt protokollimata, säilitades vähemalt järgmised andmed: 1 1) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; 2 2) kinnipidamise õiguslik alus; 3 3) kinnipidamise kuupäev, kellaaeg. 3 (3) Kui massilise korratuse käigus ei ole võimalik kohe isiku kinnipidamist protokollida, koostatakse isiku kinnipidamise kohta õiend, mille vorm on esitatud määruse lisas 2. Kui kinnipidamine kestab kauem kui kolm tundi või seda nõuab kinnipeetud isik, on lõikes 1 nimetatud protokolli koostamine kohustuslik.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1024829_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1024829_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1024829_Par_1_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -175,36 +227,161 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1024829_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isiku kinnipidamine dokumenteeritakse isiku kinnipidamise protokollis, mis on esitatud määruse lisas 1.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1024829_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1024829_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui isiku kinnipidamine kestab vähem kui kolm tundi, isiku suhtes ei kasutata relva või erivahendit ja isik ise ei nõua protokolli koostamist, võib korrakaitseorgan jätta isiku kinnipidamise määruse lisas 1 vormi kohaselt protokollimata, säilitades vähemalt järgmised andmed: 1) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; 2) kinnipidamise õiguslik alus; 3) kinnipidamise kuupäev, kellaaeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1024829_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1024829_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui massilise korratuse käigus ei ole võimalik kohe isiku kinnipidamist protokollida, koostatakse isiku kinnipidamise kohta õiend, mille vorm on esitatud määruse lisas 2. Kui kinnipidamine kestab kauem kui kolm tundi või seda nõuab kinnipeetud isik, on lõikes 1 nimetatud protokolli koostamine kohustuslik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1024829_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
       "@id": "estleg:Reg_1024829_Par_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Andmekoosseis isiku kinnipidamise protokollis",
+      "rdfs:label": {
+        "@value": "§ 2. Andmekoosseis isiku kinnipidamise protokollis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku kinnipidamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1024829_Map"
       },
-      "estleg:summary": "Isiku kinnipidamise protokollis dokumenteeritakse vähemalt järgmised andmed: 1 1) asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 2 2) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; 3 3) kinnipidamise õiguslik ja faktiline alus ja kaalutlused; 4 4) kinnipidamise kuupäev, kellaaeg ja koht; 5 5) kinnipeetud isikule tema õiguste selgitamine; 6 6) teave selle kohta, kas alaealise või piiratud teovõimega isiku ",
-      "estleg:legalText": "Isiku kinnipidamise protokollis dokumenteeritakse vähemalt järgmised andmed: 1 1) asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 2 2) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; 3 3) kinnipidamise õiguslik ja faktiline alus ja kaalutlused; 4 4) kinnipidamise kuupäev, kellaaeg ja koht; 5 5) kinnipeetud isikule tema õiguste selgitamine; 6 6) teave selle kohta, kas alaealise või piiratud teovõimega isiku seaduslik esindaja on teadlik alaealise või piiratud teovõimega isiku kinnipidamisest, ja selgitus, millal ja kuidas teda teavitati. Juhul, kui teavitamine ei olnud võimalik, siis põhjus, miks seaduslikku esindajat ei teavitatud; 7 7) kinnipeetud isikult turvakontrolli käigus hoiulevõetud esemete loetelu, hoiulevõtmise põhjus ja koht, kus hoiulevõetud esemed asuvad; 8 8) kinnipeetud isiku avaldused ja taotlused; 9 9) protokolli koostanud ametniku allkiri; 10 10) isiku vabastamise kuupäev ja kellaaeg; 11 11) isiku vabastanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 12 12) märge selle kohta, kas isik tuvastati dokumendi alusel, sealhulgas märgitakse isikut tõendava dokumendi nimetus, number, selle väljaandnud asutuse nimetus ja väljaandmise aeg, või isiku enda või tunnistajate ütluste põhjal või muul viisil; 13 13) vahetu sunni kohaldamine, vahetu sunni vahend, selle kasutamise põhjus ja kestus ning selle ametniku andmed, kes vahetut sundi kohaldas. Isiku kinnipidamise protokollis dokumenteeritakse vähemalt järgmised andmed: asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; kinnipidamise õiguslik ja faktiline alus ja kaalutlused; kinnipidamise kuupäev, kellaaeg ja koht; kinnipeetud isikule tema õiguste selgitamine; teave selle kohta, kas alaealise või piiratud teovõimega isiku seaduslik esindaja on teadlik alaealise või piiratud teovõimega isiku kinnipidamisest, ja selgitus, millal ja kuidas teda teavitati. Juhul, kui teavitamine ei olnud võimalik, siis põhjus, miks seaduslikku esindajat ei teavitatud; kinnipeetud isikult turvakontrolli käigus hoiulevõetud esemete loetelu, hoiulevõtmise põhjus ja koht, kus hoiulevõetud esemed asuvad; kinnipeetud isiku avaldused ja taotlused; protokolli koostanud ametniku allkiri; isiku vabastamise kuupäev ja kellaaeg; isiku vabastanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; märge selle kohta, kas isik tuvastati dokumendi alusel, sealhulgas märgitakse isikut tõendava dokumendi nimetus, number, selle väljaandnud asutuse nimetus ja väljaandmise aeg, või isiku enda või tunnistajate ütluste põhjal või muul viisil; vahetu sunni kohaldamine, vahetu sunni vahend, selle kasutamise põhjus ja kestus ning selle ametniku andmed, kes vahetut sundi kohaldas.",
+      "estleg:summary": {
+        "@value": "Isiku kinnipidamise protokollis dokumenteeritakse vähemalt järgmised andmed: 1 1) asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 2 2) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; 3 3) kinnipidamise õiguslik ja faktiline alus ja kaalutlused; 4 4) kinnipidamise kuupäev, kellaaeg ja koht; 5 5) kinnipeetud isikule tema õiguste selgitamine; 6 6) teave selle kohta, kas alaealise või piiratud teovõimega isiku…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Isiku kinnipidamise protokollis dokumenteeritakse vähemalt järgmised andmed: 1 1) asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 2 2) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; 3 3) kinnipidamise õiguslik ja faktiline alus ja kaalutlused; 4 4) kinnipidamise kuupäev, kellaaeg ja koht; 5 5) kinnipeetud isikule tema õiguste selgitamine; 6 6) teave selle kohta, kas alaealise või piiratud teovõimega isiku seaduslik esindaja on teadlik alaealise või piiratud teovõimega isiku kinnipidamisest, ja selgitus, millal ja kuidas teda teavitati. Juhul, kui teavitamine ei olnud võimalik, siis põhjus, miks seaduslikku esindajat ei teavitatud; 7 7) kinnipeetud isikult turvakontrolli käigus hoiulevõetud esemete loetelu, hoiulevõtmise põhjus ja koht, kus hoiulevõetud esemed asuvad; 8 8) kinnipeetud isiku avaldused ja taotlused; 9 9) protokolli koostanud ametniku allkiri; 10 10) isiku vabastamise kuupäev ja kellaaeg; 11 11) isiku vabastanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 12 12) märge selle kohta, kas isik tuvastati dokumendi alusel, sealhulgas märgitakse isikut tõendava dokumendi nimetus, number, selle väljaandnud asutuse nimetus ja väljaandmise aeg, või isiku enda või tunnistajate ütluste põhjal või muul viisil; 13 13) vahetu sunni kohaldamine, vahetu sunni vahend, selle kasutamise põhjus ja kestus ning selle ametniku andmed, kes vahetut sundi kohaldas.",
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_PublicBody"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1024829_Par_2_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1024829_Par_2_v1024829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1024829_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isiku kinnipidamise protokollis dokumenteeritakse vähemalt järgmised andmed: 1) asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 2) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg ja -koht; 3) kinnipidamise õiguslik ja faktiline alus ja kaalutlused; 4) kinnipidamise kuupäev, kellaaeg ja koht; 5) kinnipeetud isikule tema õiguste selgitamine; 6) teave selle kohta, kas alaealise või piiratud teovõimega isiku seaduslik esindaja on teadlik alaealise või piiratud teovõimega isiku kinnipidamisest, ja selgitus, millal ja kuidas teda teavitati. Juhul, kui teavitamine ei olnud võimalik, siis põhjus, miks seaduslikku esindajat ei teavitatud; 7) kinnipeetud isikult turvakontrolli käigus hoiulevõetud esemete loetelu, hoiulevõtmise põhjus ja koht, kus hoiulevõetud esemed asuvad; 8) kinnipeetud isiku avaldused ja taotlused; 9) protokolli koostanud ametniku allkiri; 10) isiku vabastamise kuupäev ja kellaaeg; 11) isiku vabastanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 12) märge selle kohta, kas isik tuvastati dokumendi alusel, sealhulgas märgitakse isikut tõendava dokumendi nimetus, number, selle väljaandnud asutuse nimetus ja väljaandmise aeg, või isiku enda või tunnistajate ütluste põhjal või muul viisil; 13) vahetu sunni kohaldamine, vahetu sunni vahend, selle kasutamise põhjus ja kestus ning selle ametniku andmed, kes vahetut sundi kohaldas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1024829_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1024829_Par_3",
@@ -213,17 +390,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Andmekoosseis hädaohus oleva lapse ohututesse tingimustesse toimetamise protokollis",
+      "rdfs:label": {
+        "@value": "§ 3. Andmekoosseis hädaohus oleva lapse ohututesse tingimustesse toimetamise protokollis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku kinnipidamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1024829_Map"
       },
-      "estleg:summary": "1 (1) Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokollis, mille näidisvorm on esitatud määruse lisas 3, dokumenteeritakse vähemalt § 2 punktides 1 ja 3 – 9 nimetatud andmed. Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokollis, mille näidisvorm on esitatud määruse lisas 3, dokumenteeritakse vähemalt § 2 punktides 1 ja 3 – 9 nimetatud andmed. 2 (2) Lisaks lõikes 1 nimetatud andmetele dokumenteeritakse protokollis vähemalt järgmised andmed: 1 1) andmete olemasol",
-      "estleg:legalText": "1 (1) Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokollis, mille näidisvorm on esitatud määruse lisas 3, dokumenteeritakse vähemalt § 2 punktides 1 ja 3 – 9 nimetatud andmed. Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokollis, mille näidisvorm on esitatud määruse lisas 3, dokumenteeritakse vähemalt § 2 punktides 1 ja 3 – 9 nimetatud andmed. 2 (2) Lisaks lõikes 1 nimetatud andmetele dokumenteeritakse protokollis vähemalt järgmised andmed: 1 1) andmete olemasolul lapse seadusliku esindaja ees- ja perekonnanimi ning tema kontaktandmed; 2 2) lapse tema ohutust tagavale isikule üleandmise kuupäev ja kellaaeg; 3 3) lapse ohutust tagava isiku, kellele laps üle anti, ees- ja perekonnanimi, ametikoht, asutuse nimetus või suhe kinnipeetud lapsega, kontaktandmed ning allkiri; 4 4) kohaliku omavalitsuse üksuse lastekaitsetöötaja kontaktandmed või kui last ei antud üle temale, siis vastava struktuuriüksuse kontaktandmed. Lisaks lõikes 1 nimetatud andmetele dokumenteeritakse protokollis vähemalt järgmised andmed: andmete olemasolul lapse seadusliku esindaja ees- ja perekonnanimi ning tema kontaktandmed; lapse tema ohutust tagavale isikule üleandmise kuupäev ja kellaaeg; lapse ohutust tagava isiku, kellele laps üle anti, ees- ja perekonnanimi, ametikoht, asutuse nimetus või suhe kinnipeetud lapsega, kontaktandmed ning allkiri; kohaliku omavalitsuse üksuse lastekaitsetöötaja kontaktandmed või kui last ei antud üle temale, siis vastava struktuuriüksuse kontaktandmed. 3 (3) Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokolli koopia antakse lapse ohutust tagavale isikule ja edastatakse esimesel võimalusel kohaliku omavalitsuse üksuse lastekaitsetöötajale. Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokolli koopia antakse lapse ohutust tagavale isikule ja edastatakse esimesel võimalusel kohaliku omavalitsuse üksuse lastekaitsetöötajale.",
+      "estleg:summary": {
+        "@value": "1 (1) Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokollis, mille näidisvorm on esitatud määruse lisas 3, dokumenteeritakse vähemalt § 2 punktides 1 ja 3 – 9 nimetatud andmed. 2 (2) Lisaks lõikes 1 nimetatud andmetele dokumenteeritakse protokollis vähemalt järgmised andmed: 1 1) andmete olemasolul lapse seadusliku esindaja ees- ja perekonnanimi ning tema kontaktandmed; 2 2) lapse tema ohutust tagavale isikule üleandmise kuupäev ja kellaaeg; 3 3) lapse ohutust tagava isiku,…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokollis, mille näidisvorm on esitatud määruse lisas 3, dokumenteeritakse vähemalt § 2 punktides 1 ja 3 – 9 nimetatud andmed. 2 (2) Lisaks lõikes 1 nimetatud andmetele dokumenteeritakse protokollis vähemalt järgmised andmed: 1 1) andmete olemasolul lapse seadusliku esindaja ees- ja perekonnanimi ning tema kontaktandmed; 2 2) lapse tema ohutust tagavale isikule üleandmise kuupäev ja kellaaeg; 3 3) lapse ohutust tagava isiku, kellele laps üle anti, ees- ja perekonnanimi, ametikoht, asutuse nimetus või suhe kinnipeetud lapsega, kontaktandmed ning allkiri; 4 4) kohaliku omavalitsuse üksuse lastekaitsetöötaja kontaktandmed või kui last ei antud üle temale, siis vastava struktuuriüksuse kontaktandmed. 3 (3) Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokolli koopia antakse lapse ohutust tagavale isikule ja edastatakse esimesel võimalusel kohaliku omavalitsuse üksuse lastekaitsetöötajale.",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
@@ -232,11 +412,95 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1024829_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1024829_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1024829_Par_3_Lg_3"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1024829_Par_3_v1024829"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1024829_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokollis, mille näidisvorm on esitatud määruse lisas 3, dokumenteeritakse vähemalt § 2 punktides 1 ja 3 – 9 nimetatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1024829_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1024829_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lisaks lõikes 1 nimetatud andmetele dokumenteeritakse protokollis vähemalt järgmised andmed: 1) andmete olemasolul lapse seadusliku esindaja ees- ja perekonnanimi ning tema kontaktandmed; 2) lapse tema ohutust tagavale isikule üleandmise kuupäev ja kellaaeg; 3) lapse ohutust tagava isiku, kellele laps üle anti, ees- ja perekonnanimi, ametikoht, asutuse nimetus või suhe kinnipeetud lapsega, kontaktandmed ning allkiri; 4) kohaliku omavalitsuse üksuse lastekaitsetöötaja kontaktandmed või kui last ei antud üle temale, siis vastava struktuuriüksuse kontaktandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1024829_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1024829_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Hädaohus oleva lapse ohututesse tingimustesse toimetamise protokolli koopia antakse lapse ohutust tagavale isikule ja edastatakse esimesel võimalusel kohaliku omavalitsuse üksuse lastekaitsetöötajale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1024829_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
@@ -250,30 +514,78 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Andmekoosseis isiku kinnipidamise õiendis",
+      "rdfs:label": {
+        "@value": "§ 4. Andmekoosseis isiku kinnipidamise õiendis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku kinnipidamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1024829_Map"
       },
-      "estleg:summary": "Isiku kinnipidamise õiendis dokumenteeritakse vähemalt järgmised andmed: 1 1) asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 2 2) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg, sünnikoht või identifitseerimisvahendi number; 3 3) kinnipeetud isikule tema õiguste, sealhulgas õiguse nõuda kinnipidamise protokollimist, selgitamine; 4 4) kinnipidamise õiguslik ja faktiline alus ning põhjendus, miks ei olnud võimalik is",
-      "estleg:legalText": "Isiku kinnipidamise õiendis dokumenteeritakse vähemalt järgmised andmed: 1 1) asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 2 2) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg, sünnikoht või identifitseerimisvahendi number; 3 3) kinnipeetud isikule tema õiguste, sealhulgas õiguse nõuda kinnipidamise protokollimist, selgitamine; 4 4) kinnipidamise õiguslik ja faktiline alus ning põhjendus, miks ei olnud võimalik isiku kinnipidamist protokollida; 5 5) kinnipidamise kuupäev ja kellaaeg (identifitseerimisvahendi kasutamisel ei ole kohustuslik, kui kinnipidamise aeg on kantud identifitseerimisvahendile) ja kinnipidamise koht; 6 6) kinnipeetud isikult turvakontrolli käigus ära võetud esemete loetelu ning hoiulevõtmise põhjus; 7 7) õiendi koostanud ametniku allkiri; 8 8) isiku vabastamise kuupäev ja kellaaeg (kui isiku kinnipidamise kohta koostatakse hiljem protokoll, märgitakse vabastamise aeg protokolli); 9 9) isiku vabastanud ametniku ees- ja perekonnanimi ning allkiri; 10 10) vahetu sunni kohaldamine ja vahetu sunni vahend. Isiku kinnipidamise õiendis dokumenteeritakse vähemalt järgmised andmed: asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg, sünnikoht või identifitseerimisvahendi number; kinnipeetud isikule tema õiguste, sealhulgas õiguse nõuda kinnipidamise protokollimist, selgitamine; kinnipidamise õiguslik ja faktiline alus ning põhjendus, miks ei olnud võimalik isiku kinnipidamist protokollida; kinnipidamise kuupäev ja kellaaeg (identifitseerimisvahendi kasutamisel ei ole kohustuslik, kui kinnipidamise aeg on kantud identifitseerimisvahendile) ja kinnipidamise koht; kinnipeetud isikult turvakontrolli käigus ära võetud esemete loetelu ning hoiulevõtmise põhjus; õiendi koostanud ametniku allkiri; isiku vabastamise kuupäev ja kellaaeg (kui isiku kinnipidamise kohta koostatakse hiljem protokoll, märgitakse vabastamise aeg protokolli); isiku vabastanud ametniku ees- ja perekonnanimi ning allkiri; vahetu sunni kohaldamine ja vahetu sunni vahend.",
+      "estleg:summary": {
+        "@value": "Isiku kinnipidamise õiendis dokumenteeritakse vähemalt järgmised andmed: 1 1) asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 2 2) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg, sünnikoht või identifitseerimisvahendi number; 3 3) kinnipeetud isikule tema õiguste, sealhulgas õiguse nõuda kinnipidamise protokollimist, selgitamine; 4 4) kinnipidamise õiguslik ja faktiline alus ning põhjendus, miks ei olnud võimalik…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Isiku kinnipidamise õiendis dokumenteeritakse vähemalt järgmised andmed: 1 1) asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 2 2) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg, sünnikoht või identifitseerimisvahendi number; 3 3) kinnipeetud isikule tema õiguste, sealhulgas õiguse nõuda kinnipidamise protokollimist, selgitamine; 4 4) kinnipidamise õiguslik ja faktiline alus ning põhjendus, miks ei olnud võimalik isiku kinnipidamist protokollida; 5 5) kinnipidamise kuupäev ja kellaaeg (identifitseerimisvahendi kasutamisel ei ole kohustuslik, kui kinnipidamise aeg on kantud identifitseerimisvahendile) ja kinnipidamise koht; 6 6) kinnipeetud isikult turvakontrolli käigus ära võetud esemete loetelu ning hoiulevõtmise põhjus; 7 7) õiendi koostanud ametniku allkiri; 8 8) isiku vabastamise kuupäev ja kellaaeg (kui isiku kinnipidamise kohta koostatakse hiljem protokoll, märgitakse vabastamise aeg protokolli); 9 9) isiku vabastanud ametniku ees- ja perekonnanimi ning allkiri; 10 10) vahetu sunni kohaldamine ja vahetu sunni vahend.",
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_PublicBody"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1024829_Par_4_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1024829_Par_4_v1024829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1024829_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isiku kinnipidamise õiendis dokumenteeritakse vähemalt järgmised andmed: 1) asutuse nimetus ja isiku kinni pidanud ametniku ametinimetus, ees- ja perekonnanimi ning allkiri; 2) kinnipeetud isiku ees- ja perekonnanimi, isikukood, selle puudumisel sünniaeg, sünnikoht või identifitseerimisvahendi number; 3) kinnipeetud isikule tema õiguste, sealhulgas õiguse nõuda kinnipidamise protokollimist, selgitamine; 4) kinnipidamise õiguslik ja faktiline alus ning põhjendus, miks ei olnud võimalik isiku kinnipidamist protokollida; 5) kinnipidamise kuupäev ja kellaaeg (identifitseerimisvahendi kasutamisel ei ole kohustuslik, kui kinnipidamise aeg on kantud identifitseerimisvahendile) ja kinnipidamise koht; 6) kinnipeetud isikult turvakontrolli käigus ära võetud esemete loetelu ning hoiulevõtmise põhjus; 7) õiendi koostanud ametniku allkiri; 8) isiku vabastamise kuupäev ja kellaaeg (kui isiku kinnipidamise kohta koostatakse hiljem protokoll, märgitakse vabastamise aeg protokolli); 9) isiku vabastanud ametniku ees- ja perekonnanimi ning allkiri; 10) vahetu sunni kohaldamine ja vahetu sunni vahend.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1024829_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1024829_Par_5",
@@ -282,13 +594,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Andmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 5. Andmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku kinnipidamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1024829_Map"
       },
-      "estleg:summary": "Isiku kinnipidamise protokolli ja õiendit säilitatakse üks aasta nende koostamisest arvates.",
-      "estleg:legalText": "Isiku kinnipidamise protokolli ja õiendit säilitatakse üks aasta nende koostamisest arvates. Isiku kinnipidamise protokolli ja õiendit säilitatakse üks aasta nende koostamisest arvates.",
+      "estleg:summary": {
+        "@value": "Isiku kinnipidamise protokolli ja õiendit säilitatakse üks aasta nende koostamisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Isiku kinnipidamise protokolli ja õiendit säilitatakse üks aasta nende koostamisest arvates.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -298,11 +616,43 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1024829_Par_5_Lg_1"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_331901_Par_6"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1024829_Par_5_v1024829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1024829_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isiku kinnipidamise protokolli ja õiendit säilitatakse üks aasta nende koostamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1024829_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1024829_Par_6",
@@ -311,18 +661,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 6. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku kinnipidamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1024829_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. juulil 2014. a.",
-      "estleg:legalText": "Määrus jõustub 1. juulil 2014. a. Määrus jõustub 1. juulil 2014. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. juulil 2014. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. juulil 2014. a.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1024829_Par_6_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1024829_Par_6_v1024829"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1024829_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. juulil 2014. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1024829_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1024829_Map_1",

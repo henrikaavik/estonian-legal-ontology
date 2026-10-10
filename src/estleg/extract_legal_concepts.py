@@ -33,6 +33,7 @@ from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     CONTEXT,
     act_root_node,
+    combined_target_contains_personal_data,
     mint_act_iri,
     iter_peep_files,
     jsonld_text,
@@ -43,6 +44,7 @@ from estleg.estleg_common import (
 from estleg.estleg_common import (
     sanitize_id as _shared_sanitize_id,
 )
+from estleg.skos_concept_scheme_609 import transform_node as bind_concept_to_scheme
 from estleg.kov_pipeline_coverage import (
     PINNED_RUN_TIMESTAMP,
     CoverageReport,
@@ -1302,11 +1304,26 @@ def _sync_total_concepts(graph: list) -> None:
     }
 
 
+def bind_concepts_to_scheme(graph: list) -> int:
+    """Bind every concept node into ``estleg:LegalConceptScheme`` (#609).
+
+    Adds ``skos:Concept`` to ``@type`` and ``skos:inScheme`` on every
+    ``estleg:Concept`` / ``estleg:LegalConcept`` node, plus
+    ``skos:topConceptOf`` on canonical ``estleg:Concept`` nodes. These edges
+    used to be stamped only by the one-off ``skos_concept_scheme_609`` pass,
+    so a plain re-extraction dropped them. Returns the number of nodes changed.
+    """
+    return sum(
+        1 for node in graph if isinstance(node, dict) and bind_concept_to_scheme(node)
+    )
+
+
 def scrub_concept_graph(graph: list) -> dict[str, int]:
     """Apply concept hygiene in place.
 
     #699 closeMatch strip, then #458 kehtetu strip / plural fold / mojibake
-    fold, then the #699 orthographic-variant fold.
+    fold, then the #699 orthographic-variant fold, then the #609 SKOS scheme
+    binding on whatever concept nodes survive.
     """
     counts = {
         "close_match_removed": strip_close_match(graph),
@@ -1315,6 +1332,7 @@ def scrub_concept_graph(graph: list) -> dict[str, int]:
         "mojibake_folded": fold_mojibake_concept_pairs(graph),
         "orthographic_folded": fold_orthographic_variants(graph),
     }
+    counts["scheme_bound"] = bind_concepts_to_scheme(graph)
     _sync_total_concepts(graph)
     return counts
 
@@ -1786,7 +1804,8 @@ def main(argv: list[str] | None = None):
             f"  #458 hygiene: removed {_hygiene['kehtetu_removed']} kehtetu "
             f"concept(s), folded {_hygiene['plurals_folded']} plural(s), "
             f"{_hygiene['mojibake_folded']} mojibake pair(s), "
-            f"{_hygiene['orthographic_folded']} orthographic variant(s)"
+            f"{_hygiene['orthographic_folded']} orthographic variant(s), "
+            f"bound {_hygiene['scheme_bound']} concept(s) into the scheme"
         )
 
     # Save combined concepts file
@@ -1794,6 +1813,9 @@ def main(argv: list[str] | None = None):
     stamp_combined_dataset_head(
         combined_doc,
         label="Estonian Legal Ontology — concepts combined",
+        contains_personal_data=combined_target_contains_personal_data(
+            "concepts/concepts_combined.jsonld"
+        ),
     )
     combined_path = CONCEPTS_DIR / "concepts_combined.jsonld"
     save_json(combined_path, combined_doc)

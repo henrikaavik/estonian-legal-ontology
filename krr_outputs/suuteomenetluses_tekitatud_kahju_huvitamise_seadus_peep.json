@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:SKHS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Süüteomenetluses tekitatud kahju hüvitamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Süüteomenetluses tekitatud kahju hüvitamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Compensation for Damage Caused in Offence Proceedings Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/111032023012.xml"
+        "@id": "https://www.riigiteataja.ee/akt/111032023012"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/111032023012/xml"
+      },
+      "estleg:globalId": "111032023012",
+      "eli:id_local": "111032023012",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "1026647",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "ae03f450a08c167823f1eb0fe7228b525d6a17e8dea6abe4670416525e7bf362",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-11-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/530102023002"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/530102023002"
       },
       "estleg:references": [
@@ -74,9 +80,68 @@
           "@id": "estleg:KRIMIN_2_Par_207"
         }
       ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/573"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/573"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/68"
+        }
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2015-05-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-11-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2014-11-20",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maakohus"
+        },
+        {
+          "@id": "estleg:Institution_kohus"
+        },
+        {
+          "@id": "estleg:Institution_riigikohus"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RIIGIKOGU14_0404"
+        }
+      ],
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_SKHS_f519ae15ce"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:KRIMIN_2_Par_206_Lg_1"
+        },
+        {
+          "@id": "estleg:SKHS_Map"
         },
         {
           "@id": "estleg:SKHS_Par_2_Lg_4"
@@ -138,49 +203,37 @@
         {
           "@id": "estleg:SKHS_Par_14_Lg_4"
         }
-      ],
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/523"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/573"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        }
-      ],
-      "eli:is_about": [
-        {
-          "@id": "http://eurovoc.europa.eu/523"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/573"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/68"
-        }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohus"
-        },
-        {
-          "@id": "estleg:Institution_riigikohus"
-        }
-      ],
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RIIGIKOGU14_0404"
-        }
       ]
+    },
+    {
+      "@id": "estleg:Cluster_SKHS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–3 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:SKHS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:SKHS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Süüteomenetluses tekitatud kahju hüvitamise seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Süüteomenetluses tekitatud kahju hüvitamise seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_SKHS_1"
@@ -203,26 +256,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_SKHS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–3 Üldsätted",
-      "skos:prefLabel": "§1–3 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:SKHS_TopicScheme"
-      },
-      "estleg:provisionCount": 3
-    },
-    {
       "@id": "estleg:Chapter_SKHS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "1. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
@@ -242,8 +284,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§4–8 Kahju hüvitamise alused",
-      "skos:prefLabel": "§4–8 Kahju hüvitamise alused",
+      "rdfs:label": {
+        "@value": "§4–8 Kahju hüvitamise alused",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§4–8 Kahju hüvitamise alused",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SKHS_TopicScheme"
       },
@@ -255,7 +303,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Kahju hüvitamise alused",
+      "rdfs:label": {
+        "@value": "2. peatükk – Kahju hüvitamise alused",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
@@ -275,8 +326,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§9–11 Kahju hüvitamise ulatuse erisused",
-      "skos:prefLabel": "§9–11 Kahju hüvitamise ulatuse erisused",
+      "rdfs:label": {
+        "@value": "§9–11 Kahju hüvitamise ulatuse erisused",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§9–11 Kahju hüvitamise ulatuse erisused",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SKHS_TopicScheme"
       },
@@ -288,7 +345,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – Kahju hüvitamise ulatuse erisused",
+      "rdfs:label": {
+        "@value": "3. peatükk – Kahju hüvitamise ulatuse erisused",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
@@ -308,12 +368,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "Kahju hüvitamise menetlus",
-      "skos:prefLabel": "Kahju hüvitamise menetlus",
+      "rdfs:label": {
+        "@value": "Kahju hüvitamise menetlus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Kahju hüvitamise menetlus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SKHS_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 10
     },
     {
       "@id": "estleg:Division_SKHS_4_1",
@@ -321,7 +387,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – Kahju hüvitamise taotlemine",
+      "rdfs:label": {
+        "@value": "1. jagu – Kahju hüvitamise taotlemine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SKHS_4"
       }
@@ -332,7 +401,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Kahju hüvitamise kord kriminaalasja kohtueelses menetluses ja väärteoasja kohtuvälises menetluses",
+      "rdfs:label": {
+        "@value": "2. jagu – Kahju hüvitamise kord kriminaalasja kohtueelses menetluses ja väärteoasja kohtuvälises menetluses",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SKHS_4"
       }
@@ -343,7 +415,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "3. jagu – Kahju hüvitamise kord kohtumenetluses",
+      "rdfs:label": {
+        "@value": "3. jagu – Kahju hüvitamise kord kohtumenetluses",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SKHS_4"
       }
@@ -354,7 +429,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – Kahju hüvitamise menetlus",
+      "rdfs:label": {
+        "@value": "4. peatükk – Kahju hüvitamise menetlus",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
@@ -385,8 +463,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§22–22 Kahjuhüvitis uuendatud kriminaalmenetluses",
-      "skos:prefLabel": "§22–22 Kahjuhüvitis uuendatud kriminaalmenetluses",
+      "rdfs:label": {
+        "@value": "§22–22 Kahjuhüvitis uuendatud kriminaalmenetluses",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§22–22 Kahjuhüvitis uuendatud kriminaalmenetluses",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SKHS_TopicScheme"
       },
@@ -398,7 +482,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – Kahjuhüvitis uuendatud kriminaalmenetluses",
+      "rdfs:label": {
+        "@value": "5. peatükk – Kahjuhüvitis uuendatud kriminaalmenetluses",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
@@ -418,8 +505,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§23–29 Rakendussätted",
-      "skos:prefLabel": "§23–29 Rakendussätted",
+      "rdfs:label": {
+        "@value": "§23–29 Rakendussätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§23–29 Rakendussätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SKHS_TopicScheme"
       },
@@ -431,7 +524,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – Rakendussätted",
+      "rdfs:label": {
+        "@value": "6. peatükk – Rakendussätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
@@ -451,12 +547,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus sätestab menetleja poolt süüteomenetluses tekitatud kahju hüvitamise alused, ulatuse ja korra. (2) Kui seadusega pole sätestatud teisiti, kohaldatakse süüteomenetluses tekitatud kahju hüvitamisel lisaks käesolevale seadusele ka eraõiguse kahju hüvitamise sätteid, arvestades süüteomenetluse erisusi. (3) Riigivastutuse seadust kohaldatakse süüteomenetluses tekitatud kahju hüvitamisele üksnes käesolevas seaduses sätestatud juhul.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus sätestab menetleja poolt süüteomenetluses tekitatud kahju hüvitamise alused, ulatuse ja korra. (2) Kui seadusega pole sätestatud teisiti, kohaldatakse süüteomenetluses tekitatud kahju hüvitamisel lisaks käesolevale seadusele ka eraõiguse kahju hüvitamise sätteid, arvestades süüteomenetluse erisusi. (3) Riigivastutuse seadust kohaldatakse süüteomenetluses tekitatud kahju hüvitamisele üksnes käesolevas seaduses sätestatud juhul.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus sätestab menetleja poolt süüteomenetluses tekitatud kahju hüvitamise alused, ulatuse ja korra. (2) Kui seadusega pole sätestatud teisiti, kohaldatakse süüteomenetluses tekitatud kahju hüvitamisel lisaks käesolevale seadusele ka eraõiguse kahju hüvitamise sätteid, arvestades süüteomenetluse erisusi. (3) Riigivastutuse seadust kohaldatakse süüteomenetluses tekitatud kahju hüvitamisele üksnes käesolevas seaduses sätestatud juhul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_1"
@@ -527,13 +629,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kahju hüvitama kohustatud isik",
+      "rdfs:label": {
+        "@value": "§ 2. Kahju hüvitama kohustatud isik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Menetleja poolt kriminaalmenetluses ja väärteomenetluses tekitatud kahju hüvitab Eesti Vabariik Rahandusministeeriumi kaudu. (2) Kui väärteomenetluse kohtuväline menetleja on valla- või linnavalitsus, hüvitab menetleja poolt väärteomenetluses tekitatud kahju kohalik omavalitsus. (3) Menetleja tekitatud kahjuks loetakse riigivastutuse seaduse § 12 lõikes 2 nimetatud kahju. (4) Kui kahju põhjustanud meedet on kohaldatud rahvusvahelises kriminaalmenetlusalases koostöös, loetakse menetleja",
-      "estleg:legalText": "(1) Menetleja poolt kriminaalmenetluses ja väärteomenetluses tekitatud kahju hüvitab Eesti Vabariik Rahandusministeeriumi kaudu. (2) Kui väärteomenetluse kohtuväline menetleja on valla- või linnavalitsus, hüvitab menetleja poolt väärteomenetluses tekitatud kahju kohalik omavalitsus. (3) Menetleja tekitatud kahjuks loetakse riigivastutuse seaduse § 12 lõikes 2 nimetatud kahju. (4) Kui kahju põhjustanud meedet on kohaldatud rahvusvahelises kriminaalmenetlusalases koostöös, loetakse menetleja tekitatud kahjuks: käesoleva seaduse § 5 või 6 kohane süüteomenetluses tekitatud kahju, kui Eesti Vabariik on taotlev riik; käesoleva seaduse § 7 kohane süüteomenetluses tekitatud kahju, kui Eesti Vabariik on täitev riik.",
+      "estleg:summary": {
+        "@value": "(1) Menetleja poolt kriminaalmenetluses ja väärteomenetluses tekitatud kahju hüvitab Eesti Vabariik Rahandusministeeriumi kaudu. (2) Kui väärteomenetluse kohtuväline menetleja on valla- või linnavalitsus, hüvitab menetleja poolt väärteomenetluses tekitatud kahju kohalik omavalitsus. (3) Menetleja tekitatud kahjuks loetakse riigivastutuse seaduse § 12 lõikes 2 nimetatud kahju. (4) Kui kahju põhjustanud meedet on kohaldatud rahvusvahelises kriminaalmenetlusalases koostöös, loetakse menetleja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Menetleja poolt kriminaalmenetluses ja väärteomenetluses tekitatud kahju hüvitab Eesti Vabariik Rahandusministeeriumi kaudu. (2) Kui väärteomenetluse kohtuväline menetleja on valla- või linnavalitsus, hüvitab menetleja poolt väärteomenetluses tekitatud kahju kohalik omavalitsus. (3) Menetleja tekitatud kahjuks loetakse riigivastutuse seaduse § 12 lõikes 2 nimetatud kahju. (4) Kui kahju põhjustanud meedet on kohaldatud rahvusvahelises kriminaalmenetlusalases koostöös, loetakse menetleja tekitatud kahjuks: 1) käesoleva seaduse § 5 või 6 kohane süüteomenetluses tekitatud kahju, kui Eesti Vabariik on taotlev riik; 2) käesoleva seaduse § 7 kohane süüteomenetluses tekitatud kahju, kui Eesti Vabariik on täitev riik.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_1"
       },
@@ -556,9 +664,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -571,17 +676,17 @@
           "@id": "estleg:RVastS_Par_12_Lg_2"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:SKHS_Par_2_v120112014001"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_rahandusministeerium"
         },
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:SKHS_Par_2_v120112014001"
         }
       ]
     },
@@ -655,11 +760,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kui kahju põhjustanud meedet on kohaldatud rahvusvahelises kriminaalmenetlusalases koostöös, loetakse menetleja tekitatud kahjuks: käesoleva seaduse § 5 või 6 kohane süüteomenetluses tekitatud kahju, kui Eesti Vabariik on taotlev riik; käesoleva seaduse § 7 kohane süüteomenetluses tekitatud kahju, kui Eesti Vabariik on täitev riik.",
+      "estleg:legalText": "(4) Kui kahju põhjustanud meedet on kohaldatud rahvusvahelises kriminaalmenetlusalases koostöös, loetakse menetleja tekitatud kahjuks: 1) käesoleva seaduse § 5 või 6 kohane süüteomenetluses tekitatud kahju, kui Eesti Vabariik on taotlev riik; 2) käesoleva seaduse § 7 kohane süüteomenetluses tekitatud kahju, kui Eesti Vabariik on täitev riik.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_2"
       },
       "rdfs:label": "§ 2 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
@@ -676,12 +785,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kahju hüvitamine kolmandatele isikutele",
+      "rdfs:label": {
+        "@value": "§ 3. Kahju hüvitamine kolmandatele isikutele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "Kahju hüvitamine kolmandatele isikutele toimub riigivastutuse seaduse § 10 kohaselt.",
+      "estleg:summary": {
+        "@value": "Kahju hüvitamine kolmandatele isikutele toimub riigivastutuse seaduse § 10 kohaselt.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kahju hüvitamine kolmandatele isikutele toimub riigivastutuse seaduse § 10 kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_1"
@@ -711,10 +826,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kahju hüvitamine kolmandatele isikutele toimub riigivastutuse seaduse § 10 kohaselt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kahju hüvitamine kolmandatele isikutele toimub riigivastutuse seaduse § 10 kohaselt.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:RVastS_Par_10"
@@ -728,12 +845,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Õigus nõuda süüteomenetluses tekitatud kahju hüvitamist",
+      "rdfs:label": {
+        "@value": "§ 4. Õigus nõuda süüteomenetluses tekitatud kahju hüvitamist",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "Isik võib nõuda talle menetleja poolt süüteomenetluses tekitatud kahju hüvitamist käesolevas seaduses sätestatud alustel, ulatuses ja korras.",
+      "estleg:summary": {
+        "@value": "Isik võib nõuda talle menetleja poolt süüteomenetluses tekitatud kahju hüvitamist käesolevas seaduses sätestatud alustel, ulatuses ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Isik võib nõuda talle menetleja poolt süüteomenetluses tekitatud kahju hüvitamist käesolevas seaduses sätestatud alustel, ulatuses ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_2"
@@ -751,20 +874,12 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:VPTS_Par_176"
-        },
-        {
-          "@id": "estleg:VordKS_Par_24"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -778,13 +893,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Isik võib nõuda talle menetleja poolt süüteomenetluses tekitatud kahju hüvitamist käesolevas seaduses sätestatud alustel, ulatuses ja korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isik võib nõuda talle menetleja poolt süüteomenetluses tekitatud kahju hüvitamist käesolevas seaduses sätestatud alustel, ulatuses ja korras.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 4 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -793,6 +907,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -802,13 +919,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Kahju hüvitamine sõltuvalt süüteomenetluse lõpptulemusest",
+      "rdfs:label": {
+        "@value": "§ 5. Kahju hüvitamine sõltuvalt süüteomenetluse lõpptulemusest",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kui isik mõistetakse õigeks või tema suhtes lõpetatakse kriminaalmenetlus kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1, 2 või 5 alusel, võib ta nõuda kahju hüvitamist juhul, kui see tekitati: vahistamisega; kahtlustatavana kinnipidamisega; elukohast lahkumise keeluga; ametist kõrvaldamisega; vara arestimise või äravõtmisega; ebamõistliku menetlusajaga. (2) Kui isiku suhtes lõpetatakse väärteomenetlus väärteomenetluse seadustiku § 29 lõike 1 punkti 1, 2, 3, 5 või 6 alusel, võib ta",
-      "estleg:legalText": "(1) Kui isik mõistetakse õigeks või tema suhtes lõpetatakse kriminaalmenetlus kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1, 2 või 5 alusel, võib ta nõuda kahju hüvitamist juhul, kui see tekitati: vahistamisega; kahtlustatavana kinnipidamisega; elukohast lahkumise keeluga; ametist kõrvaldamisega; vara arestimise või äravõtmisega; ebamõistliku menetlusajaga. (2) Kui isiku suhtes lõpetatakse väärteomenetlus väärteomenetluse seadustiku § 29 lõike 1 punkti 1, 2, 3, 5 või 6 alusel, võib ta nõuda kahju hüvitamist juhul, kui see tekitati: tema kinnipidamisega väärteomenetluses; ebamõistliku menetlusajaga; vara arestimise või äravõtmisega. (3) Kui isikule tekitati kriminaalmenetluses kahju käesoleva paragrahvi lõike 1 tähenduses ja pärast kriminaalmenetluse lõpetamist kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1 alusel alustati tema suhtes sama teoga seoses väärteomenetlust, mis lõpetati käesoleva paragrahvi lõikes 2 nimetatud alusel, on isikul õigus nõuda temale tekitatud kahju hüvitamist. Kui isikule tekitati kahju käesoleva paragrahvi lõike 2 tähenduses ja pärast väärteomenetluse lõpetamist väärteomenetluse seadustiku § 29 lõike 1 punkti 4 alusel alustati tema suhtes sama teoga seoses kriminaalmenetlust, mis lõpetati käesoleva paragrahvi lõikes 1 nimetatud alusel, on isikul õigus nõuda temale tekitatud kahju hüvitamist. (4) Süüdimõistva otsuse korral on süüdistataval või menetlusalusel isikul õigus nõuda käesoleva paragrahvi lõikes 1 või 2 nimetatud meetmega tekitatud kahju hüvitamist juhul, kui tema suhtes kohaldatud meede on oluliselt koormavam võrreldes talle mõistetud või määratud karistusega. Ka on isikul süüdimõistva otsuse korral õigus nõuda ebamõistliku menetlusajaga tekitatud kahju hüvitamist juhul, kui tema karistust mõistliku menetlusaja ületamisest hoolimata ei kergendata. (5) Kui vara arestides tekitati kahju kolmandale isikule karistusseadustiku 7. peatüki tähenduses, võib ta nõuda kahju hüvitamist vara konfiskeerimata jätmise korral, välja arvatud juhul, kui vara jäetakse konfiskeerimata karistusseadustiku § 831 lõike 3 alusel. (6) Kui vara võeti ära isikult, kes ei olnud kriminaalmenetluses kahtlustatav või süüdistatav või väärteomenetluses menetlusalune isik, on tal kahju tekkimise korral õigus nõuda kahju hüvitamist juhul, kui süüteomenetlus lõpeb käesoleva paragrahvi lõikes 1 või 2 nimetatud alusel.",
+      "estleg:summary": {
+        "@value": "(1) Kui isik mõistetakse õigeks või tema suhtes lõpetatakse kriminaalmenetlus kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1, 2 või 5 alusel, võib ta nõuda kahju hüvitamist juhul, kui see tekitati: 1) vahistamisega; 2) kahtlustatavana kinnipidamisega; 3) elukohast lahkumise keeluga; 4) ametist kõrvaldamisega; 5) vara arestimise või äravõtmisega; 6) ebamõistliku menetlusajaga. (2) Kui isiku suhtes lõpetatakse väärteomenetlus väärteomenetluse seadustiku § 29 lõike 1 punkti 1, 2, 3, 5 või 6",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui isik mõistetakse õigeks või tema suhtes lõpetatakse kriminaalmenetlus kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1, 2 või 5 alusel, võib ta nõuda kahju hüvitamist juhul, kui see tekitati: 1) vahistamisega; 2) kahtlustatavana kinnipidamisega; 3) elukohast lahkumise keeluga; 4) ametist kõrvaldamisega; 5) vara arestimise või äravõtmisega; 6) ebamõistliku menetlusajaga. (2) Kui isiku suhtes lõpetatakse väärteomenetlus väärteomenetluse seadustiku § 29 lõike 1 punkti 1, 2, 3, 5 või 6 alusel, võib ta nõuda kahju hüvitamist juhul, kui see tekitati: 1) tema kinnipidamisega väärteomenetluses; 2) ebamõistliku menetlusajaga; 3) vara arestimise või äravõtmisega. (3) Kui isikule tekitati kriminaalmenetluses kahju käesoleva paragrahvi lõike 1 tähenduses ja pärast kriminaalmenetluse lõpetamist kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1 alusel alustati tema suhtes sama teoga seoses väärteomenetlust, mis lõpetati käesoleva paragrahvi lõikes 2 nimetatud alusel, on isikul õigus nõuda temale tekitatud kahju hüvitamist. Kui isikule tekitati kahju käesoleva paragrahvi lõike 2 tähenduses ja pärast väärteomenetluse lõpetamist väärteomenetluse seadustiku § 29 lõike 1 punkti 4 alusel alustati tema suhtes sama teoga seoses kriminaalmenetlust, mis lõpetati käesoleva paragrahvi lõikes 1 nimetatud alusel, on isikul õigus nõuda temale tekitatud kahju hüvitamist. (4) Süüdimõistva otsuse korral on süüdistataval või menetlusalusel isikul õigus nõuda käesoleva paragrahvi lõikes 1 või 2 nimetatud meetmega tekitatud kahju hüvitamist juhul, kui tema suhtes kohaldatud meede on oluliselt koormavam võrreldes talle mõistetud või määratud karistusega. Ka on isikul süüdimõistva otsuse korral õigus nõuda ebamõistliku menetlusajaga tekitatud kahju hüvitamist juhul, kui tema karistust mõistliku menetlusaja ületamisest hoolimata ei kergendata. (5) Kui vara arestides tekitati kahju kolmandale isikule karistusseadustiku 7. peatüki tähenduses, võib ta nõuda kahju hüvitamist vara konfiskeerimata jätmise korral, välja arvatud juhul, kui vara jäetakse konfiskeerimata karistusseadustiku § 83¹ lõike 3 alusel. (6) Kui vara võeti ära isikult, kes ei olnud kriminaalmenetluses kahtlustatav või süüdistatav või väärteomenetluses menetlusalune isik, on tal kahju tekkimise korral õigus nõuda kahju hüvitamist juhul, kui süüteomenetlus lõpeb käesoleva paragrahvi lõikes 1 või 2 nimetatud alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_2"
       },
@@ -837,15 +960,9 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -858,9 +975,15 @@
           "@id": "estleg:VTMS_Par_29_Lg_1"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      },
       "estleg:referencedBy": [
         {
           "@id": "estleg:KRIMIN_2_Par_206_Lg_1"
+        },
+        {
+          "@id": "estleg:SKHS_Map"
         },
         {
           "@id": "estleg:SKHS_Par_2_Lg_4"
@@ -927,15 +1050,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kui isik mõistetakse õigeks või tema suhtes lõpetatakse kriminaalmenetlus kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1, 2 või 5 alusel, võib ta nõuda kahju hüvitamist juhul, kui see tekitati: vahistamisega; kahtlustatavana kinnipidamisega; elukohast lahkumise keeluga; ametist kõrvaldamisega; vara arestimise või äravõtmisega; ebamõistliku menetlusajaga.",
+      "estleg:legalText": "(1) Kui isik mõistetakse õigeks või tema suhtes lõpetatakse kriminaalmenetlus kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1, 2 või 5 alusel, võib ta nõuda kahju hüvitamist juhul, kui see tekitati: 1) vahistamisega; 2) kahtlustatavana kinnipidamisega; 3) elukohast lahkumise keeluga; 4) ametist kõrvaldamisega; 5) vara arestimise või äravõtmisega; 6) ebamõistliku menetlusajaga.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_5"
       },
       "rdfs:label": "§ 5 lg 1",
-      "estleg:itemNumber": "1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Definition"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -949,7 +1076,10 @@
         {
           "@id": "estleg:KRIMIN_2_Par_199_Lg_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      }
     },
     {
       "@id": "estleg:SKHS_Par_5_Lg_2",
@@ -958,15 +1088,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kui isiku suhtes lõpetatakse väärteomenetlus väärteomenetluse seadustiku § 29 lõike 1 punkti 1, 2, 3, 5 või 6 alusel, võib ta nõuda kahju hüvitamist juhul, kui see tekitati: tema kinnipidamisega väärteomenetluses; ebamõistliku menetlusajaga; vara arestimise või äravõtmisega.",
+      "estleg:legalText": "(2) Kui isiku suhtes lõpetatakse väärteomenetlus väärteomenetluse seadustiku § 29 lõike 1 punkti 1, 2, 3, 5 või 6 alusel, võib ta nõuda kahju hüvitamist juhul, kui see tekitati: 1) tema kinnipidamisega väärteomenetluses; 2) ebamõistliku menetlusajaga; 3) vara arestimise või äravõtmisega.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_5"
       },
       "rdfs:label": "§ 5 lg 2",
-      "estleg:itemNumber": "1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -980,7 +1111,10 @@
         {
           "@id": "estleg:VTMS_Par_29_Lg_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:SKHS_Par_5_Lg_3",
@@ -1045,14 +1179,11 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kui vara arestides tekitati kahju kolmandale isikule karistusseadustiku 7. peatüki tähenduses, võib ta nõuda kahju hüvitamist vara konfiskeerimata jätmise korral, välja arvatud juhul, kui vara jäetakse konfiskeerimata karistusseadustiku § 831 lõike 3 alusel.",
+      "estleg:legalText": "(5) Kui vara arestides tekitati kahju kolmandale isikule karistusseadustiku 7. peatüki tähenduses, võib ta nõuda kahju hüvitamist vara konfiskeerimata jätmise korral, välja arvatud juhul, kui vara jäetakse konfiskeerimata karistusseadustiku § 83¹ lõike 3 alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_5"
       },
       "rdfs:label": "§ 5 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1061,6 +1192,19 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:references": [
+        {
+          "@id": "estleg:KARIST_2_Osa1_Par_83_1_Lg_3"
+        }
+      ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:KARIST_2_Osa1_Par_83_1_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1092,12 +1236,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Kahju hüvitamine teistmise korral",
+      "rdfs:label": {
+        "@value": "§ 6. Kahju hüvitamine teistmise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kui teistmise tõttu uuendatud kriminaalasja uue arutamise tulemusel mõistetakse isikule varasemaga võrreldes kergem karistus, isik mõistetakse õigeks või isiku suhtes lõpetatakse kriminaalmenetlus kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1, 2 või 5 alusel, võib isik nõuda talle varasema karistusega tekitatud kahju hüvitamist. (2) Kui teistmise tõttu uuendatud väärteoasja uue arutamise tulemusel mõistetakse isikule varasemaga võrreldes kergem karistus või isiku suhtes lõpetatakse",
+      "estleg:summary": {
+        "@value": "(1) Kui teistmise tõttu uuendatud kriminaalasja uue arutamise tulemusel mõistetakse isikule varasemaga võrreldes kergem karistus, isik mõistetakse õigeks või isiku suhtes lõpetatakse kriminaalmenetlus kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1, 2 või 5 alusel, võib isik nõuda talle varasema karistusega tekitatud kahju hüvitamist. (2) Kui teistmise tõttu uuendatud väärteoasja uue arutamise tulemusel mõistetakse isikule varasemaga võrreldes kergem karistus või isiku suhtes lõpetatakse",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui teistmise tõttu uuendatud kriminaalasja uue arutamise tulemusel mõistetakse isikule varasemaga võrreldes kergem karistus, isik mõistetakse õigeks või isiku suhtes lõpetatakse kriminaalmenetlus kriminaalmenetluse seadustiku § 199 lõike 1 punkti 1, 2 või 5 alusel, võib isik nõuda talle varasema karistusega tekitatud kahju hüvitamist. (2) Kui teistmise tõttu uuendatud väärteoasja uue arutamise tulemusel mõistetakse isikule varasemaga võrreldes kergem karistus või isiku suhtes lõpetatakse väärteomenetlus väärteomenetluse seadustiku § 29 lõike 1 punkti 1, 2, 3, 5 või 6 alusel, võib isik nõuda talle varasema karistusega tekitatud kahju hüvitamist. (3) Käesoleva paragrahvi lõikes 1 sätestatut kohaldatakse ka juhul, kui isiku suhtes kohaldati teistmise tõttu tühistatud kohtulahendiga muid mõjutusvahendeid karistusseadustiku 7. peatüki tähenduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_2"
@@ -1121,9 +1271,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1133,6 +1280,9 @@
           "@id": "estleg:KRIMIN_2_Par_199_Lg_1"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SKHS_Par_6_v120112014001"
@@ -1152,9 +1302,6 @@
       },
       "rdfs:label": "§ 6 lg 1",
       "estleg:itemNumber": "1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Definition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1168,7 +1315,10 @@
         {
           "@id": "estleg:KRIMIN_2_Par_199_Lg_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      }
     },
     {
       "@id": "estleg:SKHS_Par_6_Lg_2",
@@ -1183,9 +1333,6 @@
       },
       "rdfs:label": "§ 6 lg 2",
       "estleg:itemNumber": "1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Definition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1199,7 +1346,10 @@
         {
           "@id": "estleg:VTMS_Par_29_Lg_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      }
     },
     {
       "@id": "estleg:SKHS_Par_6_Lg_3",
@@ -1230,12 +1380,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Kahju hüvitamine sõltumata süüasja lõpptulemusest",
+      "rdfs:label": {
+        "@value": "§ 7. Kahju hüvitamine sõltumata süüasja lõpptulemusest",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kui menetleja rikub süüliselt menetlusõigust ja põhjustab seeläbi isikule kahju, on isikul õigus nõuda sellise kahju hüvitamist sõltumata sellest, milline on selle süüasja lõpptulemus, mille raames isikule kahju tekitati. (2) Menetleja vabaneb vastutusest, kui ta tõendab, et ta ei olnud kahju tekitamises süüdi. (3) Kui käesoleva paragrahvi lõikes 1 nimetatud kahju tekitab kohus, vastutab riik riigivastutuse seaduse kohaselt. (4) Isikul on õigus nõuda talle kriminaalmenetluse seadustiku",
+      "estleg:summary": {
+        "@value": "(1) Kui menetleja rikub süüliselt menetlusõigust ja põhjustab seeläbi isikule kahju, on isikul õigus nõuda sellise kahju hüvitamist sõltumata sellest, milline on selle süüasja lõpptulemus, mille raames isikule kahju tekitati. (2) Menetleja vabaneb vastutusest, kui ta tõendab, et ta ei olnud kahju tekitamises süüdi. (3) Kui käesoleva paragrahvi lõikes 1 nimetatud kahju tekitab kohus, vastutab riik riigivastutuse seaduse kohaselt. (4) Isikul on õigus nõuda talle kriminaalmenetluse seadustiku",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui menetleja rikub süüliselt menetlusõigust ja põhjustab seeläbi isikule kahju, on isikul õigus nõuda sellise kahju hüvitamist sõltumata sellest, milline on selle süüasja lõpptulemus, mille raames isikule kahju tekitati. (2) Menetleja vabaneb vastutusest, kui ta tõendab, et ta ei olnud kahju tekitamises süüdi. (3) Kui käesoleva paragrahvi lõikes 1 nimetatud kahju tekitab kohus, vastutab riik riigivastutuse seaduse kohaselt. (4) Isikul on õigus nõuda talle kriminaalmenetluse seadustiku alusel sundkorras raviasutusse paigutamisega tekitatud kahju hüvitamist, kui kohtumäärus tema raviasutusse paigutamise kohta on tühistatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_2"
@@ -1259,20 +1415,25 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:SKHS_Map"
+        },
         {
           "@id": "estleg:SKHS_Par_2_Lg_4"
         },
@@ -1301,11 +1462,6 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:SKHS_Par_7_v120112014001"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kohus"
         }
       ]
     },
@@ -1383,9 +1539,6 @@
         "@id": "estleg:SKHS_Par_7"
       },
       "rdfs:label": "§ 7 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1394,6 +1547,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -1403,13 +1559,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Kahju hüvitamist välistavad asjaolud",
+      "rdfs:label": {
+        "@value": "§ 8. Kahju hüvitamist välistavad asjaolud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Isikul ei ole õigust nõuda kahju hüvitamist, kui: ta mõistetakse õigeks või tema suhtes lõpetatakse süüteomenetlus seetõttu, et ta ei olnud õigusvastase teo toimepanemises süüdi karistusseadustiku 2. peatüki 3. jao tähenduses, välja arvatud kahju hüvitamisel käesoleva seaduse § 7 alusel; ta põhjustas kahju kaasa toonud meetme kohaldamise tahtlikult või ettevaatamatult, sealhulgas jättis avaldamata teistmise aluseks oleva asjaolu, rõõnas ennast, hoidus menetlusest kõrvale, rikkus tõkendist",
-      "estleg:legalText": "(1) Isikul ei ole õigust nõuda kahju hüvitamist, kui: ta mõistetakse õigeks või tema suhtes lõpetatakse süüteomenetlus seetõttu, et ta ei olnud õigusvastase teo toimepanemises süüdi karistusseadustiku 2. peatüki 3. jao tähenduses, välja arvatud kahju hüvitamisel käesoleva seaduse § 7 alusel; ta põhjustas kahju kaasa toonud meetme kohaldamise tahtlikult või ettevaatamatult, sealhulgas jättis avaldamata teistmise aluseks oleva asjaolu, rõõnas ennast, hoidus menetlusest kõrvale, rikkus tõkendist tulenevat kohustust mitte lahkuda loata oma elukohast või läks pakku; ebamõistlik menetlusaeg oli tingitud kahju kandnud isikust või tema kaitsjast. (2) Erandlike asjaolude korral võib isik nõuda kahju hüvitamist ka juhul, kui esinevad käesoleva paragrahvi lõikes 1 sätestatud alused ning kahju hüvitamata jätmine oleks isikule ülemäära koormav. Sellisel juhul võib vähendada isikule makstava hüvitise suurust.",
+      "estleg:summary": {
+        "@value": "(1) Isikul ei ole õigust nõuda kahju hüvitamist, kui: 1) ta mõistetakse õigeks või tema suhtes lõpetatakse süüteomenetlus seetõttu, et ta ei olnud õigusvastase teo toimepanemises süüdi karistusseadustiku 2. peatüki 3. jao tähenduses, välja arvatud kahju hüvitamisel käesoleva seaduse § 7 alusel; 2) ta põhjustas kahju kaasa toonud meetme kohaldamise tahtlikult või ettevaatamatult, sealhulgas jättis avaldamata teistmise aluseks oleva asjaolu, rõõnas ennast, hoidus menetlusest kõrvale, rikkus",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Isikul ei ole õigust nõuda kahju hüvitamist, kui: 1) ta mõistetakse õigeks või tema suhtes lõpetatakse süüteomenetlus seetõttu, et ta ei olnud õigusvastase teo toimepanemises süüdi karistusseadustiku 2. peatüki 3. jao tähenduses, välja arvatud kahju hüvitamisel käesoleva seaduse § 7 alusel; 2) ta põhjustas kahju kaasa toonud meetme kohaldamise tahtlikult või ettevaatamatult, sealhulgas jättis avaldamata teistmise aluseks oleva asjaolu, rõõnas ennast, hoidus menetlusest kõrvale, rikkus tõkendist tulenevat kohustust mitte lahkuda loata oma elukohast või läks pakku; 3) ebamõistlik menetlusaeg oli tingitud kahju kandnud isikust või tema kaitsjast. (2) Erandlike asjaolude korral võib isik nõuda kahju hüvitamist ka juhul, kui esinevad käesoleva paragrahvi lõikes 1 sätestatud alused ning kahju hüvitamata jätmine oleks isikule ülemäära koormav. Sellisel juhul võib vähendada isikule makstava hüvitise suurust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_2"
       },
@@ -1436,16 +1598,19 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:SKHS_Par_7"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_7"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:SKHS_Par_7"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SKHS_Par_8_v120112014001"
@@ -1459,14 +1624,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Isikul ei ole õigust nõuda kahju hüvitamist, kui: ta mõistetakse õigeks või tema suhtes lõpetatakse süüteomenetlus seetõttu, et ta ei olnud õigusvastase teo toimepanemises süüdi karistusseadustiku 2. peatüki 3. jao tähenduses, välja arvatud kahju hüvitamisel käesoleva seaduse § 7 alusel; ta põhjustas kahju kaasa toonud meetme kohaldamise tahtlikult või ettevaatamatult, sealhulgas jättis avaldamata teistmise aluseks oleva asjaolu, rõõnas ennast, hoidus menetlusest kõrvale, rikkus tõkendist tulenevat kohustust mitte lahkuda loata oma elukohast või läks pakku; ebamõistlik menetlusaeg oli tingitud kahju kandnud isikust või tema kaitsjast.",
+      "estleg:legalText": "(1) Isikul ei ole õigust nõuda kahju hüvitamist, kui: 1) ta mõistetakse õigeks või tema suhtes lõpetatakse süüteomenetlus seetõttu, et ta ei olnud õigusvastase teo toimepanemises süüdi karistusseadustiku 2. peatüki 3. jao tähenduses, välja arvatud kahju hüvitamisel käesoleva seaduse § 7 alusel; 2) ta põhjustas kahju kaasa toonud meetme kohaldamise tahtlikult või ettevaatamatult, sealhulgas jättis avaldamata teistmise aluseks oleva asjaolu, rõõnas ennast, hoidus menetlusest kõrvale, rikkus tõkendist tulenevat kohustust mitte lahkuda loata oma elukohast või läks pakku; 3) ebamõistlik menetlusaeg oli tingitud kahju kandnud isikust või tema kaitsjast.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_8"
       },
       "rdfs:label": "§ 8 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Definition"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1476,16 +1643,19 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:references": [
+        {
+          "@id": "estleg:SKHS_Par_7"
+        }
+      ],
       "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_7"
         }
       ],
-      "estleg:references": [
-        {
-          "@id": "estleg:SKHS_Par_7"
-        }
-      ]
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      }
     },
     {
       "@id": "estleg:SKHS_Par_8_Lg_2",
@@ -1499,9 +1669,6 @@
         "@id": "estleg:SKHS_Par_8"
       },
       "rdfs:label": "§ 8 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1513,6 +1680,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1522,12 +1692,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Kahju hüvitamise ulatus",
+      "rdfs:label": {
+        "@value": "§ 9. Kahju hüvitamise ulatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kui käesolevas seaduses ei ole sätestatud teisiti, lähtutakse kahju hüvitise suuruse määramisel riigivastutuse seaduse § 13 lõikest 1, arvestades süüteomenetluse erisusi. (2) Menetleja võib käesolevas peatükis sätestatud hüvitise suurust muuta, kui see hüvitis ei ole õiglane, arvestades üksikjuhtumi olulisi asjaolusid ja põhjendatud huve.",
+      "estleg:summary": {
+        "@value": "(1) Kui käesolevas seaduses ei ole sätestatud teisiti, lähtutakse kahju hüvitise suuruse määramisel riigivastutuse seaduse § 13 lõikest 1, arvestades süüteomenetluse erisusi. (2) Menetleja võib käesolevas peatükis sätestatud hüvitise suurust muuta, kui see hüvitis ei ole õiglane, arvestades üksikjuhtumi olulisi asjaolusid ja põhjendatud huve.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui käesolevas seaduses ei ole sätestatud teisiti, lähtutakse kahju hüvitise suuruse määramisel riigivastutuse seaduse § 13 lõikest 1, arvestades süüteomenetluse erisusi. (2) Menetleja võib käesolevas peatükis sätestatud hüvitise suurust muuta, kui see hüvitis ei ole õiglane, arvestades üksikjuhtumi olulisi asjaolusid ja põhjendatud huve.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_3"
@@ -1543,9 +1719,6 @@
           "@id": "estleg:SKHS_Par_9_Lg_2"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -1555,6 +1728,9 @@
           "@id": "estleg:RVastS_Par_13_Lg_1"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SKHS_Par_9_v120112014001"
@@ -1591,12 +1767,12 @@
         "@id": "estleg:SKHS_Par_9"
       },
       "rdfs:label": "§ 9 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1606,12 +1782,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Varalise kahju hüvitamine",
+      "rdfs:label": {
+        "@value": "§ 10. Varalise kahju hüvitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 5 või 6 alusel hüvitatakse pangakonto või raha arestimise või äravõtmisega tekitatud kahju maksimaalselt summas, mis vastab arestitud või äravõetud rahasummalt arvestatud intressile kuus protsenti aastas. Sama piirmäära kohaldatakse juhul, kui tagastatakse rahatrahvi või rahalise või varalise karistusena tasutud või sissenõutud rahasumma. (2) Käesoleva seaduse § 5 või 6 alusel hüvitatakse varaline kahju maksimaalselt summas, mis saadakse, kui nõude esitamise kuule",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 5 või 6 alusel hüvitatakse pangakonto või raha arestimise või äravõtmisega tekitatud kahju maksimaalselt summas, mis vastab arestitud või äravõetud rahasummalt arvestatud intressile kuus protsenti aastas. Sama piirmäära kohaldatakse juhul, kui tagastatakse rahatrahvi või rahalise või varalise karistusena tasutud või sissenõutud rahasumma. (2) Käesoleva seaduse § 5 või 6 alusel hüvitatakse varaline kahju maksimaalselt summas, mis saadakse, kui nõude esitamise kuule",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse § 5 või 6 alusel hüvitatakse pangakonto või raha arestimise või äravõtmisega tekitatud kahju maksimaalselt summas, mis vastab arestitud või äravõetud rahasummalt arvestatud intressile kuus protsenti aastas. Sama piirmäära kohaldatakse juhul, kui tagastatakse rahatrahvi või rahalise või varalise karistusena tasutud või sissenõutud rahasumma. (2) Käesoleva seaduse § 5 või 6 alusel hüvitatakse varaline kahju maksimaalselt summas, mis saadakse, kui nõude esitamise kuule eelnenud viimane Statistikaameti avaldatud kvartali keskmine brutokuupalk korrutatakse 48-ga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_3"
@@ -1627,24 +1809,24 @@
           "@id": "estleg:SKHS_Par_10_Lg_2"
         }
       ],
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:SKHS_Par_5"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
       ],
-      "estleg:hasVersion": [
+      "estleg:isLegalBasisFor": [
         {
-          "@id": "estleg:SKHS_Par_10_v120112014001"
+          "@id": "estleg:SKHS_Par_5"
         }
       ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:SKHS_Par_10_v120112014001"
         }
       ]
     },
@@ -1660,12 +1842,12 @@
         "@id": "estleg:SKHS_Par_10"
       },
       "rdfs:label": "§ 10 lg 1",
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
@@ -1683,12 +1865,12 @@
         "@id": "estleg:SKHS_Par_10"
       },
       "rdfs:label": "§ 10 lg 2",
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
@@ -1706,12 +1888,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Mittevaralise kahju hüvitamine",
+      "rdfs:label": {
+        "@value": "§ 11. Mittevaralise kahju hüvitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 5 või 6 alusel hüvitatakse füüsilisele isikule mittevaraline kahju üksnes juhul, kui isikult on süüteomenetluses võetud vabadus või on rikutud tema õigust mõistlikule menetlusajale. (2) Käesoleva seaduse § 7 alusel hüvitatakse füüsilisele isikule mittevaraline kahju üksnes juhul, kui isikult on süüteomenetluses võetud vabadus; teda on piinatud või ebainimlikult või alandavalt koheldud; kahjustatud tema tervist, kodu või eraelu puutumatust; rikutud tema sõnumi saladust",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 5 või 6 alusel hüvitatakse füüsilisele isikule mittevaraline kahju üksnes juhul, kui isikult on süüteomenetluses võetud vabadus või on rikutud tema õigust mõistlikule menetlusajale. (2) Käesoleva seaduse § 7 alusel hüvitatakse füüsilisele isikule mittevaraline kahju üksnes juhul, kui isikult on süüteomenetluses võetud vabadus; teda on piinatud või ebainimlikult või alandavalt koheldud; kahjustatud tema tervist, kodu või eraelu puutumatust; rikutud tema sõnumi saladust",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse § 5 või 6 alusel hüvitatakse füüsilisele isikule mittevaraline kahju üksnes juhul, kui isikult on süüteomenetluses võetud vabadus või on rikutud tema õigust mõistlikule menetlusajale. (2) Käesoleva seaduse § 7 alusel hüvitatakse füüsilisele isikule mittevaraline kahju üksnes juhul, kui isikult on süüteomenetluses võetud vabadus; teda on piinatud või ebainimlikult või alandavalt koheldud; kahjustatud tema tervist, kodu või eraelu puutumatust; rikutud tema sõnumi saladust või teotatud tema au või head nime. Menetleja süü ei ole mittevaralise kahju hüvitamise eelduseks, kui menetlusõiguse rikkumisega on isikut piinatud või teda on ebainimlikult või alandavalt koheldud. (3) Mittevaralise kahju tekkimist eeldatakse. Mittevaraline kahju hüvitatakse rahas ulatuses, milles see ei ole heastatav muude vahenditega, sealhulgas eksimuse tunnistamise ja vabandamisega. (4) Vabaduse võtmise korral hüvitatakse mittevaraline kahju päevamäära alusel iga alanud kalendripäeva kohta, kui isikult oli vabadus võetud. Päevamäära suurus on kahju hüvitamise nõude esitamise kuule eelnenud viimane Statistikaameti avaldatud kvartali keskmine brutokuupalk, mis on jagatud 30-ga. (5) Ebamõistliku menetlusaja korral on mittevaralise kahju hüvitis iga viivitatud aasta eest nõude esitamise kuule eelnenud viimane Statistikaameti avaldatud kvartali keskmine brutokuupalk.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_3"
@@ -1745,14 +1933,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:SKHS_Par_5"
-        },
-        {
-          "@id": "estleg:SKHS_Par_7"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
@@ -1761,14 +1941,22 @@
           "@id": "estleg:SKHS_Par_7"
         }
       ],
-      "estleg:hasVersion": [
+      "estleg:isLegalBasisFor": [
         {
-          "@id": "estleg:SKHS_Par_11_v120112014001"
+          "@id": "estleg:SKHS_Par_5"
+        },
+        {
+          "@id": "estleg:SKHS_Par_7"
         }
       ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:SKHS_Par_11_v120112014001"
         }
       ]
     },
@@ -1793,12 +1981,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
@@ -1825,12 +2013,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_7"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_7"
         }
@@ -1892,13 +2080,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Kahju hüvitamise taotlus",
+      "rdfs:label": {
+        "@value": "§ 12. Kahju hüvitamise taotlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "Kahju hüvitatakse kahju kandnud isiku kirjaliku taotluse alusel. Taotluses märgitakse: taotleja nimi, isikukood või selle puudumise korral sünniaeg või registrikood, aadress, sidevahendite andmed ning arveldusarve number; taotleja esindaja või kaitsja nimi, aadress ja sidevahendite andmed, kui taotlejal on esindaja või kaitsja; tekkinud kahju ja hüvitise suurus; mittevaralise kahju eest hüvitise nõudmisel, samuti juhul, kui taotlejal on võimatu või ebamõistlikult keeruline varalise kahju",
-      "estleg:legalText": "Kahju hüvitatakse kahju kandnud isiku kirjaliku taotluse alusel. Taotluses märgitakse: taotleja nimi, isikukood või selle puudumise korral sünniaeg või registrikood, aadress, sidevahendite andmed ning arveldusarve number; taotleja esindaja või kaitsja nimi, aadress ja sidevahendite andmed, kui taotlejal on esindaja või kaitsja; tekkinud kahju ja hüvitise suurus; mittevaralise kahju eest hüvitise nõudmisel, samuti juhul, kui taotlejal on võimatu või ebamõistlikult keeruline varalise kahju suurust kindlaks teha, võib taotleja jätta hüvitise suuruse taotluses märkimata ja taotleda õiglast hüvitist; meede, millega kahju tekitati; meetme sisu, meetme kohaldamiseks antud dokumendi nimetus, kuupäev, number ja selle andnud või meedet kohaldanud ametnik või menetleja, kui nimetatud andmete esitamine on võimalik; taotluse faktiline põhjendus; tõendid, mis kinnitavad taotleja väidetavaid asjaolusid, viidates konkreetselt, millist asjaolu millise tõendiga tõendada soovitakse; millal sai taotleja teada määrusest või otsusest, mille alusel tekkis tal õigus nõuda kahju hüvitamist, või kahju tekkimisest; taotluse lisade nimekiri.",
+      "estleg:summary": {
+        "@value": "Kahju hüvitatakse kahju kandnud isiku kirjaliku taotluse alusel. Taotluses märgitakse: 1) taotleja nimi, isikukood või selle puudumise korral sünniaeg või registrikood, aadress, sidevahendite andmed ning arveldusarve number; 2) taotleja esindaja või kaitsja nimi, aadress ja sidevahendite andmed, kui taotlejal on esindaja või kaitsja; 3) tekkinud kahju ja hüvitise suurus; 4) mittevaralise kahju eest hüvitise nõudmisel, samuti juhul, kui taotlejal on võimatu või ebamõistlikult keeruline varalise",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kahju hüvitatakse kahju kandnud isiku kirjaliku taotluse alusel. Taotluses märgitakse: 1) taotleja nimi, isikukood või selle puudumise korral sünniaeg või registrikood, aadress, sidevahendite andmed ning arveldusarve number; 2) taotleja esindaja või kaitsja nimi, aadress ja sidevahendite andmed, kui taotlejal on esindaja või kaitsja; 3) tekkinud kahju ja hüvitise suurus; 4) mittevaralise kahju eest hüvitise nõudmisel, samuti juhul, kui taotlejal on võimatu või ebamõistlikult keeruline varalise kahju suurust kindlaks teha, võib taotleja jätta hüvitise suuruse taotluses märkimata ja taotleda õiglast hüvitist; 5) meede, millega kahju tekitati; 6) meetme sisu, meetme kohaldamiseks antud dokumendi nimetus, kuupäev, number ja selle andnud või meedet kohaldanud ametnik või menetleja, kui nimetatud andmete esitamine on võimalik; 7) taotluse faktiline põhjendus; 8) tõendid, mis kinnitavad taotleja väidetavaid asjaolusid, viidates konkreetselt, millist asjaolu millise tõendiga tõendada soovitakse; 9) millal sai taotleja teada määrusest või otsusest, mille alusel tekkis tal õigus nõuda kahju hüvitamist, või kahju tekkimisest; 10) taotluse lisade nimekiri.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SKHS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SKHS_4_1"
       },
@@ -1919,6 +2116,9 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SKHS_Par_12_v120112014001"
@@ -1931,13 +2131,24 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kahju hüvitatakse kahju kandnud isiku kirjaliku taotluse alusel. Taotluses märgitakse: taotleja nimi, isikukood või selle puudumise korral sünniaeg või registrikood, aadress, sidevahendite andmed ning arveldusarve number; taotleja esindaja või kaitsja nimi, aadress ja sidevahendite andmed, kui taotlejal on esindaja või kaitsja; tekkinud kahju ja hüvitise suurus; mittevaralise kahju eest hüvitise nõudmisel, samuti juhul, kui taotlejal on võimatu või ebamõistlikult keeruline varalise kahju suurust kindlaks teha, võib taotleja jätta hüvitise suuruse taotluses märkimata ja taotleda õiglast hüvitist; meede, millega kahju tekitati; meetme sisu, meetme kohaldamiseks antud dokumendi nimetus, kuupäev, number ja selle andnud või meedet kohaldanud ametnik või menetleja, kui nimetatud andmete esitamine on võimalik; taotluse faktiline põhjendus; tõendid, mis kinnitavad taotleja väidetavaid asjaolusid, viidates konkreetselt, millist asjaolu millise tõendiga tõendada soovitakse; millal sai taotleja teada määrusest või otsusest, mille alusel tekkis tal õigus nõuda kahju hüvitamist, või kahju tekkimisest; taotluse lisade nimekiri.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kahju hüvitatakse kahju kandnud isiku kirjaliku taotluse alusel. Taotluses märgitakse: 1) taotleja nimi, isikukood või selle puudumise korral sünniaeg või registrikood, aadress, sidevahendite andmed ning arveldusarve number; 2) taotleja esindaja või kaitsja nimi, aadress ja sidevahendite andmed, kui taotlejal on esindaja või kaitsja; 3) tekkinud kahju ja hüvitise suurus; 4) mittevaralise kahju eest hüvitise nõudmisel, samuti juhul, kui taotlejal on võimatu või ebamõistlikult keeruline varalise kahju suurust kindlaks teha, võib taotleja jätta hüvitise suuruse taotluses märkimata ja taotleda õiglast hüvitist; 5) meede, millega kahju tekitati; 6) meetme sisu, meetme kohaldamiseks antud dokumendi nimetus, kuupäev, number ja selle andnud või meedet kohaldanud ametnik või menetleja, kui nimetatud andmete esitamine on võimalik; 7) taotluse faktiline põhjendus; 8) tõendid, mis kinnitavad taotleja väidetavaid asjaolusid, viidates konkreetselt, millist asjaolu millise tõendiga tõendada soovitakse; 9) millal sai taotleja teada määrusest või otsusest, mille alusel tekkis tal õigus nõuda kahju hüvitamist, või kahju tekkimisest; 10) taotluse lisade nimekiri.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_12"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1949,6 +2160,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1958,13 +2172,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Taotluse ja kaebuse läbi vaatamata jätmine",
+      "rdfs:label": {
+        "@value": "§ 13. Taotluse ja kaebuse läbi vaatamata jätmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kui taotlus või kaebus ei vasta nõuetele ja selles on puudused, mida saab kõrvaldada, määrab menetleja taotluse või kaebuse esitajale esimesel võimalusel mõistliku tähtaja puuduste kõrvaldamiseks. Menetleja selgitab, et tähtpäevaks puuduste kõrvaldamata jätmise korral võib menetleja jätta taotluse või kaebuse läbi vaatamata ja tagastada, kui puudus on selline, mis takistab taotluse või kaebuse läbi vaatamist. (2) Kui taotlus või kaebus esitatakse pärast tähtaja möödumist, märgitakse selles",
+      "estleg:summary": {
+        "@value": "(1) Kui taotlus või kaebus ei vasta nõuetele ja selles on puudused, mida saab kõrvaldada, määrab menetleja taotluse või kaebuse esitajale esimesel võimalusel mõistliku tähtaja puuduste kõrvaldamiseks. Menetleja selgitab, et tähtpäevaks puuduste kõrvaldamata jätmise korral võib menetleja jätta taotluse või kaebuse läbi vaatamata ja tagastada, kui puudus on selline, mis takistab taotluse või kaebuse läbi vaatamist. (2) Kui taotlus või kaebus esitatakse pärast tähtaja möödumist, märgitakse selles",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui taotlus või kaebus ei vasta nõuetele ja selles on puudused, mida saab kõrvaldada, määrab menetleja taotluse või kaebuse esitajale esimesel võimalusel mõistliku tähtaja puuduste kõrvaldamiseks. Menetleja selgitab, et tähtpäevaks puuduste kõrvaldamata jätmise korral võib menetleja jätta taotluse või kaebuse läbi vaatamata ja tagastada, kui puudus on selline, mis takistab taotluse või kaebuse läbi vaatamist. (2) Kui taotlus või kaebus esitatakse pärast tähtaja möödumist, märgitakse selles tähtaja ennistamise taotlus ja tähtaja möödalaskmise põhjused. Menetleja tagastab taotluse või kaebuse läbi vaatamata, kui selle esitamise tähtaeg on möödunud ja seda ei ennistata. (3) Kui isikul puudub ilmselgelt õigus nõuda kahju hüvitamist, võib taotluse või kaebuse jätta läbi vaatamata. (4) Taotluse või kaebuse läbi vaatamata jätmisest teavitatakse taotlejat. Taotluse või kaebuse läbi vaatamata jätmist peab kirjalikult põhjendama.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SKHS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SKHS_4_1"
       },
@@ -1987,12 +2210,12 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -2012,12 +2235,12 @@
         "@id": "estleg:SKHS_Par_13"
       },
       "rdfs:label": "§ 13 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2045,9 +2268,6 @@
         "@id": "estleg:SKHS_Par_13"
       },
       "rdfs:label": "§ 13 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2056,6 +2276,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2070,9 +2293,6 @@
         "@id": "estleg:SKHS_Par_13"
       },
       "rdfs:label": "§ 13 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2081,6 +2301,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -2090,13 +2313,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Kahjuhüvitise taotlemine kohtueelses ja kohtuvälises menetluses",
+      "rdfs:label": {
+        "@value": "§ 14. Kahjuhüvitise taotlemine kohtueelses ja kohtuvälises menetluses",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kui prokuratuur, uurimisasutus või kohtuväline menetleja koostab määruse, mille alusel tekib isikul õigus nõuda kahju hüvitamist vastavalt käesoleva seaduse §-le 5 või 6, selgitab ta õigustatud isikule käesolevas seaduses sätestatud hüvitise taotlemise korda. (2) Taotluse kahju hüvitamiseks käesoleva seaduse § 5, 6 või 7 alusel esitab isik kriminaalmenetluses prokuratuurile ja väärteomenetluses kohtuvälisele menetlejale. (3) Taotluse kahju hüvitamiseks käesoleva seaduse § 5 või 6 alusel",
+      "estleg:summary": {
+        "@value": "(1) Kui prokuratuur, uurimisasutus või kohtuväline menetleja koostab määruse, mille alusel tekib isikul õigus nõuda kahju hüvitamist vastavalt käesoleva seaduse §-le 5 või 6, selgitab ta õigustatud isikule käesolevas seaduses sätestatud hüvitise taotlemise korda. (2) Taotluse kahju hüvitamiseks käesoleva seaduse § 5, 6 või 7 alusel esitab isik kriminaalmenetluses prokuratuurile ja väärteomenetluses kohtuvälisele menetlejale. (3) Taotluse kahju hüvitamiseks käesoleva seaduse § 5 või 6 alusel",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui prokuratuur, uurimisasutus või kohtuväline menetleja koostab määruse, mille alusel tekib isikul õigus nõuda kahju hüvitamist vastavalt käesoleva seaduse §-le 5 või 6, selgitab ta õigustatud isikule käesolevas seaduses sätestatud hüvitise taotlemise korda. (2) Taotluse kahju hüvitamiseks käesoleva seaduse § 5, 6 või 7 alusel esitab isik kriminaalmenetluses prokuratuurile ja väärteomenetluses kohtuvälisele menetlejale. (3) Taotluse kahju hüvitamiseks käesoleva seaduse § 5 või 6 alusel esitab isik kuue kuu jooksul arvates päevast, kui ta sai teada või pidi teada saama prokuratuuri, uurimisasutuse või kohtuvälise menetleja määrusest, mille alusel tal tekkis õigus nõuda kahju hüvitamist. (4) Taotluse kahju hüvitamiseks käesoleva seaduse § 7 alusel esitab isik kolme aasta jooksul arvates päevast, kui ta sai teada või pidi teada saama kahjust, sõltumata teadasaamisest aga mitte hiljem kui kümne aasta jooksul kahju tekitamisest või selle põhjustanud sündmusest arvates.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SKHS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SKHS_4_2"
       },
@@ -2123,12 +2355,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
@@ -2160,12 +2392,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
@@ -2197,12 +2429,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
@@ -2229,12 +2461,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
@@ -2261,12 +2493,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_7"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_7"
         }
@@ -2279,13 +2511,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Taotluse lahendamine prokuratuuris ja kohtuvälise menetleja juures",
+      "rdfs:label": {
+        "@value": "§ 15. Taotluse lahendamine prokuratuuris ja kohtuvälise menetleja juures",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Prokuratuur või kohtuväline menetleja lahendab taotluse kahe kuu jooksul selle nõuetekohasest esitamisest arvates. Asja mahukuse või keerukuse korral võib seda tähtaega määrusega pikendada ühe kuu võrra. (2) Kui kriminaalmenetluse lõpetamine vaidlustatakse kriminaalmenetluse seadustiku §-des 207 ja 208 sätestatud korras, peatab prokuratuur käesoleva seaduse § 5 või 6 alusel esitatud taotluse menetluse kuni kriminaalmenetluse lõpetamise kohta tehtud otsustuse jõustumiseni.",
-      "estleg:legalText": "(1) Prokuratuur või kohtuväline menetleja lahendab taotluse kahe kuu jooksul selle nõuetekohasest esitamisest arvates. Asja mahukuse või keerukuse korral võib seda tähtaega määrusega pikendada ühe kuu võrra. (2) Kui kriminaalmenetluse lõpetamine vaidlustatakse kriminaalmenetluse seadustiku §-des 207 ja 208 sätestatud korras, peatab prokuratuur käesoleva seaduse § 5 või 6 alusel esitatud taotluse menetluse kuni kriminaalmenetluse lõpetamise kohta tehtud otsustuse jõustumiseni. (3) Prokuratuur või kohtuväline menetleja võib määrusega: jätta taotluse rahuldamata; rahuldada taotluse osaliselt ja määrata isikule hüvitise osas, milles taotlus rahuldati, või rahuldada taotluse ja määrata hüvitise vastavalt taotlusele.",
+      "estleg:summary": {
+        "@value": "(1) Prokuratuur või kohtuväline menetleja lahendab taotluse kahe kuu jooksul selle nõuetekohasest esitamisest arvates. Asja mahukuse või keerukuse korral võib seda tähtaega määrusega pikendada ühe kuu võrra. (2) Kui kriminaalmenetluse lõpetamine vaidlustatakse kriminaalmenetluse seadustiku §-des 207 ja 208 sätestatud korras, peatab prokuratuur käesoleva seaduse § 5 või 6 alusel esitatud taotluse menetluse kuni kriminaalmenetluse lõpetamise kohta tehtud otsustuse jõustumiseni.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Prokuratuur või kohtuväline menetleja lahendab taotluse kahe kuu jooksul selle nõuetekohasest esitamisest arvates. Asja mahukuse või keerukuse korral võib seda tähtaega määrusega pikendada ühe kuu võrra. (2) Kui kriminaalmenetluse lõpetamine vaidlustatakse kriminaalmenetluse seadustiku §-des 207 ja 208 sätestatud korras, peatab prokuratuur käesoleva seaduse § 5 või 6 alusel esitatud taotluse menetluse kuni kriminaalmenetluse lõpetamise kohta tehtud otsustuse jõustumiseni. (3) Prokuratuur või kohtuväline menetleja võib määrusega: 1) jätta taotluse rahuldamata; 2) rahuldada taotluse osaliselt ja määrata isikule hüvitise osas, milles taotlus rahuldati, või 3) rahuldada taotluse ja määrata hüvitise vastavalt taotlusele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SKHS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SKHS_4_2"
       },
@@ -2305,18 +2546,10 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:SKHS_Par_5"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
@@ -2325,6 +2558,14 @@
           "@id": "estleg:KRIMIN_2_Par_207"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:SKHS_Par_5"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:SKHS_Par_15_v120112014001"
@@ -2343,12 +2584,12 @@
         "@id": "estleg:SKHS_Par_15"
       },
       "rdfs:label": "§ 15 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2363,17 +2604,17 @@
         "@id": "estleg:SKHS_Par_15"
       },
       "rdfs:label": "§ 15 lg 2",
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:SKHS_Par_5"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         },
         {
           "@id": "estleg:KRIMIN_2_Par_207"
+        }
+      ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:SKHS_Par_5"
         }
       ]
     },
@@ -2384,14 +2625,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Prokuratuur või kohtuväline menetleja võib määrusega: jätta taotluse rahuldamata; rahuldada taotluse osaliselt ja määrata isikule hüvitise osas, milles taotlus rahuldati, või rahuldada taotluse ja määrata hüvitise vastavalt taotlusele.",
+      "estleg:legalText": "(3) Prokuratuur või kohtuväline menetleja võib määrusega: 1) jätta taotluse rahuldamata; 2) rahuldada taotluse osaliselt ja määrata isikule hüvitise osas, milles taotlus rahuldati, või 3) rahuldada taotluse ja määrata hüvitise vastavalt taotlusele.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_15"
       },
       "rdfs:label": "§ 15 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2400,6 +2643,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2409,13 +2655,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Kaebuse menetlemine Riigiprokuratuuris",
+      "rdfs:label": {
+        "@value": "§ 16. Kaebuse menetlemine Riigiprokuratuuris",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kui prokuratuur jätab taotluse osaliselt või täielikult rahuldamata või läbi vaatamata, võib isik esitada prokuratuuri määruse peale kirjaliku kaebuse Riigiprokuratuurile 30 päeva jooksul arvates päevast, kui ta sai teada või pidi teada saama vaidlustatavast määrusest. Kui prokuratuur jätab taotluse tähtaja jooksul lahendamata, võib isik esitada kirjaliku kaebuse Riigiprokuratuurile 30 päeva jooksul arvates päevast, kui prokuratuur oleks pidanud taotluse lahendama.",
-      "estleg:legalText": "(1) Kui prokuratuur jätab taotluse osaliselt või täielikult rahuldamata või läbi vaatamata, võib isik esitada prokuratuuri määruse peale kirjaliku kaebuse Riigiprokuratuurile 30 päeva jooksul arvates päevast, kui ta sai teada või pidi teada saama vaidlustatavast määrusest. Kui prokuratuur jätab taotluse tähtaja jooksul lahendamata, võib isik esitada kirjaliku kaebuse Riigiprokuratuurile 30 päeva jooksul arvates päevast, kui prokuratuur oleks pidanud taotluse lahendama. (2) Riigiprokuratuur lahendab kaebuse kahe kuu jooksul selle nõuetekohasest esitamisest arvates. Asja mahukuse või keerukuse korral võib seda tähtaega määrusega pikendada ühe kuu võrra. (3) Riigiprokuratuur võib määrusega: jätta kaebuse rahuldamata; rahuldada kaebuse osaliselt ja määrata isikule hüvitise osas, milles kaebus rahuldati; rahuldada kaebuse ja määrata hüvitise vastavalt taotlusele; tühistada prokuratuuri määruse, millega jäeti taotlus rahuldamata.",
+      "estleg:summary": {
+        "@value": "(1) Kui prokuratuur jätab taotluse osaliselt või täielikult rahuldamata või läbi vaatamata, võib isik esitada prokuratuuri määruse peale kirjaliku kaebuse Riigiprokuratuurile 30 päeva jooksul arvates päevast, kui ta sai teada või pidi teada saama vaidlustatavast määrusest. Kui prokuratuur jätab taotluse tähtaja jooksul lahendamata, võib isik esitada kirjaliku kaebuse Riigiprokuratuurile 30 päeva jooksul arvates päevast, kui prokuratuur oleks pidanud taotluse lahendama.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui prokuratuur jätab taotluse osaliselt või täielikult rahuldamata või läbi vaatamata, võib isik esitada prokuratuuri määruse peale kirjaliku kaebuse Riigiprokuratuurile 30 päeva jooksul arvates päevast, kui ta sai teada või pidi teada saama vaidlustatavast määrusest. Kui prokuratuur jätab taotluse tähtaja jooksul lahendamata, võib isik esitada kirjaliku kaebuse Riigiprokuratuurile 30 päeva jooksul arvates päevast, kui prokuratuur oleks pidanud taotluse lahendama. (2) Riigiprokuratuur lahendab kaebuse kahe kuu jooksul selle nõuetekohasest esitamisest arvates. Asja mahukuse või keerukuse korral võib seda tähtaega määrusega pikendada ühe kuu võrra. (3) Riigiprokuratuur võib määrusega: 1) jätta kaebuse rahuldamata; 2) rahuldada kaebuse osaliselt ja määrata isikule hüvitise osas, milles kaebus rahuldati; 3) rahuldada kaebuse ja määrata hüvitise vastavalt taotlusele; 4) tühistada prokuratuuri määruse, millega jäeti taotlus rahuldamata.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SKHS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SKHS_4_2"
       },
@@ -2435,30 +2690,18 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1047494_Par_6"
-        },
-        {
-          "@id": "estleg:Reg_1050473_Par_5"
-        },
-        {
-          "@id": "estleg:Reg_1051182_Par_5"
-        },
-        {
-          "@id": "estleg:Reg_1051772_Par_5"
-        },
-        {
-          "@id": "estleg:Reg_1060726_Par_4"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1060726_Par_4"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:SKHS_Par_16_v120112014001"
@@ -2477,9 +2720,6 @@
         "@id": "estleg:SKHS_Par_16"
       },
       "rdfs:label": "§ 16 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2488,6 +2728,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2502,12 +2745,12 @@
         "@id": "estleg:SKHS_Par_16"
       },
       "rdfs:label": "§ 16 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2517,14 +2760,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Riigiprokuratuur võib määrusega: jätta kaebuse rahuldamata; rahuldada kaebuse osaliselt ja määrata isikule hüvitise osas, milles kaebus rahuldati; rahuldada kaebuse ja määrata hüvitise vastavalt taotlusele; tühistada prokuratuuri määruse, millega jäeti taotlus rahuldamata.",
+      "estleg:legalText": "(3) Riigiprokuratuur võib määrusega: 1) jätta kaebuse rahuldamata; 2) rahuldada kaebuse osaliselt ja määrata isikule hüvitise osas, milles kaebus rahuldati; 3) rahuldada kaebuse ja määrata hüvitise vastavalt taotlusele; 4) tühistada prokuratuuri määruse, millega jäeti taotlus rahuldamata.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_16"
       },
       "rdfs:label": "§ 16 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2533,6 +2779,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2542,13 +2791,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Kaebuse menetlemine maakohtus",
+      "rdfs:label": {
+        "@value": "§ 17. Kaebuse menetlemine maakohtus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kui Riigiprokuratuur või kohtuväline menetleja jätab kaebuse või taotluse osaliselt või täielikult rahuldamata või läbi vaatamata või tähtaja jooksul lahendamata, võib isik esitada Riigiprokuratuuri või kohtuvälise menetleja määruse peale kirjaliku kaebuse maakohtule, kelle tööpiirkonnas käesoleva seaduse §-s 5 või 6 alusel antav määrus on koostatud või kelle tööpiirkonnas tekitati kahju käesoleva seaduse § 7 tähenduses. (2) Kaebus esitatakse 30 päeva jooksul arvates päevast, kui isik sai",
-      "estleg:legalText": "(1) Kui Riigiprokuratuur või kohtuväline menetleja jätab kaebuse või taotluse osaliselt või täielikult rahuldamata või läbi vaatamata või tähtaja jooksul lahendamata, võib isik esitada Riigiprokuratuuri või kohtuvälise menetleja määruse peale kirjaliku kaebuse maakohtule, kelle tööpiirkonnas käesoleva seaduse §-s 5 või 6 alusel antav määrus on koostatud või kelle tööpiirkonnas tekitati kahju käesoleva seaduse § 7 tähenduses. (2) Kaebus esitatakse 30 päeva jooksul arvates päevast, kui isik sai teada või pidi teada saama vaidlustatavast määrusest. Taotluse tähtaja jooksul lahendamata jätmise korral esitatakse kaebus 30 päeva jooksul arvates päevast, kui vastavalt Riigiprokuratuur või kohtuväline menetleja oleks pidanud taotluse lahendama. (3) Maakohus võib määrusega: jätta kaebuse rahuldamata; rahuldada kaebuse osaliselt ja määrata isikule hüvitise osas, milles kaebus rahuldati; rahuldada kaebuse ja määrata hüvitise vastavalt taotlusele; tühistada prokuratuuri määruse, millega jäeti taotlus rahuldamata. (4) Maakohtu määruse peale võib esitada määruskaebuse ringkonnakohtule kriminaalmenetluse seadustiku 15. peatükis sätestatud korras. Määruskaebus esitatakse 30 päeva jooksul arvates päevast, kui isik sai teada või pidi teada saama vaidlustatavast kohtumäärusest.",
+      "estleg:summary": {
+        "@value": "(1) Kui Riigiprokuratuur või kohtuväline menetleja jätab kaebuse või taotluse osaliselt või täielikult rahuldamata või läbi vaatamata või tähtaja jooksul lahendamata, võib isik esitada Riigiprokuratuuri või kohtuvälise menetleja määruse peale kirjaliku kaebuse maakohtule, kelle tööpiirkonnas käesoleva seaduse §-s 5 või 6 alusel antav määrus on koostatud või kelle tööpiirkonnas tekitati kahju käesoleva seaduse § 7 tähenduses. (2) Kaebus esitatakse 30 päeva jooksul arvates päevast, kui isik sai",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui Riigiprokuratuur või kohtuväline menetleja jätab kaebuse või taotluse osaliselt või täielikult rahuldamata või läbi vaatamata või tähtaja jooksul lahendamata, võib isik esitada Riigiprokuratuuri või kohtuvälise menetleja määruse peale kirjaliku kaebuse maakohtule, kelle tööpiirkonnas käesoleva seaduse §-s 5 või 6 alusel antav määrus on koostatud või kelle tööpiirkonnas tekitati kahju käesoleva seaduse § 7 tähenduses. (2) Kaebus esitatakse 30 päeva jooksul arvates päevast, kui isik sai teada või pidi teada saama vaidlustatavast määrusest. Taotluse tähtaja jooksul lahendamata jätmise korral esitatakse kaebus 30 päeva jooksul arvates päevast, kui vastavalt Riigiprokuratuur või kohtuväline menetleja oleks pidanud taotluse lahendama. (3) Maakohus võib määrusega: 1) jätta kaebuse rahuldamata; 2) rahuldada kaebuse osaliselt ja määrata isikule hüvitise osas, milles kaebus rahuldati; 3) rahuldada kaebuse ja määrata hüvitise vastavalt taotlusele; 4) tühistada prokuratuuri määruse, millega jäeti taotlus rahuldamata. (4) Maakohtu määruse peale võib esitada määruskaebuse ringkonnakohtule kriminaalmenetluse seadustiku 15. peatükis sätestatud korras. Määruskaebus esitatakse 30 päeva jooksul arvates päevast, kui isik sai teada või pidi teada saama vaidlustatavast kohtumäärusest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SKHS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SKHS_4_2"
       },
@@ -2571,21 +2829,10 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:SKHS_Par_5"
-        },
-        {
-          "@id": "estleg:SKHS_Par_7"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
@@ -2594,17 +2841,31 @@
           "@id": "estleg:SKHS_Par_7"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:SKHS_Par_5"
+        },
+        {
+          "@id": "estleg:SKHS_Par_7"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maakohus"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_ringkonnakohus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:SKHS_Par_17_v120112014001"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_maakohus"
-        },
-        {
-          "@id": "estleg:Institution_ringkonnakohus"
         }
       ]
     },
@@ -2620,9 +2881,6 @@
         "@id": "estleg:SKHS_Par_17"
       },
       "rdfs:label": "§ 17 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2632,14 +2890,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:SKHS_Par_5"
-        },
-        {
-          "@id": "estleg:SKHS_Par_7"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
@@ -2648,6 +2898,17 @@
           "@id": "estleg:SKHS_Par_7"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:SKHS_Par_5"
+        },
+        {
+          "@id": "estleg:SKHS_Par_7"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maakohus"
@@ -2683,14 +2944,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Maakohus võib määrusega: jätta kaebuse rahuldamata; rahuldada kaebuse osaliselt ja määrata isikule hüvitise osas, milles kaebus rahuldati; rahuldada kaebuse ja määrata hüvitise vastavalt taotlusele; tühistada prokuratuuri määruse, millega jäeti taotlus rahuldamata.",
+      "estleg:legalText": "(3) Maakohus võib määrusega: 1) jätta kaebuse rahuldamata; 2) rahuldada kaebuse osaliselt ja määrata isikule hüvitise osas, milles kaebus rahuldati; 3) rahuldada kaebuse ja määrata hüvitise vastavalt taotlusele; 4) tühistada prokuratuuri määruse, millega jäeti taotlus rahuldamata.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_17"
       },
       "rdfs:label": "§ 17 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2700,11 +2964,15 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:mentionsInstitution": [
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_maakohus"
         }
-      ]
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:SKHS_Par_17_Lg_4",
@@ -2718,9 +2986,6 @@
         "@id": "estleg:SKHS_Par_17"
       },
       "rdfs:label": "§ 17 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2729,6 +2994,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -2746,13 +3014,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Kahju hüvitamine süüteoasja menetlemisel maakohtus",
+      "rdfs:label": {
+        "@value": "§ 18. Kahju hüvitamine süüteoasja menetlemisel maakohtus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kriminaalasja või väärteoasja kohtumenetluse kestel esitab isik taotluse kahju hüvitamiseks kohtule. Taotlus esitatakse maakohtu menetluses enne kohtuliku uurimise lõpetamist. (2) Kohus otsustab kahju hüvitamise kohtumääruse või kohtuotsusega.",
+      "estleg:summary": {
+        "@value": "(1) Kriminaalasja või väärteoasja kohtumenetluse kestel esitab isik taotluse kahju hüvitamiseks kohtule. Taotlus esitatakse maakohtu menetluses enne kohtuliku uurimise lõpetamist. (2) Kohus otsustab kahju hüvitamise kohtumääruse või kohtuotsusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kriminaalasja või väärteoasja kohtumenetluse kestel esitab isik taotluse kahju hüvitamiseks kohtule. Taotlus esitatakse maakohtu menetluses enne kohtuliku uurimise lõpetamist. (2) Kohus otsustab kahju hüvitamise kohtumääruse või kohtuotsusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SKHS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SKHS_4_3"
       },
@@ -2766,9 +3043,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -2776,11 +3050,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:SKHS_Par_18_v120112014001"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kohus"
@@ -2790,6 +3059,11 @@
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maakohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:SKHS_Par_18_v120112014001"
         }
       ]
     },
@@ -2855,13 +3129,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Maakohtu lahendi vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 19. Maakohtu lahendi vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Maakohtu otsuse kriminaalmenetluses tekitatud kahju hüvitamise kohta võib vaidlustada kriminaalmenetluse seadustiku 11. või 15. peatüki kohaselt. (2) Kui maakohus arutas väärteoasja väärteomenetluse seadustiku 11. peatüki alusel, võib maakohtu otsuse kahju hüvitamise kohta vaidlustada ringkonnakohtus väärteomenetluse seadustiku 13. või 16. peatüki kohaselt. Kui maakohus arutas väärteoasja väärteomenetluse seadustiku 12. peatüki alusel, võib maakohtu otsuse kahju hüvitamise kohta vaidlustada",
+      "estleg:summary": {
+        "@value": "(1) Maakohtu otsuse kriminaalmenetluses tekitatud kahju hüvitamise kohta võib vaidlustada kriminaalmenetluse seadustiku 11. või 15. peatüki kohaselt. (2) Kui maakohus arutas väärteoasja väärteomenetluse seadustiku 11. peatüki alusel, võib maakohtu otsuse kahju hüvitamise kohta vaidlustada ringkonnakohtus väärteomenetluse seadustiku 13. või 16. peatüki kohaselt. Kui maakohus arutas väärteoasja väärteomenetluse seadustiku 12. peatüki alusel, võib maakohtu otsuse kahju hüvitamise kohta vaidlustada",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maakohtu otsuse kriminaalmenetluses tekitatud kahju hüvitamise kohta võib vaidlustada kriminaalmenetluse seadustiku 11. või 15. peatüki kohaselt. (2) Kui maakohus arutas väärteoasja väärteomenetluse seadustiku 11. peatüki alusel, võib maakohtu otsuse kahju hüvitamise kohta vaidlustada ringkonnakohtus väärteomenetluse seadustiku 13. või 16. peatüki kohaselt. Kui maakohus arutas väärteoasja väärteomenetluse seadustiku 12. peatüki alusel, võib maakohtu otsuse kahju hüvitamise kohta vaidlustada Riigikohtus väärteomenetluse seadustiku 14. või 16. peatüki kohaselt. (3) Maakohtu määruse kahju hüvitamise kohta võib vaidlustada kriminaalmenetluses kriminaalmenetluse seadustiku 15. peatüki kohaselt ja väärteomenetluses väärteomenetluse seadustiku 16. peatüki kohaselt.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SKHS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SKHS_4_3"
       },
@@ -2876,18 +3159,13 @@
           "@id": "estleg:SKHS_Par_19_Lg_3"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:SKHS_Par_19_v120112014001"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maakohus"
@@ -2897,6 +3175,11 @@
         },
         {
           "@id": "estleg:Institution_riigikohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:SKHS_Par_19_v120112014001"
         }
       ]
     },
@@ -2912,12 +3195,12 @@
         "@id": "estleg:SKHS_Par_19"
       },
       "rdfs:label": "§ 19 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -2937,12 +3220,12 @@
         "@id": "estleg:SKHS_Par_19"
       },
       "rdfs:label": "§ 19 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -2968,12 +3251,12 @@
         "@id": "estleg:SKHS_Par_19"
       },
       "rdfs:label": "§ 19 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -2988,13 +3271,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Ringkonnakohtu lahendi vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 20. Ringkonnakohtu lahendi vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Ringkonnakohtu otsuse kriminaalmenetluses tekitatud kahju hüvitamise kohta võib vaidlustada kriminaalmenetluse seadustiku 12. või 15. peatüki kohaselt. (2) Ringkonnakohtu otsuse väärteomenetluses tekitatud kahju hüvitamise kohta võib vaidlustada väärteomenetluse seadustiku 14. või 16. peatüki kohaselt. (3) Ringkonnakohtu määruse kahju hüvitamise kohta võib vaidlustada kriminaalmenetluses kriminaalmenetluse seadustiku 15. peatüki kohaselt ja väärteomenetluses väärteomenetluse seadustiku 16.",
+      "estleg:summary": {
+        "@value": "(1) Ringkonnakohtu otsuse kriminaalmenetluses tekitatud kahju hüvitamise kohta võib vaidlustada kriminaalmenetluse seadustiku 12. või 15. peatüki kohaselt. (2) Ringkonnakohtu otsuse väärteomenetluses tekitatud kahju hüvitamise kohta võib vaidlustada väärteomenetluse seadustiku 14. või 16. peatüki kohaselt. (3) Ringkonnakohtu määruse kahju hüvitamise kohta võib vaidlustada kriminaalmenetluses kriminaalmenetluse seadustiku 15. peatüki kohaselt ja väärteomenetluses väärteomenetluse seadustiku 16.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ringkonnakohtu otsuse kriminaalmenetluses tekitatud kahju hüvitamise kohta võib vaidlustada kriminaalmenetluse seadustiku 12. või 15. peatüki kohaselt. (2) Ringkonnakohtu otsuse väärteomenetluses tekitatud kahju hüvitamise kohta võib vaidlustada väärteomenetluse seadustiku 14. või 16. peatüki kohaselt. (3) Ringkonnakohtu määruse kahju hüvitamise kohta võib vaidlustada kriminaalmenetluses kriminaalmenetluse seadustiku 15. peatüki kohaselt ja väärteomenetluses väärteomenetluse seadustiku 16. peatüki kohaselt.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SKHS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SKHS_4_3"
       },
@@ -3009,21 +3301,21 @@
           "@id": "estleg:SKHS_Par_20_Lg_3"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:SKHS_Par_20_v120112014001"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_ringkonnakohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:SKHS_Par_20_v120112014001"
         }
       ]
     },
@@ -3039,12 +3331,12 @@
         "@id": "estleg:SKHS_Par_20"
       },
       "rdfs:label": "§ 20 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3064,12 +3356,12 @@
         "@id": "estleg:SKHS_Par_20"
       },
       "rdfs:label": "§ 20 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3089,12 +3381,12 @@
         "@id": "estleg:SKHS_Par_20"
       },
       "rdfs:label": "§ 20 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3109,13 +3401,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Taotluse esitamine pärast maakohtu menetlust",
+      "rdfs:label": {
+        "@value": "§ 21. Taotluse esitamine pärast maakohtu menetlust",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kui isik jättis kriminaalmenetluses maakohtule kahju hüvitamise taotluse esitamata mõjuval põhjusel, võib ta selle pärast maakohtu lahendi kuulutamist esitada kriminaalmenetluse seadustiku 11. või 15. peatüki kohaselt ringkonnakohtule. (2) Kui isik jättis väärteoasja väärteomenetluse seadustiku 11. peatüki alusel arutanud maakohtule taotluse esitamata mõjuval põhjusel, võib ta selle pärast maakohtu lahendi kuulutamist esitada väärteomenetluse seadustiku 13. või 16.",
+      "estleg:summary": {
+        "@value": "(1) Kui isik jättis kriminaalmenetluses maakohtule kahju hüvitamise taotluse esitamata mõjuval põhjusel, võib ta selle pärast maakohtu lahendi kuulutamist esitada kriminaalmenetluse seadustiku 11. või 15. peatüki kohaselt ringkonnakohtule. (2) Kui isik jättis väärteoasja väärteomenetluse seadustiku 11. peatüki alusel arutanud maakohtule taotluse esitamata mõjuval põhjusel, võib ta selle pärast maakohtu lahendi kuulutamist esitada väärteomenetluse seadustiku 13. või 16.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui isik jättis kriminaalmenetluses maakohtule kahju hüvitamise taotluse esitamata mõjuval põhjusel, võib ta selle pärast maakohtu lahendi kuulutamist esitada kriminaalmenetluse seadustiku 11. või 15. peatüki kohaselt ringkonnakohtule. (2) Kui isik jättis väärteoasja väärteomenetluse seadustiku 11. peatüki alusel arutanud maakohtule taotluse esitamata mõjuval põhjusel, võib ta selle pärast maakohtu lahendi kuulutamist esitada väärteomenetluse seadustiku 13. või 16. peatüki kohaselt ringkonnakohtule. (3) Käesoleva paragrahvi lõigetes 1 ja 2 nimetatud taotluse võib esitada kuue kuu jooksul maakohtu lahendi kuulutamisest arvates. (4) Kui isik jättis mõjuval põhjusel taotluse ringkonnakohtule esitamata või kui kahju hüvitamise nõude aluse olemasolu selgus alles kassatsioonimenetluses ning isik jättis mõjuval põhjusel taotluse Riigikohtule esitamata, võib taotluse esitada prokuratuurile või kohtuvälisele menetlejale. Taotlus tuleb esitada kuue kuu jooksul ringkonnakohtu või Riigikohtu lahendi jõustumisest arvates. Taotluse lahendamisel järgitakse käesoleva seaduse 4. peatüki 2. jaos sätestatut.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SKHS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SKHS_4_3"
       },
@@ -3138,18 +3439,13 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:SKHS_Par_21_v120112014001"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maakohus"
@@ -3159,6 +3455,11 @@
         },
         {
           "@id": "estleg:Institution_riigikohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:SKHS_Par_21_v120112014001"
         }
       ]
     },
@@ -3174,9 +3475,6 @@
         "@id": "estleg:SKHS_Par_21"
       },
       "rdfs:label": "§ 21 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3185,6 +3483,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3207,9 +3508,6 @@
         "@id": "estleg:SKHS_Par_21"
       },
       "rdfs:label": "§ 21 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3218,6 +3516,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3240,12 +3541,12 @@
         "@id": "estleg:SKHS_Par_21"
       },
       "rdfs:label": "§ 21 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3265,9 +3566,6 @@
         "@id": "estleg:SKHS_Par_21"
       },
       "rdfs:label": "§ 21 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3276,6 +3574,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3293,12 +3594,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Kahjuhüvitise tagasinõudmine",
+      "rdfs:label": {
+        "@value": "§ 22. Kahjuhüvitise tagasinõudmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Kui kahju kannatanud isiku suhtes uuendatakse kriminaalmenetlus sama kuriteoga seoses, lõpeb tema õigus saada hüvitist käesoleva seaduse § 5 või 6 alusel. (2) Kui hüvitis on välja makstud, nõuab uuendatud kriminaalmenetlust läbiviiv menetleja selle tagasi, välja arvatud juhul, kui menetleja teeb otsustuse, mille alusel tekiks isikul õigus nõuda kahju hüvitamist.",
+      "estleg:summary": {
+        "@value": "(1) Kui kahju kannatanud isiku suhtes uuendatakse kriminaalmenetlus sama kuriteoga seoses, lõpeb tema õigus saada hüvitist käesoleva seaduse § 5 või 6 alusel. (2) Kui hüvitis on välja makstud, nõuab uuendatud kriminaalmenetlust läbiviiv menetleja selle tagasi, välja arvatud juhul, kui menetleja teeb otsustuse, mille alusel tekiks isikul õigus nõuda kahju hüvitamist.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui kahju kannatanud isiku suhtes uuendatakse kriminaalmenetlus sama kuriteoga seoses, lõpeb tema õigus saada hüvitist käesoleva seaduse § 5 või 6 alusel. (2) Kui hüvitis on välja makstud, nõuab uuendatud kriminaalmenetlust läbiviiv menetleja selle tagasi, välja arvatud juhul, kui menetleja teeb otsustuse, mille alusel tekiks isikul õigus nõuda kahju hüvitamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_5"
@@ -3323,12 +3630,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
@@ -3360,12 +3667,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:SKHS_Par_5"
         }
@@ -3400,12 +3707,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Seaduse rakendamine",
+      "rdfs:label": {
+        "@value": "§ 23. Seaduse rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "(1) Enne käesoleva seaduse jõustumist alustatud, kuid veel lõpetamata süüteomenetlusega tekitatud kahju hüvitamiseks esitatakse taotlus käesolevas seaduses sätestatud alusel ja korras. (2) Enne käesoleva seaduse jõustumist esitatud taotlus riigi poolt isikule alusetult vabaduse võtmisega tekitatud kahju hüvitamiseks vaadatakse läbi enne käesoleva seaduse jõustumist kehtinud alusel ja korras. (3) Kui käesolev seadus näeb ette süüteomenetluses tekitatud kahju hüvitamise juhul, mida riigi poolt",
+      "estleg:summary": {
+        "@value": "(1) Enne käesoleva seaduse jõustumist alustatud, kuid veel lõpetamata süüteomenetlusega tekitatud kahju hüvitamiseks esitatakse taotlus käesolevas seaduses sätestatud alusel ja korras. (2) Enne käesoleva seaduse jõustumist esitatud taotlus riigi poolt isikule alusetult vabaduse võtmisega tekitatud kahju hüvitamiseks vaadatakse läbi enne käesoleva seaduse jõustumist kehtinud alusel ja korras. (3) Kui käesolev seadus näeb ette süüteomenetluses tekitatud kahju hüvitamise juhul, mida riigi poolt",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Enne käesoleva seaduse jõustumist alustatud, kuid veel lõpetamata süüteomenetlusega tekitatud kahju hüvitamiseks esitatakse taotlus käesolevas seaduses sätestatud alusel ja korras. (2) Enne käesoleva seaduse jõustumist esitatud taotlus riigi poolt isikule alusetult vabaduse võtmisega tekitatud kahju hüvitamiseks vaadatakse läbi enne käesoleva seaduse jõustumist kehtinud alusel ja korras. (3) Kui käesolev seadus näeb ette süüteomenetluses tekitatud kahju hüvitamise juhul, mida riigi poolt isikule alusetult vabaduse võtmisega tekitatud kahju hüvitamise seadusega ei ole ette nähtud, kohaldatakse käesolevat seadust tagasiulatuvalt. (4) Käesoleva paragrahvi lõikes 3 nimetatud kahju hüvitamiseks tuleb esitada taotlus prokuratuurile või kohtuvälisele menetlejale. Taotlus tuleb esitada halduskohtumenetluse seadustikus hüvitamiskaebuse esitamiseks ettenähtud tähtaja jooksul, kuid mitte hiljem kui kolme aasta jooksul käesoleva seaduse jõustumisest arvates. Taotluse lahendamisel järgitakse käesoleva seaduse 4. peatüki 2. jaos sätestatut. (5) Haldus-, ringkonna- ja Riigikohus lahendavad kahju hüvitamise kaebuse käesolevas seaduses sätestatud alustel üksnes siis, kui halduskohus on kahju hüvitamise kaebuse menetlusse võtnud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_6"
@@ -3439,11 +3752,9 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:SKHS_Par_23_v120112014001"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_riigikohus"
@@ -3453,6 +3764,11 @@
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_halduskohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:SKHS_Par_23_v120112014001"
         }
       ]
     },
@@ -3525,12 +3841,12 @@
         "@id": "estleg:SKHS_Par_23"
       },
       "rdfs:label": "§ 23 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -3564,18 +3880,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24.",
+      "rdfs:label": {
+        "@value": "§ 24. [–]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
+      "estleg:summary": "§ 24.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_6"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SKHS_6"
       },
-      "estleg:summary": "§ 24.",
+      "estleg:provisionOmitted": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:SKHS_Par_24_v120112014001"
@@ -3589,12 +3909,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 28. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_6"
@@ -3618,12 +3944,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 29. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Süüteomenetluses tekitatud kahju hüvitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SKHS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2015. aasta 1. mail.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2015. aasta 1. mail.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2015. aasta 1. mail.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SKHS_6"
@@ -3648,22 +3980,28 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2015. aasta 1. mail.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2015. aasta 1. mail.",
       "estleg:parentProvision": {
         "@id": "estleg:SKHS_Par_29"
-      }
+      },
+      "rdfs:label": "§ 29 lg 1"
     },
     {
-      "@id": "estleg:Citation_SKHS_P_5_Lg_5_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/530102023002",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:SKHS_Par_5_Lg_5"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationDetail": "KarS",
-      "estleg:citationText": "karistusseadustiku § 831 lõike 3"
+      "eli:realizes": {
+        "@id": "estleg:SKHS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Compensation for Damage Caused in Offence Proceedings Act",
+        "@language": "en"
+      }
     }
   ]
 }

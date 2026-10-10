@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Ametnike koolituse kord (määrus)",
+      "rdfs:label": {
+        "@value": "Ametnike koolituse kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Ametnike koolituse kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,27 +39,15 @@
       "estleg:globalId": "125032020006",
       "estleg:terviktekstId": "1006882",
       "estleg:preambleText": "Määrus kehtestatakse avaliku teenistuse seaduse § 10 lõike 1 punkti 3 ja § 32 lõike 4 alusel.",
-      "estleg:entryIntoForce": {
-        "@value": "2013-04-01",
-        "@type": "xsd:date"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2020-03-19",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2012-11-13",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Amendment_Reg_1006882_ab6bcee537"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Ametnike koolituse kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "estleg:issuedUnder": [
         {
@@ -96,6 +91,24 @@
         {
           "@id": "http://eurovoc.europa.eu/527"
         }
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2013-04-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2020-03-19",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2012-11-13",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_Reg_1006882_ab6bcee537"
+        }
       ]
     },
     {
@@ -105,16 +118,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametnike koolituse kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1006882_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse ametnike koolituse ja ressursimahuka koolituse kord.",
-      "estleg:legalText": "Määrusega kehtestatakse ametnike koolituse ja ressursimahuka koolituse kord. Määrusega kehtestatakse ametnike koolituse ja ressursimahuka koolituse kord.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse ametnike koolituse ja ressursimahuka koolituse kord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse ametnike koolituse ja ressursimahuka koolituse kord.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1006882_Par_1_Lg_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -125,7 +153,7 @@
           "@id": "estleg:Reg_1032218_Par_1"
         },
         {
-          "@id": "estleg:Reg_1045753_Par_1"
+          "@id": "estleg:Reg_1036388_Par_1"
         },
         {
           "@id": "estleg:Reg_1056416_Par_1"
@@ -134,15 +162,33 @@
           "@id": "estleg:Reg_312300_Par_1"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1006882_Par_1_v1006882"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse ametnike koolituse ja ressursimahuka koolituse kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1006882_Par_2",
@@ -151,13 +197,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kohaldamisala",
+      "rdfs:label": {
+        "@value": "§ 2. Kohaldamisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametnike koolituse kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1006882_Map"
       },
-      "estleg:summary": "1 (1) Määrust kohaldatakse ministeeriumidele ja nende valitsemisalas olevatele ametiasutustele ning Riigikantseleile. Määrust kohaldatakse ministeeriumidele ja nende valitsemisalas olevatele ametiasutustele ning Riigikantseleile. 2 (2) Määrus on Riigikogu Kantseleile, Vabariigi Presidendi Kantseleile, Riigikontrollile, Õiguskantsleri Kantseleile, kohtutele ja kohaliku omavalitsuse üksustele soovituslik. Määrus on Riigikogu Kantseleile, Vabariigi Presidendi Kantseleile, Riigikontrollile, Õiguskan",
-      "estleg:legalText": "1 (1) Määrust kohaldatakse ministeeriumidele ja nende valitsemisalas olevatele ametiasutustele ning Riigikantseleile. Määrust kohaldatakse ministeeriumidele ja nende valitsemisalas olevatele ametiasutustele ning Riigikantseleile. 2 (2) Määrus on Riigikogu Kantseleile, Vabariigi Presidendi Kantseleile, Riigikontrollile, Õiguskantsleri Kantseleile, kohtutele ja kohaliku omavalitsuse üksustele soovituslik. Määrus on Riigikogu Kantseleile, Vabariigi Presidendi Kantseleile, Riigikontrollile, Õiguskantsleri Kantseleile, kohtutele ja kohaliku omavalitsuse üksustele soovituslik.",
+      "estleg:summary": {
+        "@value": "1 (1) Määrust kohaldatakse ministeeriumidele ja nende valitsemisalas olevatele ametiasutustele ning Riigikantseleile. 2 (2) Määrus on Riigikogu Kantseleile, Vabariigi Presidendi Kantseleile, Riigikontrollile, Õiguskantsleri Kantseleile, kohtutele ja kohaliku omavalitsuse üksustele soovituslik.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Määrust kohaldatakse ministeeriumidele ja nende valitsemisalas olevatele ametiasutustele ning Riigikantseleile. 2 (2) Määrus on Riigikogu Kantseleile, Vabariigi Presidendi Kantseleile, Riigikontrollile, Õiguskantsleri Kantseleile, kohtutele ja kohaliku omavalitsuse üksustele soovituslik.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -167,11 +219,79 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1006882_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1006882_Par_2_Lg_2"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1006884_Par_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1006882_Par_2_v1006882"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrust kohaldatakse ministeeriumidele ja nende valitsemisalas olevatele ametiasutustele ning Riigikantseleile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Määrus on Riigikogu Kantseleile, Vabariigi Presidendi Kantseleile, Riigikontrollile, Õiguskantsleri Kantseleile, kohtutele ja kohaliku omavalitsuse üksustele soovituslik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikogu"
@@ -191,13 +311,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Koolituse koordineerimine",
+      "rdfs:label": {
+        "@value": "§ 3. Koolituse koordineerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametnike koolituse kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1006882_Map"
       },
-      "estleg:summary": "1 (1) Ametnike koolitustegevust koordineerib Rahandusministeerium. Koordineerimine on ühtsete tegevuspõhimõtete kujundamine ja nende rakendamise toetamine, et tagada koolitustegevuse järjepidevus ja otstarbekas ressursikasutus. RT I 2020-03-25 2 125032020002 2020-03-28 Ametnike koolitustegevust koordineerib Rahandusministeerium. Koordineerimine on ühtsete tegevuspõhimõtete kujundamine ja nende rakendamise toetamine, et tagada koolitustegevuse järjepidevus ja otstarbekas ressursikasutus. 2 (2) Mi",
-      "estleg:legalText": "1 (1) Ametnike koolitustegevust koordineerib Rahandusministeerium. Koordineerimine on ühtsete tegevuspõhimõtete kujundamine ja nende rakendamise toetamine, et tagada koolitustegevuse järjepidevus ja otstarbekas ressursikasutus. RT I 2020-03-25 2 125032020002 2020-03-28 Ametnike koolitustegevust koordineerib Rahandusministeerium. Koordineerimine on ühtsete tegevuspõhimõtete kujundamine ja nende rakendamise toetamine, et tagada koolitustegevuse järjepidevus ja otstarbekas ressursikasutus. 2 (2) Ministeeriumid koordineerivad oma valitsemisalasse kuuluvate ametiasutuste ja valdkonnaga seotud ametnike koolitustegevust. Ministeeriumid koordineerivad oma valitsemisalasse kuuluvate ametiasutuste ja valdkonnaga seotud ametnike koolitustegevust. 3 (3) Ministeeriumid ja Riigikantselei esitavad Riigi Tugiteenuste Keskusele iga aasta kolmanda kvartali lõpus oma valitsemisala ametnike koolitusvajaduse analüüsi kokkuvõtte. Kokkuvõte peab sisaldama koolitusvajadusi, mis puudutavad üht või mitut sihtrühma või ametiasutust ja mis on riigi kui terviku haldusvõimekuse suurendamise seisukohast olulised ning kõrge lisaväärtusega. RT I 2020-03-25 2 125032020002 2020-03-28 Ministeeriumid ja Riigikantselei esitavad Riigi Tugiteenuste Keskusele iga aasta kolmanda kvartali lõpus oma valitsemisala ametnike koolitusvajaduse analüüsi kokkuvõtte. Kokkuvõte peab sisaldama koolitusvajadusi, mis puudutavad üht või mitut sihtrühma või ametiasutust ja mis on riigi kui terviku haldusvõimekuse suurendamise seisukohast olulised ning kõrge lisaväärtusega. 4 (4) Riigi Tugiteenuste Keskus analüüsib riigi ametiasutuste ametnike koolitusvajadust ja korraldab ühisest koolitusvajadusest tulenevat koolitust. RT I 2020-03-25 2 125032020002 2020-03-28 Riigi Tugiteenuste Keskus analüüsib riigi ametiasutuste ametnike koolitusvajadust ja korraldab ühisest koolitusvajadusest tulenevat koolitust.",
+      "estleg:summary": {
+        "@value": "1 (1) Ametnike koolitustegevust koordineerib Rahandusministeerium. Koordineerimine on ühtsete tegevuspõhimõtete kujundamine ja nende rakendamise toetamine, et tagada koolitustegevuse järjepidevus ja otstarbekas ressursikasutus. RT I 2020-03-25 2 125032020002 2020-03-28 2 (2) Ministeeriumid koordineerivad oma valitsemisalasse kuuluvate ametiasutuste ja valdkonnaga seotud ametnike koolitustegevust.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ametnike koolitustegevust koordineerib Rahandusministeerium. Koordineerimine on ühtsete tegevuspõhimõtete kujundamine ja nende rakendamise toetamine, et tagada koolitustegevuse järjepidevus ja otstarbekas ressursikasutus. RT I 2020-03-25 2 125032020002 2020-03-28 2 (2) Ministeeriumid koordineerivad oma valitsemisalasse kuuluvate ametiasutuste ja valdkonnaga seotud ametnike koolitustegevust. 3 (3) Ministeeriumid ja Riigikantselei esitavad Riigi Tugiteenuste Keskusele iga aasta kolmanda kvartali lõpus oma valitsemisala ametnike koolitusvajaduse analüüsi kokkuvõtte. Kokkuvõte peab sisaldama koolitusvajadusi, mis puudutavad üht või mitut sihtrühma või ametiasutust ja mis on riigi kui terviku haldusvõimekuse suurendamise seisukohast olulised ning kõrge lisaväärtusega. RT I 2020-03-25 2 125032020002 2020-03-28 4 (4) Riigi Tugiteenuste Keskus analüüsib riigi ametiasutuste ametnike koolitusvajadust ja korraldab ühisest koolitusvajadusest tulenevat koolitust. RT I 2020-03-25 2 125032020002 2020-03-28",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -210,16 +336,138 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1006882_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1006882_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1006882_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1006882_Par_3_Lg_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_rahandusministeerium"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1006882_Par_3_v1006882"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametnike koolitustegevust koordineerib Rahandusministeerium. Koordineerimine on ühtsete tegevuspõhimõtete kujundamine ja nende rakendamise toetamine, et tagada koolitustegevuse järjepidevus ja otstarbekas ressursikasutus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_rahandusministeerium"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ministeeriumid koordineerivad oma valitsemisalasse kuuluvate ametiasutuste ja valdkonnaga seotud ametnike koolitustegevust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ministeeriumid ja Riigikantselei esitavad Riigi Tugiteenuste Keskusele iga aasta kolmanda kvartali lõpus oma valitsemisala ametnike koolitusvajaduse analüüsi kokkuvõtte. Kokkuvõte peab sisaldama koolitusvajadusi, mis puudutavad üht või mitut sihtrühma või ametiasutust ja mis on riigi kui terviku haldusvõimekuse suurendamise seisukohast olulised ning kõrge lisaväärtusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigi Tugiteenuste Keskus analüüsib riigi ametiasutuste ametnike koolitusvajadust ja korraldab ühisest koolitusvajadusest tulenevat koolitust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1006882_Par_4",
@@ -228,13 +476,69 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Koolituse korraldamine ametiasutuses",
+      "rdfs:label": {
+        "@value": "§ 4. Koolituse korraldamine ametiasutuses",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametnike koolituse kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1006882_Map"
       },
-      "estleg:summary": "1 (1) Ametiasutus peab ametnike ametialase arengu edendamiseks rakendatavate tegevuste planeerimisel ja elluviimisel lähtuma üleriigilistest strateegilistest dokumentidest, valdkondlikest ja organisatsioonipõhistest arengukavadest, eelarvest ning arengu- ja hindamisvestluste tulemustest. Ametiasutus peab ametnike ametialase arengu edendamiseks rakendatavate tegevuste planeerimisel ja elluviimisel lähtuma üleriigilistest strateegilistest dokumentidest, valdkondlikest ja organisatsioonipõhistest a",
-      "estleg:legalText": "1 (1) Ametiasutus peab ametnike ametialase arengu edendamiseks rakendatavate tegevuste planeerimisel ja elluviimisel lähtuma üleriigilistest strateegilistest dokumentidest, valdkondlikest ja organisatsioonipõhistest arengukavadest, eelarvest ning arengu- ja hindamisvestluste tulemustest. Ametiasutus peab ametnike ametialase arengu edendamiseks rakendatavate tegevuste planeerimisel ja elluviimisel lähtuma üleriigilistest strateegilistest dokumentidest, valdkondlikest ja organisatsioonipõhistest arengukavadest, eelarvest ning arengu- ja hindamisvestluste tulemustest. 2 (2) Ametiasutuse juhi või tema volitatud isiku kehtestatud ametiasutuse ametnike koolituse kord peab sisaldama vähemalt järgmist: 1 1) ametiasutusesisest vastutuse jaotust koolituse korraldamisel; 2 2) koolitusvajaduse analüüsimise korraldust; 3 3) koolituse planeerimise korraldust; 4 4) koolituse korraldamise ja koolitusel osalemise, sealhulgas koolituse rahastamise ning koolituskulude hüvitamise korda; 5 5) ressursimahukal koolitusel osalemise, kulude hüvitamise ja lepingu sõlmimise korda; 6 6) koolituse arvestuse ja aruandluse korraldust; 7 7) koolituse tulemuslikkuse hindamise korraldust. Ametiasutuse juhi või tema volitatud isiku kehtestatud ametiasutuse ametnike koolituse kord peab sisaldama vähemalt järgmist: ametiasutusesisest vastutuse jaotust koolituse korraldamisel; koolitusvajaduse analüüsimise korraldust; koolituse planeerimise korraldust; koolituse korraldamise ja koolitusel osalemise, sealhulgas koolituse rahastamise ning koolituskulude hüvitamise korda; ressursimahukal koolitusel osalemise, kulude hüvitamise ja lepingu sõlmimise korda; koolituse arvestuse ja aruandluse korraldust; koolituse tulemuslikkuse hindamise korraldust. 3 (3) Rahalise omaosaluse võimaluse korral peab ametiasutuse ametnike koolituse kord sisaldama vähemalt järgmist: 1 1) rahalise omaosaluse määrasid; 2 2) põhimõtteid, mis tagavad ametnike võrdse kohtlemise rahalist omaosalust nõudval koolitusel osalemisel, sealhulgas seda, millistel juhtudel võib rakendada erinevaid omaosaluse määrasid. Rahalise omaosaluse võimaluse korral peab ametiasutuse ametnike koolituse kord sisaldama vähemalt järgmist: rahalise omaosaluse määrasid; põhimõtteid, mis tagavad ametnike võrdse kohtlemise rahalist omaosalust nõudval koolitusel osalemisel, sealhulgas seda, millistel juhtudel võib rakendada erinevaid omaosaluse määrasid.",
+      "estleg:summary": {
+        "@value": "1 (1) Ametiasutus peab ametnike ametialase arengu edendamiseks rakendatavate tegevuste planeerimisel ja elluviimisel lähtuma üleriigilistest strateegilistest dokumentidest, valdkondlikest ja organisatsioonipõhistest arengukavadest, eelarvest ning arengu- ja hindamisvestluste tulemustest. 2 (2) Ametiasutuse juhi või tema volitatud isiku kehtestatud ametiasutuse ametnike koolituse kord peab sisaldama vähemalt järgmist: 1 1) ametiasutusesisest vastutuse jaotust koolituse korraldamisel; 2 2)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ametiasutus peab ametnike ametialase arengu edendamiseks rakendatavate tegevuste planeerimisel ja elluviimisel lähtuma üleriigilistest strateegilistest dokumentidest, valdkondlikest ja organisatsioonipõhistest arengukavadest, eelarvest ning arengu- ja hindamisvestluste tulemustest. 2 (2) Ametiasutuse juhi või tema volitatud isiku kehtestatud ametiasutuse ametnike koolituse kord peab sisaldama vähemalt järgmist: 1 1) ametiasutusesisest vastutuse jaotust koolituse korraldamisel; 2 2) koolitusvajaduse analüüsimise korraldust; 3 3) koolituse planeerimise korraldust; 4 4) koolituse korraldamise ja koolitusel osalemise, sealhulgas koolituse rahastamise ning koolituskulude hüvitamise korda; 5 5) ressursimahukal koolitusel osalemise, kulude hüvitamise ja lepingu sõlmimise korda; 6 6) koolituse arvestuse ja aruandluse korraldust; 7 7) koolituse tulemuslikkuse hindamise korraldust. 3 (3) Rahalise omaosaluse võimaluse korral peab ametiasutuse ametnike koolituse kord sisaldama vähemalt järgmist: 1 1) rahalise omaosaluse määrasid; 2 2) põhimõtteid, mis tagavad ametnike võrdse kohtlemise rahalist omaosalust nõudval koolitusel osalemisel, sealhulgas seda, millistel juhtudel võib rakendada erinevaid omaosaluse määrasid.",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1006882_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1006882_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1006882_Par_4_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:Reg_1006882_Par_4_v1006882"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiasutus peab ametnike ametialase arengu edendamiseks rakendatavate tegevuste planeerimisel ja elluviimisel lähtuma üleriigilistest strateegilistest dokumentidest, valdkondlikest ja organisatsioonipõhistest arengukavadest, eelarvest ning arengu- ja hindamisvestluste tulemustest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -247,16 +551,76 @@
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ametiasutuse juhi või tema volitatud isiku kehtestatud ametiasutuse ametnike koolituse kord peab sisaldama vähemalt järgmist: 1) ametiasutusesisest vastutuse jaotust koolituse korraldamisel; 2) koolitusvajaduse analüüsimise korraldust; 3) koolituse planeerimise korraldust; 4) koolituse korraldamise ja koolitusel osalemise, sealhulgas koolituse rahastamise ning koolituskulude hüvitamise korda; 5) ressursimahukal koolitusel osalemise, kulude hüvitamise ja lepingu sõlmimise korda; 6) koolituse arvestuse ja aruandluse korraldust; 7) koolituse tulemuslikkuse hindamise korraldust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
+      "estleg:targetGroup": [
         {
-          "@id": "estleg:Reg_1006882_Par_4_v1006882"
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahalise omaosaluse võimaluse korral peab ametiasutuse ametnike koolituse kord sisaldama vähemalt järgmist: 1) rahalise omaosaluse määrasid; 2) põhimõtteid, mis tagavad ametnike võrdse kohtlemise rahalist omaosalust nõudval koolitusel osalemisel, sealhulgas seda, millistel juhtudel võib rakendada erinevaid omaosaluse määrasid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:Reg_1006882_Par_5",
@@ -265,13 +629,116 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Ressursimahuka koolituse leping",
+      "rdfs:label": {
+        "@value": "§ 5. Ressursimahuka koolituse leping",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametnike koolituse kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1006882_Map"
       },
-      "estleg:summary": "1 (1) Haldusleping ametniku ressursimahukal koolitusel osalemiseks (edaspidi ressursimahuka koolituse leping) tuleb sõlmida avaliku teenistuse seaduse § 32 lõikes 3 sätestatud juhul. Ressursimahuka koolituse lepingu võib sõlmida avaliku teenistuse seaduse § 32 lõikes 1 sätestatud juhul. Ressursimahuka koolituse leping sõlmitakse enne koolituse algust. Haldusleping ametniku ressursimahukal koolitusel osalemiseks (edaspidi ressursimahuka koolituse leping) tuleb sõlmida avaliku teenistuse seaduse §",
-      "estleg:legalText": "1 (1) Haldusleping ametniku ressursimahukal koolitusel osalemiseks (edaspidi ressursimahuka koolituse leping) tuleb sõlmida avaliku teenistuse seaduse § 32 lõikes 3 sätestatud juhul. Ressursimahuka koolituse lepingu võib sõlmida avaliku teenistuse seaduse § 32 lõikes 1 sätestatud juhul. Ressursimahuka koolituse leping sõlmitakse enne koolituse algust. Haldusleping ametniku ressursimahukal koolitusel osalemiseks (edaspidi ressursimahuka koolituse leping) tuleb sõlmida avaliku teenistuse seaduse § 32 lõikes 3 sätestatud juhul. Ressursimahuka koolituse lepingu võib sõlmida avaliku teenistuse seaduse § 32 lõikes 1 sätestatud juhul. Ressursimahuka koolituse leping sõlmitakse enne koolituse algust. 2 (2) Ressursimahuka koolituse leping peab sisaldama vähemalt järgmisi andmeid: 1 1) ametniku ees- ja perekonnanimi; 2 2) ametniku ametikoht; 3 3) koolituse algus- ja lõppkuupäev; 4 4) koolituse nimetus; 5 5) koolituse korraldaja; 6 6) koolituse maht või eeldatav maht; 7 7) koolituse kogumaksumus või eeldatav kogumaksumus; 8 8) periood, mille vältel ametnik on kohustatud olema ametiasutuse teenistuses pärast ressursimahuka koolituse lõppu; 9 9) ametiasutuse poolt koolitusele tehtud kulutuste hüvitamise tingimused ja kord. Ressursimahuka koolituse leping peab sisaldama vähemalt järgmisi andmeid: ametniku ees- ja perekonnanimi; ametniku ametikoht; koolituse algus- ja lõppkuupäev; koolituse nimetus; koolituse korraldaja; koolituse maht või eeldatav maht; koolituse kogumaksumus või eeldatav kogumaksumus; periood, mille vältel ametnik on kohustatud olema ametiasutuse teenistuses pärast ressursimahuka koolituse lõppu; ametiasutuse poolt koolitusele tehtud kulutuste hüvitamise tingimused ja kord.",
+      "estleg:summary": {
+        "@value": "1 (1) Haldusleping ametniku ressursimahukal koolitusel osalemiseks (edaspidi ressursimahuka koolituse leping) tuleb sõlmida avaliku teenistuse seaduse § 32 lõikes 3 sätestatud juhul. Ressursimahuka koolituse lepingu võib sõlmida avaliku teenistuse seaduse § 32 lõikes 1 sätestatud juhul. Ressursimahuka koolituse leping sõlmitakse enne koolituse algust.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Haldusleping ametniku ressursimahukal koolitusel osalemiseks (edaspidi ressursimahuka koolituse leping) tuleb sõlmida avaliku teenistuse seaduse § 32 lõikes 3 sätestatud juhul. Ressursimahuka koolituse lepingu võib sõlmida avaliku teenistuse seaduse § 32 lõikes 1 sätestatud juhul. Ressursimahuka koolituse leping sõlmitakse enne koolituse algust. 2 (2) Ressursimahuka koolituse leping peab sisaldama vähemalt järgmisi andmeid: 1 1) ametniku ees- ja perekonnanimi; 2 2) ametniku ametikoht; 3 3) koolituse algus- ja lõppkuupäev; 4 4) koolituse nimetus; 5 5) koolituse korraldaja; 6 6) koolituse maht või eeldatav maht; 7 7) koolituse kogumaksumus või eeldatav kogumaksumus; 8 8) periood, mille vältel ametnik on kohustatud olema ametiasutuse teenistuses pärast ressursimahuka koolituse lõppu; 9 9) ametiasutuse poolt koolitusele tehtud kulutuste hüvitamise tingimused ja kord.",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1006882_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1006882_Par_5_Lg_2"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:AVALIK_Par_32_Lg_3"
+        },
+        {
+          "@id": "estleg:AVALIK_Par_32_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:Reg_1006882_Par_5_v1006882"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Haldusleping ametniku ressursimahukal koolitusel osalemiseks (edaspidi ressursimahuka koolituse leping) tuleb sõlmida avaliku teenistuse seaduse § 32 lõikes 3 sätestatud juhul. Ressursimahuka koolituse lepingu võib sõlmida avaliku teenistuse seaduse § 32 lõikes 1 sätestatud juhul. Ressursimahuka koolituse leping sõlmitakse enne koolituse algust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:AVALIK_Par_32_Lg_3"
+        },
+        {
+          "@id": "estleg:AVALIK_Par_32_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ressursimahuka koolituse leping peab sisaldama vähemalt järgmisi andmeid: 1) ametniku ees- ja perekonnanimi; 2) ametniku ametikoht; 3) koolituse algus- ja lõppkuupäev; 4) koolituse nimetus; 5) koolituse korraldaja; 6) koolituse maht või eeldatav maht; 7) koolituse kogumaksumus või eeldatav kogumaksumus; 8) periood, mille vältel ametnik on kohustatud olema ametiasutuse teenistuses pärast ressursimahuka koolituse lõppu; 9) ametiasutuse poolt koolitusele tehtud kulutuste hüvitamise tingimused ja kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -282,24 +749,7 @@
       ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:AVALIK_Par_32_Lg_3"
-        },
-        {
-          "@id": "estleg:AVALIK_Par_32_Lg_1"
-        }
-      ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:Reg_1006882_Par_5_v1006882"
-        }
-      ]
+      }
     },
     {
       "@id": "estleg:Reg_1006882_Par_6",
@@ -308,13 +758,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Ressursimahuka koolituse kulude arvestamine",
+      "rdfs:label": {
+        "@value": "§ 6. Ressursimahuka koolituse kulude arvestamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametnike koolituse kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1006882_Map"
       },
-      "estleg:summary": "1 (1) Ressursimahuka koolituse kulud arvestab ametiasutus välja ühe osaleja põhiselt ja seob need koolitusel osalenud ametnikuga. Ressursimahuka koolituse kulud arvestab ametiasutus välja ühe osaleja põhiselt ja seob need koolitusel osalenud ametnikuga. 2 (2) Ressursimahuka koolituse maksumuse arvutamisel võetakse arvesse nii otsesed kui ka kaudsed kulud. Ressursimahuka koolituse maksumuse arvutamisel võetakse arvesse nii otsesed kui ka kaudsed kulud. 3 (3) Ressursimahuka koolituse kulude arvest",
-      "estleg:legalText": "1 (1) Ressursimahuka koolituse kulud arvestab ametiasutus välja ühe osaleja põhiselt ja seob need koolitusel osalenud ametnikuga. Ressursimahuka koolituse kulud arvestab ametiasutus välja ühe osaleja põhiselt ja seob need koolitusel osalenud ametnikuga. 2 (2) Ressursimahuka koolituse maksumuse arvutamisel võetakse arvesse nii otsesed kui ka kaudsed kulud. Ressursimahuka koolituse maksumuse arvutamisel võetakse arvesse nii otsesed kui ka kaudsed kulud. 3 (3) Ressursimahuka koolituse kulude arvestamise aluseks on järgmised otsesed kulud: 1 1) õppe- või koolituskoha maksumus või koolitusel osalemise tasud; 2 2) lektoritasud; 3 3) kulud õppematerjalide ettevalmistamisele või ostmisele. Ressursimahuka koolituse kulude arvestamise aluseks on järgmised otsesed kulud: õppe- või koolituskoha maksumus või koolitusel osalemise tasud; lektoritasud; kulud õppematerjalide ettevalmistamisele või ostmisele. 4 (4) Ressursimahuka koolituse kulude arvestamise aluseks on järgmised kaudsed kulud: 1 1) koolitusruumide ja -inventari rent; 2 2) toitlustuskulu; 3 3) majutuskulu; 4 4) sõidukulu; 5 5) lähetatute kindlustus; 6 6) päevaraha; 7 7) muud lähetusega seotud kulud. Ressursimahuka koolituse kulude arvestamise aluseks on järgmised kaudsed kulud: koolitusruumide ja -inventari rent; toitlustuskulu; majutuskulu; sõidukulu; lähetatute kindlustus; päevaraha; muud lähetusega seotud kulud.",
+      "estleg:summary": {
+        "@value": "1 (1) Ressursimahuka koolituse kulud arvestab ametiasutus välja ühe osaleja põhiselt ja seob need koolitusel osalenud ametnikuga. 2 (2) Ressursimahuka koolituse maksumuse arvutamisel võetakse arvesse nii otsesed kui ka kaudsed kulud. 3 (3) Ressursimahuka koolituse kulude arvestamise aluseks on järgmised otsesed kulud: 1 1) õppe- või koolituskoha maksumus või koolitusel osalemise tasud; 2 2) lektoritasud; 3 3) kulud õppematerjalide ettevalmistamisele või ostmisele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ressursimahuka koolituse kulud arvestab ametiasutus välja ühe osaleja põhiselt ja seob need koolitusel osalenud ametnikuga. 2 (2) Ressursimahuka koolituse maksumuse arvutamisel võetakse arvesse nii otsesed kui ka kaudsed kulud. 3 (3) Ressursimahuka koolituse kulude arvestamise aluseks on järgmised otsesed kulud: 1 1) õppe- või koolituskoha maksumus või koolitusel osalemise tasud; 2 2) lektoritasud; 3 3) kulud õppematerjalide ettevalmistamisele või ostmisele. 4 (4) Ressursimahuka koolituse kulude arvestamise aluseks on järgmised kaudsed kulud: 1 1) koolitusruumide ja -inventari rent; 2 2) toitlustuskulu; 3 3) majutuskulu; 4 4) sõidukulu; 5 5) lähetatute kindlustus; 6 6) päevaraha; 7 7) muud lähetusega seotud kulud.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -327,10 +783,102 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1006882_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1006882_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1006882_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1006882_Par_6_Lg_4"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1006882_Par_6_v1006882"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ressursimahuka koolituse kulud arvestab ametiasutus välja ühe osaleja põhiselt ja seob need koolitusel osalenud ametnikuga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ressursimahuka koolituse maksumuse arvutamisel võetakse arvesse nii otsesed kui ka kaudsed kulud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ressursimahuka koolituse kulude arvestamise aluseks on järgmised otsesed kulud: 1) õppe- või koolituskoha maksumus või koolitusel osalemise tasud; 2) lektoritasud; 3) kulud õppematerjalide ettevalmistamisele või ostmisele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ressursimahuka koolituse kulude arvestamise aluseks on järgmised kaudsed kulud: 1) koolitusruumide ja -inventari rent; 2) toitlustuskulu; 3) majutuskulu; 4) sõidukulu; 5) lähetatute kindlustus; 6) päevaraha; 7) muud lähetusega seotud kulud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
       ]
     },
     {
@@ -340,18 +888,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 7. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametnike koolituse kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1006882_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. aprillil 2013. a.",
-      "estleg:legalText": "Määrus jõustub 1. aprillil 2013. a. Määrus jõustub 1. aprillil 2013. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. aprillil 2013. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. aprillil 2013. a.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1006882_Par_7_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1006882_Par_7_v1006882"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1006882_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. aprillil 2013. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1006882_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1006882_Map_1",

@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VANDET_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Vandetõlgi seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Vandetõlgi seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Vandetõlgi seadus",
-      "dcterms:title": [
-        {
-          "@value": "Vandetõlgi seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Sworn Translators Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Vandetõlgi seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/114032025002.xml"
+        "@id": "https://www.riigiteataja.ee/akt/114032025002"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/114032025002/xml"
+      },
+      "estleg:globalId": "114032025002",
+      "eli:id_local": "114032025002",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "1019857",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "5603ac5765d23f1dfaae9c937cb63440a974050ef557b916d36bde36855a9cee",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-01-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/517032025002"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/517032025002"
       },
       "estleg:references": [
@@ -59,7 +65,7 @@
           "@id": "estleg:VANDET_Par_5_Lg_1"
         },
         {
-          "@id": "estleg:VABARI_Par_105"
+          "@id": "estleg:VANDET_Par_2_Lg_3"
         },
         {
           "@id": "estleg:VANDET_Par_5"
@@ -71,7 +77,7 @@
           "@id": "estleg:VANDET_Par_24_Lg_1"
         },
         {
-          "@id": "estleg:EVH_Par_28"
+          "@id": "estleg:EVH_Par_28_Lg_2"
         },
         {
           "@id": "estleg:VANDET_Par_16"
@@ -81,6 +87,9 @@
         },
         {
           "@id": "estleg:VKT_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:VKT_Par_17"
         },
         {
           "@id": "estleg:VANDET_Par_28_Lg_3"
@@ -98,7 +107,80 @@
           "@id": "estleg:VANDET_Par_31"
         }
       ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/573"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
+      ],
+      "eli:is_about": [
+        {
+          "@id": "http://eurovoc.europa.eu/517"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/573"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/523"
+        }
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2014-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2013-12-23",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        },
+        {
+          "@id": "estleg:Institution_justiitsminister"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RAM17_0203"
+        }
+      ],
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_VANDET_a4b69463de"
+        },
+        {
+          "@id": "estleg:Amendment_VANDET_3691b657bd"
+        },
+        {
+          "@id": "estleg:Amendment_VANDET_10d6f20a57"
+        },
+        {
+          "@id": "estleg:Amendment_VANDET_e5652487aa"
+        },
+        {
+          "@id": "estleg:Amendment_VANDET_35e73cbd3b"
+        }
+      ],
+      "estleg:hasProposedAmendment": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_RAM17_0203_VANDET"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:VANDET_Map"
+        },
         {
           "@id": "estleg:VANDET_Par_14"
         },
@@ -124,7 +206,13 @@
           "@id": "estleg:VANDET_Par_65_Lg_3"
         },
         {
+          "@id": "estleg:Reg_1021229_Map"
+        },
+        {
           "@id": "estleg:Reg_1021229_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1021229_Par_5_Lg_1"
         },
         {
           "@id": "estleg:VANDET_Par_18"
@@ -151,6 +239,9 @@
           "@id": "estleg:Reg_1021229_Par_25"
         },
         {
+          "@id": "estleg:Reg_1021229_Par_25_Lg_1"
+        },
+        {
           "@id": "estleg:VANDET_Par_11_Lg_4"
         },
         {
@@ -165,49 +256,37 @@
           "@id": "estleg:Reg_1021229_Map"
         }
       ],
-      "estleg:implementedByCount": 2,
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/517"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/573"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/523"
-        }
+      "estleg:implementedByCount": 2
+    },
+    {
+      "@id": "estleg:Cluster_VANDET_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "eli:is_about": [
-        {
-          "@id": "http://eurovoc.europa.eu/517"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/573"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/523"
-        }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsminister"
-        }
-      ],
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RAM17_0203"
-        }
-      ]
+      "rdfs:label": {
+        "@value": "§1–1 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–1 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:VANDET_TopicScheme"
+      },
+      "estleg:provisionCount": 1
     },
     {
       "@id": "estleg:VANDET_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Vandetõlgi seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Vandetõlgi seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_VANDET_1"
@@ -230,26 +309,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_VANDET_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–1 Üldsätted",
-      "skos:prefLabel": "§1–1 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:VANDET_TopicScheme"
-      },
-      "estleg:provisionCount": 1
-    },
-    {
       "@id": "estleg:Chapter_VANDET_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "1. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
@@ -269,8 +337,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§2–15 Vandetõlgi kutse ja kutsetegevus",
-      "skos:prefLabel": "§2–15 Vandetõlgi kutse ja kutsetegevus",
+      "rdfs:label": {
+        "@value": "§2–15 Vandetõlgi kutse ja kutsetegevus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§2–15 Vandetõlgi kutse ja kutsetegevus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VANDET_TopicScheme"
       },
@@ -282,7 +356,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Vandetõlgi kutse ja kutsetegevus",
+      "rdfs:label": {
+        "@value": "2. peatükk – Vandetõlgi kutse ja kutsetegevus",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
@@ -302,8 +379,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§16–24 Vandetõlgi kutse andmine, kutsetegevuse peatamine ja kutse äravõtmine",
-      "skos:prefLabel": "§16–24 Vandetõlgi kutse andmine, kutsetegevuse peatamine ja kutse äravõtmine",
+      "rdfs:label": {
+        "@value": "§16–24 Vandetõlgi kutse andmine, kutsetegevuse peatamine ja kutse äravõtmine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§16–24 Vandetõlgi kutse andmine, kutsetegevuse peatamine ja kutse äravõtmine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VANDET_TopicScheme"
       },
@@ -315,7 +398,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – Vandetõlgi kutse andmine, kutsetegevuse peatamine ja kutse äravõtmine",
+      "rdfs:label": {
+        "@value": "3. peatükk – Vandetõlgi kutse andmine, kutsetegevuse peatamine ja kutse äravõtmine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
@@ -335,8 +421,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§25–27 Vandetõlgi kutsetegevuse registreerimine, statistiline aruandlus ja dokumentide säilitamine",
-      "skos:prefLabel": "§25–27 Vandetõlgi kutsetegevuse registreerimine, statistiline aruandlus ja dokumentide säilitamine",
+      "rdfs:label": {
+        "@value": "§25–27 Vandetõlgi kutsetegevuse registreerimine, statistiline aruandlus ja dokumentide säilitamine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§25–27 Vandetõlgi kutsetegevuse registreerimine, statistiline aruandlus ja dokumentide säilitamine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VANDET_TopicScheme"
       },
@@ -348,7 +440,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – Vandetõlgi kutsetegevuse registreerimine, statistiline aruandlus ja dokumentide säilitamine",
+      "rdfs:label": {
+        "@value": "4. peatükk – Vandetõlgi kutsetegevuse registreerimine, statistiline aruandlus ja dokumentide säilitamine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
@@ -368,8 +463,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§28–29 Järelevalve",
-      "skos:prefLabel": "§28–29 Järelevalve",
+      "rdfs:label": {
+        "@value": "§28–29 Järelevalve",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§28–29 Järelevalve",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VANDET_TopicScheme"
       },
@@ -381,7 +482,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – Järelevalve",
+      "rdfs:label": {
+        "@value": "5. peatükk – Järelevalve",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
@@ -401,12 +505,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "Rakendussätted",
-      "skos:prefLabel": "Rakendussätted",
+      "rdfs:label": {
+        "@value": "Rakendussätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Rakendussätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VANDET_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 6
     },
     {
       "@id": "estleg:Division_VANDET_6_1",
@@ -414,7 +524,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – Üleminekusätted",
+      "rdfs:label": {
+        "@value": "1. jagu – Üleminekusätted",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VANDET_6"
       }
@@ -425,7 +538,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Seaduste muutmine ja kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "2. jagu – Seaduste muutmine ja kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VANDET_6"
       }
@@ -436,7 +552,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "3. jagu – Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "3. jagu – Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VANDET_6"
       }
@@ -447,7 +566,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – Rakendussätted",
+      "rdfs:label": {
+        "@value": "6. peatükk – Rakendussätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
@@ -478,12 +600,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "Käesolev seadus sätestab vandetõlgi kutsetegevuse alused.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus sätestab vandetõlgi kutsetegevuse alused.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus sätestab vandetõlgi kutsetegevuse alused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_1"
@@ -529,10 +657,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus sätestab vandetõlgi kutsetegevuse alused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab vandetõlgi kutsetegevuse alused.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:VANDET_Par_2",
@@ -541,13 +671,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Vandetõlk",
+      "rdfs:label": {
+        "@value": "§ 2. Vandetõlk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlk on isik, kes osutab kutsetegevusena ametlikku dokumentide tõlkimise teenust ja täidab seaduses sätestatud juhtudel muid tõlkimisega seotud ülesandeid. (2) Eestis võib vandetõlgi kutsenimetuse all vandetõlgi kutsetegevusega tegeleda üksnes isik, kellele on käesolevas seaduses sätestatud alustel ja korras antud vandetõlgi kutse. Vandetõlgi kutset tõendab valdkonna eest vastutava ministri poolt väljastatud vandetõlgi kutsetunnistus, mille kohta on andmed avaldatud Justiits- ja",
-      "estleg:legalText": "(1) Vandetõlk on isik, kes osutab kutsetegevusena ametlikku dokumentide tõlkimise teenust ja täidab seaduses sätestatud juhtudel muid tõlkimisega seotud ülesandeid. (2) Eestis võib vandetõlgi kutsenimetuse all vandetõlgi kutsetegevusega tegeleda üksnes isik, kellele on käesolevas seaduses sätestatud alustel ja korras antud vandetõlgi kutse. Vandetõlgi kutset tõendab valdkonna eest vastutava ministri poolt väljastatud vandetõlgi kutsetunnistus, mille kohta on andmed avaldatud Justiits- ja Digiministeeriumi veebilehel. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (3) Vandetõlgi kutsetegevusega võib tegeleda ka välisriigis vandetõlgi kutse omandanud isik, kui tema kvalifikatsiooni on tunnustatud välisriigi kutsekvalifikatsiooni tunnustamise seaduse alusel.",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlk on isik, kes osutab kutsetegevusena ametlikku dokumentide tõlkimise teenust ja täidab seaduses sätestatud juhtudel muid tõlkimisega seotud ülesandeid. (2) Eestis võib vandetõlgi kutsenimetuse all vandetõlgi kutsetegevusega tegeleda üksnes isik, kellele on käesolevas seaduses sätestatud alustel ja korras antud vandetõlgi kutse. Vandetõlgi kutset tõendab valdkonna eest vastutava ministri poolt väljastatud vandetõlgi kutsetunnistus, mille kohta on andmed avaldatud Justiits- ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vandetõlk on isik, kes osutab kutsetegevusena ametlikku dokumentide tõlkimise teenust ja täidab seaduses sätestatud juhtudel muid tõlkimisega seotud ülesandeid. (2) Eestis võib vandetõlgi kutsenimetuse all vandetõlgi kutsetegevusega tegeleda üksnes isik, kellele on käesolevas seaduses sätestatud alustel ja korras antud vandetõlgi kutse. Vandetõlgi kutset tõendab valdkonna eest vastutava ministri poolt väljastatud vandetõlgi kutsetunnistus, mille kohta on andmed avaldatud Justiits- ja Digiministeeriumi veebilehel. (3) Vandetõlgi kutsetegevusega võib tegeleda ka välisriigis vandetõlgi kutse omandanud isik, kui tema kvalifikatsiooni on tunnustatud välisriigi kutsekvalifikatsiooni tunnustamise seaduse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
       },
@@ -568,18 +704,20 @@
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:VANDET_Par_2_v230767"
@@ -601,14 +739,6 @@
         },
         {
           "@id": "estleg:VANDET_Par_2_v114032025002"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -635,10 +765,16 @@
       },
       "estleg:referencedBy": [
         {
+          "@id": "estleg:RaKS_Map"
+        },
+        {
           "@id": "estleg:RaKS_Par_53"
         },
         {
           "@id": "estleg:RaKS_Par_53_Lg_1"
+        },
+        {
+          "@id": "estleg:VANDET_Map"
         },
         {
           "@id": "estleg:VANDET_Par_30"
@@ -655,34 +791,26 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Eestis võib vandetõlgi kutsenimetuse all vandetõlgi kutsetegevusega tegeleda üksnes isik, kellele on käesolevas seaduses sätestatud alustel ja korras antud vandetõlgi kutse. Vandetõlgi kutset tõendab valdkonna eest vastutava ministri poolt väljastatud vandetõlgi kutsetunnistus, mille kohta on andmed avaldatud Justiits- ja Digiministeeriumi veebilehel. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(2) Eestis võib vandetõlgi kutsenimetuse all vandetõlgi kutsetegevusega tegeleda üksnes isik, kellele on käesolevas seaduses sätestatud alustel ja korras antud vandetõlgi kutse. Vandetõlgi kutset tõendab valdkonna eest vastutava ministri poolt väljastatud vandetõlgi kutsetunnistus, mille kohta on andmed avaldatud Justiits- ja Digiministeeriumi veebilehel.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_2"
       },
       "rdfs:label": "§ 2 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Citizen"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
-        {
-          "@id": "estleg:VABARI_Par_105"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -698,9 +826,6 @@
         "@id": "estleg:VANDET_Par_2"
       },
       "rdfs:label": "§ 2 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -710,7 +835,16 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:VANDET_Map"
+        },
+        {
+          "@id": "estleg:VANDET_Par_12"
+        },
         {
           "@id": "estleg:VANDET_Par_12_Lg_3"
         }
@@ -723,12 +857,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Vandetõlgi pädevus ja tõlkesuund",
+      "rdfs:label": {
+        "@value": "§ 3. Vandetõlgi pädevus ja tõlkesuund",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlk on pädev tõlkima eesti keelest võõrkeelde või võõrkeelest eesti keelde (edaspidi tõlkesuund). (2) Isik on vandetõlgi kutsenimetuse all pädev tegelema vandetõlgi kutsetegevusega ainult sellel tõlkesuunal, mille kohta on talle antud vandetõlgi kutsetunnistus. (3) Kui isikule on antud vandetõlgi kutsetunnistus kahe või enama võõrkeelega seotud tõlkesuunal tegutsemiseks, loetakse, et ta on pädev tõlkima ka ühest kutsetunnistusel märgitud võõrkeelest teise kutsetunnistusel märgitud",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlk on pädev tõlkima eesti keelest võõrkeelde või võõrkeelest eesti keelde (edaspidi tõlkesuund). (2) Isik on vandetõlgi kutsenimetuse all pädev tegelema vandetõlgi kutsetegevusega ainult sellel tõlkesuunal, mille kohta on talle antud vandetõlgi kutsetunnistus. (3) Kui isikule on antud vandetõlgi kutsetunnistus kahe või enama võõrkeelega seotud tõlkesuunal tegutsemiseks, loetakse, et ta on pädev tõlkima ka ühest kutsetunnistusel märgitud võõrkeelest teise kutsetunnistusel märgitud",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vandetõlk on pädev tõlkima eesti keelest võõrkeelde või võõrkeelest eesti keelde (edaspidi tõlkesuund). (2) Isik on vandetõlgi kutsenimetuse all pädev tegelema vandetõlgi kutsetegevusega ainult sellel tõlkesuunal, mille kohta on talle antud vandetõlgi kutsetunnistus. (3) Kui isikule on antud vandetõlgi kutsetunnistus kahe või enama võõrkeelega seotud tõlkesuunal tegutsemiseks, loetakse, et ta on pädev tõlkima ka ühest kutsetunnistusel märgitud võõrkeelest teise kutsetunnistusel märgitud võõrkeelde.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
@@ -847,12 +987,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Vandetõlgi kutsenimetuse kasutamine",
+      "rdfs:label": {
+        "@value": "§ 4. Vandetõlgi kutsenimetuse kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "Vandetõlgi kutsenimetus viitab vandetõlgi tõlkesuunale. Kui vandetõlk on pädev tõlkima mõlemal ühe võõrkeelega seotud tõlkesuunal, viitab tema kutsenimetus sellele võõrkeelele.",
+      "estleg:summary": {
+        "@value": "Vandetõlgi kutsenimetus viitab vandetõlgi tõlkesuunale. Kui vandetõlk on pädev tõlkima mõlemal ühe võõrkeelega seotud tõlkesuunal, viitab tema kutsenimetus sellele võõrkeelele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vandetõlgi kutsenimetus viitab vandetõlgi tõlkesuunale. Kui vandetõlk on pädev tõlkima mõlemal ühe võõrkeelega seotud tõlkesuunal, viitab tema kutsenimetus sellele võõrkeelele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
@@ -886,10 +1032,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vandetõlgi kutsenimetus viitab vandetõlgi tõlkesuunale. Kui vandetõlk on pädev tõlkima mõlemal ühe võõrkeelega seotud tõlkesuunal, viitab tema kutsenimetus sellele võõrkeelele.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vandetõlgi kutsenimetus viitab vandetõlgi tõlkesuunale. Kui vandetõlk on pädev tõlkima mõlemal ühe võõrkeelega seotud tõlkesuunal, viitab tema kutsenimetus sellele võõrkeelele.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_4"
-      }
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:VANDET_Par_5",
@@ -898,13 +1046,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Vandetõlgi kutsetegevus",
+      "rdfs:label": {
+        "@value": "§ 5. Vandetõlgi kutsetegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Dokumentide tõlkimise teenuse osutamisel vandetõlk: tõlgib dokumente (edaspidi vandetõlgi tõlge); kinnitab vajaduse korral tõlgitava dokumendi ärakirja õigsust; kinnitab vajaduse korral arvutivõrgu kaudu kasutatavast andmekogust saadud tõlgitava dokumendi väljatrüki õigsust. (2) Vandetõlk on kohustatud avaliku ülesande täitmise korras tõlkima: Riigi Teatajas avaldatud seadusi võõrkeelde Riigi Teataja seaduse § 6 lõike 3 punkti 1 alusel; Riigi Teatajas avaldatavaid välislepinguid eesti",
-      "estleg:legalText": "(1) Dokumentide tõlkimise teenuse osutamisel vandetõlk: tõlgib dokumente (edaspidi vandetõlgi tõlge); kinnitab vajaduse korral tõlgitava dokumendi ärakirja õigsust; kinnitab vajaduse korral arvutivõrgu kaudu kasutatavast andmekogust saadud tõlgitava dokumendi väljatrüki õigsust. (2) Vandetõlk on kohustatud avaliku ülesande täitmise korras tõlkima: Riigi Teatajas avaldatud seadusi võõrkeelde Riigi Teataja seaduse § 6 lõike 3 punkti 1 alusel; Riigi Teatajas avaldatavaid välislepinguid eesti keelde Riigi Teataja seaduse § 6 lõike 3 punkti 2 alusel. (3) Vandetõlk peab oma kutsetegevuse raames nõustama isikuid dokumentide tõlkimisega seotud küsimustes. (4) Isiku soovil korraldab vandetõlk oma kutsetegevuse raames tõlgitava dokumendi või tõlke apostille’ga kinnitamise notari poolt.",
+      "estleg:summary": {
+        "@value": "(1) Dokumentide tõlkimise teenuse osutamisel vandetõlk: 1) tõlgib dokumente (edaspidi vandetõlgi tõlge); 2) kinnitab vajaduse korral tõlgitava dokumendi ärakirja õigsust; 3) kinnitab vajaduse korral arvutivõrgu kaudu kasutatavast andmekogust saadud tõlgitava dokumendi väljatrüki õigsust. (2) Vandetõlk on kohustatud avaliku ülesande täitmise korras tõlkima: 1) Riigi Teatajas avaldatud seadusi võõrkeelde Riigi Teataja seaduse § 6 lõike 3 punkti 1 alusel; 2) Riigi Teatajas avaldatavaid",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Dokumentide tõlkimise teenuse osutamisel vandetõlk: 1) tõlgib dokumente (edaspidi vandetõlgi tõlge); 2) kinnitab vajaduse korral tõlgitava dokumendi ärakirja õigsust; 3) kinnitab vajaduse korral arvutivõrgu kaudu kasutatavast andmekogust saadud tõlgitava dokumendi väljatrüki õigsust. (2) Vandetõlk on kohustatud avaliku ülesande täitmise korras tõlkima: 1) Riigi Teatajas avaldatud seadusi võõrkeelde Riigi Teataja seaduse § 6 lõike 3 punkti 1 alusel; 2) Riigi Teatajas avaldatavaid välislepinguid eesti keelde Riigi Teataja seaduse § 6 lõike 3 punkti 2 alusel. (3) Vandetõlk peab oma kutsetegevuse raames nõustama isikuid dokumentide tõlkimisega seotud küsimustes. (4) Isiku soovil korraldab vandetõlk oma kutsetegevuse raames tõlgitava dokumendi või tõlke apostille’ga kinnitamise notari poolt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
       },
@@ -933,9 +1087,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -945,7 +1096,13 @@
           "@id": "estleg:RIIGI_Par_6_Lg_3"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:VANDET_Map"
+        },
         {
           "@id": "estleg:VANDET_Par_14"
         },
@@ -978,14 +1135,28 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Dokumentide tõlkimise teenuse osutamisel vandetõlk: tõlgib dokumente (edaspidi vandetõlgi tõlge); kinnitab vajaduse korral tõlgitava dokumendi ärakirja õigsust; kinnitab vajaduse korral arvutivõrgu kaudu kasutatavast andmekogust saadud tõlgitava dokumendi väljatrüki õigsust.",
+      "estleg:legalText": "(1) Dokumentide tõlkimise teenuse osutamisel vandetõlk: 1) tõlgib dokumente (edaspidi vandetõlgi tõlge); 2) kinnitab vajaduse korral tõlgitava dokumendi ärakirja õigsust; 3) kinnitab vajaduse korral arvutivõrgu kaudu kasutatavast andmekogust saadud tõlgitava dokumendi väljatrüki õigsust.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_5"
       },
       "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:Reg_1021229_Map"
+        },
+        {
           "@id": "estleg:Reg_1021229_Par_9"
+        },
+        {
+          "@id": "estleg:Reg_1021229_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:VANDET_Map"
         },
         {
           "@id": "estleg:VANDET_Par_9"
@@ -1014,7 +1185,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Vandetõlk on kohustatud avaliku ülesande täitmise korras tõlkima: Riigi Teatajas avaldatud seadusi võõrkeelde Riigi Teataja seaduse § 6 lõike 3 punkti 1 alusel; Riigi Teatajas avaldatavaid välislepinguid eesti keelde Riigi Teataja seaduse § 6 lõike 3 punkti 2 alusel.",
+      "estleg:legalText": "(2) Vandetõlk on kohustatud avaliku ülesande täitmise korras tõlkima: 1) Riigi Teatajas avaldatud seadusi võõrkeelde Riigi Teataja seaduse § 6 lõike 3 punkti 1 alusel; 2) Riigi Teatajas avaldatavaid välislepinguid eesti keelde Riigi Teataja seaduse § 6 lõike 3 punkti 2 alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_5"
       },
@@ -1023,24 +1194,27 @@
         "1",
         "2"
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:RIIGI_Par_6_Lg_3"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:RIIGI_Par_6_Lg_3"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:RIIGI_Par_6_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:VANDET_Map"
+        },
         {
           "@id": "estleg:VANDET_Par_14"
         },
@@ -1064,9 +1238,6 @@
         "@id": "estleg:VANDET_Par_5"
       },
       "rdfs:label": "§ 5 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1075,6 +1246,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:referencedBy": [
         {
@@ -1114,12 +1288,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Vandetõlgi kõrvaltegevus",
+      "rdfs:label": {
+        "@value": "§ 6. Vandetõlgi kõrvaltegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "Vandetõlgile on lubatud kõik kõrvaltegevused, mis ei kahjusta tema erapooletust ja väärikust ega usaldatavust vandetõlgi kutse suhtes, kui seadus ei sätesta teisiti.",
+      "estleg:summary": {
+        "@value": "Vandetõlgile on lubatud kõik kõrvaltegevused, mis ei kahjusta tema erapooletust ja väärikust ega usaldatavust vandetõlgi kutse suhtes, kui seadus ei sätesta teisiti.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vandetõlgile on lubatud kõik kõrvaltegevused, mis ei kahjusta tema erapooletust ja väärikust ega usaldatavust vandetõlgi kutse suhtes, kui seadus ei sätesta teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
@@ -1132,12 +1312,12 @@
           "@id": "estleg:VANDET_Par_6_Lg_1"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:referencedBy": [
         {
@@ -1165,16 +1345,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vandetõlgile on lubatud kõik kõrvaltegevused, mis ei kahjusta tema erapooletust ja väärikust ega usaldatavust vandetõlgi kutse suhtes, kui seadus ei sätesta teisiti.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vandetõlgile on lubatud kõik kõrvaltegevused, mis ei kahjusta tema erapooletust ja väärikust ega usaldatavust vandetõlgi kutse suhtes, kui seadus ei sätesta teisiti.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_6"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 6 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1184,13 +1366,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Vandetõlgi tõlke kohustuslikkus",
+      "rdfs:label": {
+        "@value": "§ 7. Vandetõlgi tõlke kohustuslikkus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Kõiki dokumente, mille tõlge peab välisriigi või Eesti õigusakti kohaselt olema ametlik või kinnitatud, tõlgivad Eestis üksnes vandetõlgid. (2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata, kui nimetatud tõlke on teinud välisriigi pädev ametiisik või kui kinnistusosakonnale ja registripidajale esitatava dokumendi on eesti keelde tõlkinud notar, kes on koostanud notariaalakti või -märke võõrkeeles tõestamisseaduse § 5 lõike 2 alusel.",
-      "estleg:legalText": "(1) Kõiki dokumente, mille tõlge peab välisriigi või Eesti õigusakti kohaselt olema ametlik või kinnitatud, tõlgivad Eestis üksnes vandetõlgid. (2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata, kui nimetatud tõlke on teinud välisriigi pädev ametiisik või kui kinnistusosakonnale ja registripidajale esitatava dokumendi on eesti keelde tõlkinud notar, kes on koostanud notariaalakti või -märke võõrkeeles tõestamisseaduse § 5 lõike 2 alusel. (3) võib kehtestada määrusega täpsemad nõuded ja korra vandetõlkidele käesoleva paragrahvi lõikes 1 sätestatud kohustuse täitmiseks.",
+      "estleg:summary": {
+        "@value": "(1) Kõiki dokumente, mille tõlge peab välisriigi või Eesti õigusakti kohaselt olema ametlik või kinnitatud, tõlgivad Eestis üksnes vandetõlgid. (2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata, kui nimetatud tõlke on teinud välisriigi pädev ametiisik või kui kinnistusosakonnale ja registripidajale esitatava dokumendi on eesti keelde tõlkinud notar, kes on koostanud notariaalakti või -märke võõrkeeles tõestamisseaduse § 5 lõike 2 alusel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kõiki dokumente, mille tõlge peab välisriigi või Eesti õigusakti kohaselt olema ametlik või kinnitatud, tõlgivad Eestis üksnes vandetõlgid. (2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata, kui nimetatud tõlke on teinud välisriigi pädev ametiisik või kui kinnistusosakonnale ja registripidajale esitatava dokumendi on eesti keelde tõlkinud notar, kes on koostanud notariaalakti või -märke võõrkeeles tõestamisseaduse § 5 lõike 2 alusel. (3) Valdkonna eest vastutav minister võib kehtestada määrusega täpsemad nõuded ja korra vandetõlkidele käesoleva paragrahvi lõikes 1 sätestatud kohustuse täitmiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
       },
@@ -1216,24 +1404,27 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:ToS_Par_5_Lg_2"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:ToS_Par_5_Lg_2"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:ToS_Par_5_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:VANDET_Map"
+        },
         {
           "@id": "estleg:VANDET_Par_31"
         },
@@ -1277,12 +1468,12 @@
         "@id": "estleg:VANDET_Par_7"
       },
       "rdfs:label": "§ 7 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1309,12 +1500,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:ToS_Par_5_Lg_2"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:ToS_Par_5_Lg_2"
         }
@@ -1327,17 +1518,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) võib kehtestada määrusega täpsemad nõuded ja korra vandetõlkidele käesoleva paragrahvi lõikes 1 sätestatud kohustuse täitmiseks.",
+      "estleg:legalText": "(3) Valdkonna eest vastutav minister võib kehtestada määrusega täpsemad nõuded ja korra vandetõlkidele käesoleva paragrahvi lõikes 1 sätestatud kohustuse täitmiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
       }
     },
     {
@@ -1347,13 +1543,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Vandetõlgi tõlge",
+      "rdfs:label": {
+        "@value": "§ 8. Vandetõlgi tõlge",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlgi tõlkega võtab vandetõlk vastutuse tõlke õigsuse eest. (2) Vandetõlk märgib tõlkele: tõlkesuuna; tõlke registreerimise numbri, aja ja koha; oma nime, kutsenimetuse ja kutsetunnistuse numbri ning selle väljaandmise aja; kontaktandmed; muud vajalikud andmed. (3) Vandetõlk allkirjastab tõlke ja lisab sellele oma pitsati jäljendi. (4) Vandetõlgi tõlge võib olla vormistatud ka digitaalselt. Sellisel juhul asendab vandetõlgi allkirja ja pitsati jäljendit tema digitaalallkiri.",
-      "estleg:legalText": "(1) Vandetõlgi tõlkega võtab vandetõlk vastutuse tõlke õigsuse eest. (2) Vandetõlk märgib tõlkele: tõlkesuuna; tõlke registreerimise numbri, aja ja koha; oma nime, kutsenimetuse ja kutsetunnistuse numbri ning selle väljaandmise aja; kontaktandmed; muud vajalikud andmed. (3) Vandetõlk allkirjastab tõlke ja lisab sellele oma pitsati jäljendi. (4) Vandetõlgi tõlge võib olla vormistatud ka digitaalselt. Sellisel juhul asendab vandetõlgi allkirja ja pitsati jäljendit tema digitaalallkiri. (5) Vandetõlgi tõlke vormistamise täpsemad nõuded kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlgi tõlkega võtab vandetõlk vastutuse tõlke õigsuse eest. (2) Vandetõlk märgib tõlkele: 1) tõlkesuuna; 2) tõlke registreerimise numbri, aja ja koha; 3) oma nime, kutsenimetuse ja kutsetunnistuse numbri ning selle väljaandmise aja; 4) kontaktandmed; 5) muud vajalikud andmed. (3) Vandetõlk allkirjastab tõlke ja lisab sellele oma pitsati jäljendi. (4) Vandetõlgi tõlge võib olla vormistatud ka digitaalselt. Sellisel juhul asendab vandetõlgi allkirja ja pitsati jäljendit tema",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vandetõlgi tõlkega võtab vandetõlk vastutuse tõlke õigsuse eest. (2) Vandetõlk märgib tõlkele: 1) tõlkesuuna; 2) tõlke registreerimise numbri, aja ja koha; 3) oma nime, kutsenimetuse ja kutsetunnistuse numbri ning selle väljaandmise aja; 4) kontaktandmed; 5) muud vajalikud andmed. (3) Vandetõlk allkirjastab tõlke ja lisab sellele oma pitsati jäljendi. (4) Vandetõlgi tõlge võib olla vormistatud ka digitaalselt. Sellisel juhul asendab vandetõlgi allkirja ja pitsati jäljendit tema digitaalallkiri. (5) Vandetõlgi tõlke vormistamise täpsemad nõuded kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
       },
@@ -1377,16 +1579,27 @@
           "@id": "estleg:VANDET_Par_8_Lg_5"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
       "estleg:referencedBy": [
         {
+          "@id": "estleg:Reg_1021229_Map"
+        },
+        {
           "@id": "estleg:Reg_1021229_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1021229_Par_5_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -1436,14 +1649,27 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Vandetõlk märgib tõlkele: tõlkesuuna; tõlke registreerimise numbri, aja ja koha; oma nime, kutsenimetuse ja kutsetunnistuse numbri ning selle väljaandmise aja; kontaktandmed; muud vajalikud andmed.",
+      "estleg:legalText": "(2) Vandetõlk märgib tõlkele: 1) tõlkesuuna; 2) tõlke registreerimise numbri, aja ja koha; 3) oma nime, kutsenimetuse ja kutsetunnistuse numbri ning selle väljaandmise aja; 4) kontaktandmed; 5) muud vajalikud andmed.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_8"
       },
       "rdfs:label": "§ 8 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:Reg_1021229_Map"
+        },
+        {
           "@id": "estleg:Reg_1021229_Par_5"
+        },
+        {
+          "@id": "estleg:Reg_1021229_Par_5_Lg_2"
         }
       ]
     },
@@ -1472,12 +1698,12 @@
         "@id": "estleg:VANDET_Par_8"
       },
       "rdfs:label": "§ 8 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1487,11 +1713,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Vandetõlgi tõlke vormistamise täpsemad nõuded kehtestab määrusega.",
+      "estleg:legalText": "(5) Vandetõlgi tõlke vormistamise täpsemad nõuded kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_8"
       },
       "rdfs:label": "§ 8 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -1506,13 +1741,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Ärakirja ja väljatrüki kinnitamine",
+      "rdfs:label": {
+        "@value": "§ 9. Ärakirja ja väljatrüki kinnitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud kinnitamisel on võrdne tähendus notariaalse kinnitamisega. (2) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud kinnitamistoimingute vormistamise korra kehtestab määrusega.",
-      "estleg:legalText": "(1) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud kinnitamisel on võrdne tähendus notariaalse kinnitamisega. (2) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud kinnitamistoimingute vormistamise korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud kinnitamisel on võrdne tähendus notariaalse kinnitamisega. (2) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud kinnitamistoimingute vormistamise korra kehtestab valdkonna eest vastutav minister määrusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud kinnitamisel on võrdne tähendus notariaalse kinnitamisega. (2) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud kinnitamistoimingute vormistamise korra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
       },
@@ -1532,17 +1773,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:LaevaRS_Par_76"
-        },
-        {
-          "@id": "estleg:POLITS_Par_108_13"
-        },
-        {
-          "@id": "estleg:Tolliseadus_Par_33"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1550,6 +1780,17 @@
       "estleg:references": [
         {
           "@id": "estleg:VANDET_Par_5_Lg_1"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ARS_Par_35"
+        },
+        {
+          "@id": "estleg:LaevaRS_Par_76"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_33"
         }
       ],
       "estleg:hasVersion": [
@@ -1613,7 +1854,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud kinnitamistoimingute vormistamise korra kehtestab määrusega.",
+      "estleg:legalText": "(2) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud kinnitamistoimingute vormistamise korra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_9"
       },
@@ -1623,6 +1864,15 @@
           "@id": "estleg:VANDET_Par_5_Lg_1"
         }
       ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -1637,13 +1887,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Õigus kasutada riigivapi kujutist",
+      "rdfs:label": {
+        "@value": "§ 10. Õigus kasutada riigivapi kujutist",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlgil on Eesti Vabariigi väikese riigivapi kujutisega pitsat, millel on vandetõlgi nimi ja kutsenimetus. (2) Nõuded vandetõlgi pitsatile ning vandetõlgi pitsati kasutusele võtmise, hoidmise, kehtetuks tunnistamise ja kehtetu pitsati hävitamise korra kehtestab määrusega.",
-      "estleg:legalText": "(1) Vandetõlgil on Eesti Vabariigi väikese riigivapi kujutisega pitsat, millel on vandetõlgi nimi ja kutsenimetus. (2) Nõuded vandetõlgi pitsatile ning vandetõlgi pitsati kasutusele võtmise, hoidmise, kehtetuks tunnistamise ja kehtetu pitsati hävitamise korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlgil on Eesti Vabariigi väikese riigivapi kujutisega pitsat, millel on vandetõlgi nimi ja kutsenimetus. (2) Nõuded vandetõlgi pitsatile ning vandetõlgi pitsati kasutusele võtmise, hoidmise, kehtetuks tunnistamise ja kehtetu pitsati hävitamise korra kehtestab valdkonna eest vastutav minister määrusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vandetõlgil on Eesti Vabariigi väikese riigivapi kujutisega pitsat, millel on vandetõlgi nimi ja kutsenimetus. (2) Nõuded vandetõlgi pitsatile ning vandetõlgi pitsati kasutusele võtmise, hoidmise, kehtetuks tunnistamise ja kehtetu pitsati hävitamise korra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
       },
@@ -1658,6 +1914,15 @@
           "@id": "estleg:VANDET_Par_10_Lg_2"
         }
       ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VANDET_Par_10_v230767"
@@ -1705,11 +1970,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Nõuded vandetõlgi pitsatile ning vandetõlgi pitsati kasutusele võtmise, hoidmise, kehtetuks tunnistamise ja kehtetu pitsati hävitamise korra kehtestab määrusega.",
+      "estleg:legalText": "(2) Nõuded vandetõlgi pitsatile ning vandetõlgi pitsati kasutusele võtmise, hoidmise, kehtetuks tunnistamise ja kehtetu pitsati hävitamise korra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_10"
       },
       "rdfs:label": "§ 10 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -1724,13 +1998,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Saladuse hoidmise kohustus",
+      "rdfs:label": {
+        "@value": "§ 11. Saladuse hoidmise kohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlk on kohustatud saladuses hoidma talle seoses vandetõlgi kutsetegevusega teatavaks saanud andmed. See kohustus jääb püsima ka pärast vandetõlgi kutse äravõtmist. (2) Saladuse hoidmise kohustus laieneb ka vandetõlgi abipersonalile ja teistele isikutele, kellel on juurdepääs käesoleva paragrahvi lõikes 1 nimetatud andmetele. (3) Isik, kelle ülesandel vandetõlk tõlke tegi, või tema õigusjärglane või esindaja võib oma kirjaliku nõusoleku alusel vabastada vandetõlgi saladuse hoidmise",
-      "estleg:legalText": "(1) Vandetõlk on kohustatud saladuses hoidma talle seoses vandetõlgi kutsetegevusega teatavaks saanud andmed. See kohustus jääb püsima ka pärast vandetõlgi kutse äravõtmist. (2) Saladuse hoidmise kohustus laieneb ka vandetõlgi abipersonalile ja teistele isikutele, kellel on juurdepääs käesoleva paragrahvi lõikes 1 nimetatud andmetele. (3) Isik, kelle ülesandel vandetõlk tõlke tegi, või tema õigusjärglane või esindaja võib oma kirjaliku nõusoleku alusel vabastada vandetõlgi saladuse hoidmise kohustusest. (4) Saladuse hoidmise kohustuse rikkumiseks ei peeta andmete avaldamist: kohtule; kohtuvälisele menetlejale, uurimisasutusele ja prokuratuurile väärteo- või kriminaalmenetluses; käesoleva seaduse § 28 alusel järelevalvet teostavatele isikutele; muudele isikutele, kellel on seadusest tulenevalt õigus andmeid saada või kellele andmete avaldamine on seadusest tuleneva ülesande täitmiseks põhjendatult vajalik.",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlk on kohustatud saladuses hoidma talle seoses vandetõlgi kutsetegevusega teatavaks saanud andmed. See kohustus jääb püsima ka pärast vandetõlgi kutse äravõtmist. (2) Saladuse hoidmise kohustus laieneb ka vandetõlgi abipersonalile ja teistele isikutele, kellel on juurdepääs käesoleva paragrahvi lõikes 1 nimetatud andmetele. (3) Isik, kelle ülesandel vandetõlk tõlke tegi, või tema õigusjärglane või esindaja võib oma kirjaliku nõusoleku alusel vabastada vandetõlgi saladuse hoidmise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vandetõlk on kohustatud saladuses hoidma talle seoses vandetõlgi kutsetegevusega teatavaks saanud andmed. See kohustus jääb püsima ka pärast vandetõlgi kutse äravõtmist. (2) Saladuse hoidmise kohustus laieneb ka vandetõlgi abipersonalile ja teistele isikutele, kellel on juurdepääs käesoleva paragrahvi lõikes 1 nimetatud andmetele. (3) Isik, kelle ülesandel vandetõlk tõlke tegi, või tema õigusjärglane või esindaja võib oma kirjaliku nõusoleku alusel vabastada vandetõlgi saladuse hoidmise kohustusest. (4) Saladuse hoidmise kohustuse rikkumiseks ei peeta andmete avaldamist: 1) kohtule; 2) kohtuvälisele menetlejale, uurimisasutusele ja prokuratuurile väärteo- või kriminaalmenetluses; 3) käesoleva seaduse § 28 alusel järelevalvet teostavatele isikutele; 4) muudele isikutele, kellel on seadusest tulenevalt õigus andmeid saada või kellele andmete avaldamine on seadusest tuleneva ülesande täitmiseks põhjendatult vajalik.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
       },
@@ -1753,24 +2033,21 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:NotS_Par_3"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VANDET_Par_11_v230767"
@@ -1804,12 +2081,12 @@
         "@id": "estleg:VANDET_Par_11"
       },
       "rdfs:label": "§ 11 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1837,9 +2114,6 @@
         "@id": "estleg:VANDET_Par_11"
       },
       "rdfs:label": "§ 11 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1848,6 +2122,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1857,11 +2134,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Saladuse hoidmise kohustuse rikkumiseks ei peeta andmete avaldamist: kohtule; kohtuvälisele menetlejale, uurimisasutusele ja prokuratuurile väärteo- või kriminaalmenetluses; käesoleva seaduse § 28 alusel järelevalvet teostavatele isikutele; muudele isikutele, kellel on seadusest tulenevalt õigus andmeid saada või kellele andmete avaldamine on seadusest tuleneva ülesande täitmiseks põhjendatult vajalik.",
+      "estleg:legalText": "(4) Saladuse hoidmise kohustuse rikkumiseks ei peeta andmete avaldamist: 1) kohtule; 2) kohtuvälisele menetlejale, uurimisasutusele ja prokuratuurile väärteo- või kriminaalmenetluses; 3) käesoleva seaduse § 28 alusel järelevalvet teostavatele isikutele; 4) muudele isikutele, kellel on seadusest tulenevalt õigus andmeid saada või kellele andmete avaldamine on seadusest tuleneva ülesande täitmiseks põhjendatult vajalik.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_11"
       },
       "rdfs:label": "§ 11 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1871,12 +2154,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:VANDET_Par_28"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:VANDET_Par_28"
         }
@@ -1889,13 +2172,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Vandetõlgi andmete esitamine",
+      "rdfs:label": {
+        "@value": "§ 12. Vandetõlgi andmete esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlk teeb Justiits- ja Digiministeeriumile teatavaks oma tegevuskoha aadressi, vastuvõtuajad, sidevahendite numbrid ja muud vajalikud andmed ning teatab viivitamata nende andmete muutumisest. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (2) Justiits- ja Digiministeerium peab vandetõlkide nimekirja koos kutsetunnistuste andmetega ja teeb selle avalikkusele kättesaadavaks oma",
-      "estleg:legalText": "(1) Vandetõlk teeb Justiits- ja Digiministeeriumile teatavaks oma tegevuskoha aadressi, vastuvõtuajad, sidevahendite numbrid ja muud vajalikud andmed ning teatab viivitamata nende andmete muutumisest. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (2) Justiits- ja Digiministeerium peab vandetõlkide nimekirja koos kutsetunnistuste andmetega ja teeb selle avalikkusele kättesaadavaks oma veebilehel koos käesoleva paragrahvi lõikes 1 nimetatud andmetega. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (3) Käesoleva seaduse § 2 lõikes 3 nimetatud isiku kohta teeb Justiits- ja Digiministeerium avalikkusele kättesaadavaks need andmed, mida ta on avaldamiseks esitanud. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlk teeb Justiits- ja Digiministeeriumile teatavaks oma tegevuskoha aadressi, vastuvõtuajad, sidevahendite numbrid ja muud vajalikud andmed ning teatab viivitamata nende andmete muutumisest. (2) Justiits- ja Digiministeerium peab vandetõlkide nimekirja koos kutsetunnistuste andmetega ja teeb selle avalikkusele kättesaadavaks oma veebilehel koos käesoleva paragrahvi lõikes 1 nimetatud andmetega. (3) Käesoleva seaduse § 2 lõikes 3 nimetatud isiku kohta teeb Justiits- ja Digiministeerium",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vandetõlk teeb Justiits- ja Digiministeeriumile teatavaks oma tegevuskoha aadressi, vastuvõtuajad, sidevahendite numbrid ja muud vajalikud andmed ning teatab viivitamata nende andmete muutumisest. (2) Justiits- ja Digiministeerium peab vandetõlkide nimekirja koos kutsetunnistuste andmetega ja teeb selle avalikkusele kättesaadavaks oma veebilehel koos käesoleva paragrahvi lõikes 1 nimetatud andmetega. (3) Käesoleva seaduse § 2 lõikes 3 nimetatud isiku kohta teeb Justiits- ja Digiministeerium avalikkusele kättesaadavaks need andmed, mida ta on avaldamiseks esitanud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
       },
@@ -1916,26 +2205,6 @@
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:KORRUP_Par_8"
-        },
-        {
-          "@id": "estleg:Reg_1018157_Par_3"
-        },
-        {
-          "@id": "estleg:Reg_1042331_Par_3"
-        },
-        {
-          "@id": "estleg:Reg_1045454_Par_55"
-        },
-        {
-          "@id": "estleg:Reg_1052190_Par_4"
         }
       ],
       "estleg:assertionConfidence": {
@@ -1944,7 +2213,15 @@
       },
       "estleg:references": [
         {
-          "@id": "estleg:VABARI_Par_105"
+          "@id": "estleg:VANDET_Par_2_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
       ],
       "estleg:hasVersion": [
@@ -1969,14 +2246,6 @@
         {
           "@id": "estleg:VANDET_Par_12_v114032025002"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
-        }
       ]
     },
     {
@@ -1986,39 +2255,29 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Vandetõlk teeb Justiits- ja Digiministeeriumile teatavaks oma tegevuskoha aadressi, vastuvõtuajad, sidevahendite numbrid ja muud vajalikud andmed ning teatab viivitamata nende andmete muutumisest. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(1) Vandetõlk teeb Justiits- ja Digiministeeriumile teatavaks oma tegevuskoha aadressi, vastuvõtuajad, sidevahendite numbrid ja muud vajalikud andmed ning teatab viivitamata nende andmete muutumisest.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_12"
       },
       "rdfs:label": "§ 12 lg 1",
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:VABARI_Par_105"
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
       ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:VANDET_Map"
+        },
         {
           "@id": "estleg:VANDET_Par_21"
         },
         {
           "@id": "estleg:VANDET_Par_21_Lg_1"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -2029,31 +2288,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Justiits- ja Digiministeerium peab vandetõlkide nimekirja koos kutsetunnistuste andmetega ja teeb selle avalikkusele kättesaadavaks oma veebilehel koos käesoleva paragrahvi lõikes 1 nimetatud andmetega. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(2) Justiits- ja Digiministeerium peab vandetõlkide nimekirja koos kutsetunnistuste andmetega ja teeb selle avalikkusele kättesaadavaks oma veebilehel koos käesoleva paragrahvi lõikes 1 nimetatud andmetega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_12"
       },
       "rdfs:label": "§ 12 lg 2",
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
-        {
-          "@id": "estleg:VABARI_Par_105"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -2064,14 +2310,14 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva seaduse § 2 lõikes 3 nimetatud isiku kohta teeb Justiits- ja Digiministeerium avalikkusele kättesaadavaks need andmed, mida ta on avaldamiseks esitanud. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(3) Käesoleva seaduse § 2 lõikes 3 nimetatud isiku kohta teeb Justiits- ja Digiministeerium avalikkusele kättesaadavaks need andmed, mida ta on avaldamiseks esitanud.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_12"
       },
       "rdfs:label": "§ 12 lg 3",
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Citizen"
         }
       ],
       "estleg:assertionConfidence": {
@@ -2081,17 +2327,11 @@
       "estleg:references": [
         {
           "@id": "estleg:VANDET_Par_2_Lg_3"
-        },
-        {
-          "@id": "estleg:VABARI_Par_105"
         }
       ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -2102,12 +2342,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Vandetõlgi tegevuskoht",
+      "rdfs:label": {
+        "@value": "§ 13. Vandetõlgi tegevuskoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "Vandetõlgi tegevuskoht on Eesti.",
+      "estleg:summary": {
+        "@value": "Vandetõlgi tegevuskoht on Eesti.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vandetõlgi tegevuskoht on Eesti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
@@ -2132,10 +2378,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vandetõlgi tegevuskoht on Eesti.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vandetõlgi tegevuskoht on Eesti.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_13"
-      }
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:VANDET_Par_14",
@@ -2144,13 +2392,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Vandetõlgi tasu",
+      "rdfs:label": {
+        "@value": "§ 14. Vandetõlgi tasu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlgi tasu käesoleva seaduse § 5 lõigetes 1 ja 4 nimetatud toimingute eest on kokkuleppeline. Tasu lepitakse vandetõlgi ja teenuse taotleja vahel kokku kirjalikku taasesitamist võimaldavas vormis enne teenuse osutamist. (2) Käesoleva paragrahvi lõikes 1 sätestatud vorminõude järgimata jätmine ei too kaasa vandetõlgi teenuse osutamise aluseks oleva kokkuleppe tühisust. (3) Käesoleva seaduse § 5 lõikes 2 nimetatud tõlketööde määramise ja täitmise korra ning tasumäärad kehtestab määrusega.",
-      "estleg:legalText": "(1) Vandetõlgi tasu käesoleva seaduse § 5 lõigetes 1 ja 4 nimetatud toimingute eest on kokkuleppeline. Tasu lepitakse vandetõlgi ja teenuse taotleja vahel kokku kirjalikku taasesitamist võimaldavas vormis enne teenuse osutamist. (2) Käesoleva paragrahvi lõikes 1 sätestatud vorminõude järgimata jätmine ei too kaasa vandetõlgi teenuse osutamise aluseks oleva kokkuleppe tühisust. (3) Käesoleva seaduse § 5 lõikes 2 nimetatud tõlketööde määramise ja täitmise korra ning tasumäärad kehtestab määrusega. (4) Käesoleva seaduse § 5 lõikes 3 nimetatud tegevus on vandetõlgi kutsetegevusega kaasnev kohustus ja selle eest vandetõlk eraldi tasu ei saa.",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlgi tasu käesoleva seaduse § 5 lõigetes 1 ja 4 nimetatud toimingute eest on kokkuleppeline. Tasu lepitakse vandetõlgi ja teenuse taotleja vahel kokku kirjalikku taasesitamist võimaldavas vormis enne teenuse osutamist. (2) Käesoleva paragrahvi lõikes 1 sätestatud vorminõude järgimata jätmine ei too kaasa vandetõlgi teenuse osutamise aluseks oleva kokkuleppe tühisust. (3) Käesoleva seaduse § 5 lõikes 2 nimetatud tõlketööde määramise ja täitmise korra ning tasumäärad kehtestab valdkonna",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vandetõlgi tasu käesoleva seaduse § 5 lõigetes 1 ja 4 nimetatud toimingute eest on kokkuleppeline. Tasu lepitakse vandetõlgi ja teenuse taotleja vahel kokku kirjalikku taasesitamist võimaldavas vormis enne teenuse osutamist. (2) Käesoleva paragrahvi lõikes 1 sätestatud vorminõude järgimata jätmine ei too kaasa vandetõlgi teenuse osutamise aluseks oleva kokkuleppe tühisust. (3) Käesoleva seaduse § 5 lõikes 2 nimetatud tõlketööde määramise ja täitmise korra ning tasumäärad kehtestab valdkonna eest vastutav minister määrusega. (4) Käesoleva seaduse § 5 lõikes 3 nimetatud tegevus on vandetõlgi kutsetegevusega kaasnev kohustus ja selle eest vandetõlk eraldi tasu ei saa.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
       },
@@ -2174,11 +2428,9 @@
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
+        },
         {
-          "@id": "estleg:NotS_Par_32"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
       "estleg:assertionConfidence": {
@@ -2249,7 +2501,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva seaduse § 5 lõikes 2 nimetatud tõlketööde määramise ja täitmise korra ning tasumäärad kehtestab määrusega.",
+      "estleg:legalText": "(3) Käesoleva seaduse § 5 lõikes 2 nimetatud tõlketööde määramise ja täitmise korra ning tasumäärad kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_14"
       },
@@ -2259,6 +2511,15 @@
           "@id": "estleg:VANDET_Par_5_Lg_2"
         }
       ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1018157_Map"
@@ -2291,12 +2552,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Vandetõlgi vastutus",
+      "rdfs:label": {
+        "@value": "§ 15. Vandetõlgi vastutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlk vastutab isiklikult oma kutsetegevuses süüliselt tekitatud varalise kahju eest. (2) Kokkulepe, mis välistab vandetõlgi vastutuse tahtluse või raske hooletusega tekitatud kahju eest, on tühine.",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlk vastutab isiklikult oma kutsetegevuses süüliselt tekitatud varalise kahju eest. (2) Kokkulepe, mis välistab vandetõlgi vastutuse tahtluse või raske hooletusega tekitatud kahju eest, on tühine.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vandetõlk vastutab isiklikult oma kutsetegevuses süüliselt tekitatud varalise kahju eest. (2) Kokkulepe, mis välistab vandetõlgi vastutuse tahtluse või raske hooletusega tekitatud kahju eest, on tühine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_2"
@@ -2356,13 +2623,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Vandetõlgile esitatavad nõuded",
+      "rdfs:label": {
+        "@value": "§ 16. Vandetõlgile esitatavad nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "Vandetõlgiks võib saada isik: kes on teovõimeline; kes on omandanud vähemalt riiklikult tunnustatud bakalaureusekraadi või sellele vastava kvalifikatsiooni Eesti Vabariigi haridusseaduse § 28 lõike 22 tähenduses või sellele vastava välisriigi kvalifikatsiooni; kellelt ei ole vandetõlgi kutse ära võetud käesoleva seaduse § 24 lõike 1 punkti 5 või lõike 2 punkti 1 või § 28 lõike 3 punkti 3 alusel; kellel ei ole karistatust tahtlikult toimepandud kuriteo eest, mis kahjustaks vandetõlgi kutse",
-      "estleg:legalText": "Vandetõlgiks võib saada isik: kes on teovõimeline; kes on omandanud vähemalt riiklikult tunnustatud bakalaureusekraadi või sellele vastava kvalifikatsiooni Eesti Vabariigi haridusseaduse § 28 lõike 22 tähenduses või sellele vastava välisriigi kvalifikatsiooni; kellelt ei ole vandetõlgi kutse ära võetud käesoleva seaduse § 24 lõike 1 punkti 5 või lõike 2 punkti 1 või § 28 lõike 3 punkti 3 alusel; kellel ei ole karistatust tahtlikult toimepandud kuriteo eest, mis kahjustaks vandetõlgi kutse usaldusväärsust; kes on aus ja kõlbeline.",
+      "estleg:summary": {
+        "@value": "Vandetõlgiks võib saada isik: 1) kes on teovõimeline; 2) kes on omandanud vähemalt riiklikult tunnustatud bakalaureusekraadi või sellele vastava kvalifikatsiooni Eesti Vabariigi haridusseaduse § 28 lõike 2² tähenduses või sellele vastava välisriigi kvalifikatsiooni; 3) kellelt ei ole vandetõlgi kutse ära võetud käesoleva seaduse § 24 lõike 1 punkti 5 või lõike 2 punkti 1 või § 28 lõike 3 punkti 3 alusel; 4) kellel ei ole karistatust tahtlikult toimepandud kuriteo eest, mis kahjustaks vandetõlgi",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vandetõlgiks võib saada isik: 1) kes on teovõimeline; 2) kes on omandanud vähemalt riiklikult tunnustatud bakalaureusekraadi või sellele vastava kvalifikatsiooni Eesti Vabariigi haridusseaduse § 28 lõike 2² tähenduses või sellele vastava välisriigi kvalifikatsiooni; 3) kellelt ei ole vandetõlgi kutse ära võetud käesoleva seaduse § 24 lõike 1 punkti 5 või lõike 2 punkti 1 või § 28 lõike 3 punkti 3 alusel; 4) kellel ei ole karistatust tahtlikult toimepandud kuriteo eest, mis kahjustaks vandetõlgi kutse usaldusväärsust; 5) kes on aus ja kõlbeline.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_3"
       },
@@ -2379,17 +2652,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:FIMS_Par_58"
-        },
-        {
-          "@id": "estleg:VTMS_Par_20"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2399,10 +2661,16 @@
           "@id": "estleg:VANDET_Par_24_Lg_1"
         },
         {
-          "@id": "estleg:EVH_Par_28"
+          "@id": "estleg:EVH_Par_28_Lg_2"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:VANDET_Map"
+        },
         {
           "@id": "estleg:VANDET_Par_18"
         },
@@ -2437,18 +2705,19 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vandetõlgiks võib saada isik: kes on teovõimeline; kes on omandanud vähemalt riiklikult tunnustatud bakalaureusekraadi või sellele vastava kvalifikatsiooni Eesti Vabariigi haridusseaduse § 28 lõike 22 tähenduses või sellele vastava välisriigi kvalifikatsiooni; kellelt ei ole vandetõlgi kutse ära võetud käesoleva seaduse § 24 lõike 1 punkti 5 või lõike 2 punkti 1 või § 28 lõike 3 punkti 3 alusel; kellel ei ole karistatust tahtlikult toimepandud kuriteo eest, mis kahjustaks vandetõlgi kutse usaldusväärsust; kes on aus ja kõlbeline.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vandetõlgiks võib saada isik: 1) kes on teovõimeline; 2) kes on omandanud vähemalt riiklikult tunnustatud bakalaureusekraadi või sellele vastava kvalifikatsiooni Eesti Vabariigi haridusseaduse § 28 lõike 2² tähenduses või sellele vastava välisriigi kvalifikatsiooni; 3) kellelt ei ole vandetõlgi kutse ära võetud käesoleva seaduse § 24 lõike 1 punkti 5 või lõike 2 punkti 1 või § 28 lõike 3 punkti 3 alusel; 4) kellel ei ole karistatust tahtlikult toimepandud kuriteo eest, mis kahjustaks vandetõlgi kutse usaldusväärsust; 5) kes on aus ja kõlbeline.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_16"
       },
+      "rdfs:label": "§ 16 lg 1",
       "estleg:itemNumber": [
-        "5",
         "1",
-        "3"
+        "2",
+        "3",
+        "4",
+        "5"
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2463,9 +2732,12 @@
           "@id": "estleg:VANDET_Par_24_Lg_1"
         },
         {
-          "@id": "estleg:EVH_Par_28"
+          "@id": "estleg:EVH_Par_28_Lg_2"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:VANDET_Par_17",
@@ -2474,13 +2746,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Vandetõlgi eksam ja korduseksam",
+      "rdfs:label": {
+        "@value": "§ 17. Vandetõlgi eksam ja korduseksam",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlgi eksam (edaspidi ka eksam) on vandetõlgi kutsetegevuseks vajalike teadmiste, oskuste ja isiksuseomaduste kontroll. (2) Eksam koosneb õigus- ja keeleteadmiste kirjalikust kontrollimisest ning kutsesobivusvestlusest. (3) Eksamil õigus- või keeleteadmiste kontrollimise eksamiosas negatiivse tulemuse saanud isikul on õigus sooritada selles eksamiosas korduseksam tingimusel, et eksamil saadud punktide arv ei olnud väiksem, kui on sätestatud käesoleva paragrahvi lõike 5 alusel",
-      "estleg:legalText": "(1) Vandetõlgi eksam (edaspidi ka eksam) on vandetõlgi kutsetegevuseks vajalike teadmiste, oskuste ja isiksuseomaduste kontroll. (2) Eksam koosneb õigus- ja keeleteadmiste kirjalikust kontrollimisest ning kutsesobivusvestlusest. (3) Eksamil õigus- või keeleteadmiste kontrollimise eksamiosas negatiivse tulemuse saanud isikul on õigus sooritada selles eksamiosas korduseksam tingimusel, et eksamil saadud punktide arv ei olnud väiksem, kui on sätestatud käesoleva paragrahvi lõike 5 alusel kehtestatud määruses. (4) Eksami ja korduseksami korraldab Justiits- ja Digiministeerium vastavalt vajadusele. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (5) Vandetõlgi eksami ja korduseksami läbiviimise ning hindamise korra kehtestab määrusega. (6) Vandetõlgi eksami ja korduseksami tulemus kehtib kolm aastat selle sooritamisest.",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlgi eksam (edaspidi ka eksam) on vandetõlgi kutsetegevuseks vajalike teadmiste, oskuste ja isiksuseomaduste kontroll. (2) Eksam koosneb õigus- ja keeleteadmiste kirjalikust kontrollimisest ning kutsesobivusvestlusest. (3) Eksamil õigus- või keeleteadmiste kontrollimise eksamiosas negatiivse tulemuse saanud isikul on õigus sooritada selles eksamiosas korduseksam tingimusel, et eksamil saadud punktide arv ei olnud väiksem, kui on sätestatud käesoleva paragrahvi lõike 5 alusel",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vandetõlgi eksam (edaspidi ka eksam) on vandetõlgi kutsetegevuseks vajalike teadmiste, oskuste ja isiksuseomaduste kontroll. (2) Eksam koosneb õigus- ja keeleteadmiste kirjalikust kontrollimisest ning kutsesobivusvestlusest. (3) Eksamil õigus- või keeleteadmiste kontrollimise eksamiosas negatiivse tulemuse saanud isikul on õigus sooritada selles eksamiosas korduseksam tingimusel, et eksamil saadud punktide arv ei olnud väiksem, kui on sätestatud käesoleva paragrahvi lõike 5 alusel kehtestatud määruses. (4) Eksami ja korduseksami korraldab Justiits- ja Digiministeerium vastavalt vajadusele. (5) Vandetõlgi eksami ja korduseksami läbiviimise ning hindamise korra kehtestab valdkonna eest vastutav minister määrusega. (6) Vandetõlgi eksami ja korduseksami tulemus kehtib kolm aastat selle sooritamisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_3"
       },
@@ -2512,33 +2790,28 @@
           "@id": "estleg:TargetGroup_Citizen"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VANDET_Par_17_v123122013001"
-        },
-        {
-          "@id": "estleg:VANDET_Par_17_v114032025002"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
       ],
       "estleg:competenceType": "enforcement",
-      "estleg:mentionsInstitution": [
+      "estleg:hasVersion": [
         {
-          "@id": "estleg:Institution_justiitsministeerium"
+          "@id": "estleg:VANDET_Par_17_v123122013001"
+        },
+        {
+          "@id": "estleg:VANDET_Par_17_v114032025002"
         }
       ]
     },
@@ -2569,10 +2842,19 @@
       "rdfs:label": "§ 17 lg 2",
       "estleg:referencedBy": [
         {
+          "@id": "estleg:Reg_1021229_Map"
+        },
+        {
           "@id": "estleg:Reg_1021229_Par_22"
         },
         {
+          "@id": "estleg:Reg_1021229_Par_22_Lg_1"
+        },
+        {
           "@id": "estleg:Reg_1021229_Par_26"
+        },
+        {
+          "@id": "estleg:Reg_1021229_Par_26_Lg_2"
         }
       ]
     },
@@ -2588,9 +2870,6 @@
         "@id": "estleg:VANDET_Par_17"
       },
       "rdfs:label": "§ 17 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2599,6 +2878,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -2608,36 +2890,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Eksami ja korduseksami korraldab Justiits- ja Digiministeerium vastavalt vajadusele. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(4) Eksami ja korduseksami korraldab Justiits- ja Digiministeerium vastavalt vajadusele.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_17"
       },
       "rdfs:label": "§ 17 lg 4",
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
-        {
-          "@id": "estleg:VABARI_Par_105"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
       ],
-      "estleg:competenceType": "enforcement",
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
-        }
-      ]
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:VANDET_Par_17_Lg_5",
@@ -2646,11 +2913,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Vandetõlgi eksami ja korduseksami läbiviimise ning hindamise korra kehtestab määrusega.",
+      "estleg:legalText": "(5) Vandetõlgi eksami ja korduseksami läbiviimise ning hindamise korra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_17"
       },
       "rdfs:label": "§ 17 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -2678,13 +2954,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Vandetõlgi eksamile ja korduseksamile lubamine",
+      "rdfs:label": {
+        "@value": "§ 18. Vandetõlgi eksamile ja korduseksamile lubamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Eksamil osalemiseks esitab isik vandetõlgi eksami komisjonile (edaspidi ka eksamikomisjon) kirjaliku avalduse, milles kinnitab, et ta vastab käesoleva seaduse §-s 16 nimetatud tingimustele. (2) Eksamikomisjon lubab isiku eksamile, kui ei ole alust eeldada, et isik ei vasta käesoleva seaduse §-s 16 nimetatud tingimustele. (3) Vandetõlgi eksamile ja korduseksamile lubamise täpsemad tingimused kehtestab määrusega.",
-      "estleg:legalText": "(1) Eksamil osalemiseks esitab isik vandetõlgi eksami komisjonile (edaspidi ka eksamikomisjon) kirjaliku avalduse, milles kinnitab, et ta vastab käesoleva seaduse §-s 16 nimetatud tingimustele. (2) Eksamikomisjon lubab isiku eksamile, kui ei ole alust eeldada, et isik ei vasta käesoleva seaduse §-s 16 nimetatud tingimustele. (3) Vandetõlgi eksamile ja korduseksamile lubamise täpsemad tingimused kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Eksamil osalemiseks esitab isik vandetõlgi eksami komisjonile (edaspidi ka eksamikomisjon) kirjaliku avalduse, milles kinnitab, et ta vastab käesoleva seaduse §-s 16 nimetatud tingimustele. (2) Eksamikomisjon lubab isiku eksamile, kui ei ole alust eeldada, et isik ei vasta käesoleva seaduse §-s 16 nimetatud tingimustele. (3) Vandetõlgi eksamile ja korduseksamile lubamise täpsemad tingimused kehtestab valdkonna eest vastutav minister määrusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eksamil osalemiseks esitab isik vandetõlgi eksami komisjonile (edaspidi ka eksamikomisjon) kirjaliku avalduse, milles kinnitab, et ta vastab käesoleva seaduse §-s 16 nimetatud tingimustele. (2) Eksamikomisjon lubab isiku eksamile, kui ei ole alust eeldada, et isik ei vasta käesoleva seaduse §-s 16 nimetatud tingimustele. (3) Vandetõlgi eksamile ja korduseksamile lubamise täpsemad tingimused kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_3"
       },
@@ -2705,6 +2987,9 @@
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
       "estleg:assertionConfidence": {
@@ -2786,11 +3071,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Vandetõlgi eksamile ja korduseksamile lubamise täpsemad tingimused kehtestab määrusega.",
+      "estleg:legalText": "(3) Vandetõlgi eksamile ja korduseksamile lubamise täpsemad tingimused kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_18"
       },
       "rdfs:label": "§ 18 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -2805,13 +3099,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Vandetõlgi eksami komisjon",
+      "rdfs:label": {
+        "@value": "§ 19. Vandetõlgi eksami komisjon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Eksamikomisjon: otsustab eksamile lubamise; viib läbi eksami; esitab valdkonna eest vastutavale ministrile eksamitulemused, mis on aluseks vandetõlgi kutse andmisele. (2) Eksamikomisjoni liikmeks võib nimetada: asjakohase võõrkeele asjatundja; asjakohast võõrkeelt emakeelena rääkiva isiku; eesti keele asjatundja; õigusteadmistega isiku; asjakohasel tõlkesuunal vandetõlgi kutse saanud isiku; Justiits- ja Digiministeeriumi ametniku. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel",
-      "estleg:legalText": "(1) Eksamikomisjon: otsustab eksamile lubamise; viib läbi eksami; esitab valdkonna eest vastutavale ministrile eksamitulemused, mis on aluseks vandetõlgi kutse andmisele. (2) Eksamikomisjoni liikmeks võib nimetada: asjakohase võõrkeele asjatundja; asjakohast võõrkeelt emakeelena rääkiva isiku; eesti keele asjatundja; õigusteadmistega isiku; asjakohasel tõlkesuunal vandetõlgi kutse saanud isiku; Justiits- ja Digiministeeriumi ametniku. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (3) Valdkonna eest vastutav minister nimetab käesoleva paragrahvi lõikes 2 nimetatud isikute hulgast eksamikomisjoni liikmed ja komisjoni esimehe iga kord enne eksami toimumist. (4) Vandetõlgi eksami komisjoni töökorra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Eksamikomisjon: 1) otsustab eksamile lubamise; 2) viib läbi eksami; 3) esitab valdkonna eest vastutavale ministrile eksamitulemused, mis on aluseks vandetõlgi kutse andmisele. (2) Eksamikomisjoni liikmeks võib nimetada: 1) asjakohase võõrkeele asjatundja; 2) asjakohast võõrkeelt emakeelena rääkiva isiku; 3) eesti keele asjatundja; 4) õigusteadmistega isiku; 5) asjakohasel tõlkesuunal vandetõlgi kutse saanud isiku; 6) Justiits- ja Digiministeeriumi ametniku.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eksamikomisjon: 1) otsustab eksamile lubamise; 2) viib läbi eksami; 3) esitab valdkonna eest vastutavale ministrile eksamitulemused, mis on aluseks vandetõlgi kutse andmisele. (2) Eksamikomisjoni liikmeks võib nimetada: 1) asjakohase võõrkeele asjatundja; 2) asjakohast võõrkeelt emakeelena rääkiva isiku; 3) eesti keele asjatundja; 4) õigusteadmistega isiku; 5) asjakohasel tõlkesuunal vandetõlgi kutse saanud isiku; 6) Justiits- ja Digiministeeriumi ametniku. (3) Valdkonna eest vastutav minister nimetab käesoleva paragrahvi lõikes 2 nimetatud isikute hulgast eksamikomisjoni liikmed ja komisjoni esimehe iga kord enne eksami toimumist. (4) Vandetõlgi eksami komisjoni töökorra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_3"
       },
@@ -2837,19 +3137,19 @@
           "@id": "estleg:TargetGroup_Citizen"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:VABARI_Par_105"
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
       ],
       "estleg:hasVersion": [
@@ -2858,14 +3158,6 @@
         },
         {
           "@id": "estleg:VANDET_Par_19_v114032025002"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -2876,11 +3168,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Eksamikomisjon: otsustab eksamile lubamise; viib läbi eksami; esitab valdkonna eest vastutavale ministrile eksamitulemused, mis on aluseks vandetõlgi kutse andmisele.",
+      "estleg:legalText": "(1) Eksamikomisjon: 1) otsustab eksamile lubamise; 2) viib läbi eksami; 3) esitab valdkonna eest vastutavale ministrile eksamitulemused, mis on aluseks vandetõlgi kutse andmisele.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_19"
       },
-      "rdfs:label": "§ 19 lg 1"
+      "rdfs:label": "§ 19 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:VANDET_Par_19_Lg_2",
@@ -2889,17 +3186,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Eksamikomisjoni liikmeks võib nimetada: asjakohase võõrkeele asjatundja; asjakohast võõrkeelt emakeelena rääkiva isiku; eesti keele asjatundja; õigusteadmistega isiku; asjakohasel tõlkesuunal vandetõlgi kutse saanud isiku; Justiits- ja Digiministeeriumi ametniku. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(2) Eksamikomisjoni liikmeks võib nimetada: 1) asjakohase võõrkeele asjatundja; 2) asjakohast võõrkeelt emakeelena rääkiva isiku; 3) eesti keele asjatundja; 4) õigusteadmistega isiku; 5) asjakohasel tõlkesuunal vandetõlgi kutse saanud isiku; 6) Justiits- ja Digiministeeriumi ametniku.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_19"
       },
       "rdfs:label": "§ 19 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Citizen"
         },
         {
           "@id": "estleg:TargetGroup_Official"
@@ -2909,25 +3211,23 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:VABARI_Par_105"
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
       ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:VANDET_Map"
+        },
         {
           "@id": "estleg:VANDET_Par_29"
         },
         {
           "@id": "estleg:VANDET_Par_29_Lg_4"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -2963,11 +3263,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Vandetõlgi eksami komisjoni töökorra kehtestab määrusega.",
+      "estleg:legalText": "(4) Vandetõlgi eksami komisjoni töökorra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_19"
       },
       "rdfs:label": "§ 19 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -2982,13 +3291,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Vandetõlgi kutse andmine",
+      "rdfs:label": {
+        "@value": "§ 20. Vandetõlgi kutse andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Valdkonna eest vastutav minister annab käskkirjaga vandetõlgi kutse käesoleva seaduse §-s 16 nimetatud tingimustele vastavale isikule, kes on sooritanud eksami, ja väljastab talle vandetõlgi kutsetunnistuse. (2) Vandetõlgi kutse saamiseks esitab isik valdkonna eest vastutavale ministrile kirjaliku taotluse. (3) Vandetõlgi kutsetunnistuse vormi ja kutsetunnistusele märgitavate andmete loetelu kehtestab määrusega. (4) Enne vandetõlgi kutsetunnistuse saamist annab isik valdkonna eest vastutava",
-      "estleg:legalText": "(1) Valdkonna eest vastutav minister annab käskkirjaga vandetõlgi kutse käesoleva seaduse §-s 16 nimetatud tingimustele vastavale isikule, kes on sooritanud eksami, ja väljastab talle vandetõlgi kutsetunnistuse. (2) Vandetõlgi kutse saamiseks esitab isik valdkonna eest vastutavale ministrile kirjaliku taotluse. (3) Vandetõlgi kutsetunnistuse vormi ja kutsetunnistusele märgitavate andmete loetelu kehtestab määrusega. (4) Enne vandetõlgi kutsetunnistuse saamist annab isik valdkonna eest vastutava ministri ees järgmise vande: „Tõotan oma au ja teadmiste juures olla truu Eesti Vabariigile, järgida tema põhiseadust, tegutseda vandetõlgina ausalt, väärikalt ja erapooletult ning kõigi oma võimete kohaselt.”. (5) Kui eksami sooritanud isik ei ole esitanud taotlust vandetõlgi kutse saamiseks kolme aasta jooksul eksami toimumisest arvates, tuleb tal vandetõlgi kutse saamiseks sooritada uus eksam.",
+      "estleg:summary": {
+        "@value": "(1) Valdkonna eest vastutav minister annab käskkirjaga vandetõlgi kutse käesoleva seaduse §-s 16 nimetatud tingimustele vastavale isikule, kes on sooritanud eksami, ja väljastab talle vandetõlgi kutsetunnistuse. (2) Vandetõlgi kutse saamiseks esitab isik valdkonna eest vastutavale ministrile kirjaliku taotluse. (3) Vandetõlgi kutsetunnistuse vormi ja kutsetunnistusele märgitavate andmete loetelu kehtestab valdkonna eest vastutav minister määrusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Valdkonna eest vastutav minister annab käskkirjaga vandetõlgi kutse käesoleva seaduse §-s 16 nimetatud tingimustele vastavale isikule, kes on sooritanud eksami, ja väljastab talle vandetõlgi kutsetunnistuse. (2) Vandetõlgi kutse saamiseks esitab isik valdkonna eest vastutavale ministrile kirjaliku taotluse. (3) Vandetõlgi kutsetunnistuse vormi ja kutsetunnistusele märgitavate andmete loetelu kehtestab valdkonna eest vastutav minister määrusega. (4) Enne vandetõlgi kutsetunnistuse saamist annab isik valdkonna eest vastutava ministri ees järgmise vande: „Tõotan oma au ja teadmiste juures olla truu Eesti Vabariigile, järgida tema põhiseadust, tegutseda vandetõlgina ausalt, väärikalt ja erapooletult ning kõigi oma võimete kohaselt.”. (5) Kui eksami sooritanud isik ei ole esitanud taotlust vandetõlgi kutse saamiseks kolme aasta jooksul eksami toimumisest arvates, tuleb tal vandetõlgi kutse saamiseks sooritada uus eksam.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_3"
       },
@@ -3029,6 +3344,9 @@
           "@id": "estleg:VANDET_Par_16"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VANDET_Par_20_v123122013001"
@@ -3097,11 +3415,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Vandetõlgi kutsetunnistuse vormi ja kutsetunnistusele märgitavate andmete loetelu kehtestab määrusega.",
+      "estleg:legalText": "(3) Vandetõlgi kutsetunnistuse vormi ja kutsetunnistusele märgitavate andmete loetelu kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_20"
       },
       "rdfs:label": "§ 20 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -3143,9 +3470,6 @@
         "@id": "estleg:VANDET_Par_20"
       },
       "rdfs:label": "§ 20 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3154,6 +3478,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -3163,13 +3490,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Vandetõlgi kutsetegevuse alustamine",
+      "rdfs:label": {
+        "@value": "§ 21. Vandetõlgi kutsetegevuse alustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Isik võib tegeleda vandetõlgi kutsetegevusega pärast vandetõlgi kutsetunnistuse saamist ja käesoleva seaduse § 12 lõikes 1 sätestatud andmete avalikustamist Justiits- ja Digiministeeriumi veebilehel. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (2) Vandetõlgi kutse saanud isik peab vandetõlgi kutsetegevust alustama nelja kuu jooksul kutsetunnistuse väljastamisest arvates.",
-      "estleg:legalText": "(1) Isik võib tegeleda vandetõlgi kutsetegevusega pärast vandetõlgi kutsetunnistuse saamist ja käesoleva seaduse § 12 lõikes 1 sätestatud andmete avalikustamist Justiits- ja Digiministeeriumi veebilehel. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (2) Vandetõlgi kutse saanud isik peab vandetõlgi kutsetegevust alustama nelja kuu jooksul kutsetunnistuse väljastamisest arvates.",
+      "estleg:summary": {
+        "@value": "(1) Isik võib tegeleda vandetõlgi kutsetegevusega pärast vandetõlgi kutsetunnistuse saamist ja käesoleva seaduse § 12 lõikes 1 sätestatud andmete avalikustamist Justiits- ja Digiministeeriumi veebilehel. (2) Vandetõlgi kutse saanud isik peab vandetõlgi kutsetegevust alustama nelja kuu jooksul kutsetunnistuse väljastamisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Isik võib tegeleda vandetõlgi kutsetegevusega pärast vandetõlgi kutsetunnistuse saamist ja käesoleva seaduse § 12 lõikes 1 sätestatud andmete avalikustamist Justiits- ja Digiministeeriumi veebilehel. (2) Vandetõlgi kutse saanud isik peab vandetõlgi kutsetegevust alustama nelja kuu jooksul kutsetunnistuse väljastamisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_3"
       },
@@ -3187,31 +3520,8 @@
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:KORRUP_Par_8"
-        },
-        {
-          "@id": "estleg:Reg_1021229_Par_13"
-        },
-        {
-          "@id": "estleg:Reg_1042331_Par_3"
-        },
-        {
-          "@id": "estleg:Reg_1052190_Par_4"
-        },
-        {
-          "@id": "estleg:Reg_1058871_Par_4"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3219,9 +3529,14 @@
       "estleg:references": [
         {
           "@id": "estleg:VANDET_Par_12_Lg_1"
-        },
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:VABARI_Par_105"
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
       ],
       "estleg:hasVersion": [
@@ -3230,14 +3545,6 @@
         },
         {
           "@id": "estleg:VANDET_Par_21_v114032025002"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -3248,17 +3555,14 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Isik võib tegeleda vandetõlgi kutsetegevusega pärast vandetõlgi kutsetunnistuse saamist ja käesoleva seaduse § 12 lõikes 1 sätestatud andmete avalikustamist Justiits- ja Digiministeeriumi veebilehel. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(1) Isik võib tegeleda vandetõlgi kutsetegevusega pärast vandetõlgi kutsetunnistuse saamist ja käesoleva seaduse § 12 lõikes 1 sätestatud andmete avalikustamist Justiits- ja Digiministeeriumi veebilehel.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_21"
       },
       "rdfs:label": "§ 21 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Citizen"
         }
       ],
       "estleg:assertionConfidence": {
@@ -3268,17 +3572,14 @@
       "estleg:references": [
         {
           "@id": "estleg:VANDET_Par_12_Lg_1"
-        },
-        {
-          "@id": "estleg:VABARI_Par_105"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -3294,9 +3595,6 @@
         "@id": "estleg:VANDET_Par_21"
       },
       "rdfs:label": "§ 21 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3305,6 +3603,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -3314,13 +3615,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Välisriigis omandatud vandetõlgi kvalifikatsiooni tunnustamine",
+      "rdfs:label": {
+        "@value": "§ 22. Välisriigis omandatud vandetõlgi kvalifikatsiooni tunnustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Välisriigis vandetõlgi kutse omandanud isikul on õigus nõuda oma kvalifikatsiooni tunnustamist Eestis vastavalt välisriigi kutsekvalifikatsiooni tunnustamise seadusele. (2) Välisriigi kutsekvalifikatsiooni tunnustamise seaduse § 7 lõikes 2 sätestatud pädev asutus on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (3) Välisriigis omandatud vandetõlgi",
-      "estleg:legalText": "(1) Välisriigis vandetõlgi kutse omandanud isikul on õigus nõuda oma kvalifikatsiooni tunnustamist Eestis vastavalt välisriigi kutsekvalifikatsiooni tunnustamise seadusele. (2) Välisriigi kutsekvalifikatsiooni tunnustamise seaduse § 7 lõikes 2 sätestatud pädev asutus on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (3) Välisriigis omandatud vandetõlgi kvalifikatsiooni hindab vandetõlgi kvalifikatsiooni tunnustamise komisjon välisriigi kutsekvalifikatsiooni tunnustamise seaduse §-s 17 sätestatud menetluse kohaselt. (4) Vandetõlgi kvalifikatsiooni tunnustamise komisjoni liikmed nimetab valdkonna eest vastutav minister. (5) Vandetõlgi kvalifikatsiooni tunnustamise komisjoni töökorra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Välisriigis vandetõlgi kutse omandanud isikul on õigus nõuda oma kvalifikatsiooni tunnustamist Eestis vastavalt välisriigi kutsekvalifikatsiooni tunnustamise seadusele. (2) Välisriigi kutsekvalifikatsiooni tunnustamise seaduse § 7 lõikes 2 sätestatud pädev asutus on Justiits- ja Digiministeerium. (3) Välisriigis omandatud vandetõlgi kvalifikatsiooni hindab vandetõlgi kvalifikatsiooni tunnustamise komisjon välisriigi kutsekvalifikatsiooni tunnustamise seaduse §-s 17 sätestatud menetluse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Välisriigis vandetõlgi kutse omandanud isikul on õigus nõuda oma kvalifikatsiooni tunnustamist Eestis vastavalt välisriigi kutsekvalifikatsiooni tunnustamise seadusele. (2) Välisriigi kutsekvalifikatsiooni tunnustamise seaduse § 7 lõikes 2 sätestatud pädev asutus on Justiits- ja Digiministeerium. (3) Välisriigis omandatud vandetõlgi kvalifikatsiooni hindab vandetõlgi kvalifikatsiooni tunnustamise komisjon välisriigi kutsekvalifikatsiooni tunnustamise seaduse §-s 17 sätestatud menetluse kohaselt. (4) Vandetõlgi kvalifikatsiooni tunnustamise komisjoni liikmed nimetab valdkonna eest vastutav minister. (5) Vandetõlgi kvalifikatsiooni tunnustamise komisjoni töökorra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_3"
       },
@@ -3346,20 +3653,12 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_PublicBody"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1021229_Par_25"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3369,12 +3668,31 @@
           "@id": "estleg:VKT_Par_7_Lg_2"
         },
         {
-          "@id": "estleg:VABARI_Par_105"
+          "@id": "estleg:VKT_Par_17"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1021229_Par_25"
         }
       ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:Reg_1021229_Map"
+        },
+        {
           "@id": "estleg:Reg_1021229_Par_25"
+        },
+        {
+          "@id": "estleg:Reg_1021229_Par_25_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -3383,14 +3701,6 @@
         },
         {
           "@id": "estleg:VANDET_Par_22_v114032025002"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -3406,9 +3716,6 @@
         "@id": "estleg:VANDET_Par_22"
       },
       "rdfs:label": "§ 22 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3417,6 +3724,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -3426,7 +3736,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Välisriigi kutsekvalifikatsiooni tunnustamise seaduse § 7 lõikes 2 sätestatud pädev asutus on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(2) Välisriigi kutsekvalifikatsiooni tunnustamise seaduse § 7 lõikes 2 sätestatud pädev asutus on Justiits- ja Digiministeerium.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_22"
       },
@@ -3443,17 +3753,11 @@
       "estleg:references": [
         {
           "@id": "estleg:VKT_Par_7_Lg_2"
-        },
-        {
-          "@id": "estleg:VABARI_Par_105"
         }
       ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -3504,11 +3808,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Vandetõlgi kvalifikatsiooni tunnustamise komisjoni töökorra kehtestab määrusega.",
+      "estleg:legalText": "(5) Vandetõlgi kvalifikatsiooni tunnustamise komisjoni töökorra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_22"
       },
       "rdfs:label": "§ 22 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -3523,13 +3836,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Vandetõlgi kutsetegevuse peatamine",
+      "rdfs:label": {
+        "@value": "§ 23. Vandetõlgi kutsetegevuse peatamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Valdkonna eest vastutav minister peatab vandetõlgi kutsetegevuse kindlaksmääratud tähtajaks järgmistel asjaoludel: vandetõlgi taotlusel; käesoleva seaduse § 28 lõike 3 punkti 2 alusel atesteerimisvajaduse otsustamisest kuni atesteerimistulemuste selgumiseni; muul mõjuval põhjusel kuni mõjuva põhjuse äralangemiseni. (2) Valdkonna eest vastutav minister võib vandetõlgi kutsetegevuse peatada vandetõlgile kriminaalkorras süüdistuse esitamise korral kuni kriminaalasja lõpetamiseni või vandetõlgi",
-      "estleg:legalText": "(1) Valdkonna eest vastutav minister peatab vandetõlgi kutsetegevuse kindlaksmääratud tähtajaks järgmistel asjaoludel: vandetõlgi taotlusel; käesoleva seaduse § 28 lõike 3 punkti 2 alusel atesteerimisvajaduse otsustamisest kuni atesteerimistulemuste selgumiseni; muul mõjuval põhjusel kuni mõjuva põhjuse äralangemiseni. (2) Valdkonna eest vastutav minister võib vandetõlgi kutsetegevuse peatada vandetõlgile kriminaalkorras süüdistuse esitamise korral kuni kriminaalasja lõpetamiseni või vandetõlgi õigeksmõistmiseni, kui esitatav süüdistus on seotud vandetõlgi kutsetegevusega. (3) Vandetõlgil, kelle kutsetegevus on peatatud, on keelatud teha käesoleva seaduse §-s 5 nimetatud toiminguid. (4) Vandetõlk, kelle kutsetegevus on peatatud käesoleva paragrahvi lõike 1 punkti 1 alusel, võib teha käesoleva seaduse § 5 lõikes 2 nimetatud toiminguid.",
+      "estleg:summary": {
+        "@value": "(1) Valdkonna eest vastutav minister peatab vandetõlgi kutsetegevuse kindlaksmääratud tähtajaks järgmistel asjaoludel: 1) vandetõlgi taotlusel; 2) käesoleva seaduse § 28 lõike 3 punkti 2 alusel atesteerimisvajaduse otsustamisest kuni atesteerimistulemuste selgumiseni; 3) muul mõjuval põhjusel kuni mõjuva põhjuse äralangemiseni. (2) Valdkonna eest vastutav minister võib vandetõlgi kutsetegevuse peatada vandetõlgile kriminaalkorras süüdistuse esitamise korral kuni kriminaalasja lõpetamiseni või",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Valdkonna eest vastutav minister peatab vandetõlgi kutsetegevuse kindlaksmääratud tähtajaks järgmistel asjaoludel: 1) vandetõlgi taotlusel; 2) käesoleva seaduse § 28 lõike 3 punkti 2 alusel atesteerimisvajaduse otsustamisest kuni atesteerimistulemuste selgumiseni; 3) muul mõjuval põhjusel kuni mõjuva põhjuse äralangemiseni. (2) Valdkonna eest vastutav minister võib vandetõlgi kutsetegevuse peatada vandetõlgile kriminaalkorras süüdistuse esitamise korral kuni kriminaalasja lõpetamiseni või vandetõlgi õigeksmõistmiseni, kui esitatav süüdistus on seotud vandetõlgi kutsetegevusega. (3) Vandetõlgil, kelle kutsetegevus on peatatud, on keelatud teha käesoleva seaduse §-s 5 nimetatud toiminguid. (4) Vandetõlk, kelle kutsetegevus on peatatud käesoleva paragrahvi lõike 1 punkti 1 alusel, võib teha käesoleva seaduse § 5 lõikes 2 nimetatud toiminguid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_3"
       },
@@ -3555,9 +3874,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3567,6 +3883,9 @@
           "@id": "estleg:VANDET_Par_28_Lg_3"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VANDET_Par_23_v123122013001"
@@ -3583,12 +3902,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Valdkonna eest vastutav minister peatab vandetõlgi kutsetegevuse kindlaksmääratud tähtajaks järgmistel asjaoludel: vandetõlgi taotlusel; käesoleva seaduse § 28 lõike 3 punkti 2 alusel atesteerimisvajaduse otsustamisest kuni atesteerimistulemuste selgumiseni; muul mõjuval põhjusel kuni mõjuva põhjuse äralangemiseni.",
+      "estleg:legalText": "(1) Valdkonna eest vastutav minister peatab vandetõlgi kutsetegevuse kindlaksmääratud tähtajaks järgmistel asjaoludel: 1) vandetõlgi taotlusel; 2) käesoleva seaduse § 28 lõike 3 punkti 2 alusel atesteerimisvajaduse otsustamisest kuni atesteerimistulemuste selgumiseni; 3) muul mõjuval põhjusel kuni mõjuva põhjuse äralangemiseni.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_23"
       },
       "rdfs:label": "§ 23 lg 1",
-      "estleg:itemNumber": "2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -3616,9 +3939,6 @@
         "@id": "estleg:VANDET_Par_23"
       },
       "rdfs:label": "§ 23 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -3627,6 +3947,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -3641,9 +3964,6 @@
         "@id": "estleg:VANDET_Par_23"
       },
       "rdfs:label": "§ 23 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -3652,7 +3972,10 @@
         {
           "@id": "estleg:VANDET_Par_5"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:VANDET_Par_23_Lg_4",
@@ -3667,23 +3990,23 @@
       },
       "rdfs:label": "§ 23 lg 4",
       "estleg:itemNumber": "1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
+      "estleg:references": [
+        {
+          "@id": "estleg:VANDET_Par_5_Lg_2"
+        }
+      ],
       "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:VANDET_Par_5_Lg_2"
         }
       ],
-      "estleg:references": [
-        {
-          "@id": "estleg:VANDET_Par_5_Lg_2"
-        }
-      ]
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:VANDET_Par_24",
@@ -3692,13 +4015,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Vandetõlgi kutse äravõtmine",
+      "rdfs:label": {
+        "@value": "§ 24. Vandetõlgi kutse äravõtmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Valdkonna eest vastutav minister võtab vandetõlgi kutse ära järgmistel asjaoludel: vandetõlgi taotlusel; kui vandetõlk ei vasta käesoleva seaduse §-s 16 nimetatud tingimustele; käesoleva seaduse § 28 lõike 3 punkti 3 alusel; kordusatesteerimisel atesteerimata jäämise korral või mõjuva põhjuseta kordusatesteerimisele ilmumata jäämise korral; kui vandetõlgi suhtes on jõustunud süüdimõistev kohtuotsus vandetõlgi kutsetegevusega seotud kuriteo eest või muu süüdimõistev kohtuotsus, millega",
-      "estleg:legalText": "(1) Valdkonna eest vastutav minister võtab vandetõlgi kutse ära järgmistel asjaoludel: vandetõlgi taotlusel; kui vandetõlk ei vasta käesoleva seaduse §-s 16 nimetatud tingimustele; käesoleva seaduse § 28 lõike 3 punkti 3 alusel; kordusatesteerimisel atesteerimata jäämise korral või mõjuva põhjuseta kordusatesteerimisele ilmumata jäämise korral; kui vandetõlgi suhtes on jõustunud süüdimõistev kohtuotsus vandetõlgi kutsetegevusega seotud kuriteo eest või muu süüdimõistev kohtuotsus, millega mõistetud karistus teeb võimatuks vandetõlgina tegutsemise. (2) Valdkonna eest vastutav minister võib vandetõlgi kutse ära võtta: kui vandetõlgi suhtes on jõustunud süüdimõistev kohtuotsus tahtlikult toimepandud kuriteo eest ja vandetõlgi kutsetegevuse jätkamine ohustaks vandetõlgi kutse usaldusväärsust; kui vandetõlk ei alusta kutsetegevust nelja kuu jooksul talle kutsetunnistuse väljastamisest arvates ja selleks puudub mõjuv põhjus; kui vandetõlk tegeleb püsivalt tegevusega, mis ei ole vandetõlgile lubatud käesoleva seaduse §-s 6 sätestatu kohaselt; kui ilmnevad muud asjaolud, mis teevad võimatuks vandetõlgina töötamise. (3) Isik, kellelt on ära võetud vandetõlgi kutse, on kohustatud Justiits- ja Digiministeeriumile viivitamata üle andma vandetõlgi kutsetunnistuse. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:summary": {
+        "@value": "(1) Valdkonna eest vastutav minister võtab vandetõlgi kutse ära järgmistel asjaoludel: 1) vandetõlgi taotlusel; 2) kui vandetõlk ei vasta käesoleva seaduse §-s 16 nimetatud tingimustele; 3) käesoleva seaduse § 28 lõike 3 punkti 3 alusel; 4) kordusatesteerimisel atesteerimata jäämise korral või mõjuva põhjuseta kordusatesteerimisele ilmumata jäämise korral; 5) kui vandetõlgi suhtes on jõustunud süüdimõistev kohtuotsus vandetõlgi kutsetegevusega seotud kuriteo eest või muu süüdimõistev",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Valdkonna eest vastutav minister võtab vandetõlgi kutse ära järgmistel asjaoludel: 1) vandetõlgi taotlusel; 2) kui vandetõlk ei vasta käesoleva seaduse §-s 16 nimetatud tingimustele; 3) käesoleva seaduse § 28 lõike 3 punkti 3 alusel; 4) kordusatesteerimisel atesteerimata jäämise korral või mõjuva põhjuseta kordusatesteerimisele ilmumata jäämise korral; 5) kui vandetõlgi suhtes on jõustunud süüdimõistev kohtuotsus vandetõlgi kutsetegevusega seotud kuriteo eest või muu süüdimõistev kohtuotsus, millega mõistetud karistus teeb võimatuks vandetõlgina tegutsemise. (2) Valdkonna eest vastutav minister võib vandetõlgi kutse ära võtta: 1) kui vandetõlgi suhtes on jõustunud süüdimõistev kohtuotsus tahtlikult toimepandud kuriteo eest ja vandetõlgi kutsetegevuse jätkamine ohustaks vandetõlgi kutse usaldusväärsust; 2) kui vandetõlk ei alusta kutsetegevust nelja kuu jooksul talle kutsetunnistuse väljastamisest arvates ja selleks puudub mõjuv põhjus; 3) kui vandetõlk tegeleb püsivalt tegevusega, mis ei ole vandetõlgile lubatud käesoleva seaduse §-s 6 sätestatu kohaselt; 4) kui ilmnevad muud asjaolud, mis teevad võimatuks vandetõlgina töötamise. (3) Isik, kellelt on ära võetud vandetõlgi kutse, on kohustatud Justiits- ja Digiministeeriumile viivitamata üle andma vandetõlgi kutsetunnistuse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_3"
       },
@@ -3721,7 +4050,7 @@
           "@id": "estleg:TargetGroup_Citizen"
         },
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
       "estleg:assertionConfidence": {
@@ -3736,20 +4065,20 @@
           "@id": "estleg:VANDET_Par_28_Lg_3"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:VANDET_Par_24_v123122013001"
         },
         {
           "@id": "estleg:VANDET_Par_24_v114032025002"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -3760,12 +4089,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Valdkonna eest vastutav minister võtab vandetõlgi kutse ära järgmistel asjaoludel: vandetõlgi taotlusel; kui vandetõlk ei vasta käesoleva seaduse §-s 16 nimetatud tingimustele; käesoleva seaduse § 28 lõike 3 punkti 3 alusel; kordusatesteerimisel atesteerimata jäämise korral või mõjuva põhjuseta kordusatesteerimisele ilmumata jäämise korral; kui vandetõlgi suhtes on jõustunud süüdimõistev kohtuotsus vandetõlgi kutsetegevusega seotud kuriteo eest või muu süüdimõistev kohtuotsus, millega mõistetud karistus teeb võimatuks vandetõlgina tegutsemise.",
+      "estleg:legalText": "(1) Valdkonna eest vastutav minister võtab vandetõlgi kutse ära järgmistel asjaoludel: 1) vandetõlgi taotlusel; 2) kui vandetõlk ei vasta käesoleva seaduse §-s 16 nimetatud tingimustele; 3) käesoleva seaduse § 28 lõike 3 punkti 3 alusel; 4) kordusatesteerimisel atesteerimata jäämise korral või mõjuva põhjuseta kordusatesteerimisele ilmumata jäämise korral; 5) kui vandetõlgi suhtes on jõustunud süüdimõistev kohtuotsus vandetõlgi kutsetegevusega seotud kuriteo eest või muu süüdimõistev kohtuotsus, millega mõistetud karistus teeb võimatuks vandetõlgina tegutsemise.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_24"
       },
       "rdfs:label": "§ 24 lg 1",
-      "estleg:itemNumber": "3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -3785,6 +4120,9 @@
       ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:VANDET_Map"
+        },
+        {
           "@id": "estleg:VANDET_Par_16"
         },
         {
@@ -3799,14 +4137,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Valdkonna eest vastutav minister võib vandetõlgi kutse ära võtta: kui vandetõlgi suhtes on jõustunud süüdimõistev kohtuotsus tahtlikult toimepandud kuriteo eest ja vandetõlgi kutsetegevuse jätkamine ohustaks vandetõlgi kutse usaldusväärsust; kui vandetõlk ei alusta kutsetegevust nelja kuu jooksul talle kutsetunnistuse väljastamisest arvates ja selleks puudub mõjuv põhjus; kui vandetõlk tegeleb püsivalt tegevusega, mis ei ole vandetõlgile lubatud käesoleva seaduse §-s 6 sätestatu kohaselt; kui ilmnevad muud asjaolud, mis teevad võimatuks vandetõlgina töötamise.",
+      "estleg:legalText": "(2) Valdkonna eest vastutav minister võib vandetõlgi kutse ära võtta: 1) kui vandetõlgi suhtes on jõustunud süüdimõistev kohtuotsus tahtlikult toimepandud kuriteo eest ja vandetõlgi kutsetegevuse jätkamine ohustaks vandetõlgi kutse usaldusväärsust; 2) kui vandetõlk ei alusta kutsetegevust nelja kuu jooksul talle kutsetunnistuse väljastamisest arvates ja selleks puudub mõjuv põhjus; 3) kui vandetõlk tegeleb püsivalt tegevusega, mis ei ole vandetõlgile lubatud käesoleva seaduse §-s 6 sätestatu kohaselt; 4) kui ilmnevad muud asjaolud, mis teevad võimatuks vandetõlgina töötamise.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_24"
       },
       "rdfs:label": "§ 24 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -3820,7 +4161,10 @@
         {
           "@id": "estleg:VANDET_Par_6"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:VANDET_Par_24_Lg_3",
@@ -3829,34 +4173,26 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Isik, kellelt on ära võetud vandetõlgi kutse, on kohustatud Justiits- ja Digiministeeriumile viivitamata üle andma vandetõlgi kutsetunnistuse. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(3) Isik, kellelt on ära võetud vandetõlgi kutse, on kohustatud Justiits- ja Digiministeeriumile viivitamata üle andma vandetõlgi kutsetunnistuse.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_24"
       },
       "rdfs:label": "§ 24 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_PublicBody"
+          "@id": "estleg:TargetGroup_Citizen"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
-        {
-          "@id": "estleg:VABARI_Par_105"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -3867,13 +4203,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Vandetõlgi kutsetegevuse registreerimine",
+      "rdfs:label": {
+        "@value": "§ 25. Vandetõlgi kutsetegevuse registreerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlk registreerib kutsetegevuse raamatus käesoleva seaduse § 5 lõike 1 punktis 1 nimetatud toimingud. (2) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud toimingud registreerib vandetõlk koos käesoleva seaduse § 5 lõike 1 punktis 1 nimetatud toiminguga. (3) Vandetõlk, kelle kutse on ära võetud, annab oma kutsetegevuse raamatu üle Justiits- ja Digiministeeriumile. Vandetõlgi surma korral teeb seda vandetõlgi pärija. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel",
-      "estleg:legalText": "(1) Vandetõlk registreerib kutsetegevuse raamatus käesoleva seaduse § 5 lõike 1 punktis 1 nimetatud toimingud. (2) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud toimingud registreerib vandetõlk koos käesoleva seaduse § 5 lõike 1 punktis 1 nimetatud toiminguga. (3) Vandetõlk, kelle kutse on ära võetud, annab oma kutsetegevuse raamatu üle Justiits- ja Digiministeeriumile. Vandetõlgi surma korral teeb seda vandetõlgi pärija. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (4) Vandetõlgi kutsetegevuse raamatu vormi, pidamise, üleandmise korra ja säilitamise tähtaja kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlk registreerib kutsetegevuse raamatus käesoleva seaduse § 5 lõike 1 punktis 1 nimetatud toimingud. (2) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud toimingud registreerib vandetõlk koos käesoleva seaduse § 5 lõike 1 punktis 1 nimetatud toiminguga. (3) Vandetõlk, kelle kutse on ära võetud, annab oma kutsetegevuse raamatu üle Justiits- ja Digiministeeriumile. Vandetõlgi surma korral teeb seda vandetõlgi pärija. (4) Vandetõlgi kutsetegevuse raamatu vormi, pidamise,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vandetõlk registreerib kutsetegevuse raamatus käesoleva seaduse § 5 lõike 1 punktis 1 nimetatud toimingud. (2) Käesoleva seaduse § 5 lõike 1 punktides 2 ja 3 nimetatud toimingud registreerib vandetõlk koos käesoleva seaduse § 5 lõike 1 punktis 1 nimetatud toiminguga. (3) Vandetõlk, kelle kutse on ära võetud, annab oma kutsetegevuse raamatu üle Justiits- ja Digiministeeriumile. Vandetõlgi surma korral teeb seda vandetõlgi pärija. (4) Vandetõlgi kutsetegevuse raamatu vormi, pidamise, üleandmise korra ja säilitamise tähtaja kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_4"
       },
@@ -3894,11 +4236,6 @@
           "@id": "estleg:VANDET_Par_25_Lg_4"
         }
       ],
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3906,9 +4243,16 @@
       "estleg:references": [
         {
           "@id": "estleg:VANDET_Par_5_Lg_1"
-        },
+        }
+      ],
+      "estleg:targetGroup": [
         {
-          "@id": "estleg:VABARI_Par_105"
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
       ],
       "estleg:hasVersion": [
@@ -3917,14 +4261,6 @@
         },
         {
           "@id": "estleg:VANDET_Par_25_v114032025002"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -3973,31 +4309,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Vandetõlk, kelle kutse on ära võetud, annab oma kutsetegevuse raamatu üle Justiits- ja Digiministeeriumile. Vandetõlgi surma korral teeb seda vandetõlgi pärija. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(3) Vandetõlk, kelle kutse on ära võetud, annab oma kutsetegevuse raamatu üle Justiits- ja Digiministeeriumile. Vandetõlgi surma korral teeb seda vandetõlgi pärija.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_25"
       },
       "rdfs:label": "§ 25 lg 3",
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
-        {
-          "@id": "estleg:VABARI_Par_105"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        },
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
         }
       ]
     },
@@ -4008,11 +4331,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Vandetõlgi kutsetegevuse raamatu vormi, pidamise, üleandmise korra ja säilitamise tähtaja kehtestab määrusega.",
+      "estleg:legalText": "(4) Vandetõlgi kutsetegevuse raamatu vormi, pidamise, üleandmise korra ja säilitamise tähtaja kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_25"
       },
       "rdfs:label": "§ 25 lg 4",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -4027,13 +4359,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Vandetõlgi statistiline aruandlus",
+      "rdfs:label": {
+        "@value": "§ 26. Vandetõlgi statistiline aruandlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlk esitab igal aastal valdkonna eest vastutavale ministrile kutsetegevuse raamatusse kantud andmete põhjal statistilise aruande. (2) Käesoleva paragrahvi lõikes 1 nimetatud statistilises aruandes kajastatavate andmete loetelu ning aruande esitamise aja ja vormi kehtestab määrusega.",
-      "estleg:legalText": "(1) Vandetõlk esitab igal aastal valdkonna eest vastutavale ministrile kutsetegevuse raamatusse kantud andmete põhjal statistilise aruande. (2) Käesoleva paragrahvi lõikes 1 nimetatud statistilises aruandes kajastatavate andmete loetelu ning aruande esitamise aja ja vormi kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlk esitab igal aastal valdkonna eest vastutavale ministrile kutsetegevuse raamatusse kantud andmete põhjal statistilise aruande. (2) Käesoleva paragrahvi lõikes 1 nimetatud statistilises aruandes kajastatavate andmete loetelu ning aruande esitamise aja ja vormi kehtestab valdkonna eest vastutav minister määrusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vandetõlk esitab igal aastal valdkonna eest vastutavale ministrile kutsetegevuse raamatusse kantud andmete põhjal statistilise aruande. (2) Käesoleva paragrahvi lõikes 1 nimetatud statistilises aruandes kajastatavate andmete loetelu ning aruande esitamise aja ja vormi kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_4"
       },
@@ -4048,6 +4386,15 @@
           "@id": "estleg:VANDET_Par_26_Lg_2"
         }
       ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VANDET_Par_26_v123122013001"
@@ -4077,11 +4424,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud statistilises aruandes kajastatavate andmete loetelu ning aruande esitamise aja ja vormi kehtestab määrusega.",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud statistilises aruandes kajastatavate andmete loetelu ning aruande esitamise aja ja vormi kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_26"
       },
       "rdfs:label": "§ 26 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -4096,13 +4452,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Vandetõlgi kutsetegevusega seotud teabekandjad",
+      "rdfs:label": {
+        "@value": "§ 27. Vandetõlgi kutsetegevusega seotud teabekandjad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Vandetõlk hoiab oma kutsetegevusega seotud teabekandjad lahus muudest tema valduses olevatest andmekandjatest viisil, mis välistab nende kaotsimineku või rikkumise. (2) Vandetõlgile tõlkimise käigus esitatud teabekandjate tagastamise korra vandetõlgi kutse äravõtmise ja vandetõlgi surma või raske haiguse korral kehtestab määrusega.",
-      "estleg:legalText": "(1) Vandetõlk hoiab oma kutsetegevusega seotud teabekandjad lahus muudest tema valduses olevatest andmekandjatest viisil, mis välistab nende kaotsimineku või rikkumise. (2) Vandetõlgile tõlkimise käigus esitatud teabekandjate tagastamise korra vandetõlgi kutse äravõtmise ja vandetõlgi surma või raske haiguse korral kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Vandetõlk hoiab oma kutsetegevusega seotud teabekandjad lahus muudest tema valduses olevatest andmekandjatest viisil, mis välistab nende kaotsimineku või rikkumise. (2) Vandetõlgile tõlkimise käigus esitatud teabekandjate tagastamise korra vandetõlgi kutse äravõtmise ja vandetõlgi surma või raske haiguse korral kehtestab valdkonna eest vastutav minister määrusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vandetõlk hoiab oma kutsetegevusega seotud teabekandjad lahus muudest tema valduses olevatest andmekandjatest viisil, mis välistab nende kaotsimineku või rikkumise. (2) Vandetõlgile tõlkimise käigus esitatud teabekandjate tagastamise korra vandetõlgi kutse äravõtmise ja vandetõlgi surma või raske haiguse korral kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_4"
       },
@@ -4117,6 +4479,15 @@
           "@id": "estleg:VANDET_Par_27_Lg_2"
         }
       ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VANDET_Par_27_v123122013001"
@@ -4146,11 +4517,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Vandetõlgile tõlkimise käigus esitatud teabekandjate tagastamise korra vandetõlgi kutse äravõtmise ja vandetõlgi surma või raske haiguse korral kehtestab määrusega.",
+      "estleg:legalText": "(2) Vandetõlgile tõlkimise käigus esitatud teabekandjate tagastamise korra vandetõlgi kutse äravõtmise ja vandetõlgi surma või raske haiguse korral kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_27"
       },
       "rdfs:label": "§ 27 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -4165,13 +4545,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Riiklik järelevalve vandetõlgi kutsetegevuse üle",
+      "rdfs:label": {
+        "@value": "§ 28. Riiklik järelevalve vandetõlgi kutsetegevuse üle",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Riiklikku järelevalvet vandetõlgi kutsetegevuse üle teostab Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (2) Vandetõlk on kohustatud esitama järelevalve teostamiseks vajalikud andmed ja dokumendid. (3) Käesoleva paragrahvi lõikes 1 nimetatud järelevalve teostamise tulemusena võib: järelevalve teostaja teha vandetõlgile ettekirjutuse seaduses sätestatud",
-      "estleg:legalText": "(1) Riiklikku järelevalvet vandetõlgi kutsetegevuse üle teostab Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (2) Vandetõlk on kohustatud esitama järelevalve teostamiseks vajalikud andmed ja dokumendid. (3) Käesoleva paragrahvi lõikes 1 nimetatud järelevalve teostamise tulemusena võib: järelevalve teostaja teha vandetõlgile ettekirjutuse seaduses sätestatud kohustuse täitmata jätmise või puuduliku täitmise kohta, sealhulgas nõuda kohustuse nõuetekohast täitmist teatud aja jooksul; valdkonna eest vastutav minister otsustada vandetõlgi atesteerimise vajaduse, kui järelevalve tulemusel tuvastatud asjaolud annavad alust arvata, et vandetõlgi oskused või teadmised vajavad kontrollimist; valdkonna eest vastutav minister otsustada vandetõlgi kutse äravõtmise, kui vandetõlk käesoleva lõike punktis 1 sätestatud ettekirjutuse tegemisest hoolimata ei täida seaduses sätestatud kohustust või täidab seda puudulikult. (4) võib määrusega kehtestada järelevalve teostamise täpsema korra.",
+      "estleg:summary": {
+        "@value": "(1) Riiklikku järelevalvet vandetõlgi kutsetegevuse üle teostab Justiits- ja Digiministeerium. (2) Vandetõlk on kohustatud esitama järelevalve teostamiseks vajalikud andmed ja dokumendid. (3) Käesoleva paragrahvi lõikes 1 nimetatud järelevalve teostamise tulemusena võib: 1) järelevalve teostaja teha vandetõlgile ettekirjutuse seaduses sätestatud kohustuse täitmata jätmise või puuduliku täitmise kohta, sealhulgas nõuda kohustuse nõuetekohast täitmist teatud aja jooksul; 2) valdkonna eest",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Riiklikku järelevalvet vandetõlgi kutsetegevuse üle teostab Justiits- ja Digiministeerium. (2) Vandetõlk on kohustatud esitama järelevalve teostamiseks vajalikud andmed ja dokumendid. (3) Käesoleva paragrahvi lõikes 1 nimetatud järelevalve teostamise tulemusena võib: 1) järelevalve teostaja teha vandetõlgile ettekirjutuse seaduses sätestatud kohustuse täitmata jätmise või puuduliku täitmise kohta, sealhulgas nõuda kohustuse nõuetekohast täitmist teatud aja jooksul; 2) valdkonna eest vastutav minister otsustada vandetõlgi atesteerimise vajaduse, kui järelevalve tulemusel tuvastatud asjaolud annavad alust arvata, et vandetõlgi oskused või teadmised vajavad kontrollimist; 3) valdkonna eest vastutav minister otsustada vandetõlgi kutse äravõtmise, kui vandetõlk käesoleva lõike punktis 1 sätestatud ettekirjutuse tegemisest hoolimata ei täida seaduses sätestatud kohustust või täidab seda puudulikult. (4) Valdkonna eest vastutav minister võib määrusega kehtestada järelevalve teostamise täpsema korra.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_5"
       },
@@ -4194,41 +4580,22 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_PublicBody"
-        },
-        {
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:KOKS_Par_66"
-        },
-        {
-          "@id": "estleg:KORRUP_Par_8"
-        },
-        {
-          "@id": "estleg:Reg_1021229_Par_13"
-        },
-        {
-          "@id": "estleg:Reg_1042331_Par_3"
-        },
-        {
-          "@id": "estleg:Reg_339342_Par_18"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:competentAuthority": [
         {
-          "@id": "estleg:VABARI_Par_105"
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
       ],
+      "estleg:competenceType": "enforcement",
       "estleg:referencedBy": [
         {
           "@id": "estleg:VANDET_Par_11_Lg_4"
@@ -4241,17 +4608,6 @@
         {
           "@id": "estleg:VANDET_Par_28_v114032025002"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_justiits_ja_digiministeerium"
-        }
-      ],
-      "estleg:competenceType": "enforcement",
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
-        }
       ]
     },
     {
@@ -4261,36 +4617,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Riiklikku järelevalvet vandetõlgi kutsetegevuse üle teostab Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(1) Riiklikku järelevalvet vandetõlgi kutsetegevuse üle teostab Justiits- ja Digiministeerium.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_28"
       },
       "rdfs:label": "§ 28 lg 1",
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:references": [
-        {
-          "@id": "estleg:VABARI_Par_105"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
       ],
-      "estleg:competenceType": "enforcement",
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_justiitsministeerium"
-        }
-      ]
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:VANDET_Par_28_Lg_2",
@@ -4304,12 +4645,12 @@
         "@id": "estleg:VANDET_Par_28"
       },
       "rdfs:label": "§ 28 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -4319,15 +4660,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 nimetatud järelevalve teostamise tulemusena võib: järelevalve teostaja teha vandetõlgile ettekirjutuse seaduses sätestatud kohustuse täitmata jätmise või puuduliku täitmise kohta, sealhulgas nõuda kohustuse nõuetekohast täitmist teatud aja jooksul; valdkonna eest vastutav minister otsustada vandetõlgi atesteerimise vajaduse, kui järelevalve tulemusel tuvastatud asjaolud annavad alust arvata, et vandetõlgi oskused või teadmised vajavad kontrollimist; valdkonna eest vastutav minister otsustada vandetõlgi kutse äravõtmise, kui vandetõlk käesoleva lõike punktis 1 sätestatud ettekirjutuse tegemisest hoolimata ei täida seaduses sätestatud kohustust või täidab seda puudulikult.",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 nimetatud järelevalve teostamise tulemusena võib: 1) järelevalve teostaja teha vandetõlgile ettekirjutuse seaduses sätestatud kohustuse täitmata jätmise või puuduliku täitmise kohta, sealhulgas nõuda kohustuse nõuetekohast täitmist teatud aja jooksul; 2) valdkonna eest vastutav minister otsustada vandetõlgi atesteerimise vajaduse, kui järelevalve tulemusel tuvastatud asjaolud annavad alust arvata, et vandetõlgi oskused või teadmised vajavad kontrollimist; 3) valdkonna eest vastutav minister otsustada vandetõlgi kutse äravõtmise, kui vandetõlk käesoleva lõike punktis 1 sätestatud ettekirjutuse tegemisest hoolimata ei täida seaduses sätestatud kohustust või täidab seda puudulikult.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_28"
       },
       "rdfs:label": "§ 28 lg 3",
-      "estleg:itemNumber": "1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -4336,6 +4678,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:referencedBy": [
         {
@@ -4349,6 +4694,9 @@
         },
         {
           "@id": "estleg:PankrS_Par_192_3_Lg_4"
+        },
+        {
+          "@id": "estleg:VANDET_Map"
         },
         {
           "@id": "estleg:VANDET_Par_23"
@@ -4371,17 +4719,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) võib määrusega kehtestada järelevalve teostamise täpsema korra.",
+      "estleg:legalText": "(4) Valdkonna eest vastutav minister võib määrusega kehtestada järelevalve teostamise täpsema korra.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_28"
       },
       "rdfs:label": "§ 28 lg 4",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
       }
     },
     {
@@ -4391,13 +4744,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Vandetõlgi atesteerimine",
+      "rdfs:label": {
+        "@value": "§ 29. Vandetõlgi atesteerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Atesteerimisvajaduse otsustamisel kuulab valdkonna eest vastutav minister ära vandetõlkide kutseühenduse arvamuse. (2) Vandetõlki võib atesteerida, kui viimasest atesteerimisest on möödunud vähemalt kolm aastat. (3) Atesteerimine seisneb vandetõlgi oskuste ja teadmiste kontrollimises. Atesteerimise viib läbi vähemalt kolmeliikmeline atesteerimiskomisjon. (4) Atesteerimiskomisjoni liikmeteks võib nimetada käesoleva seaduse § 19 lõikes 2 nimetatud isikud.",
-      "estleg:legalText": "(1) Atesteerimisvajaduse otsustamisel kuulab valdkonna eest vastutav minister ära vandetõlkide kutseühenduse arvamuse. (2) Vandetõlki võib atesteerida, kui viimasest atesteerimisest on möödunud vähemalt kolm aastat. (3) Atesteerimine seisneb vandetõlgi oskuste ja teadmiste kontrollimises. Atesteerimise viib läbi vähemalt kolmeliikmeline atesteerimiskomisjon. (4) Atesteerimiskomisjoni liikmeteks võib nimetada käesoleva seaduse § 19 lõikes 2 nimetatud isikud. Atesteerimiskomisjoni liikmed nimetab valdkonna eest vastutav minister. (5) Vandetõlgi atesteerimise korra ning atesteerimiskomisjoni töökorra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Atesteerimisvajaduse otsustamisel kuulab valdkonna eest vastutav minister ära vandetõlkide kutseühenduse arvamuse. (2) Vandetõlki võib atesteerida, kui viimasest atesteerimisest on möödunud vähemalt kolm aastat. (3) Atesteerimine seisneb vandetõlgi oskuste ja teadmiste kontrollimises. Atesteerimise viib läbi vähemalt kolmeliikmeline atesteerimiskomisjon. (4) Atesteerimiskomisjoni liikmeteks võib nimetada käesoleva seaduse § 19 lõikes 2 nimetatud isikud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Atesteerimisvajaduse otsustamisel kuulab valdkonna eest vastutav minister ära vandetõlkide kutseühenduse arvamuse. (2) Vandetõlki võib atesteerida, kui viimasest atesteerimisest on möödunud vähemalt kolm aastat. (3) Atesteerimine seisneb vandetõlgi oskuste ja teadmiste kontrollimises. Atesteerimise viib läbi vähemalt kolmeliikmeline atesteerimiskomisjon. (4) Atesteerimiskomisjoni liikmeteks võib nimetada käesoleva seaduse § 19 lõikes 2 nimetatud isikud. Atesteerimiskomisjoni liikmed nimetab valdkonna eest vastutav minister. (5) Vandetõlgi atesteerimise korra ning atesteerimiskomisjoni töökorra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VANDET_5"
       },
@@ -4429,9 +4788,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -4441,6 +4797,9 @@
           "@id": "estleg:VANDET_Par_19_Lg_2"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:VANDET_Par_29_v123122013001"
@@ -4484,12 +4843,12 @@
         "@id": "estleg:VANDET_Par_29"
       },
       "rdfs:label": "§ 29 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -4517,9 +4876,6 @@
         "@id": "estleg:VANDET_Par_29"
       },
       "rdfs:label": "§ 29 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -4536,7 +4892,10 @@
         {
           "@id": "estleg:VANDET_Par_19_Lg_2"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:VANDET_Par_29_Lg_5",
@@ -4545,11 +4904,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Vandetõlgi atesteerimise korra ning atesteerimiskomisjoni töökorra kehtestab määrusega.",
+      "estleg:legalText": "(5) Vandetõlgi atesteerimise korra ning atesteerimiskomisjoni töökorra kehtestab valdkonna eest vastutav minister määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_29"
       },
       "rdfs:label": "§ 29 lg 5",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021229_Map"
@@ -4564,13 +4932,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. Vandetõlgi tõlke võrdsustamine kinnitatud tõlkega",
+      "rdfs:label": {
+        "@value": "§ 30. Vandetõlgi tõlke võrdsustamine kinnitatud tõlkega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "Vandetõlgi tõlge on võrdsustatud kinnitatud tõlkega käesoleva seaduse jõustumiseni kehtinud vandetõlgi seaduse § 2 lõike 1 tähenduses.",
+      "estleg:summary": {
+        "@value": "Vandetõlgi tõlge on võrdsustatud kinnitatud tõlkega käesoleva seaduse jõustumiseni kehtinud vandetõlgi seaduse § 2 lõike 1 tähenduses.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vandetõlgi tõlge on võrdsustatud kinnitatud tõlkega käesoleva seaduse jõustumiseni kehtinud vandetõlgi seaduse § 2 lõike 1 tähenduses.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VANDET_6"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VANDET_6_1"
       },
@@ -4596,10 +4973,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vandetõlgi tõlge on võrdsustatud kinnitatud tõlkega käesoleva seaduse jõustumiseni kehtinud vandetõlgi seaduse § 2 lõike 1 tähenduses.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vandetõlgi tõlge on võrdsustatud kinnitatud tõlkega käesoleva seaduse jõustumiseni kehtinud vandetõlgi seaduse § 2 lõike 1 tähenduses.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_30"
       },
+      "rdfs:label": "§ 30 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:VANDET_Par_2_Lg_1"
@@ -4613,13 +4992,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Vandetõlgi tõlke kohustuslikkus eesti keelest võõrkeelde tõlkimisel",
+      "rdfs:label": {
+        "@value": "§ 31. Vandetõlgi tõlke kohustuslikkus eesti keelest võõrkeelde tõlkimisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Alates 2015. aasta 1. jaanuarist kuni käesoleva seaduse § 7 jõustumiseni tõlgib eesti keelest võõrkeelde dokumente, mille tõlge peab välisriigi õigusakti kohaselt olema ametlik või kinnitatud, üksnes vandetõlk. (2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata, kui nimetatud tõlke on teinud välisriigi pädev ametiisik. (3) võib kehtestada määrusega täpsemad nõuded ja korra vandetõlkidele käesoleva paragrahvi lõikes 1 sätestatud kohustuse täitmiseks.",
-      "estleg:legalText": "(1) Alates 2015. aasta 1. jaanuarist kuni käesoleva seaduse § 7 jõustumiseni tõlgib eesti keelest võõrkeelde dokumente, mille tõlge peab välisriigi õigusakti kohaselt olema ametlik või kinnitatud, üksnes vandetõlk. (2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata, kui nimetatud tõlke on teinud välisriigi pädev ametiisik. (3) võib kehtestada määrusega täpsemad nõuded ja korra vandetõlkidele käesoleva paragrahvi lõikes 1 sätestatud kohustuse täitmiseks.",
+      "estleg:summary": {
+        "@value": "(1) Alates 2015. aasta 1. jaanuarist kuni käesoleva seaduse § 7 jõustumiseni tõlgib eesti keelest võõrkeelde dokumente, mille tõlge peab välisriigi õigusakti kohaselt olema ametlik või kinnitatud, üksnes vandetõlk. (2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata, kui nimetatud tõlke on teinud välisriigi pädev ametiisik. (3) Valdkonna eest vastutav minister võib kehtestada määrusega täpsemad nõuded ja korra vandetõlkidele käesoleva paragrahvi lõikes 1 sätestatud kohustuse täitmiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Alates 2015. aasta 1. jaanuarist kuni käesoleva seaduse § 7 jõustumiseni tõlgib eesti keelest võõrkeelde dokumente, mille tõlge peab välisriigi õigusakti kohaselt olema ametlik või kinnitatud, üksnes vandetõlk. (2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata, kui nimetatud tõlke on teinud välisriigi pädev ametiisik. (3) Valdkonna eest vastutav minister võib kehtestada määrusega täpsemad nõuded ja korra vandetõlkidele käesoleva paragrahvi lõikes 1 sätestatud kohustuse täitmiseks.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VANDET_6"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VANDET_6_1"
       },
@@ -4639,9 +5027,6 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -4651,7 +5036,13 @@
           "@id": "estleg:VANDET_Par_7"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:VANDET_Map"
+        },
         {
           "@id": "estleg:VANDET_Par_65"
         },
@@ -4680,9 +5071,6 @@
         "@id": "estleg:VANDET_Par_31"
       },
       "rdfs:label": "§ 31 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -4691,7 +5079,10 @@
         {
           "@id": "estleg:VANDET_Par_7"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:VANDET_Par_31_Lg_2",
@@ -4722,17 +5113,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) võib kehtestada määrusega täpsemad nõuded ja korra vandetõlkidele käesoleva paragrahvi lõikes 1 sätestatud kohustuse täitmiseks.",
+      "estleg:legalText": "(3) Valdkonna eest vastutav minister võib kehtestada määrusega täpsemad nõuded ja korra vandetõlkidele käesoleva paragrahvi lõikes 1 sätestatud kohustuse täitmiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:VANDET_Par_31"
       },
       "rdfs:label": "§ 31 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
       }
     },
     {
@@ -4742,13 +5138,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Uute kutsetunnistuste väljastamine",
+      "rdfs:label": {
+        "@value": "§ 32. Uute kutsetunnistuste väljastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Enne käesoleva seaduse jõustumist ametisse nimetatud vandetõlkidele väljastab justiitsminister uued kutsetunnistused ühe kuu jooksul käesoleva seaduse jõustumisest arvates. (2) Enne käesoleva seaduse jõustumist väljastatud ametitunnistused kehtivad kuni uute kutsetunnistuste väljastamiseni.",
+      "estleg:summary": {
+        "@value": "(1) Enne käesoleva seaduse jõustumist ametisse nimetatud vandetõlkidele väljastab justiitsminister uued kutsetunnistused ühe kuu jooksul käesoleva seaduse jõustumisest arvates. (2) Enne käesoleva seaduse jõustumist väljastatud ametitunnistused kehtivad kuni uute kutsetunnistuste väljastamiseni.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Enne käesoleva seaduse jõustumist ametisse nimetatud vandetõlkidele väljastab justiitsminister uued kutsetunnistused ühe kuu jooksul käesoleva seaduse jõustumisest arvates. (2) Enne käesoleva seaduse jõustumist väljastatud ametitunnistused kehtivad kuni uute kutsetunnistuste väljastamiseni.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VANDET_6"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VANDET_6_1"
       },
@@ -4760,17 +5165,17 @@
           "@id": "estleg:VANDET_Par_32_Lg_2"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VANDET_Par_32_v123122013001"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_justiitsminister"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:VANDET_Par_32_v123122013001"
+        }
+      ]
     },
     {
       "@id": "estleg:VANDET_Par_32_Lg_1",
@@ -4811,15 +5216,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33.",
+      "rdfs:label": {
+        "@value": "§ 33. [–]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
+      "estleg:summary": "§ 33.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VANDET_6"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VANDET_6_2"
       },
-      "estleg:summary": "§ 33.",
+      "estleg:provisionOmitted": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:VANDET_Par_33_v123122013001"
@@ -4833,13 +5245,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 64.",
-      "rdfs:label": "§ 64. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 64. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VANDET_6"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VANDET_6_2"
       },
@@ -4862,13 +5283,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 65.",
-      "rdfs:label": "§ 65. Jõustumine",
+      "rdfs:label": {
+        "@value": "§ 65. Jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vandetõlgi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VANDET_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus jõustub 2014. aasta 1. jaanuaril. (2) Käesoleva seaduse § 31, § 47 punkt 1 ning § 57 punktid 1 ja 2 jõustuvad 2015. aasta 1. jaanuaril. (3) Käesoleva seaduse § 7, § 33 punkt 2, § 34 punkt 2, § 35 punktid 2 ja 4, § 36 punkt 2, § 37 punkt 2, § 38, § 42 punkt 2, § 44 punktid 2 ja 4, § 45 punkt 2, § 47 punkt 2, § 49 punkt 2, § 50 punkt 2, § 51 punkt 2, § 54 punkt 2, § 55 punktid 2 ja 5, § 57 punkt 3, § 59 punkt 3, § 61 punkt 2, § 62 punkt 2, § 63 punkt 2 ning § 64 punktid 1 ja 3",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus jõustub 2014. aasta 1. jaanuaril. (2) Käesoleva seaduse § 31, § 47 punkt 1 ning § 57 punktid 1 ja 2 jõustuvad 2015. aasta 1. jaanuaril. (3) Käesoleva seaduse § 7, § 33 punkt 2, § 34 punkt 2, § 35 punktid 2 ja 4, § 36 punkt 2, § 37 punkt 2, § 38, § 42 punkt 2, § 44 punktid 2 ja 4, § 45 punkt 2, § 47 punkt 2, § 49 punkt 2, § 50 punkt 2, § 51 punkt 2, § 54 punkt 2, § 55 punktid 2 ja 5, § 57 punkt 3, § 59 punkt 3, § 61 punkt 2, § 62 punkt 2, § 63 punkt 2 ning § 64 punktid 1 ja 3",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus jõustub 2014. aasta 1. jaanuaril. (2) Käesoleva seaduse § 31, § 47 punkt 1 ning § 57 punktid 1 ja 2 jõustuvad 2015. aasta 1. jaanuaril. (3) Käesoleva seaduse § 7, § 33 punkt 2, § 34 punkt 2, § 35 punktid 2 ja 4, § 36 punkt 2, § 37 punkt 2, § 38, § 42 punkt 2, § 44 punktid 2 ja 4, § 45 punkt 2, § 47 punkt 2, § 49 punkt 2, § 50 punkt 2, § 51 punkt 2, § 54 punkt 2, § 55 punktid 2 ja 5, § 57 punkt 3, § 59 punkt 3, § 61 punkt 2, § 62 punkt 2, § 63 punkt 2 ning § 64 punktid 1 ja 3 jõustuvad 2020. aasta 1. jaanuaril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VANDET_6"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VANDET_6_3"
       },
@@ -4951,6 +5381,22 @@
           "@id": "estleg:VANDET_Par_7"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/517032025002",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:VANDET_Map"
+      },
+      "rdfs:label": {
+        "@value": "Sworn Translators Act",
+        "@language": "en"
+      }
     }
   ]
 }

@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:RKRSR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus",
       "dcterms:title": "Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/27547.xml"
+        "@id": "https://www.riigiteataja.ee/akt/27547"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/27547/xml"
+      },
+      "estleg:globalId": "27547",
+      "eli:id_local": "27547",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "153801",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "e799f29b7f568097ba9fbc7e2b72bb73cffcc66de6560848f60d95220acab623",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -62,19 +74,20 @@
         {
           "@id": "http://eurovoc.europa.eu/217"
         }
-      ]
-    },
-    {
-      "@id": "estleg:RKRSR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_RKRSR_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2002-01-09",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_RKRSR_default",
@@ -83,12 +96,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus",
-      "skos:prefLabel": "§1–3 Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus",
+      "rdfs:label": {
+        "@value": "§1–3 Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RKRSR_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:RKRSR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RKRSR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:RKRSR_Par_1",
@@ -97,13 +131,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud Rahvusvahelise Kriminaalkohtu Rooma statuut./78574,...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud Rahvusvahelise Kriminaalkohtu Rooma statuut , mis o...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKRSR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on vastu võetud 1998. aasta 17. juulil Roomas ja millele Eesti Vabariik kirjutas alla 1999. aasta 27. detsembril New Yorgis.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1998. aasta 17. juulil Roomas ja millele Eesti Vabariik kirjutas alla 1999. aasta 27. detsembril New Yorgis.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud Rahvusvahelise Kriminaalkohtu Rooma statuut , mis on vastu võetud 1998. aasta 17. juulil Roomas ja millele Eesti Vabariik kirjutas alla 1999. aasta 27. detsembril New Yorgis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud Rahvusvahelise Kriminaalkohtu Rooma statuut , mis on vastu võetud 1998. aasta 17. juulil Roomas ja millele Eesti Vabariik kirjutas alla 1999. aasta 27. detsembril New Yorgis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKRSR_default"
       },
@@ -114,19 +154,19 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:ENFKKUR_Par_1"
-        },
-        {
-          "@id": "estleg:LKRKLOKFR_Par_1"
-        },
-        {
           "@id": "estleg:PVKR_Par_1"
         },
         {
-          "@id": "estleg:UPKLR_3_Par_1"
+          "@id": "estleg:TRRHKGRR_Par_1"
+        },
+        {
+          "@id": "estleg:TRTRKR_Par_1"
         },
         {
           "@id": "estleg:puuetega_inimeste_oiguste_konventsiooni_Par_1"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_organiseeritud_kuritegevu_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -141,10 +181,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1998. aasta 17. juulil Roomas ja millele Eesti Vabariik kirjutas alla 1999. aasta 27. detsembril New Yorgis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud Rahvusvahelise Kriminaalkohtu Rooma statuut , mis on vastu võetud 1998. aasta 17. juulil Roomas ja millele Eesti Vabariik kirjutas alla 1999. aasta 27. detsembril New Yorgis.",
       "estleg:parentProvision": {
         "@id": "estleg:RKRSR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:RKRSR_Par_2",
@@ -153,12 +195,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Vabariigi Valitsusel määrata Rahvusvahelise Kriminaalkohtu Rooma statuudi jõustu...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Vabariigi Valitsusel määrata Rahvusvahelise Kriminaalkohtu Rooma statuudi jõustu...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKRSR_Map"
       },
-      "estleg:summary": "Vabariigi Valitsusel määrata Rahvusvahelise Kriminaalkohtu Rooma statuudi jõustumisel esindaja Rahvusvahelise Kriminaalkohtu osalisriikide assambleesse vastavalt Rahvusvahelise Kriminaalkohtu Rooma statuudi artiklile 112.",
+      "estleg:summary": {
+        "@value": "Vabariigi Valitsusel määrata Rahvusvahelise Kriminaalkohtu Rooma statuudi jõustumisel esindaja Rahvusvahelise Kriminaalkohtu osalisriikide assambleesse vastavalt Rahvusvahelise Kriminaalkohtu Rooma statuudi artiklile 112.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vabariigi Valitsusel määrata Rahvusvahelise Kriminaalkohtu Rooma statuudi jõustumisel esindaja Rahvusvahelise Kriminaalkohtu osalisriikide assambleesse vastavalt Rahvusvahelise Kriminaalkohtu Rooma statuudi artiklile 112.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKRSR_default"
@@ -177,14 +225,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:RKRSR_Par_2_v27547"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:RKRSR_Par_2_v27547"
         }
       ]
     },
@@ -194,10 +242,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vabariigi Valitsusel määrata Rahvusvahelise Kriminaalkohtu Rooma statuudi jõustumisel esindaja Rahvusvahelise Kriminaalkohtu osalisriikide assambleesse vastavalt Rahvusvahelise Kriminaalkohtu Rooma statuudi artiklile 112.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsusel määrata Rahvusvahelise Kriminaalkohtu Rooma statuudi jõustumisel esindaja Rahvusvahelise Kriminaalkohtu osalisriikide assambleesse vastavalt Rahvusvahelise Kriminaalkohtu Rooma statuudi artiklile 112.",
       "estleg:parentProvision": {
         "@id": "estleg:RKRSR_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -220,12 +270,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Rahvusvahelise Kriminaalkohtu poolt Rahvusvahelise Kriminaalkohtu Rooma statuudi...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Rahvusvahelise Kriminaalkohtu poolt Rahvusvahelise Kriminaalkohtu Rooma statuudi...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise Kriminaalkohtu Rooma statuudi ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKRSR_Map"
       },
-      "estleg:summary": "Rahvusvahelise Kriminaalkohtu poolt Rahvusvahelise Kriminaalkohtu Rooma statuudi artikli 89 alusel väljastatud loovutamisnõudeid täidetakse kriminaalmenetluse koodeksi (ENSV ÜT 1961, 1, 4 ja lisa; ... RT I 2001, 65, 378) isiku välisriigile väljaandmist reguleerivate sätete alusel.",
+      "estleg:summary": {
+        "@value": "Rahvusvahelise Kriminaalkohtu poolt Rahvusvahelise Kriminaalkohtu Rooma statuudi artikli 89 alusel väljastatud loovutamisnõudeid täidetakse kriminaalmenetluse koodeksi (ENSV ÜT 1961, 1, 4 ja lisa; ... RT I 2001, 65, 378) isiku välisriigile väljaandmist reguleerivate sätete alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rahvusvahelise Kriminaalkohtu poolt Rahvusvahelise Kriminaalkohtu Rooma statuudi artikli 89 alusel väljastatud loovutamisnõudeid täidetakse kriminaalmenetluse koodeksi (ENSV ÜT 1961, 1, 4 ja lisa; ... RT I 2001, 65, 378) isiku välisriigile väljaandmist reguleerivate sätete alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKRSR_default"
@@ -256,10 +312,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvusvahelise Kriminaalkohtu poolt Rahvusvahelise Kriminaalkohtu Rooma statuudi artikli 89 alusel väljastatud loovutamisnõudeid täidetakse kriminaalmenetluse koodeksi (ENSV ÜT 1961, 1, 4 ja lisa; ... RT I 2001, 65, 378) isiku välisriigile väljaandmist reguleerivate sätete alusel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusvahelise Kriminaalkohtu poolt Rahvusvahelise Kriminaalkohtu Rooma statuudi artikli 89 alusel väljastatud loovutamisnõudeid täidetakse kriminaalmenetluse koodeksi (ENSV ÜT 1961, 1, 4 ja lisa; ... RT I 2001, 65, 378) isiku välisriigile väljaandmist reguleerivate sätete alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:RKRSR_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"

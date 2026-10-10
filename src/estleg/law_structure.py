@@ -7,11 +7,12 @@ division / cluster / subsection walks land once.
 from __future__ import annotations
 
 import hashlib
+import html
 import re
 import xml.etree.ElementTree as ET
 from collections import Counter
 
-from estleg.estleg_common import et_literal, sanitize_id
+from estleg.estleg_common import _sup_to_unicode, et_literal, sanitize_id
 from estleg.riigiteataja_common import ct, ln
 
 
@@ -168,21 +169,6 @@ _SUPERSCRIPT_DIGIT_MAP: dict[str, str] = {
 # (``§ 1<sup>1</sup>.``); without conversion the markup leaks verbatim into
 # rdfs:label / estleg:paragrahv / legalText / subsectionNumber / summary.
 _DIGIT_TO_SUPERSCRIPT: dict[str, str] = {v: k for k, v in _SUPERSCRIPT_DIGIT_MAP.items()}
-_SUP_TAG_RE = re.compile(r"<sup>\s*(\d+)\s*</sup>")
-
-
-def _sup_to_unicode(text: str) -> str:
-    """Convert literal ``<sup>N</sup>`` markup to Unicode superscript digits (#572).
-
-    Any residual bare ``<sup>``/``</sup>`` tags (non-digit content) are stripped
-    so no HTML markup survives into the citable strings.
-    """
-    if not text or "<sup>" not in text:
-        return text
-    converted = _SUP_TAG_RE.sub(
-        lambda m: "".join(_DIGIT_TO_SUPERSCRIPT.get(d, d) for d in m.group(1)), text
-    )
-    return converted.replace("<sup>", "").replace("</sup>", "")
 
 
 def _digits_to_superscript(text: str) -> str:
@@ -473,6 +459,24 @@ def _loige_body_text(loige_el: ET.Element) -> str:
 
 _TEXT_TAGS: tuple[str, ...] = ("lauseOsa", "lause", "tavatekst")
 
+# Riigi Teataja serialises some bodies (older ratification acts, tables,
+# linked treaty texts) as an ``HTMLKonteiner`` CDATA blob instead of
+# ``sisuTekst``/``tavatekst``; 140 law §§ in the 2026-10-09 cache had no
+# other text. The blob is linearised: tags stripped, entities unescaped,
+# block boundaries (``</p>``, ``</tr>``, ``<br>``, ``</li>``) kept as spaces.
+_HTML_TAG_RE = re.compile(r"<[^>]+>")
+_HTML_BLOCK_RE = re.compile(r"</(p|div|tr|td|th|li|h[1-6]|table)>|<br\s*/?>", re.IGNORECASE)
+
+
+def html_container_text(raw: str | None) -> str:
+    """Return the visible text of an ``HTMLKonteiner`` CDATA body."""
+    if not raw:
+        return ""
+    txt = _HTML_BLOCK_RE.sub(" ", raw)
+    txt = _HTML_TAG_RE.sub("", txt)
+    txt = html.unescape(txt)
+    return re.sub(r"\s+", " ", txt).strip()
+
 
 def _alampunkt_marker(alampunkt_el: ET.Element) -> str:
     """Return the display marker of one ``alampunkt`` sub-point (#694).
@@ -514,8 +518,13 @@ def _text_parts(el: ET.Element) -> list[str]:
     (marker subtrees pruned, #255) and — #694 — emits each
     ``alampunkt``'s ``k)`` marker right before its text, so enumerated
     sub-points read ``… ning: 1) … 2) …`` instead of a run-on body.
+
+    An ``HTMLKonteiner`` CDATA body is linearised (#703) but used only when
+    the subtree has no other text: next to real text it is a signature
+    table or link block and must not leak (#255).
     """
     parts: list[str] = []
+    html_parts: list[str] = []
 
     def collect(node: ET.Element) -> None:
         tag = ln(node.tag)
@@ -532,11 +541,18 @@ def _text_parts(el: ET.Element) -> list[str]:
                 parts.append(txt)
             # Descendants have already been included in this fragment.
             return
+        elif tag == "HTMLKonteiner":
+            txt = html_container_text(node.text)
+            if txt:
+                html_parts.append(txt)
+            return
         for child in node:
             collect(child)
 
     collect(el)
-    return parts
+    if any(not re.fullmatch(r"\S{1,4}\)", part) for part in parts):
+        return parts
+    return html_parts or parts
 
 
 def _superscript_from_text(value: str) -> str:
@@ -642,6 +658,53 @@ def collect_full_text(el: ET.Element) -> str:
         return _sup_to_unicode(" ".join(lõige_blocks))
 
     return _sup_to_unicode(" ".join(_text_parts(el)))
+
+
+# "Kehtetu -" on a single §, "Kehtetud -" when RT repealed several §§ in one
+# note (95 §§ in the 2026-10-09 cache). A § whose number carries kehtiv="0"
+# but still has a body is not repealed (not yet in force), so the attribute
+# is deliberately not a signal.
+_REPEAL_PLACEHOLDER_RE = re.compile(r"^\s*kehtetud?\b", re.IGNORECASE)
+
+
+_DASH_PLACEHOLDERS = frozenset({"", "-", "–", "—"})
+_OMITTED_PLACEHOLDER_RE = re.compile(r"^\s*välja\s+jäetud\b", re.IGNORECASE)
+
+
+def is_omitted_paragraph(par_el: ET.Element) -> bool:
+    """True when Riigi Teataja omits a § from the consolidated text.
+
+    A spent provision (typically an amending or implementing § in the
+    rakendussätted) is not reproduced. Two forms: an explicit ``muutmismarge``
+    note ``Välja jäetud -`` (BIOTSI § 7), or a ``paragrahvNr`` with
+    ``kehtiv="0"`` whose only body text is a dash placeholder (``–``), which
+    RT renders as "[Käesolevast tekstist välja jäetud]" (421 §§ in the
+    2026-10-09 cache). A ``kehtiv="0"`` § that still has a body is not omitted
+    (not yet in force). Callers use it only when the § yielded no legal text.
+    """
+    for el in par_el.iter():
+        if ln(el.tag) == "tavatekst" and _OMITTED_PLACEHOLDER_RE.match(el.text or ""):
+            return True
+    nr = next((el for el in par_el.iter() if ln(el.tag) == "paragrahvNr"), None)
+    if nr is None or nr.get("kehtiv") != "0":
+        return False
+    texts = [(el.text or "").strip() for el in par_el.iter() if ln(el.tag) in _TEXT_TAGS]
+    return bool(texts) and all(t in _DASH_PLACEHOLDERS for t in texts)
+
+
+def is_repealed_paragraph(par_el: ET.Element) -> bool:
+    """True when Riigi Teataja marks a whole § as repealed.
+
+    A repealed § has no body; its only text is the RT editorial placeholder
+    ``Kehtetu -`` (or ``Kehtetud -`` for a batch repeal) — either in a direct ``muutmismarge`` note (current
+    consolidations, with the repeal's ``joustumine`` date) or as the § text
+    itself (older consolidations). Callers use it only when the § yielded no
+    legal text, so a § that still has a body is never marked.
+    """
+    for el in par_el.iter():
+        if ln(el.tag) == "tavatekst" and _REPEAL_PLACEHOLDER_RE.match(el.text or ""):
+            return True
+    return False
 
 
 def build_subsections(
@@ -1128,8 +1191,22 @@ def emit_hierarchy_and_provisions(
             "estleg:partOfAct": {"@id": act_target},
             "estleg:summary": et_literal(provision_summary(text, p_title, p_display)),
         }
+        omitted = is_omitted_paragraph(paragraph)
+        if omitted and full_text.strip() in _DASH_PLACEHOLDERS:
+            # The text collector keeps short fragments, so an omitted §'s
+            # lone "–" placeholder would otherwise become its legalText.
+            full_text = ""
         if full_text:
             node["estleg:legalText"] = full_text
+        elif is_repealed_paragraph(paragraph):
+            # #703: a § Riigi Teataja marks "Kehtetu -" carries no text by
+            # design; say so, so text-coverage gates do not count it as a
+            # missing body (a § with no text and no such note still does).
+            node["estleg:provisionRepealed"] = True
+        elif omitted:
+            # #703: a spent § RT omits from the consolidated text ("–",
+            # kehtiv="0") carries no text by design either.
+            node["estleg:provisionOmitted"] = True
         if cluster_ref:
             node["estleg:requestedCluster"] = {"@id": cluster_ref}
         container_ref = par_to_container.get(id(paragraph))

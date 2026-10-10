@@ -182,3 +182,18 @@ def test_build_canonical_fragments_collects_par_only(tmp_path):
     assert "KARIST_2_Osa2_Par_88" in frags
     assert "KARIST_2_Osa2_Par_88_Lg_1" in frags
     assert "KARIST_2_Osa2" not in frags
+
+
+def test_prune_stale_same_as_drops_only_missing_estleg_targets():
+    from estleg.link_owl_modules_565 import prune_stale_same_as
+
+    node = {"@id": "https://w3id.org/estleg/KarS_Par_284",
+            "owl:sameAs": [{"@id": "estleg:KARIST_2_Osa2_Par_284"}, {"@id": "http://example.org/x"}]}
+    assert prune_stale_same_as(node, {"KARIST_2_Osa2_Par_283"}) == 1
+    assert node["owl:sameAs"] == {"@id": "http://example.org/x"}
+    node2 = {"@id": "x", "owl:sameAs": {"@id": "estleg:KARIST_2_Osa2_Par_285"}}
+    assert prune_stale_same_as(node2, set()) == 1
+    assert "owl:sameAs" not in node2
+    node3 = {"@id": "y", "owl:sameAs": {"@id": "estleg:KARIST_2_Osa2_Par_90"}}
+    assert prune_stale_same_as(node3, {"KARIST_2_Osa2_Par_90"}) == 0
+    assert node3["owl:sameAs"] == {"@id": "estleg:KARIST_2_Osa2_Par_90"}

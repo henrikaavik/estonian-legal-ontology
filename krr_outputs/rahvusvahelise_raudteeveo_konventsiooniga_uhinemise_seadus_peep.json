@@ -5,58 +5,54 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:RRKU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Rahvusvahelise raudteeveo konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Rahvusvahelise raudteeveo konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Rahvusvahelise raudteeveo konventsiooniga ühinemise seadus",
       "dcterms:title": "Rahvusvahelise raudteeveo konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/219112021003.xml"
+        "@id": "https://www.riigiteataja.ee/akt/219112021003"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/219112021003/xml"
+      },
+      "estleg:globalId": "219112021003",
+      "eli:id_local": "219112021003",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
-      "estleg:hasProposedAmendment": [
-        {
-          "@id": "estleg:AmendmentLink_Draft_MKM11_0662_RRKU"
-        },
-        {
-          "@id": "estleg:AmendmentLink_Draft_VM11_1307_RRKU"
-        },
-        {
-          "@id": "estleg:AmendmentLink_Draft_MKM17_0024_RRKU"
-        }
-      ],
+      "estleg:terviktekstId": "157485",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "571f711851af113ab9345906804b6dc9c3d01dbcde3566f7cf799bff03a724ac",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2021-11-29",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
         "@type": "xsd:boolean"
       },
       "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528).",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:rahvusvahelise_raudteeveo_konventsiooni_Par_2"
-        }
-      ],
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/3474"
@@ -67,6 +63,19 @@
           "@id": "http://eurovoc.europa.eu/3474"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2004-05-22",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2021-11-29",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2021-11-19",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_MKM20_1563"
@@ -80,17 +89,38 @@
         {
           "@id": "estleg:Draft_VM11_1307"
         }
-      ]
-    },
-    {
-      "@id": "estleg:RRKU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Rahvusvahelise raudteeveo konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_RRKU_default"
+          "@id": "estleg:Amendment_RRKU_544cb83dac"
+        },
+        {
+          "@id": "estleg:Amendment_RRKU_0a4d2e7512"
+        },
+        {
+          "@id": "estleg:Amendment_RRKU_c9979e2956"
+        }
+      ],
+      "estleg:hasProposedAmendment": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_MKM11_0662_RRKU"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_VM11_1307_RRKU"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_MKM17_0024_RRKU"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_MKM20_1563_RRKU"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:rahvusvahelise_raudteeveo_konventsiooni_Map"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_raudteeveo_konventsiooni_Par_2"
         }
       ]
     },
@@ -101,12 +131,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Lepingu sätted",
-      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RRKU_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:RRKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Rahvusvahelise raudteeveo konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RRKU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:RRKU_Par_1",
@@ -115,13 +166,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Konventsiooniga ühinemine",
+      "rdfs:label": {
+        "@value": "§ 1. Konventsiooniga ühinemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise raudteeveo konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RRKU_Map"
       },
-      "estleg:summary": "Ühineda (COTIF, edaspidi konventsioon), mis on koostatud 1980. aasta 9. mail Bernis ja mida on muudetud 1999. aasta 3. juunil Vilniuses koostatud protokolliga.",
-      "estleg:legalText": "Ühineda (COTIF, edaspidi konventsioon), mis on koostatud 1980. aasta 9. mail Bernis ja mida on muudetud 1999. aasta 3. juunil Vilniuses koostatud protokolliga.",
+      "estleg:summary": {
+        "@value": "Ühineda rahvusvahelise raudteeveo konventsiooniga (COTIF, edaspidi konventsioon), mis on koostatud 1980. aasta 9. mail Bernis ja mida on muudetud 1999. aasta 3. juunil Vilniuses koostatud protokolliga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda rahvusvahelise raudteeveo konventsiooniga (COTIF, edaspidi konventsioon), mis on koostatud 1980. aasta 9. mail Bernis ja mida on muudetud 1999. aasta 3. juunil Vilniuses koostatud protokolliga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RRKU_default"
       },
@@ -132,13 +189,7 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:1992_aasta_rahvusvahelise_konventsiooni_Par_1"
-        },
-        {
           "@id": "estleg:EFKKSMPU_Par_1"
-        },
-        {
-          "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -156,10 +207,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda (COTIF, edaspidi konventsioon), mis on koostatud 1980. aasta 9. mail Bernis ja mida on muudetud 1999. aasta 3. juunil Vilniuses koostatud protokolliga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda rahvusvahelise raudteeveo konventsiooniga (COTIF, edaspidi konventsioon), mis on koostatud 1980. aasta 9. mail Bernis ja mida on muudetud 1999. aasta 3. juunil Vilniuses koostatud protokolliga.",
       "estleg:parentProvision": {
         "@id": "estleg:RRKU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:RRKU_Par_2",
@@ -168,16 +221,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Reservatsioonid",
+      "rdfs:label": {
+        "@value": "§ 2. Reservatsioonid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise raudteeveo konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RRKU_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 2. Reservatsioonid",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RRKU_default"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:RRKU_Par_2_v740577"
@@ -197,17 +256,26 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Deklaratsioonid",
+      "rdfs:label": {
+        "@value": "§ 3. Deklaratsioonid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise raudteeveo konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RRKU_Map"
       },
-      "estleg:summary": "Kehtetu",
-      "estleg:legalText": "Kehtetu",
+      "estleg:summary": {
+        "@value": "§ 3. Deklaratsioonid",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RRKU_default"
       },
+      "estleg:provisionRepealed": true,
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:rahvusvahelise_raudteeveo_konventsiooni_Map"
+        },
         {
           "@id": "estleg:rahvusvahelise_raudteeveo_konventsiooni_Par_2"
         }

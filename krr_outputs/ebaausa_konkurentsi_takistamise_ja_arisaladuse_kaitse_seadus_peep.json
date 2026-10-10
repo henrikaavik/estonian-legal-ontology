@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:EKTAKS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
-      "dcterms:title": [
-        {
-          "@value": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Restriction of Unfair Competition and Protection of Business Secrets Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/107122018002.xml"
+        "@id": "https://www.riigiteataja.ee/akt/107122018002"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/107122018002/xml"
+      },
+      "estleg:globalId": "107122018002",
+      "eli:id_local": "107122018002",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "1045095",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "eb048ef9dd65ce0e3c0d5d22faebde75d5ed6034251f30392d6e3bf2f95680c9",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2018-12-17",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/520122018013"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/520122018013"
       },
       "estleg:references": [
@@ -56,15 +62,13 @@
           "@id": "estleg:STS2014_2020_Par_39_Lg_2"
         },
         {
-          "@id": "estleg:KonkS_Par_63_Lg_1"
+          "@id": "estleg:KonkS_Par_63"
         },
         {
           "@id": "estleg:EKTAKS_Par_5_Lg_2"
-        }
-      ],
-      "estleg:referencedBy": [
+        },
         {
-          "@id": "estleg:PTEKS_Par_5_Lg_7"
+          "@id": "estleg:TsMSRS_Par_2_4"
         }
       ],
       "dcterms:subject": [
@@ -89,18 +93,62 @@
           "@id": "http://eurovoc.europa.eu/557"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2018-12-17",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2018-12-07",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_JDM18_0514"
         }
+      ],
+      "estleg:lastAmendmentDate": {
+        "@value": "2018-12-17",
+        "@type": "xsd:date"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:PTEKS_Par_5_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_1062751_Par_1_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Cluster_EKTAKS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–2 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:EKTAKS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
     },
     {
       "@id": "estleg:EKTAKS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_EKTAKS_1"
@@ -120,26 +168,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_EKTAKS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–2 Üldsätted",
-      "skos:prefLabel": "§1–2 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:EKTAKS_TopicScheme"
-      },
-      "estleg:provisionCount": 2
-    },
-    {
       "@id": "estleg:Chapter_EKTAKS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "1. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
@@ -159,8 +196,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§3–6 Ebaaus konkurents",
-      "skos:prefLabel": "§3–6 Ebaaus konkurents",
+      "rdfs:label": {
+        "@value": "§3–6 Ebaaus konkurents",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§3–6 Ebaaus konkurents",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EKTAKS_TopicScheme"
       },
@@ -172,7 +215,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Ebaaus konkurents",
+      "rdfs:label": {
+        "@value": "2. peatükk – Ebaaus konkurents",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
@@ -192,8 +238,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§7–8 Ärisaladuse kaitse",
-      "skos:prefLabel": "§7–8 Ärisaladuse kaitse",
+      "rdfs:label": {
+        "@value": "§7–8 Ärisaladuse kaitse",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§7–8 Ärisaladuse kaitse",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EKTAKS_TopicScheme"
       },
@@ -205,7 +257,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – Ärisaladuse kaitse",
+      "rdfs:label": {
+        "@value": "3. peatükk – Ärisaladuse kaitse",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
@@ -225,8 +280,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§9–11 Menetlusnormid",
-      "skos:prefLabel": "§9–11 Menetlusnormid",
+      "rdfs:label": {
+        "@value": "§9–11 Menetlusnormid",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§9–11 Menetlusnormid",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EKTAKS_TopicScheme"
       },
@@ -238,7 +299,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – Menetlusnormid",
+      "rdfs:label": {
+        "@value": "4. peatükk – Menetlusnormid",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
@@ -258,8 +322,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§12–17 Rakendussätted",
-      "skos:prefLabel": "§12–17 Rakendussätted",
+      "rdfs:label": {
+        "@value": "§12–17 Rakendussätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§12–17 Rakendussätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EKTAKS_TopicScheme"
       },
@@ -271,7 +341,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – Rakendussätted",
+      "rdfs:label": {
+        "@value": "5. peatükk – Rakendussätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
@@ -291,12 +364,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seadusega sätestatakse ebaausa konkurentsi keeld ja selle rikkumisest tulenevad nõuded ning nende menetlemise kord. (2) Käesolevas seaduses ettenähtud tsiviilkohtumenetlusele kohaldatakse tsiviilkohtumenetluse seadustiku sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seadusega sätestatakse ebaausa konkurentsi keeld ja selle rikkumisest tulenevad nõuded ning nende menetlemise kord. (2) Käesolevas seaduses ettenähtud tsiviilkohtumenetlusele kohaldatakse tsiviilkohtumenetluse seadustiku sätteid, arvestades käesoleva seaduse erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seadusega sätestatakse ebaausa konkurentsi keeld ja selle rikkumisest tulenevad nõuded ning nende menetlemise kord. (2) Käesolevas seaduses ettenähtud tsiviilkohtumenetlusele kohaldatakse tsiviilkohtumenetluse seadustiku sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_1"
@@ -351,12 +430,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Teiste seaduste kohaldamine",
+      "rdfs:label": {
+        "@value": "§ 2. Teiste seaduste kohaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "Reklaamina käsitatava eksitava, ebaausa või halvustava teabe korral rakendatakse reklaamiseaduse sätteid.",
+      "estleg:summary": {
+        "@value": "Reklaamina käsitatava eksitava, ebaausa või halvustava teabe korral rakendatakse reklaamiseaduse sätteid.",
+        "@language": "et"
+      },
       "estleg:legalText": "Reklaamina käsitatava eksitava, ebaausa või halvustava teabe korral rakendatakse reklaamiseaduse sätteid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_1"
@@ -381,10 +466,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Reklaamina käsitatava eksitava, ebaausa või halvustava teabe korral rakendatakse reklaamiseaduse sätteid.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Reklaamina käsitatava eksitava, ebaausa või halvustava teabe korral rakendatakse reklaamiseaduse sätteid.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:EKTAKS_Par_3",
@@ -393,13 +480,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Ebaausa konkurentsi keeld",
+      "rdfs:label": {
+        "@value": "§ 3. Ebaausa konkurentsi keeld",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "(1) Ebaaus konkurents on keelatud. (2) Ebaaus konkurents on ebaaus äritegevus ning heade kommete ja tavadega vastuolus olevad teod, sealhulgas: eksitava teabe avaldamine, avaldamiseks esitamine ja tellimine ning konkurendi või tema toote või teenuse (edaspidi kaup) halvustamine; ärisaladuse ebaseaduslik saamine, kasutamine ja avaldamine; konkurendi töötaja või esindaja ärakasutamine.",
-      "estleg:legalText": "(1) Ebaaus konkurents on keelatud. (2) Ebaaus konkurents on ebaaus äritegevus ning heade kommete ja tavadega vastuolus olevad teod, sealhulgas: eksitava teabe avaldamine, avaldamiseks esitamine ja tellimine ning konkurendi või tema toote või teenuse (edaspidi kaup) halvustamine; ärisaladuse ebaseaduslik saamine, kasutamine ja avaldamine; konkurendi töötaja või esindaja ärakasutamine.",
+      "estleg:summary": {
+        "@value": "(1) Ebaaus konkurents on keelatud. (2) Ebaaus konkurents on ebaaus äritegevus ning heade kommete ja tavadega vastuolus olevad teod, sealhulgas: 1) eksitava teabe avaldamine, avaldamiseks esitamine ja tellimine ning konkurendi või tema toote või teenuse (edaspidi kaup) halvustamine; 2) ärisaladuse ebaseaduslik saamine, kasutamine ja avaldamine; 3) konkurendi töötaja või esindaja ärakasutamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ebaaus konkurents on keelatud. (2) Ebaaus konkurents on ebaaus äritegevus ning heade kommete ja tavadega vastuolus olevad teod, sealhulgas: 1) eksitava teabe avaldamine, avaldamiseks esitamine ja tellimine ning konkurendi või tema toote või teenuse (edaspidi kaup) halvustamine; 2) ärisaladuse ebaseaduslik saamine, kasutamine ja avaldamine; 3) konkurendi töötaja või esindaja ärakasutamine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_2"
       },
@@ -419,12 +512,12 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasVersion": [
         {
@@ -444,12 +537,12 @@
         "@id": "estleg:EKTAKS_Par_3"
       },
       "rdfs:label": "§ 3 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -459,11 +552,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Ebaaus konkurents on ebaaus äritegevus ning heade kommete ja tavadega vastuolus olevad teod, sealhulgas: eksitava teabe avaldamine, avaldamiseks esitamine ja tellimine ning konkurendi või tema toote või teenuse (edaspidi kaup) halvustamine; ärisaladuse ebaseaduslik saamine, kasutamine ja avaldamine; konkurendi töötaja või esindaja ärakasutamine.",
+      "estleg:legalText": "(2) Ebaaus konkurents on ebaaus äritegevus ning heade kommete ja tavadega vastuolus olevad teod, sealhulgas: 1) eksitava teabe avaldamine, avaldamiseks esitamine ja tellimine ning konkurendi või tema toote või teenuse (edaspidi kaup) halvustamine; 2) ärisaladuse ebaseaduslik saamine, kasutamine ja avaldamine; 3) konkurendi töötaja või esindaja ärakasutamine.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_3"
       },
       "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -481,12 +579,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Eksitava teabe avaldamine, avaldamiseks esitamine ja tellimine ning konkurendi ja tema kauba halvustamine",
+      "rdfs:label": {
+        "@value": "§ 4. Eksitava teabe avaldamine, avaldamiseks esitamine ja tellimine ning konkurendi ja tema kauba halvustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "(1) Keelatud on eksitava teabe avaldamine, avaldamiseks esitamine või tellimine kas enda või kaubaturul osaleva teise ettevõtja, tema kauba või töövahendi kohta, välja arvatud teabe avaldamine juhul, kui avaldajalt on sellise teabe avaldamine tellitud või kui avaldaja ei vastuta teiste poolt temale esitatud teabe õigsuse eest. (2) Eksitav teave on ebatõesed andmed, mis võivad ostja tavalise tähelepanelikkuse juures tekitada pakkumisest eksliku mulje või millega kahjustatakse või võidakse",
+      "estleg:summary": {
+        "@value": "(1) Keelatud on eksitava teabe avaldamine, avaldamiseks esitamine või tellimine kas enda või kaubaturul osaleva teise ettevõtja, tema kauba või töövahendi kohta, välja arvatud teabe avaldamine juhul, kui avaldajalt on sellise teabe avaldamine tellitud või kui avaldaja ei vastuta teiste poolt temale esitatud teabe õigsuse eest. (2) Eksitav teave on ebatõesed andmed, mis võivad ostja tavalise tähelepanelikkuse juures tekitada pakkumisest eksliku mulje või millega kahjustatakse või võidakse",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Keelatud on eksitava teabe avaldamine, avaldamiseks esitamine või tellimine kas enda või kaubaturul osaleva teise ettevõtja, tema kauba või töövahendi kohta, välja arvatud teabe avaldamine juhul, kui avaldajalt on sellise teabe avaldamine tellitud või kui avaldaja ei vastuta teiste poolt temale esitatud teabe õigsuse eest. (2) Eksitav teave on ebatõesed andmed, mis võivad ostja tavalise tähelepanelikkuse juures tekitada pakkumisest eksliku mulje või millega kahjustatakse või võidakse kahjustada teise ettevõtja mainet või tema majandustegevust. (3) Käesoleva paragrahvi lõikes 2 nimetatud andmete all mõistetakse eelkõige teavet pakutavate kaupade päritolu, omaduste, valmistamisviisi, hankimisviisi või -allikate, hinna, tariifi, allahindluse, auhindamise, müügi põhjuste ja varude suuruse ning ettevõtja eesõiguste, finantsseisundi ja muude omaduste kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_2"
@@ -513,6 +617,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
       },
       "estleg:hasVersion": [
         {
@@ -576,9 +683,6 @@
         "@id": "estleg:EKTAKS_Par_4"
       },
       "rdfs:label": "§ 4 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Definition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -587,6 +691,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
       }
     },
     {
@@ -596,13 +703,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Ärisaladuse ebaseaduslik saamine, kasutamine ja avaldamine",
+      "rdfs:label": {
+        "@value": "§ 5. Ärisaladuse ebaseaduslik saamine, kasutamine ja avaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "(1) Ärisaladuse saamine selle üle seaduslikku kontrolli omava isiku nõusolekuta on ebaseaduslik, kui selleks on kasutatud: loata juurdepääsu dokumentidele, asjadele, materjalidele, ainetele või elektroonilistele failidele, mis on ärisaladuse üle seaduslikku kontrolli omava isiku kontrolli all ja mis sisaldavad ärisaladust või millest saab ärisaladuse tuletada, või nende omavolilist valdamist või kopeerimist või muid toiminguid, mida konkreetsete asjaolude korral peetakse ausa kaubandustavaga",
-      "estleg:legalText": "(1) Ärisaladuse saamine selle üle seaduslikku kontrolli omava isiku nõusolekuta on ebaseaduslik, kui selleks on kasutatud: loata juurdepääsu dokumentidele, asjadele, materjalidele, ainetele või elektroonilistele failidele, mis on ärisaladuse üle seaduslikku kontrolli omava isiku kontrolli all ja mis sisaldavad ärisaladust või millest saab ärisaladuse tuletada, või nende omavolilist valdamist või kopeerimist või muid toiminguid, mida konkreetsete asjaolude korral peetakse ausa kaubandustavaga vastuolus olevaks. (2) Ärisaladus on teave, mis vastab järgmistele tingimustele: see ei ole kogumis või üksikosade täpses paigutuses ja kokkupanus üldteada või kergesti kättesaadav nende ringkondade isikutele, kes tavaliselt kõnealust laadi teabega tegelevad; sellel on kaubanduslik väärtus oma salajasuse tõttu ja selle üle seaduslikku kontrolli omav isik on asjaoludest lähtuvalt võtnud vajalikke meetmeid, et hoida seda salajas. (3) Ärisaladuse kasutamine või avaldamine selle üle seaduslikku kontrolli omava isiku nõusolekuta on ebaseaduslik, kui seda teeb isik, kes: on ärisaladuse saanud ebaseaduslikult käesoleva paragrahvi lõike 1 tähenduses; rikub kohustust ärisaladust mitte avaldada või rikub ärisaladuse kasutamise piiramise kohustust. (4) Ärisaladuse saamine, kasutamine või avaldamine on ebaseaduslik ka juhul, kui isik selle saamise, kasutamise või avaldamise ajal teadis või pidi teadma, et ärisaladus on saadud otse või kaudselt teiselt isikult, kes kasutas ärisaladust või kes avaldas selle ebaseaduslikult käesoleva paragrahvi lõike 3 tähenduses. (5) Sellise kauba tootmist, pakkumist või käibesse laskmist, mille väljatöötamise, omaduste, toimimise, tootmise või turustamise puhul saadakse olulist kasu ebaseaduslikult saadud, kasutatud või avaldatud ärisaladusest (edaspidi ärisaladust kahjustav kaup), või ärisaladust kahjustava kauba sellisel eesmärgil importimist, eksportimist või ladustamist peetakse samuti ärisaladuse ebaseaduslikuks kasutamiseks, kui seda teinud isik teadis või pidi teadma, et ärisaladust on kasutatud ebaseaduslikult käesoleva paragrahvi lõike 3 tähenduses. (6) Ärisaladuse saamist, kasutamist või avaldamist ei peeta ebaseaduslikuks juhul, kui see on vajalik, et: avalikustada avalike huvide kaitsmise eesmärgil ebaseaduslik tegu; töötaja saaks töötajate esindaja kaudu kaitsta oma õigusi ja huve, tingimusel et töötaja poolt esindajale ärisaladuse avaldamine on vajalik esindaja pädevuses olevate ülesannete täitmiseks, või kaitsta tunnustatud õigustatud huvi.",
+      "estleg:summary": {
+        "@value": "(1) Ärisaladuse saamine selle üle seaduslikku kontrolli omava isiku nõusolekuta on ebaseaduslik, kui selleks on kasutatud: 1) loata juurdepääsu dokumentidele, asjadele, materjalidele, ainetele või elektroonilistele failidele, mis on ärisaladuse üle seaduslikku kontrolli omava isiku kontrolli all ja mis sisaldavad ärisaladust või millest saab ärisaladuse tuletada, või nende omavolilist valdamist või kopeerimist või 2) muid toiminguid, mida konkreetsete asjaolude korral peetakse ausa",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ärisaladuse saamine selle üle seaduslikku kontrolli omava isiku nõusolekuta on ebaseaduslik, kui selleks on kasutatud: 1) loata juurdepääsu dokumentidele, asjadele, materjalidele, ainetele või elektroonilistele failidele, mis on ärisaladuse üle seaduslikku kontrolli omava isiku kontrolli all ja mis sisaldavad ärisaladust või millest saab ärisaladuse tuletada, või nende omavolilist valdamist või kopeerimist või 2) muid toiminguid, mida konkreetsete asjaolude korral peetakse ausa kaubandustavaga vastuolus olevaks. (2) Ärisaladus on teave, mis vastab järgmistele tingimustele: 1) see ei ole kogumis või üksikosade täpses paigutuses ja kokkupanus üldteada või kergesti kättesaadav nende ringkondade isikutele, kes tavaliselt kõnealust laadi teabega tegelevad; 2) sellel on kaubanduslik väärtus oma salajasuse tõttu ja 3) selle üle seaduslikku kontrolli omav isik on asjaoludest lähtuvalt võtnud vajalikke meetmeid, et hoida seda salajas. (3) Ärisaladuse kasutamine või avaldamine selle üle seaduslikku kontrolli omava isiku nõusolekuta on ebaseaduslik, kui seda teeb isik, kes: 1) on ärisaladuse saanud ebaseaduslikult käesoleva paragrahvi lõike 1 tähenduses; 2) rikub kohustust ärisaladust mitte avaldada või 3) rikub ärisaladuse kasutamise piiramise kohustust. (4) Ärisaladuse saamine, kasutamine või avaldamine on ebaseaduslik ka juhul, kui isik selle saamise, kasutamise või avaldamise ajal teadis või pidi teadma, et ärisaladus on saadud otse või kaudselt teiselt isikult, kes kasutas ärisaladust või kes avaldas selle ebaseaduslikult käesoleva paragrahvi lõike 3 tähenduses. (5) Sellise kauba tootmist, pakkumist või käibesse laskmist, mille väljatöötamise, omaduste, toimimise, tootmise või turustamise puhul saadakse olulist kasu ebaseaduslikult saadud, kasutatud või avaldatud ärisaladusest (edaspidi ärisaladust kahjustav kaup), või ärisaladust kahjustava kauba sellisel eesmärgil importimist, eksportimist või ladustamist peetakse samuti ärisaladuse ebaseaduslikuks kasutamiseks, kui seda teinud isik teadis või pidi teadma, et ärisaladust on kasutatud ebaseaduslikult käesoleva paragrahvi lõike 3 tähenduses. (6) Ärisaladuse saamist, kasutamist või avaldamist ei peeta ebaseaduslikuks juhul, kui see on vajalik, et: 1) avalikustada avalike huvide kaitsmise eesmärgil ebaseaduslik tegu; 2) töötaja saaks töötajate esindaja kaudu kaitsta oma õigusi ja huve, tingimusel et töötaja poolt esindajale ärisaladuse avaldamine on vajalik esindaja pädevuses olevate ülesannete täitmiseks, või 3) kaitsta tunnustatud õigustatud huvi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_2"
       },
@@ -641,6 +754,9 @@
       "estleg:referencedBy": [
         {
           "@id": "estleg:PTEKS_Par_5_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_1062751_Par_1_Lg_4"
         }
       ],
       "estleg:hasVersion": [
@@ -656,11 +772,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Ärisaladuse saamine selle üle seaduslikku kontrolli omava isiku nõusolekuta on ebaseaduslik, kui selleks on kasutatud: loata juurdepääsu dokumentidele, asjadele, materjalidele, ainetele või elektroonilistele failidele, mis on ärisaladuse üle seaduslikku kontrolli omava isiku kontrolli all ja mis sisaldavad ärisaladust või millest saab ärisaladuse tuletada, või nende omavolilist valdamist või kopeerimist või muid toiminguid, mida konkreetsete asjaolude korral peetakse ausa kaubandustavaga vastuolus olevaks.",
+      "estleg:legalText": "(1) Ärisaladuse saamine selle üle seaduslikku kontrolli omava isiku nõusolekuta on ebaseaduslik, kui selleks on kasutatud: 1) loata juurdepääsu dokumentidele, asjadele, materjalidele, ainetele või elektroonilistele failidele, mis on ärisaladuse üle seaduslikku kontrolli omava isiku kontrolli all ja mis sisaldavad ärisaladust või millest saab ärisaladuse tuletada, või nende omavolilist valdamist või kopeerimist või 2) muid toiminguid, mida konkreetsete asjaolude korral peetakse ausa kaubandustavaga vastuolus olevaks.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_5"
       },
       "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -678,11 +798,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Ärisaladus on teave, mis vastab järgmistele tingimustele: see ei ole kogumis või üksikosade täpses paigutuses ja kokkupanus üldteada või kergesti kättesaadav nende ringkondade isikutele, kes tavaliselt kõnealust laadi teabega tegelevad; sellel on kaubanduslik väärtus oma salajasuse tõttu ja selle üle seaduslikku kontrolli omav isik on asjaoludest lähtuvalt võtnud vajalikke meetmeid, et hoida seda salajas.",
+      "estleg:legalText": "(2) Ärisaladus on teave, mis vastab järgmistele tingimustele: 1) see ei ole kogumis või üksikosade täpses paigutuses ja kokkupanus üldteada või kergesti kättesaadav nende ringkondade isikutele, kes tavaliselt kõnealust laadi teabega tegelevad; 2) sellel on kaubanduslik väärtus oma salajasuse tõttu ja 3) selle üle seaduslikku kontrolli omav isik on asjaoludest lähtuvalt võtnud vajalikke meetmeid, et hoida seda salajas.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_5"
       },
       "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -694,10 +819,16 @@
       },
       "estleg:referencedBy": [
         {
+          "@id": "estleg:EKTAKS_Map"
+        },
+        {
           "@id": "estleg:EKTAKS_Par_15"
         },
         {
           "@id": "estleg:STS2014_2020_Par_39_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIGIH_Map"
         },
         {
           "@id": "estleg:RIIGIH_Par_46_1"
@@ -717,11 +848,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Ärisaladuse kasutamine või avaldamine selle üle seaduslikku kontrolli omava isiku nõusolekuta on ebaseaduslik, kui seda teeb isik, kes: on ärisaladuse saanud ebaseaduslikult käesoleva paragrahvi lõike 1 tähenduses; rikub kohustust ärisaladust mitte avaldada või rikub ärisaladuse kasutamise piiramise kohustust.",
+      "estleg:legalText": "(3) Ärisaladuse kasutamine või avaldamine selle üle seaduslikku kontrolli omava isiku nõusolekuta on ebaseaduslik, kui seda teeb isik, kes: 1) on ärisaladuse saanud ebaseaduslikult käesoleva paragrahvi lõike 1 tähenduses; 2) rikub kohustust ärisaladust mitte avaldada või 3) rikub ärisaladuse kasutamise piiramise kohustust.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_5"
       },
       "rdfs:label": "§ 5 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -783,11 +919,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Ärisaladuse saamist, kasutamist või avaldamist ei peeta ebaseaduslikuks juhul, kui see on vajalik, et: avalikustada avalike huvide kaitsmise eesmärgil ebaseaduslik tegu; töötaja saaks töötajate esindaja kaudu kaitsta oma õigusi ja huve, tingimusel et töötaja poolt esindajale ärisaladuse avaldamine on vajalik esindaja pädevuses olevate ülesannete täitmiseks, või kaitsta tunnustatud õigustatud huvi.",
+      "estleg:legalText": "(6) Ärisaladuse saamist, kasutamist või avaldamist ei peeta ebaseaduslikuks juhul, kui see on vajalik, et: 1) avalikustada avalike huvide kaitsmise eesmärgil ebaseaduslik tegu; 2) töötaja saaks töötajate esindaja kaudu kaitsta oma õigusi ja huve, tingimusel et töötaja poolt esindajale ärisaladuse avaldamine on vajalik esindaja pädevuses olevate ülesannete täitmiseks, või 3) kaitsta tunnustatud õigustatud huvi.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_5"
       },
       "rdfs:label": "§ 5 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -805,12 +946,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Teise ettevõtja töötaja ja esindaja ärakasutamine",
+      "rdfs:label": {
+        "@value": "§ 6. Teise ettevõtja töötaja ja esindaja ärakasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "Konkurendi töötaja või esindaja ärakasutamine on tema mõjutamine tegutsema mõjutaja või kolmanda isiku huvides.",
+      "estleg:summary": {
+        "@value": "Konkurendi töötaja või esindaja ärakasutamine on tema mõjutamine tegutsema mõjutaja või kolmanda isiku huvides.",
+        "@language": "et"
+      },
       "estleg:legalText": "Konkurendi töötaja või esindaja ärakasutamine on tema mõjutamine tegutsema mõjutaja või kolmanda isiku huvides.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_2"
@@ -847,10 +994,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Konkurendi töötaja või esindaja ärakasutamine on tema mõjutamine tegutsema mõjutaja või kolmanda isiku huvides.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Konkurendi töötaja või esindaja ärakasutamine on tema mõjutamine tegutsema mõjutaja või kolmanda isiku huvides.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_6"
       },
+      "rdfs:label": "§ 6 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -868,13 +1017,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Ärisaladuse ebaseadusliku saamise, kasutamise ja avaldamise keelamine",
+      "rdfs:label": {
+        "@value": "§ 7. Ärisaladuse ebaseadusliku saamise, kasutamise ja avaldamise keelamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "(1) Kui kohustuse rikkumine või kahju õigusvastane tekitamine seisneb ärisaladuse ebaseaduslikus saamises, kasutamises või avaldamises, võib isik, kelle õigusi rikuti, nõuda: ärisaladuse ebaseadusliku kasutamise või avaldamise lõpetamist või keelamist; ärisaladust kahjustava kauba tootmise, pakkumise või käibesse laskmise või sellisel eesmärgil importimise, eksportimise või ladustamise keelamist; ärisaladust kahjustava kauba suhtes mõistlike abinõude rakendamist, muu hulgas ärisaladust",
-      "estleg:legalText": "(1) Kui kohustuse rikkumine või kahju õigusvastane tekitamine seisneb ärisaladuse ebaseaduslikus saamises, kasutamises või avaldamises, võib isik, kelle õigusi rikuti, nõuda: ärisaladuse ebaseadusliku kasutamise või avaldamise lõpetamist või keelamist; ärisaladust kahjustava kauba tootmise, pakkumise või käibesse laskmise või sellisel eesmärgil importimise, eksportimise või ladustamise keelamist; ärisaladust kahjustava kauba suhtes mõistlike abinõude rakendamist, muu hulgas ärisaladust kahjustava omaduse eemaldamist või ärisaladust kahjustava kauba hävitamist, tagasivõtmist või turult eemaldamist, eeldusel et turult eemaldamine ei kahjusta ärisaladuse kaitsmist; ärisaladust sisaldava või endast ärisaladust kujutava dokumendi, asja, materjali, aine, elektroonilise faili või selle osa hävitamist või endale üleandmist. (2) Käesoleva paragrahvi lõikes 1 nimetatud nõudeid võib esitada, kui see on proportsionaalne, arvestades muu hulgas: ärisaladuse väärtust või selle muid erijooni; ärisaladuse kaitsmiseks võetud meetmeid; viisi, kuidas rikkuja on ärisaladuse saanud, seda kasutanud või selle avaldanud; ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; poolte õigustatud huve ja mõju, mida käesoleva paragrahvi lõikes 1 nimetatud nõuete rakendamine neile avaldaks; kolmanda isiku õigustatud huve ja avalikku huvi. (3) Kui kohus piirab ajaliselt käesoleva paragrahvi lõike 1 punktides 1 ja 2 nimetatud nõuete rakendamist, peab selle kestus olema piisav, et kõrvaldada igasugune kaubanduslik või majanduslik eelis, mille rikkuja sai ärisaladuse ebaseaduslikust saamisest, kasutamisest või avaldamisest. (4) Isik, kelle suhtes käesoleva paragrahvi lõikes 1 nimetatud nõue on esitatud, võib taotleda kohtult, et nõude rakendamise asemel kohustatakse teda maksma isikule, kelle õigusi rikuti, rahalist hüvitist, kui: ta ärisaladuse kasutamise või avaldamise ajal ei teadnud ega pidanudki teadma, et ärisaladus on saadud teiselt isikult, kes kasutas ärisaladust või avaldas selle ebaseaduslikult; abinõude rakendamisest tekiks talle ebaproportsionaalselt suur kahju ja rahalist hüvitist võib pidada nõude rakendamist taotlenud isiku jaoks piisavaks kompensatsiooniks. (5) Kui käesoleva paragrahvi lõikes 4 nimetatud rahalise hüvitise maksmise kohustust rakendatakse käesoleva paragrahvi lõike 1 punktides 1 ja 2 nimetatud nõuete rakendamise asemel, ei tohi rahaline hüvitis olla suurem kui tasu, mida rikkuja oleks pidanud maksma, kui ta oleks hankinud loa ärisaladuse kasutamiseks ajavahemikus, mil selle kasutamine oleks olnud keelatud. (6) Käesoleva paragrahvi lõike 1 punktides 3 ja 4 nimetatud nõuete rakendamist võib nõuda ärisaladuse ebaseadusliku saaja, kasutaja või avaldaja kulul, välja arvatud juhul, kui see oleks ebamõistlik.",
+      "estleg:summary": {
+        "@value": "(1) Kui kohustuse rikkumine või kahju õigusvastane tekitamine seisneb ärisaladuse ebaseaduslikus saamises, kasutamises või avaldamises, võib isik, kelle õigusi rikuti, nõuda: 1) ärisaladuse ebaseadusliku kasutamise või avaldamise lõpetamist või keelamist; 2) ärisaladust kahjustava kauba tootmise, pakkumise või käibesse laskmise või sellisel eesmärgil importimise, eksportimise või ladustamise keelamist; 3) ärisaladust kahjustava kauba suhtes mõistlike abinõude rakendamist, muu hulgas ärisaladust",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui kohustuse rikkumine või kahju õigusvastane tekitamine seisneb ärisaladuse ebaseaduslikus saamises, kasutamises või avaldamises, võib isik, kelle õigusi rikuti, nõuda: 1) ärisaladuse ebaseadusliku kasutamise või avaldamise lõpetamist või keelamist; 2) ärisaladust kahjustava kauba tootmise, pakkumise või käibesse laskmise või sellisel eesmärgil importimise, eksportimise või ladustamise keelamist; 3) ärisaladust kahjustava kauba suhtes mõistlike abinõude rakendamist, muu hulgas ärisaladust kahjustava omaduse eemaldamist või ärisaladust kahjustava kauba hävitamist, tagasivõtmist või turult eemaldamist, eeldusel et turult eemaldamine ei kahjusta ärisaladuse kaitsmist; 4) ärisaladust sisaldava või endast ärisaladust kujutava dokumendi, asja, materjali, aine, elektroonilise faili või selle osa hävitamist või endale üleandmist. (2) Käesoleva paragrahvi lõikes 1 nimetatud nõudeid võib esitada, kui see on proportsionaalne, arvestades muu hulgas: 1) ärisaladuse väärtust või selle muid erijooni; 2) ärisaladuse kaitsmiseks võetud meetmeid; 3) viisi, kuidas rikkuja on ärisaladuse saanud, seda kasutanud või selle avaldanud; 4) ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; 5) poolte õigustatud huve ja mõju, mida käesoleva paragrahvi lõikes 1 nimetatud nõuete rakendamine neile avaldaks; 6) kolmanda isiku õigustatud huve ja 7) avalikku huvi. (3) Kui kohus piirab ajaliselt käesoleva paragrahvi lõike 1 punktides 1 ja 2 nimetatud nõuete rakendamist, peab selle kestus olema piisav, et kõrvaldada igasugune kaubanduslik või majanduslik eelis, mille rikkuja sai ärisaladuse ebaseaduslikust saamisest, kasutamisest või avaldamisest. (4) Isik, kelle suhtes käesoleva paragrahvi lõikes 1 nimetatud nõue on esitatud, võib taotleda kohtult, et nõude rakendamise asemel kohustatakse teda maksma isikule, kelle õigusi rikuti, rahalist hüvitist, kui: 1) ta ärisaladuse kasutamise või avaldamise ajal ei teadnud ega pidanudki teadma, et ärisaladus on saadud teiselt isikult, kes kasutas ärisaladust või avaldas selle ebaseaduslikult; 2) abinõude rakendamisest tekiks talle ebaproportsionaalselt suur kahju ja 3) rahalist hüvitist võib pidada nõude rakendamist taotlenud isiku jaoks piisavaks kompensatsiooniks. (5) Kui käesoleva paragrahvi lõikes 4 nimetatud rahalise hüvitise maksmise kohustust rakendatakse käesoleva paragrahvi lõike 1 punktides 1 ja 2 nimetatud nõuete rakendamise asemel, ei tohi rahaline hüvitis olla suurem kui tasu, mida rikkuja oleks pidanud maksma, kui ta oleks hankinud loa ärisaladuse kasutamiseks ajavahemikus, mil selle kasutamine oleks olnud keelatud. (6) Käesoleva paragrahvi lõike 1 punktides 3 ja 4 nimetatud nõuete rakendamist võib nõuda ärisaladuse ebaseadusliku saaja, kasutaja või avaldaja kulul, välja arvatud juhul, kui see oleks ebamõistlik.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_3"
       },
@@ -903,27 +1058,24 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EKTAKS_Par_7_v107122018002"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EKTAKS_Par_7_v107122018002"
         }
       ]
     },
@@ -934,14 +1086,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kui kohustuse rikkumine või kahju õigusvastane tekitamine seisneb ärisaladuse ebaseaduslikus saamises, kasutamises või avaldamises, võib isik, kelle õigusi rikuti, nõuda: ärisaladuse ebaseadusliku kasutamise või avaldamise lõpetamist või keelamist; ärisaladust kahjustava kauba tootmise, pakkumise või käibesse laskmise või sellisel eesmärgil importimise, eksportimise või ladustamise keelamist; ärisaladust kahjustava kauba suhtes mõistlike abinõude rakendamist, muu hulgas ärisaladust kahjustava omaduse eemaldamist või ärisaladust kahjustava kauba hävitamist, tagasivõtmist või turult eemaldamist, eeldusel et turult eemaldamine ei kahjusta ärisaladuse kaitsmist; ärisaladust sisaldava või endast ärisaladust kujutava dokumendi, asja, materjali, aine, elektroonilise faili või selle osa hävitamist või endale üleandmist.",
+      "estleg:legalText": "(1) Kui kohustuse rikkumine või kahju õigusvastane tekitamine seisneb ärisaladuse ebaseaduslikus saamises, kasutamises või avaldamises, võib isik, kelle õigusi rikuti, nõuda: 1) ärisaladuse ebaseadusliku kasutamise või avaldamise lõpetamist või keelamist; 2) ärisaladust kahjustava kauba tootmise, pakkumise või käibesse laskmise või sellisel eesmärgil importimise, eksportimise või ladustamise keelamist; 3) ärisaladust kahjustava kauba suhtes mõistlike abinõude rakendamist, muu hulgas ärisaladust kahjustava omaduse eemaldamist või ärisaladust kahjustava kauba hävitamist, tagasivõtmist või turult eemaldamist, eeldusel et turult eemaldamine ei kahjusta ärisaladuse kaitsmist; 4) ärisaladust sisaldava või endast ärisaladust kujutava dokumendi, asja, materjali, aine, elektroonilise faili või selle osa hävitamist või endale üleandmist.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_7"
       },
       "rdfs:label": "§ 7 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -950,6 +1105,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -959,14 +1117,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud nõudeid võib esitada, kui see on proportsionaalne, arvestades muu hulgas: ärisaladuse väärtust või selle muid erijooni; ärisaladuse kaitsmiseks võetud meetmeid; viisi, kuidas rikkuja on ärisaladuse saanud, seda kasutanud või selle avaldanud; ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; poolte õigustatud huve ja mõju, mida käesoleva paragrahvi lõikes 1 nimetatud nõuete rakendamine neile avaldaks; kolmanda isiku õigustatud huve ja avalikku huvi.",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud nõudeid võib esitada, kui see on proportsionaalne, arvestades muu hulgas: 1) ärisaladuse väärtust või selle muid erijooni; 2) ärisaladuse kaitsmiseks võetud meetmeid; 3) viisi, kuidas rikkuja on ärisaladuse saanud, seda kasutanud või selle avaldanud; 4) ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; 5) poolte õigustatud huve ja mõju, mida käesoleva paragrahvi lõikes 1 nimetatud nõuete rakendamine neile avaldaks; 6) kolmanda isiku õigustatud huve ja 7) avalikku huvi.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_7"
       },
       "rdfs:label": "§ 7 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -975,6 +1139,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -989,9 +1156,6 @@
         "@id": "estleg:EKTAKS_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1000,6 +1164,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1014,14 +1181,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Isik, kelle suhtes käesoleva paragrahvi lõikes 1 nimetatud nõue on esitatud, võib taotleda kohtult, et nõude rakendamise asemel kohustatakse teda maksma isikule, kelle õigusi rikuti, rahalist hüvitist, kui: ta ärisaladuse kasutamise või avaldamise ajal ei teadnud ega pidanudki teadma, et ärisaladus on saadud teiselt isikult, kes kasutas ärisaladust või avaldas selle ebaseaduslikult; abinõude rakendamisest tekiks talle ebaproportsionaalselt suur kahju ja rahalist hüvitist võib pidada nõude rakendamist taotlenud isiku jaoks piisavaks kompensatsiooniks.",
+      "estleg:legalText": "(4) Isik, kelle suhtes käesoleva paragrahvi lõikes 1 nimetatud nõue on esitatud, võib taotleda kohtult, et nõude rakendamise asemel kohustatakse teda maksma isikule, kelle õigusi rikuti, rahalist hüvitist, kui: 1) ta ärisaladuse kasutamise või avaldamise ajal ei teadnud ega pidanudki teadma, et ärisaladus on saadud teiselt isikult, kes kasutas ärisaladust või avaldas selle ebaseaduslikult; 2) abinõude rakendamisest tekiks talle ebaproportsionaalselt suur kahju ja 3) rahalist hüvitist võib pidada nõude rakendamist taotlenud isiku jaoks piisavaks kompensatsiooniks.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_7"
       },
       "rdfs:label": "§ 7 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1030,6 +1199,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1044,12 +1216,12 @@
         "@id": "estleg:EKTAKS_Par_7"
       },
       "rdfs:label": "§ 7 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -1064,9 +1236,6 @@
         "@id": "estleg:EKTAKS_Par_7"
       },
       "rdfs:label": "§ 7 lg 6",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1075,6 +1244,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1084,12 +1256,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Ärisaladuse ebaseadusliku saamise, kasutamise ja avaldamise korral kahju hüvitamise ulatus",
+      "rdfs:label": {
+        "@value": "§ 8. Ärisaladuse ebaseadusliku saamise, kasutamise ja avaldamise korral kahju hüvitamise ulatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "(1) Ärisaladuse ebaseadusliku saamise, kasutamise või avaldamise korral kuulub hüvitamisele rikkumisega tekitatud varaline ja mittevaraline kahju. (2) Kui kahju tekitamine ärisaladuse ebaseadusliku saamise, kasutamise või avaldamisega on kindlaks tehtud, kuid kahju täpset suurust ei saa kindlaks teha, võib kohus, kui see on mõistlik, määrata kahjuhüvitise kindla summana, lähtudes muu hulgas tasu suurusest, mida rikkuja oleks pidanud maksma, kui ta oleks hankinud loa ärisaladuse kasutamiseks.",
+      "estleg:summary": {
+        "@value": "(1) Ärisaladuse ebaseadusliku saamise, kasutamise või avaldamise korral kuulub hüvitamisele rikkumisega tekitatud varaline ja mittevaraline kahju. (2) Kui kahju tekitamine ärisaladuse ebaseadusliku saamise, kasutamise või avaldamisega on kindlaks tehtud, kuid kahju täpset suurust ei saa kindlaks teha, võib kohus, kui see on mõistlik, määrata kahjuhüvitise kindla summana, lähtudes muu hulgas tasu suurusest, mida rikkuja oleks pidanud maksma, kui ta oleks hankinud loa ärisaladuse kasutamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ärisaladuse ebaseadusliku saamise, kasutamise või avaldamise korral kuulub hüvitamisele rikkumisega tekitatud varaline ja mittevaraline kahju. (2) Kui kahju tekitamine ärisaladuse ebaseadusliku saamise, kasutamise või avaldamisega on kindlaks tehtud, kuid kahju täpset suurust ei saa kindlaks teha, võib kohus, kui see on mõistlik, määrata kahjuhüvitise kindla summana, lähtudes muu hulgas tasu suurusest, mida rikkuja oleks pidanud maksma, kui ta oleks hankinud loa ärisaladuse kasutamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_3"
@@ -1110,21 +1288,21 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EKTAKS_Par_8_v107122018002"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EKTAKS_Par_8_v107122018002"
         }
       ]
     },
@@ -1153,9 +1331,6 @@
         "@id": "estleg:EKTAKS_Par_8"
       },
       "rdfs:label": "§ 8 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1164,6 +1339,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1178,13 +1356,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Hagi tagamine ärisaladuse ebaseaduslikule saamisele, kasutamisele ja avaldamisele tugineva hagi puhul",
+      "rdfs:label": {
+        "@value": "§ 9. Hagi tagamine ärisaladuse ebaseaduslikule saamisele, kasutamisele ja avaldamisele tugineva hagi puhul",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "Ärisaladuse ebaseaduslikule saamisele, kasutamisele või avaldamisele tugineva hagi tagamisel ja hagi tagava abinõu valikul tuleb muu hulgas arvestada: ärisaladuse väärtust ja selle muid erijooni; ärisaladuse kaitsmiseks võetud meetmeid; viisi, kuidas kostja on ärisaladuse saanud, seda kasutanud või selle avaldanud; ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; poolte õigustatud huve ja mõju, mida hagi tagamine või tagamata jätmine neile avaldaks; kolmanda isiku õigustatud huve ja",
-      "estleg:legalText": "Ärisaladuse ebaseaduslikule saamisele, kasutamisele või avaldamisele tugineva hagi tagamisel ja hagi tagava abinõu valikul tuleb muu hulgas arvestada: ärisaladuse väärtust ja selle muid erijooni; ärisaladuse kaitsmiseks võetud meetmeid; viisi, kuidas kostja on ärisaladuse saanud, seda kasutanud või selle avaldanud; ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; poolte õigustatud huve ja mõju, mida hagi tagamine või tagamata jätmine neile avaldaks; kolmanda isiku õigustatud huve ja avalikku huvi.",
+      "estleg:summary": {
+        "@value": "Ärisaladuse ebaseaduslikule saamisele, kasutamisele või avaldamisele tugineva hagi tagamisel ja hagi tagava abinõu valikul tuleb muu hulgas arvestada: 1) ärisaladuse väärtust ja selle muid erijooni; 2) ärisaladuse kaitsmiseks võetud meetmeid; 3) viisi, kuidas kostja on ärisaladuse saanud, seda kasutanud või selle avaldanud; 4) ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; 5) poolte õigustatud huve ja mõju, mida hagi tagamine või tagamata jätmine neile avaldaks; 6) kolmanda isiku",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ärisaladuse ebaseaduslikule saamisele, kasutamisele või avaldamisele tugineva hagi tagamisel ja hagi tagava abinõu valikul tuleb muu hulgas arvestada: 1) ärisaladuse väärtust ja selle muid erijooni; 2) ärisaladuse kaitsmiseks võetud meetmeid; 3) viisi, kuidas kostja on ärisaladuse saanud, seda kasutanud või selle avaldanud; 4) ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; 5) poolte õigustatud huve ja mõju, mida hagi tagamine või tagamata jätmine neile avaldaks; 6) kolmanda isiku õigustatud huve ja 7) avalikku huvi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_4"
       },
@@ -1201,12 +1385,12 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -1220,13 +1404,21 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ärisaladuse ebaseaduslikule saamisele, kasutamisele või avaldamisele tugineva hagi tagamisel ja hagi tagava abinõu valikul tuleb muu hulgas arvestada: ärisaladuse väärtust ja selle muid erijooni; ärisaladuse kaitsmiseks võetud meetmeid; viisi, kuidas kostja on ärisaladuse saanud, seda kasutanud või selle avaldanud; ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; poolte õigustatud huve ja mõju, mida hagi tagamine või tagamata jätmine neile avaldaks; kolmanda isiku õigustatud huve ja avalikku huvi.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ärisaladuse ebaseaduslikule saamisele, kasutamisele või avaldamisele tugineva hagi tagamisel ja hagi tagava abinõu valikul tuleb muu hulgas arvestada: 1) ärisaladuse väärtust ja selle muid erijooni; 2) ärisaladuse kaitsmiseks võetud meetmeid; 3) viisi, kuidas kostja on ärisaladuse saanud, seda kasutanud või selle avaldanud; 4) ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; 5) poolte õigustatud huve ja mõju, mida hagi tagamine või tagamata jätmine neile avaldaks; 6) kolmanda isiku õigustatud huve ja 7) avalikku huvi.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_9"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1235,6 +1427,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1244,12 +1439,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Hagi tagamise asendamine raha maksmisega ärisaladuse ebaseaduslikule kasutamisele tugineva hagi puhul",
+      "rdfs:label": {
+        "@value": "§ 10. Hagi tagamise asendamine raha maksmisega ärisaladuse ebaseaduslikule kasutamisele tugineva hagi puhul",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "(1) Ärisaladuse ebaseaduslikule kasutamisele tugineva hagi tagamise määruses võib kohus määrata kindlaks rahasumma, mille maksmisel selleks ettenähtud pangakontole või mille ulatuses pangagarantii esitamisel lõpetatakse hagi tagamise määruse täitmine. (2) Käesoleva paragrahvi lõikes 1 nimetatud juhul ei kohaldata tsiviilkohtumenetluse seadustiku § 386 lõikes 3 sätestatut.",
+      "estleg:summary": {
+        "@value": "(1) Ärisaladuse ebaseaduslikule kasutamisele tugineva hagi tagamise määruses võib kohus määrata kindlaks rahasumma, mille maksmisel selleks ettenähtud pangakontole või mille ulatuses pangagarantii esitamisel lõpetatakse hagi tagamise määruse täitmine. (2) Käesoleva paragrahvi lõikes 1 nimetatud juhul ei kohaldata tsiviilkohtumenetluse seadustiku § 386 lõikes 3 sätestatut.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ärisaladuse ebaseaduslikule kasutamisele tugineva hagi tagamise määruses võib kohus määrata kindlaks rahasumma, mille maksmisel selleks ettenähtud pangakontole või mille ulatuses pangagarantii esitamisel lõpetatakse hagi tagamise määruse täitmine. (2) Käesoleva paragrahvi lõikes 1 nimetatud juhul ei kohaldata tsiviilkohtumenetluse seadustiku § 386 lõikes 3 sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_4"
@@ -1270,14 +1471,6 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:tsiviilkohtumenetluse_seadustik_Osa10_Par_385"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1287,14 +1480,17 @@
           "@id": "estleg:tsiviilkohtumenetluse_seadustik_Osa10_Par_386_Lg_3"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EKTAKS_Par_10_v107122018002"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EKTAKS_Par_10_v107122018002"
         }
       ]
     },
@@ -1310,9 +1506,6 @@
         "@id": "estleg:EKTAKS_Par_10"
       },
       "rdfs:label": "§ 10 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1321,6 +1514,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1353,13 +1549,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Ärisaladuse ebaseaduslikku saamist, kasutamist ja avaldamist puudutava otsuse avaldamise korra kindlaksmääramine",
+      "rdfs:label": {
+        "@value": "§ 11. Ärisaladuse ebaseaduslikku saamist, kasutamist ja avaldamist puudutava otsuse avaldamise korra kindlaksmääramine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "(1) Ärisaladuse ebaseaduslikule saamisele, kasutamisele või avaldamisele tugineva hagi puhul võib kohus selle poole taotlusel, kelle kasuks otsus tehti, ette näha, et kohtuotsuses sisalduvad andmed tuleb selle poole kulul, kelle kahjuks otsus tehti, kohtu määratud viisil ja korras avalikult teatavaks teha või kohtuotsus osaliselt või täielikult avaldada. (2) Käesoleva paragrahvi lõikes 1 nimetatud abinõu rakendamisel ja abinõu valikul tuleb muu hulgas arvestada: ärisaladuse väärtust; viisi,",
-      "estleg:legalText": "(1) Ärisaladuse ebaseaduslikule saamisele, kasutamisele või avaldamisele tugineva hagi puhul võib kohus selle poole taotlusel, kelle kasuks otsus tehti, ette näha, et kohtuotsuses sisalduvad andmed tuleb selle poole kulul, kelle kahjuks otsus tehti, kohtu määratud viisil ja korras avalikult teatavaks teha või kohtuotsus osaliselt või täielikult avaldada. (2) Käesoleva paragrahvi lõikes 1 nimetatud abinõu rakendamisel ja abinõu valikul tuleb muu hulgas arvestada: ärisaladuse väärtust; viisi, kuidas kostja on ärisaladuse saanud, seda kasutanud või selle avaldanud; ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; kostja poolt ärisaladuse edasise ebaseadusliku kasutamise ja avaldamise tõenäosust; avalikuks tehtavate andmete põhjal füüsilise isiku identifitseerimise võimalikkust ja avalikuks tehtavate andmete õigustatust, võrreldes avalikustamisest tekkida võiva kahjuga kostja privaatsusele ja mainele.",
+      "estleg:summary": {
+        "@value": "(1) Ärisaladuse ebaseaduslikule saamisele, kasutamisele või avaldamisele tugineva hagi puhul võib kohus selle poole taotlusel, kelle kasuks otsus tehti, ette näha, et kohtuotsuses sisalduvad andmed tuleb selle poole kulul, kelle kahjuks otsus tehti, kohtu määratud viisil ja korras avalikult teatavaks teha või kohtuotsus osaliselt või täielikult avaldada. (2) Käesoleva paragrahvi lõikes 1 nimetatud abinõu rakendamisel ja abinõu valikul tuleb muu hulgas arvestada: 1) ärisaladuse väärtust; 2)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ärisaladuse ebaseaduslikule saamisele, kasutamisele või avaldamisele tugineva hagi puhul võib kohus selle poole taotlusel, kelle kasuks otsus tehti, ette näha, et kohtuotsuses sisalduvad andmed tuleb selle poole kulul, kelle kahjuks otsus tehti, kohtu määratud viisil ja korras avalikult teatavaks teha või kohtuotsus osaliselt või täielikult avaldada. (2) Käesoleva paragrahvi lõikes 1 nimetatud abinõu rakendamisel ja abinõu valikul tuleb muu hulgas arvestada: 1) ärisaladuse väärtust; 2) viisi, kuidas kostja on ärisaladuse saanud, seda kasutanud või selle avaldanud; 3) ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; 4) kostja poolt ärisaladuse edasise ebaseadusliku kasutamise ja avaldamise tõenäosust; 5) avalikuks tehtavate andmete põhjal füüsilise isiku identifitseerimise võimalikkust ja 6) avalikuks tehtavate andmete õigustatust, võrreldes avalikustamisest tekkida võiva kahjuga kostja privaatsusele ja mainele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_4"
       },
@@ -1376,27 +1578,24 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:EKTAKS_Par_11_v107122018002"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:EKTAKS_Par_11_v107122018002"
         }
       ]
     },
@@ -1412,9 +1611,6 @@
         "@id": "estleg:EKTAKS_Par_11"
       },
       "rdfs:label": "§ 11 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1423,6 +1619,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1437,14 +1636,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud abinõu rakendamisel ja abinõu valikul tuleb muu hulgas arvestada: ärisaladuse väärtust; viisi, kuidas kostja on ärisaladuse saanud, seda kasutanud või selle avaldanud; ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; kostja poolt ärisaladuse edasise ebaseadusliku kasutamise ja avaldamise tõenäosust; avalikuks tehtavate andmete põhjal füüsilise isiku identifitseerimise võimalikkust ja avalikuks tehtavate andmete õigustatust, võrreldes avalikustamisest tekkida võiva kahjuga kostja privaatsusele ja mainele.",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud abinõu rakendamisel ja abinõu valikul tuleb muu hulgas arvestada: 1) ärisaladuse väärtust; 2) viisi, kuidas kostja on ärisaladuse saanud, seda kasutanud või selle avaldanud; 3) ärisaladuse ebaseadusliku kasutamise või avaldamise mõju; 4) kostja poolt ärisaladuse edasise ebaseadusliku kasutamise ja avaldamise tõenäosust; 5) avalikuks tehtavate andmete põhjal füüsilise isiku identifitseerimise võimalikkust ja 6) avalikuks tehtavate andmete õigustatust, võrreldes avalikustamisest tekkida võiva kahjuga kostja privaatsusele ja mainele.",
       "estleg:parentProvision": {
         "@id": "estleg:EKTAKS_Par_11"
       },
       "rdfs:label": "§ 11 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1453,6 +1657,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1462,12 +1669,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Karistusseadustiku muutmine",
+      "rdfs:label": {
+        "@value": "§ 12. Karistusseadustiku muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "Karistusseadustikus tehakse järgmised muudatused:",
+      "estleg:summary": {
+        "@value": "Karistusseadustikus tehakse järgmised muudatused:",
+        "@language": "et"
+      },
       "estleg:legalText": "Karistusseadustikus tehakse järgmised muudatused:",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_5"
@@ -1483,13 +1696,13 @@
           "@id": "estleg:KAITSE_4_Par_40"
         },
         {
-          "@id": "estleg:OHVRIA_Par_65"
-        },
-        {
-          "@id": "estleg:OHVRIA_Par_68"
-        },
-        {
           "@id": "estleg:PEREHU_Par_73"
+        },
+        {
+          "@id": "estleg:SOTSIA_Par_176"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_44"
         }
       ],
       "estleg:hasVersion": [
@@ -1505,12 +1718,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Konkurentsiseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 13. Konkurentsiseaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "Konkurentsiseaduses tehakse järgmised muudatused:",
+      "estleg:summary": {
+        "@value": "Konkurentsiseaduses tehakse järgmised muudatused:",
+        "@language": "et"
+      },
       "estleg:legalText": "Konkurentsiseaduses tehakse järgmised muudatused:",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_5"
@@ -1526,13 +1745,13 @@
           "@id": "estleg:KAITSE_4_Par_40"
         },
         {
-          "@id": "estleg:OHVRIA_Par_65"
-        },
-        {
-          "@id": "estleg:OHVRIA_Par_68"
-        },
-        {
           "@id": "estleg:PEREHU_Par_73"
+        },
+        {
+          "@id": "estleg:SOTSIA_Par_176"
+        },
+        {
+          "@id": "estleg:TAISKA_Par_44"
         }
       ],
       "estleg:hasVersion": [
@@ -1548,12 +1767,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Kriminaalmenetluse seadustiku muutmine",
+      "rdfs:label": {
+        "@value": "§ 14. Kriminaalmenetluse seadustiku muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "Kriminaalmenetluse seadustikus tehakse järgmised muudatused:",
+      "estleg:summary": {
+        "@value": "Kriminaalmenetluse seadustikus tehakse järgmised muudatused:",
+        "@language": "et"
+      },
       "estleg:legalText": "Kriminaalmenetluse seadustikus tehakse järgmised muudatused:",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_5"
@@ -1569,13 +1794,13 @@
           "@id": "estleg:KAITSE_4_Par_40"
         },
         {
-          "@id": "estleg:OHVRIA_Par_63"
+          "@id": "estleg:PEREHU_Par_73"
         },
         {
-          "@id": "estleg:OHVRIA_Par_65"
+          "@id": "estleg:SOTSIA_Par_176"
         },
         {
-          "@id": "estleg:TOKVS_Par_30"
+          "@id": "estleg:TAISKA_Par_44"
         }
       ],
       "estleg:hasVersion": [
@@ -1591,12 +1816,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Perioodi 2014–2020 struktuuritoetuse seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 15. Perioodi 2014–2020 struktuuritoetuse seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "Perioodi 2014–2020 struktuuritoetuse seaduse § 39 lõike 2 punktis 2 asendatakse tekstiosa „konkurentsiseaduse § 63 lõike 1” tekstiosaga „ebaausa konkurentsi takistamise ja ärisaladuse kaitse seaduse § 5 lõike 2”.",
+      "estleg:summary": {
+        "@value": "Perioodi 2014–2020 struktuuritoetuse seaduse § 39 lõike 2 punktis 2 asendatakse tekstiosa „konkurentsiseaduse § 63 lõike 1” tekstiosaga „ebaausa konkurentsi takistamise ja ärisaladuse kaitse seaduse § 5 lõike 2”.",
+        "@language": "et"
+      },
       "estleg:legalText": "Perioodi 2014–2020 struktuuritoetuse seaduse § 39 lõike 2 punktis 2 asendatakse tekstiosa „konkurentsiseaduse § 63 lõike 1” tekstiosaga „ebaausa konkurentsi takistamise ja ärisaladuse kaitse seaduse § 5 lõike 2”.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_5"
@@ -1609,7 +1840,7 @@
           "@id": "estleg:STS2014_2020_Par_39_Lg_2"
         },
         {
-          "@id": "estleg:KonkS_Par_63_Lg_1"
+          "@id": "estleg:KonkS_Par_63"
         },
         {
           "@id": "estleg:EKTAKS_Par_5_Lg_2"
@@ -1628,12 +1859,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Tsiviilkohtumenetluse seadustiku muutmine",
+      "rdfs:label": {
+        "@value": "§ 16. Tsiviilkohtumenetluse seadustiku muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "Tsiviilkohtumenetluse seadustikus tehakse järgmised muudatused:",
+      "estleg:summary": {
+        "@value": "Tsiviilkohtumenetluse seadustikus tehakse järgmised muudatused:",
+        "@language": "et"
+      },
       "estleg:legalText": "Tsiviilkohtumenetluse seadustikus tehakse järgmised muudatused:",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_5"
@@ -1649,13 +1886,13 @@
           "@id": "estleg:KAITSE_4_Par_40"
         },
         {
-          "@id": "estleg:OHVRIA_Par_63"
+          "@id": "estleg:PEREHU_Par_73"
         },
         {
-          "@id": "estleg:OHVRIA_Par_65"
+          "@id": "estleg:SOTSIA_Par_176"
         },
         {
-          "@id": "estleg:TOKVS_Par_30"
+          "@id": "estleg:TAISKA_Par_44"
         }
       ],
       "estleg:hasVersion": [
@@ -1671,19 +1908,30 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Tsiviilkohtumenetluse seadustiku ja täitemenetluse seadustiku rakendamise seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 17. Tsiviilkohtumenetluse seadustiku ja täitemenetluse seadustiku rakendamise seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ebaausa konkurentsi takistamise ja ärisaladuse kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EKTAKS_Map"
       },
-      "estleg:summary": "Tsiviilkohtumenetluse seadustiku ja täitemenetluse seadustiku rakendamise seaduse § 24 tunnistatakse kehtetuks.",
-      "estleg:legalText": "Tsiviilkohtumenetluse seadustiku ja täitemenetluse seadustiku rakendamise seaduse § 24 tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Tsiviilkohtumenetluse seadustiku ja täitemenetluse seadustiku rakendamise seaduse § 2⁴ tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tsiviilkohtumenetluse seadustiku ja täitemenetluse seadustiku rakendamise seaduse § 2⁴ tunnistatakse kehtetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EKTAKS_5"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_EKTAKS_5"
       },
+      "estleg:references": [
+        {
+          "@id": "estleg:TsMSRS_Par_2_4"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:EKTAKS_Par_17_v107122018002"
@@ -1691,16 +1939,20 @@
       ]
     },
     {
-      "@id": "estleg:Citation_EKTAKS_P_17_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/520122018013",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:EKTAKS_Par_17"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationDetail": "tsiviilkohtumenetluse seadustiku ja täitemenetluse seadustiku rakendamise seadus",
-      "estleg:citationText": "Tsiviilkohtumenetluse seadustiku ja täitemenetluse seadustiku rakendamise seaduse § 24"
+      "eli:realizes": {
+        "@id": "estleg:EKTAKS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Restriction of Unfair Competition and Protection of Business Secrets Act",
+        "@language": "en"
+      }
     }
   ]
 }

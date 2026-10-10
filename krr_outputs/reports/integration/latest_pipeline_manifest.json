@@ -1,295 +1,362 @@
 {
-  "generated": "2026-06-02T19:27:42.180570+00:00",
+  "generated": "2026-10-09T18:33:38.795777+00:00",
   "restoreOnFailure": false,
+  "snapshotMode": "none",
+  "rollback": "none",
   "dryRun": false,
-  "resumeFrom": null,
+  "resumeFrom": "build_release_artifacts.py",
   "parallel": 1,
   "topoOrder": [
+    "generate_provision_versions.py",
+    "generate_provision_versions_regulations",
+    "generate_annotations.py",
+    "generate_draft_legislation.py",
+    "generate_riigikogu_proceedings.py",
+    "enrich_kov_layer1.py",
     "extract_cross_references.py",
     "generate_inverse_references.py",
+    "extract_ntm_directives.py",
     "generate_transposition_mapping.py",
+    "rebuild_eurlex_combined",
+    "link_curia_eu_legislation.py",
+    "rebuild_curia_combined",
     "generate_harmonisation_links.py",
     "extract_court_provision_links.py",
     "classify_eurovoc.py",
     "extract_temporal_data.py",
-    "generate_amendment_history.py",
+    "derive_act_temporal_status.py",
+    "generate_act_expressions_608.py",
     "extract_legal_concepts.py",
     "classify_deontic.py",
     "classify_target_group.py",
     "extract_institutional_competence.py",
+    "generate_draft_lifecycle",
+    "rebuild_eelnoud_combined",
     "extract_sanctions.py",
     "extract_draft_impact.py",
+    "generate_amendment_history.py",
+    "link_amendment_versions.py",
+    "derive_court_interpretation_staleness.py",
+    "derive_kov_enabling_staleness.py",
     "generate_similarity_index.py",
-    "fix_all_issues.py"
+    "build_release_artifacts.py",
+    "generate_analytical_overlay.py",
+    "emit_release_changes.py",
+    "build_release_assets.py"
   ],
   "summary": {
-    "totalScripts": 16,
-    "succeeded": 16,
+    "totalScripts": 36,
+    "succeeded": 4,
     "planned": 0,
-    "skipped": 0,
+    "skipped": 32,
     "failed": 0
   },
   "phases": [
     {
+      "name": "generate_provision_versions.py",
+      "script": "generate_provision_versions.py",
+      "tier": "ingest",
+      "status": "skipped_ingest"
+    },
+    {
+      "name": "generate_provision_versions_regulations",
+      "script": "generate_provision_versions.py",
+      "tier": "ingest",
+      "status": "skipped_ingest"
+    },
+    {
+      "name": "generate_annotations.py",
+      "script": "generate_annotations.py",
+      "tier": "ingest",
+      "status": "skipped_ingest"
+    },
+    {
+      "name": "generate_draft_legislation.py",
+      "script": "generate_draft_legislation.py",
+      "tier": "ingest",
+      "status": "skipped_ingest"
+    },
+    {
+      "name": "generate_riigikogu_proceedings.py",
+      "script": "generate_riigikogu_proceedings.py",
+      "tier": "ingest",
+      "status": "skipped_ingest"
+    },
+    {
+      "name": "enrich_kov_layer1.py",
+      "script": "enrich_kov_layer1.py",
+      "status": "skipped_before_resume_point"
+    },
+    {
       "name": "extract_cross_references.py",
       "script": "extract_cross_references.py",
-      "description": "Cross-law reference extraction",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_cross_references.py"
-      ],
-      "elapsedSeconds": 429.27,
-      "logPath": "krr_outputs/reports/integration/logs/extract_cross_references.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_inverse_references.py",
       "script": "generate_inverse_references.py",
-      "description": "Bidirectional reference links",
-      "dependsOn": [
-        "extract_cross_references.py"
-      ],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/generate_inverse_references.py"
-      ],
-      "elapsedSeconds": 75.61,
-      "logPath": "krr_outputs/reports/integration/logs/generate_inverse_references.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "extract_ntm_directives.py",
+      "script": "extract_ntm_directives.py",
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_transposition_mapping.py",
       "script": "generate_transposition_mapping.py",
-      "description": "EU directive transposition mapping",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/generate_transposition_mapping.py"
-      ],
-      "elapsedSeconds": 42.27,
-      "logPath": "krr_outputs/reports/integration/logs/generate_transposition_mapping.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "rebuild_eurlex_combined",
+      "script": "generate_eu_legislation.py",
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "link_curia_eu_legislation.py",
+      "script": "link_curia_eu_legislation.py",
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "rebuild_curia_combined",
+      "script": "rebuild_subcorpus_combined.py",
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_harmonisation_links.py",
       "script": "generate_harmonisation_links.py",
-      "description": "Cross-border harmonisation links",
-      "dependsOn": [
-        "generate_transposition_mapping.py"
-      ],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/generate_harmonisation_links.py"
-      ],
-      "elapsedSeconds": 5.89,
-      "logPath": "krr_outputs/reports/integration/logs/generate_harmonisation_links.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_court_provision_links.py",
       "script": "extract_court_provision_links.py",
-      "description": "Court decision -> provision links",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_court_provision_links.py"
-      ],
-      "elapsedSeconds": 106.27,
-      "logPath": "krr_outputs/reports/integration/logs/extract_court_provision_links.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "classify_eurovoc.py",
       "script": "classify_eurovoc.py",
-      "description": "EuroVoc subject classification",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/classify_eurovoc.py"
-      ],
-      "elapsedSeconds": 69.75,
-      "logPath": "krr_outputs/reports/integration/logs/classify_eurovoc.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_temporal_data.py",
       "script": "extract_temporal_data.py",
-      "description": "Temporal validity data",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_temporal_data.py",
-        "--evaluation-date",
-        "2026-06-01"
-      ],
-      "elapsedSeconds": 180.3,
-      "logPath": "krr_outputs/reports/integration/logs/extract_temporal_data.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
-      "name": "generate_amendment_history.py",
-      "script": "generate_amendment_history.py",
-      "description": "Amendment history chains",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/generate_amendment_history.py"
-      ],
-      "elapsedSeconds": 335.89,
-      "logPath": "krr_outputs/reports/integration/logs/generate_amendment_history.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "name": "derive_act_temporal_status.py",
+      "script": "derive_act_temporal_status.py",
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "generate_act_expressions_608.py",
+      "script": "generate_act_expressions_608.py",
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_legal_concepts.py",
       "script": "extract_legal_concepts.py",
-      "description": "Legal concept extraction",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_legal_concepts.py"
-      ],
-      "elapsedSeconds": 173.4,
-      "logPath": "krr_outputs/reports/integration/logs/extract_legal_concepts.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "classify_deontic.py",
       "script": "classify_deontic.py",
-      "description": "Deontic classification",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/classify_deontic.py"
-      ],
-      "elapsedSeconds": 61.78,
-      "logPath": "krr_outputs/reports/integration/logs/classify_deontic.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "classify_target_group.py",
       "script": "classify_target_group.py",
-      "description": "Target-group classification",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/classify_target_group.py"
-      ],
-      "elapsedSeconds": 282.98,
-      "logPath": "krr_outputs/reports/integration/logs/classify_target_group.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_institutional_competence.py",
       "script": "extract_institutional_competence.py",
-      "description": "Institutional competence mapping",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_institutional_competence.py"
-      ],
-      "elapsedSeconds": 53.36,
-      "logPath": "krr_outputs/reports/integration/logs/extract_institutional_competence.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "generate_draft_lifecycle",
+      "script": "generate_draft_legislation.py",
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "rebuild_eelnoud_combined",
+      "script": "rebuild_subcorpus_combined.py",
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_sanctions.py",
       "script": "extract_sanctions.py",
-      "description": "Sanction extraction",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_sanctions.py"
-      ],
-      "elapsedSeconds": 39.24,
-      "logPath": "krr_outputs/reports/integration/logs/extract_sanctions.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_draft_impact.py",
       "script": "extract_draft_impact.py",
-      "description": "Draft impact analysis",
-      "dependsOn": [],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_draft_impact.py"
-      ],
-      "elapsedSeconds": 16.98,
-      "logPath": "krr_outputs/reports/integration/logs/extract_draft_impact.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "generate_amendment_history.py",
+      "script": "generate_amendment_history.py",
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "link_amendment_versions.py",
+      "script": "link_amendment_versions.py",
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "derive_court_interpretation_staleness.py",
+      "script": "derive_court_interpretation_staleness.py",
+      "status": "skipped_before_resume_point"
+    },
+    {
+      "name": "derive_kov_enabling_staleness.py",
+      "script": "derive_kov_enabling_staleness.py",
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_similarity_index.py",
       "script": "generate_similarity_index.py",
-      "description": "Semantic similarity index",
-      "dependsOn": [
-        "extract_cross_references.py",
-        "generate_inverse_references.py",
-        "generate_transposition_mapping.py",
-        "generate_harmonisation_links.py",
-        "extract_court_provision_links.py",
-        "classify_eurovoc.py",
-        "extract_temporal_data.py",
-        "generate_amendment_history.py",
-        "extract_legal_concepts.py",
-        "classify_deontic.py",
-        "classify_target_group.py",
-        "extract_institutional_competence.py",
-        "extract_sanctions.py",
-        "extract_draft_impact.py"
-      ],
-      "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/generate_similarity_index.py"
-      ],
-      "elapsedSeconds": 283.27,
-      "logPath": "krr_outputs/reports/integration/logs/generate_similarity_index.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
-      "name": "fix_all_issues.py",
-      "script": "fix_all_issues.py",
+      "name": "build_release_artifacts.py",
+      "script": "build_release_artifacts.py",
       "description": "Rebuild combined_ontology.jsonld + INDEX.json",
       "dependsOn": [
+        "generate_provision_versions.py",
+        "generate_provision_versions_regulations",
+        "generate_annotations.py",
+        "generate_draft_legislation.py",
+        "generate_riigikogu_proceedings.py",
+        "enrich_kov_layer1.py",
         "extract_cross_references.py",
         "generate_inverse_references.py",
+        "extract_ntm_directives.py",
         "generate_transposition_mapping.py",
+        "rebuild_eurlex_combined",
+        "link_curia_eu_legislation.py",
+        "rebuild_curia_combined",
+        "generate_draft_lifecycle",
+        "rebuild_eelnoud_combined",
         "generate_harmonisation_links.py",
         "extract_court_provision_links.py",
         "classify_eurovoc.py",
         "extract_temporal_data.py",
         "generate_amendment_history.py",
+        "link_amendment_versions.py",
+        "derive_act_temporal_status.py",
+        "generate_act_expressions_608.py",
         "extract_legal_concepts.py",
         "classify_deontic.py",
         "classify_target_group.py",
         "extract_institutional_competence.py",
         "extract_sanctions.py",
         "extract_draft_impact.py",
+        "derive_court_interpretation_staleness.py",
+        "derive_kov_enabling_staleness.py",
         "generate_similarity_index.py"
       ],
       "command": [
-        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/fix_all_issues.py"
+        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
+        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/build_release_artifacts.py"
       ],
-      "elapsedSeconds": 40.52,
-      "logPath": "krr_outputs/reports/integration/logs/fix_all_issues.log",
+      "elapsedSeconds": 45.47,
+      "logPath": "krr_outputs/reports/integration/logs/build_release_artifacts.log",
+      "exitCode": 0,
+      "status": "succeeded"
+    },
+    {
+      "name": "generate_analytical_overlay.py",
+      "script": "generate_analytical_overlay.py",
+      "description": "Analytical overlay file for the enrichment-layers graph (#521)",
+      "dependsOn": [
+        "build_release_artifacts.py",
+        "generate_similarity_index.py"
+      ],
+      "command": [
+        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
+        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/generate_analytical_overlay.py",
+        "--write"
+      ],
+      "elapsedSeconds": 6.07,
+      "logPath": "krr_outputs/reports/integration/logs/generate_analytical_overlay.log",
+      "exitCode": 0,
+      "status": "succeeded"
+    },
+    {
+      "name": "emit_release_changes.py",
+      "script": "emit_release_changes.py",
+      "description": "Provision-level release delta vs the latest v* tag (#713)",
+      "dependsOn": [
+        "build_release_artifacts.py"
+      ],
+      "command": [
+        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
+        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/emit_release_changes.py"
+      ],
+      "elapsedSeconds": 4.82,
+      "logPath": "krr_outputs/reports/integration/logs/emit_release_changes.log",
+      "exitCode": 0,
+      "status": "succeeded"
+    },
+    {
+      "name": "build_release_assets.py",
+      "script": "build_release_assets.py",
+      "description": "Gzip, dump, hash and catalogue every release asset (#705)",
+      "dependsOn": [
+        "build_release_artifacts.py",
+        "generate_analytical_overlay.py",
+        "emit_release_changes.py"
+      ],
+      "command": [
+        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
+        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/build_release_assets.py"
+      ],
+      "elapsedSeconds": 774.58,
+      "logPath": "krr_outputs/reports/integration/logs/build_release_assets.log",
       "exitCode": 0,
       "status": "succeeded"
     }
-  ]
+  ],
+  "onlyChanged": false,
+  "changedInputCount": null,
+  "changedInputs": [],
+  "selectedSteps": [
+    "generate_provision_versions.py",
+    "generate_provision_versions_regulations",
+    "generate_annotations.py",
+    "generate_draft_legislation.py",
+    "generate_riigikogu_proceedings.py",
+    "enrich_kov_layer1.py",
+    "extract_cross_references.py",
+    "generate_inverse_references.py",
+    "extract_ntm_directives.py",
+    "generate_transposition_mapping.py",
+    "rebuild_eurlex_combined",
+    "link_curia_eu_legislation.py",
+    "rebuild_curia_combined",
+    "generate_harmonisation_links.py",
+    "extract_court_provision_links.py",
+    "classify_eurovoc.py",
+    "extract_temporal_data.py",
+    "derive_act_temporal_status.py",
+    "generate_act_expressions_608.py",
+    "extract_legal_concepts.py",
+    "classify_deontic.py",
+    "classify_target_group.py",
+    "extract_institutional_competence.py",
+    "generate_draft_lifecycle",
+    "rebuild_eelnoud_combined",
+    "extract_sanctions.py",
+    "extract_draft_impact.py",
+    "generate_amendment_history.py",
+    "link_amendment_versions.py",
+    "derive_court_interpretation_staleness.py",
+    "derive_kov_enabling_staleness.py",
+    "generate_similarity_index.py",
+    "build_release_artifacts.py",
+    "generate_analytical_overlay.py",
+    "emit_release_changes.py",
+    "build_release_assets.py"
+  ],
+  "hashManifest": "krr_outputs/.cache/hash_manifest.json"
 }

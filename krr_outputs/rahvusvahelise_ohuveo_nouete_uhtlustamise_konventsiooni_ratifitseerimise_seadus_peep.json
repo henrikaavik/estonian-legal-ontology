@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:RONUKR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Rahvusvahelise õhuveo nõuete ühtlustamise konventsiooni ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Rahvusvahelise õhuveo nõuete ühtlustamise konventsiooni ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Rahvusvahelise õhuveo nõuete ühtlustamise konventsiooni ratifitseerimise seadus",
       "dcterms:title": "Rahvusvahelise õhuveo nõuete ühtlustamise konventsiooni ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/263000.xml"
+        "@id": "https://www.riigiteataja.ee/akt/263000"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/263000/xml"
+      },
+      "estleg:globalId": "263000",
+      "eli:id_local": "263000",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "156275",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "5d1e5c663dbd33d1768f2ec6654776f3d469b1df4ee2cc01d031e887160a9376",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2003-03-15",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -57,23 +69,24 @@
           "@id": "http://eurovoc.europa.eu/523"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2003-03-15",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2003-03-05",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
-      ]
-    },
-    {
-      "@id": "estleg:RONUKR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Rahvusvahelise õhuveo nõuete ühtlustamise konventsiooni ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_RONUKR_default"
-        }
-      ]
+      "estleg:lastAmendmentDate": {
+        "@value": "2003-03-15",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_RONUKR_default",
@@ -82,12 +95,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RONUKR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:RONUKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Rahvusvahelise õhuveo nõuete ühtlustamise konventsiooni ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RONUKR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:RONUKR_Par_1",
@@ -96,13 +130,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud rahvusvahelise õhuveo nõuete ühtlustamise konventsi...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud rahvusvahelise õhuveo nõuete ühtlustamise konventsi...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise õhuveo nõuete ühtlustamise konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RONUKR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1999. aasta 28. mail Montrealis ning millele Eesti Vabariik on alla kirjutanud 2002. aasta 4. veebruaril.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1999. aasta 28. mail Montrealis ning millele Eesti Vabariik on alla kirjutanud 2002. aasta 4. veebruaril.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud rahvusvahelise õhuveo nõuete ühtlustamise konventsioon , mis on koostatud 1999. aasta 28. mail Montrealis ning millele Eesti Vabariik on alla kirjutanud 2002. aasta 4. veebruaril.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud rahvusvahelise õhuveo nõuete ühtlustamise konventsioon , mis on koostatud 1999. aasta 28. mail Montrealis ning millele Eesti Vabariik on alla kirjutanud 2002. aasta 4. veebruaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RONUKR_default"
       },
@@ -113,16 +153,16 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:IATIKKMPR_Par_1"
+          "@id": "estleg:AKR_Par_1"
         },
         {
-          "@id": "estleg:euroopa_stabiilsusmehhanismi_asutamislep_Par_1"
+          "@id": "estleg:HSDVUEKR_Par_1"
         },
         {
-          "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konventsiooni_protokolli_nr_16_rat_Par_1"
+          "@id": "estleg:IENKR_Par_1"
         },
         {
-          "@id": "estleg:osamaksete_uhtsesse_kriisilahendusfondi_Par_1"
+          "@id": "estleg:PTEKSMPR_Par_1"
         },
         {
           "@id": "estleg:parandatud_ja_taiendatud_euroopa_sotsiaa_Par_1"
@@ -140,10 +180,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1999. aasta 28. mail Montrealis ning millele Eesti Vabariik on alla kirjutanud 2002. aasta 4. veebruaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud rahvusvahelise õhuveo nõuete ühtlustamise konventsioon , mis on koostatud 1999. aasta 28. mail Montrealis ning millele Eesti Vabariik on alla kirjutanud 2002. aasta 4. veebruaril.",
       "estleg:parentProvision": {
         "@id": "estleg:RONUKR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:RONUKR_Par_2",
@@ -152,12 +194,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Konventsiooni artiklis 24 nimetatud vedaja vastutuse piirmäärade muutmise kinnit...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Konventsiooni artiklis 24 nimetatud vedaja vastutuse piirmäärade muutmise kinnit...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelise õhuveo nõuete ühtlustamise konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RONUKR_Map"
       },
-      "estleg:summary": "Konventsiooni artiklis 24 nimetatud vedaja vastutuse piirmäärade muutmise kinnitamise otsustab Vabariigi Valitsus.",
+      "estleg:summary": {
+        "@value": "Konventsiooni artiklis 24 nimetatud vedaja vastutuse piirmäärade muutmise kinnitamise otsustab Vabariigi Valitsus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Konventsiooni artiklis 24 nimetatud vedaja vastutuse piirmäärade muutmise kinnitamise otsustab Vabariigi Valitsus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RONUKR_default"
@@ -175,38 +223,26 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:PLR_Par_2"
-        },
-        {
-          "@id": "estleg:POKKPOSP1979_Par_3"
-        },
-        {
-          "@id": "estleg:POKKVHEV1979_Par_3"
-        },
-        {
-          "@id": "estleg:RMKEPKU_Par_2"
-        },
-        {
-          "@id": "estleg:RTIKNLSTMTST_Par_2"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:RONUKR_Par_2_v263000"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:POKKVHEV1979_Par_3"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:RONUKR_Par_2_v263000"
+        }
+      ]
     },
     {
       "@id": "estleg:RONUKR_Par_2_Lg_1",
@@ -214,10 +250,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Konventsiooni artiklis 24 nimetatud vedaja vastutuse piirmäärade muutmise kinnitamise otsustab Vabariigi Valitsus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Konventsiooni artiklis 24 nimetatud vedaja vastutuse piirmäärade muutmise kinnitamise otsustab Vabariigi Valitsus.",
       "estleg:parentProvision": {
         "@id": "estleg:RONUKR_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"

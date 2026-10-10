@@ -87,7 +87,7 @@ Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confiden
 3. **LegalConcept (`estleg:LegalConcept`)**
    - Represents a defined legal concept or term used within the legislation.
 
-> **ELI 1.5 (issue #440).** Estonia has no registered ELI URI template, so instance IRIs stay under `estleg:`. The T-Box maps `estleg:Act` ⊑ `eli:LegalResource`, `estleg:LegalProvision` ⊑ `eli:LegalResourceSubdivision`, and `estleg:ActExpression` / `estleg:ProvisionVersion` ⊑ `eli:LegalExpression`. Dates: `estleg:entryIntoForce` ⊑ `eli:date_entry_in_force`, `estleg:repealDate` ⊑ `eli:date_no_longer_in_force`. `kehtiv` is a snapshot date, not `eli:date_publication`; `temporalStatus` is not mapped to `eli:in_force`. For consumers that run no inference, the combined graph asserts these alignments directly (#708): `eli:LegalResource` and `schema:Legislation` on every `estleg:Act`, `eli:LegalExpression` on expressions, and `eli:realizes`, `eli:date_entry_in_force` and `eli:is_part_of` copied from their `estleg:` sources.
+> **ELI 1.5 (issue #440).** Estonia has no registered ELI URI template, so instance IRIs stay under `estleg:`. The T-Box maps `estleg:Act` ⊑ `eli:LegalResource`, `estleg:LegalProvision` ⊑ `eli:LegalResourceSubdivision`, and `estleg:ActExpression` / `estleg:ProvisionVersion` ⊑ `eli:LegalExpression`. Dates: `estleg:entryIntoForce` ⊑ `eli:date_entry_in_force`, `estleg:repealDate` ⊑ `eli:date_no_longer_in_force`. Law roots carry `eli:id_local` = the Riigi Teataja globaalID, and an official English text is an `eli:LegalExpression` (see "Act-level Riigi Teataja identity" below, #707). No `owl:sameAs` to a Riigi Teataja ELI URI is minted until Riigi Teataja confirms its Estonian-language template; that join is a maintainer-confirmed follow-up. `kehtiv` is a snapshot date, not `eli:date_publication`; `temporalStatus` is not mapped to `eli:in_force`. For consumers that run no inference, the combined graph asserts these alignments directly (#708): `eli:LegalResource` and `schema:Legislation` on every `estleg:Act`, `eli:LegalExpression` on expressions, and `eli:realizes`, `eli:date_entry_in_force` and `eli:is_part_of` copied from their `estleg:` sources.
 >
 > **schema.org (issue #543).** `estleg:Act` is also `rdfs:subClassOf schema:Legislation`; `estleg:legalText` ⊑ `schema:text`; `estleg:references` ⊑ `dcterms:references`. Newly generated act roots are also typed `schema:Legislation`. Existing peeps are not rewritten; `combined_ontology.jsonld` carries `schema:Legislation` on every act (#708), and RDFS clients loading the peeps can load the CV. `entryIntoForce` is not also `schema:legislationDate` (would conflict with the ELI bridge).
 
@@ -114,8 +114,9 @@ Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confiden
 * `estleg:references`: Defines cross-references to other legal provisions or laws. Typed sub-properties (`estleg:repeals`, `estleg:isLegalBasisFor`, `estleg:exceptionTo`, `estleg:derogatesFrom`) are emitted when the Estonian verb governing the citation is clear (issue #513); untyped `references` remains so existing queries still work.
 * `dcterms:isPartOf` / `estleg:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a Chapter/Division). Replaces the legacy `schema:isPartOf`.
 * `estleg:partOfAct`: IRI link from a provision (and Chapter) up to its parent **act root** — the structural join SPARQL traverses to answer "all provisions of act X" / "which act does this § belong to". Emitted by every generator (state laws, regulations, KOV, and the VÕS/TsÜS multipart parts) and **required on every § — every provision that is not a lõige —** by `ProvisionRequiresPartOfActShape` since issue #415 (`LegalProvisionShape` constrains it to `sh:nodeKind sh:IRI`; see the #709 note below). Do **not** join parent acts by the literal `estleg:sourceAct` title — that is a human-readable string only, not a graph edge. Declared in `controlled_vocabulary.jsonld` as `owl:ObjectProperty` + `owl:FunctionalProperty` (domain `LegalProvision` ∪ `Chapter`; range open, with `schema:rangeIncludes estleg:Act` — see the direct-typing note under KOV regulations, #709): a provision belongs to at most one act (issue #522). ABox values stay IRI links; `scripts/check_tbox_consistency.py` flags a node with two distinct `partOfAct` IRIs or a list-valued `temporalStatus` that is both `inForce` and `repealed`. Dataset nodes (`krr_outputs/void.ttl`, `metadata.jsonld`, and `combined_ontology.jsonld` headers) carry `estleg:consistencyChecked true` (`xsd:boolean`) as that checker stamp. `validate_all.py` now runs the T-Box consistency and act-only temporal checks (#702); the stamp alone is not proof that every gate passes. T-Box individuals `estleg:TemporalStatus_InForce` `owl:disjointWith` `estleg:TemporalStatus_Repealed`; `estleg:temporalStatus` remains a `DatatypeProperty` whose ABox tokens are `inForce` / `repealed` / `unknown`.
-* `estleg:kehtiv`: Snapshot date (`xsd:date`) the **committed act text** is valid as of — the Riigi Teataja `--kehtiv` argument used when the peep was generated (issue #432). This is **not** `temporalStatus` (in-force / repealed), **not** `eli:date_publication`, and **not** `BUILD_EVALUATION_DATE` (fitness / temporal derivation pin, currently `2026-06-01`). Default generator snapshot is `2026-05-01`; many committed peeps still stamp `2026-05-24` from the last full refresh. Point-in-time provision text lives on `estleg:ProvisionVersion` / `estleg:hasVersion`, not on `kehtiv`.
-* `estleg:officialEnglishText`: Optional IRI of the official English Riigi Teataja consolidation (`https://www.riigiteataja.ee/en/eli/{tolkeSeosId}`). `owl:ObjectProperty`, `rdfs:subPropertyOf rdfs:seeAlso`, domain `Act` (issue #510). Derived from the RT public metadata field `tolkeSeosId` — **not** from the current Estonian `/akt/{id}.xml` globaalID, which is a different consolidation. Acts with no published English translation omit the property. The Estonian XML stays on `dcterms:source`.
+* `estleg:kehtiv`: Snapshot date (`xsd:date`) the **committed act text** is valid as of — the Riigi Teataja `--kehtiv` argument used when the peep was generated (issue #432). This is **not** `temporalStatus` (in-force / repealed), **not** `eli:date_publication`, and **not** `BUILD_EVALUATION_DATE` (fitness / temporal derivation pin, currently `2026-06-01`). Default generator snapshot is `2026-05-01`; the committed law peeps stamp `2026-10-09`, the last full refresh (wave 6). Legacy peeps for acts no longer in force carry no `kehtiv`. Point-in-time provision text lives on `estleg:ProvisionVersion` / `estleg:hasVersion`, not on `kehtiv`.
+* `estleg:officialEnglishText`: Optional IRI of the official English Riigi Teataja consolidation (`https://www.riigiteataja.ee/en/eli/{tolkeSeosId}`). `owl:ObjectProperty`, `rdfs:subPropertyOf rdfs:seeAlso`, domain `Act` (issue #510). Derived from the RT public metadata field `tolkeSeosId` — **not** from the current Estonian globaalID, which is a different consolidation. Acts with no published English translation omit the property. On an act root the same IRI is also an `eli:LegalExpression` node (#707, below).
+
 * `estleg:isRatificationShell`: `xsd:boolean` on treaty/accession *statutes*. These nodes are the Estonian ratifying act (often a one-section shell), **not** the treaty body. RT publishes treaty texts under the separate *välislepingud* register, which this corpus does not ingest (issue #528). `INDEX.json` `stubKind=treaty` is the same distinction for catalog consumers.
 * `estleg:courtLevel` / `estleg:courtKind` / `estleg:courtName`: First- and second-instance decisions (`maakohus`, `halduskohus`, `ringkonnakohus`) live under `krr_outputs/kohtud/` (issue #525). `courtLevel` is `firstInstance` or `appeal`; `courtKind` is `county`, `administrative`, or `circuit`. Riigikohus stays in `krr_outputs/riigikohus/`. The RT search API is `POST /api/v1/kohtuteave/otsing/kohtulahendid`. IDs are `estleg:Kohtuasi_<objektId>`. **The committed `krr_outputs/kohtud/` data is a sample, not a corpus** (issue #689): one capped search page yielding a single county-court decision, with `estleg:isSampleData: true` on the graph header and `"sample": true` in `KOHTUD_INDEX.json`. The three court kinds above describe what the ingest *classifies*, not what is committed.
 * `estleg:isSampleData`: `xsd:boolean` on a graph's `owl:Ontology` header node, marking the file as a demonstration sample rather than a complete subcorpus (issue #689). Currently carried by `krr_outputs/kohtud/kohtud_sample_peep.json`. A consumer that aggregates the corpus should exclude sample graphs from coverage claims.
@@ -123,9 +124,67 @@ Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confiden
 * `estleg:transposedBy`: Inverse of `estleg:transposesDirective`, materialized on EU directive nodes so "which national law transposes directive X" does not require a full scan (issue #520). Combined also re-asserts dropped forwards `estleg:issuedUnder` (from `implementedBy`) and `estleg:interpretsLaw` (from `interpretedBy`). `estleg:hasVersion` / `estleg:versionOf` stay on the separate `provision_versions/` load surface (#561).
 * `estleg:partOfAct` on subsections: the combined builder walks `parentProvision` / `isPartOf` and asserts a direct `partOfAct` from every lõige to its act root (issue #520). `estleg:isPartOf` is an `owl:TransitiveProperty`.
 * **What a § must carry, and a lõige need not (#709).** `estleg:paragrahv`, `estleg:summary` and `estleg:partOfAct` are required of every `estleg:LegalProvision` except a lõige. An `estleg:Subsection` is a `LegalProvision` (#519) but carries its own `estleg:legalText` and exactly one `estleg:parentProvision` instead; its § reference, summary and act live on that parent. SHACL states this as three shapes, `estleg:ProvisionRequiresParagrahvShape`, `…SummaryShape` and `…PartOfActShape`, each excusing nodes typed `estleg:Subsection`; `estleg:LegalProvisionShape` still constrains the values of all of them, lõiked included. To list §-level provisions only, filter out lõiked: `?p a estleg:LegalProvision . FILTER NOT EXISTS { ?p a estleg:Subsection }`.
+* **Repealed sections (#703).** A § that Riigi Teataja marks as repealed (`Kehtetu -`, in a `muutmismarge` note or as the § text) keeps its IRI, heading and `estleg:paragrahv` but carries no `estleg:legalText`; it is flagged `estleg:provisionRepealed true` instead, so text-coverage gates do not count it as a missing body.
+* **Omitted sections (#703).** A spent § that Riigi Teataja leaves out of the consolidated text (an explicit `Välja jäetud -` note, or a number with `kehtiv="0"` whose body is the placeholder `–`, rendered "[Käesolevast tekstist välja jäetud]") keeps its IRI and `estleg:paragrahv` but carries no `estleg:legalText`; it is flagged `estleg:provisionOmitted true`, distinct from a repeal, and text-coverage gates exempt it.
+
 * `estleg:itemNumber`: Number of a punkt (enumerated item) inside a lõige, as a display string (`"3"`); an array when the lõige lists several punktid. Carried by `estleg:Subsection` nodes and written by `law_structure.py` from the Riigi Teataja `punktNr` elements, falling back to the punkt numbers cited in the lõige text (issue #514). `owl:DatatypeProperty`, range `xsd:string`; the domain is left open (`owl:Thing`) with `schema:domainIncludes estleg:Subsection`, because no SHACL shape constrains it (#709).
 * `estleg:inboundCitationCount` / `estleg:interpretationCount` / `estleg:competentAuthorityCount`: integer analytical counts on the same IRIs as the published graph (issue #521). Coverage-gap flags (#701) record a missing edge in this corpus, **not a legal finding**: `estleg:competentAuthorityNotExtracted` on statute roots where no `competentAuthority` edge was extracted, `estleg:noTranspositionEdgeInCorpus` on in-force directives with no transposition edge in the corpus. For monitoring, prefer the directive's three-valued `estleg:transpositionStatus` (#711), which also counts RT-asserted transposition and "no measure required" notifications; the overlay flag is unchanged. Every flagged node also carries `estleg:coverageFlagMethod` (generator and rule revision) and `estleg:coverageFlagAsOf` (the pinned build evaluation date), on both the overlay and the `--patch-combined` path. The pre-#701 names `estleg:hasNoCompetentAuthority` / `estleg:hasNoTransposition` stay declared as `owl:deprecated` with `dcterms:isReplacedBy` so old queries parse, but are no longer emitted. Reified similarity scores live in `krr_outputs/analytical/analytical_overlay.jsonld` as `estleg:Similarity` nodes (`similarFrom` / `similarTarget` / `similarityScore`) — not as nested objects on `semanticallySimilarTo` (#422).
 * `skos:prefLabel`: The preferred label for a LegalConcept or TopicCluster.
+
+#### Act-level Riigi Teataja identity and provenance (#692, #695, #707)
+
+Every law root `generate_all_laws.py` writes (single-file act, act-level stub,
+the whole-act root in a multipart `<slug>_map_peep.json`, and each per-osa
+`estleg:Part` root) carries the block the regulation generator already emitted,
+read from the act XML's `<metaandmed>` by `riigiteataja_common.parse_act_metadata`:
+
+| Property | Value | Notes |
+|----------|-------|-------|
+| `dcterms:source` | IRI | The human Riigi Teataja page of the redaction, `https://www.riigiteataja.ee/akt/{globaalID}`. Before #707 this was the legacy `/akt/{id}.xml` path, which serves the RT web app since the 2026-06-01 relaunch. |
+| `estleg:sourceXml` | IRI | The XML manifestation the root was parsed from, `https://www.riigiteataja.ee/public-api/api/v1/akt/{globaalID}/xml`. `owl:ObjectProperty`, `rdfs:subPropertyOf prov:wasDerivedFrom`. |
+| `estleg:globalId` | `xsd:string` | `<globaalID>`: one redaction. A newer redaction under the same `--kehtiv` changes it, which is what makes `existing_law_is_stale` refresh the file. |
+| `eli:id_local` | `xsd:string` | The same globaalID, on act roots only (not on Part roots). |
+| `estleg:terviktekstId` | `xsd:string` | `<terviktekstiGrupiID>`: the consolidation **group**, shared by every redaction of the act. A stored root without it is stale. |
+| `estleg:skeemiNimi` | `xsd:string` | `<skeemiNimi>`, the XSD the text follows (e.g. `tyviseadus_1_10.02.2010.xsd`). |
+| `estleg:contentHash` | `xsd:string` | Hex SHA-256 of the XML file actually parsed. `krr_outputs/fetch_content_hashes.json` attests it per act (file, size, globaalID, validity start, snapshot), and the files ship as the `rt_xml_<kehtiv>.tar.gz` release asset. |
+| `estleg:issuer` / `estleg:actNumber` | `xsd:string` | `<valjaandja>` / `<vastuvoetud><aktiNr>` when present. |
+| `estleg:entryIntoForce` | `xsd:date` | `<vastuvoetud><joustumine>`, the act's own entry into force, else the redaction's `<kehtivuseAlgus>`: the same rule as `extract_temporal_data`. |
+| `estleg:lastAmendmentDate` | `xsd:date` | Latest `<muutmismarge><aktikuupaev>`. A value written by `generate_amendment_history` (max `versionValidFrom`, #429) is kept over it. |
+
+`estleg:repealDate` is **not** derived from `<kehtivuseLopp>`: that date ends
+the redaction, and on an in-force law it is the eve of the next redaction.
+Existing `entryIntoForce` / `repealDate` / `lastAmendmentDate` values written by
+the enrichment passes survive a regeneration; the identity fields above are
+generator-owned and replaced on every regeneration.
+
+The newest redaction of a law is chosen by its validity start
+(`kehtivus.algus` on the search row), not by globaalID order: RT ids are not
+chronological (`231052021002` is 23.05.2021, `107052025017` is 07.05.2025).
+
+**English expression.** When an act root has `estleg:officialEnglishText`, the
+same IRI is an `eli:LegalExpression` node in the act's peep:
+
+```json
+{"@id": "https://www.riigiteataja.ee/en/eli/524032026004",
+ "@type": ["eli:LegalExpression"],
+ "eli:language": {"@id": "http://publications.europa.eu/resource/authority/language/ENG"},
+ "eli:realizes": {"@id": "estleg:JaatS_Map"},
+ "rdfs:label": {"@value": "Waste Act", "@language": "en"}}
+```
+
+and the act root links it with `eli:is_realized_by`. A multipart act's map root
+takes the English IRI its Part roots agree on.
+
+**Legacy IRI bridge.** `krr_outputs/bridges/act_iri_v2_sameas.jsonld` (on the
+Seadusloome load surface, `PUBLIC_LOAD_SUBDIRS`; not merged into
+`combined_ontology.jsonld`) maps every pre-#445 act IRI to the current one:
+`<legacy _Map_2026 IRI> owl:sameAs <current _Map IRI>`. It is built from
+`data/act_iri_v2_sameas.jsonld` by `scripts/backfill_rt_eli.py --apply`, which
+drops rows whose current IRI no longer resolves.
+
+**Not yet:** `owl:sameAs` from an act root to a Riigi Teataja ELI URI. Riigi
+Teataja has not confirmed the Estonian-language ELI template, and the English
+ELI ids are `tolkeSeosId`, not the globaalID, so the key cannot be guessed.
 
 #### Non-statute RT act kinds (issue #529)
 * `estleg:ParliamentaryResolution` (`Riigikogu otsus`) and `estleg:PresidentialDecree` (`seadlus`) are `Act` subclasses, **not** `Law`. They live under `krr_outputs/resolutions/` and `RESOLUTIONS_INDEX.json`. The law pipeline still queries `dokument=seadus` only.

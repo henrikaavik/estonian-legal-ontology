@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Retseptikeskuse põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Retseptikeskuse põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Retseptikeskuse põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -25,11 +32,11 @@
         "@type": "xsd:boolean"
       },
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/126032026009.xml"
+        "@id": "https://www.riigiteataja.ee/akt/126062026019.xml"
       },
       "estleg:issuer": "Tervise- ja tööminister",
       "estleg:actNumber": "52",
-      "estleg:globalId": "126032026009",
+      "estleg:globalId": "126062026019",
       "estleg:terviktekstId": "1041143",
       "estleg:preambleText": "Määrus kehtestatakse ravimiseaduse § 81 lõike 2 alusel.",
       "estleg:hasAnnex": [
@@ -40,39 +47,15 @@
           "@id": "estleg:Reg_1041143_Annex_2"
         }
       ],
-      "estleg:entryIntoForce": {
-        "@value": "2018-01-01",
-        "@type": "xsd:date"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2026-03-18",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2017-12-21",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Amendment_Reg_1041143_d066cb4dc0"
-        },
-        {
-          "@id": "estleg:Amendment_Reg_1041143_1ccb22ce4c"
-        },
-        {
-          "@id": "estleg:Amendment_Reg_1041143_19153daf95"
-        },
-        {
-          "@id": "estleg:Amendment_Reg_1041143_5c4c6e05d9"
-        },
-        {
-          "@id": "estleg:Amendment_Reg_1041143_e2ec7ed0b2"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Retseptikeskuse põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "estleg:issuedUnder": [
         {
@@ -105,6 +88,39 @@
         {
           "@id": "http://eurovoc.europa.eu/4050"
         }
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2018-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2026-06-19",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2017-12-21",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_Reg_1041143_d066cb4dc0"
+        },
+        {
+          "@id": "estleg:Amendment_Reg_1041143_1ccb22ce4c"
+        },
+        {
+          "@id": "estleg:Amendment_Reg_1041143_19153daf95"
+        },
+        {
+          "@id": "estleg:Amendment_Reg_1041143_5c4c6e05d9"
+        },
+        {
+          "@id": "estleg:Amendment_Reg_1041143_e2ec7ed0b2"
+        },
+        {
+          "@id": "estleg:Amendment_Reg_1041143_b57241bd61"
+        }
       ]
     },
     {
@@ -113,7 +129,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Retseptikeskusesse esitatavate andmete koosseis\n\t\t\t\n\t\t\t\t\n\t\t\t\t\tRT I\n\t\t\t\t\t2026-06-26\n\t\t\t\t\t13\n\t\t\t\t\t126062026013\n\t\t\t\t\n\t\t\t\t2026-07-01",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -122,7 +141,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -132,18 +154,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Retseptikeskuse asutamine ja selle nimi",
+      "rdfs:label": {
+        "@value": "§ 1. Retseptikeskuse asutamine ja selle nimi",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "Määrusega asutatakse andmekogu nimega „Retseptikeskus”, inglise keeles „Estonian Medical Prescription Center” (edaspidi retseptikeskus).",
-      "estleg:legalText": "Määrusega asutatakse andmekogu nimega „Retseptikeskus”, inglise keeles „Estonian Medical Prescription Center” (edaspidi retseptikeskus). Määrusega asutatakse andmekogu nimega „Retseptikeskus”, inglise keeles „Estonian Medical Prescription Center” (edaspidi retseptikeskus).",
+      "estleg:summary": {
+        "@value": "Määrusega asutatakse andmekogu nimega „Retseptikeskus”, inglise keeles „Estonian Medical Prescription Center” (edaspidi retseptikeskus).",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega asutatakse andmekogu nimega „Retseptikeskus”, inglise keeles „Estonian Medical Prescription Center” (edaspidi retseptikeskus).",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_1_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041143_Par_1_v1041143"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega asutatakse andmekogu nimega „Retseptikeskus”, inglise keeles „Estonian Medical Prescription Center” (edaspidi retseptikeskus).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1041143_Par_2",
@@ -152,16 +198,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Retseptikeskus",
+      "rdfs:label": {
+        "@value": "§ 2. Retseptikeskus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "Retseptikeskus on retseptide ja meditsiiniseadme kaartide väljakirjutamiseks ja töötlemiseks ning ravikindlustuse seaduses sätestatud tingimustel kindlustatud isikutele ravimihüvitise ja meditsiiniseadmehüvitise võimaldamiseks asutatud andmekogu, mille eesmärk on tagada retseptiravimeid kasutavate isikute tervise kaitse ja järelevalve ravimite väljastamise õigsuse ja põhjendatuse üle ning luua riigile võimalused ravimistatistika tegemiseks.",
-      "estleg:legalText": "Retseptikeskus on retseptide ja meditsiiniseadme kaartide väljakirjutamiseks ja töötlemiseks ning ravikindlustuse seaduses sätestatud tingimustel kindlustatud isikutele ravimihüvitise ja meditsiiniseadmehüvitise võimaldamiseks asutatud andmekogu, mille eesmärk on tagada retseptiravimeid kasutavate isikute tervise kaitse ja järelevalve ravimite väljastamise õigsuse ja põhjendatuse üle ning luua riigile võimalused ravimistatistika tegemiseks. Retseptikeskus on retseptide ja meditsiiniseadme kaartide väljakirjutamiseks ja töötlemiseks ning ravikindlustuse seaduses sätestatud tingimustel kindlustatud isikutele ravimihüvitise ja meditsiiniseadmehüvitise võimaldamiseks asutatud andmekogu, mille eesmärk on tagada retseptiravimeid kasutavate isikute tervise kaitse ja järelevalve ravimite väljastamise õigsuse ja põhjendatuse üle ning luua riigile võimalused ravimistatistika tegemiseks.",
+      "estleg:summary": {
+        "@value": "Retseptikeskus on retseptide ja meditsiiniseadme kaartide väljakirjutamiseks ja töötlemiseks ning ravikindlustuse seaduses sätestatud tingimustel kindlustatud isikutele ravimihüvitise ja meditsiiniseadmehüvitise võimaldamiseks asutatud andmekogu, mille eesmärk on tagada retseptiravimeid kasutavate isikute tervise kaitse ja järelevalve ravimite väljastamise õigsuse ja põhjendatuse üle ning luua riigile võimalused ravimistatistika tegemiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Retseptikeskus on retseptide ja meditsiiniseadme kaartide väljakirjutamiseks ja töötlemiseks ning ravikindlustuse seaduses sätestatud tingimustel kindlustatud isikutele ravimihüvitise ja meditsiiniseadmehüvitise võimaldamiseks asutatud andmekogu, mille eesmärk on tagada retseptiravimeid kasutavate isikute tervise kaitse ja järelevalve ravimite väljastamise õigsuse ja põhjendatuse üle ning luua riigile võimalused ravimistatistika tegemiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_2_Lg_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -169,15 +230,33 @@
           "@id": "estleg:RavS_Par_81"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041143_Par_2_v1041143"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Retseptikeskus on retseptide ja meditsiiniseadme kaartide väljakirjutamiseks ja töötlemiseks ning ravikindlustuse seaduses sätestatud tingimustel kindlustatud isikutele ravimihüvitise ja meditsiiniseadmehüvitise võimaldamiseks asutatud andmekogu, mille eesmärk on tagada retseptiravimeid kasutavate isikute tervise kaitse ja järelevalve ravimite väljastamise õigsuse ja põhjendatuse üle ning luua riigile võimalused ravimistatistika tegemiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1041143_Par_3",
@@ -186,16 +265,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Retseptikeskuse vastutav töötleja",
+      "rdfs:label": {
+        "@value": "§ 3. Retseptikeskuse vastutav töötleja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "Retseptikeskuse vastutav töötleja on Tervisekassa. RT I 2023-05-23 1 123052023001 2023-05-26",
-      "estleg:legalText": "Retseptikeskuse vastutav töötleja on Tervisekassa. RT I 2023-05-23 1 123052023001 2023-05-26 Retseptikeskuse vastutav töötleja on Tervisekassa.",
+      "estleg:summary": {
+        "@value": "Retseptikeskuse vastutav töötleja on Tervisekassa. RT I 2023-05-23 1 123052023001 2023-05-26",
+        "@language": "et"
+      },
+      "estleg:legalText": "Retseptikeskuse vastutav töötleja on Tervisekassa. RT I 2023-05-23 1 123052023001 2023-05-26",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_3_Lg_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -203,15 +297,33 @@
           "@id": "estleg:TerKS_Par_46_2"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041143_Par_3_v1041143"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Retseptikeskuse vastutav töötleja on Tervisekassa.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1041143_Par_4",
@@ -220,17 +332,268 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Retseptikeskusesse esitatavad andmed",
+      "rdfs:label": {
+        "@value": "§ 4. Retseptikeskusesse esitatavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "1 (1) Retsepti väljakirjutamise õigust omav isik esitab retseptikeskusesse retsepti väljakirjutamisega seotud andmed: 1 1) retsepti kohta; 2 2) tervishoiuteenuse osutaja kohta; 3 3) patsiendi kohta; 4 4) ravimi ja selle kasutamise kohta. Retsepti väljakirjutamise õigust omav isik esitab retseptikeskusesse retsepti väljakirjutamisega seotud andmed: retsepti kohta; tervishoiuteenuse osutaja kohta; patsiendi kohta; ravimi ja selle kasutamise kohta. 2 (2) Retsepti alusel ravimi väljastanud isik esit",
-      "estleg:legalText": "1 (1) Retsepti väljakirjutamise õigust omav isik esitab retseptikeskusesse retsepti väljakirjutamisega seotud andmed: 1 1) retsepti kohta; 2 2) tervishoiuteenuse osutaja kohta; 3 3) patsiendi kohta; 4 4) ravimi ja selle kasutamise kohta. Retsepti väljakirjutamise õigust omav isik esitab retseptikeskusesse retsepti väljakirjutamisega seotud andmed: retsepti kohta; tervishoiuteenuse osutaja kohta; patsiendi kohta; ravimi ja selle kasutamise kohta. 2 (2) Retsepti alusel ravimi väljastanud isik esitab retseptikeskusesse ravimi väljastamisega seotud andmed: 1 1) retsepti kohta; 2 2) apteegiteenuse osutaja kohta; 3 3) patsiendi kohta; 4 4) ravimi ja ravimi väljastamise kohta; 5 5) Euroopa ravikindlustuskaardi või selle asendussertifikaadi või kindlustajariigi pädeva asutuse väljastatud kehtiva vormikohase tõendi (E112, E123, S2, DA1) kohta (tervishoiuteenuse osutaja poolt paberkandjale välja kirjutatud retseptile lisatud dokumendi koopia korral). Retsepti alusel ravimi väljastanud isik esitab retseptikeskusesse ravimi väljastamisega seotud andmed: retsepti kohta; apteegiteenuse osutaja kohta; patsiendi kohta; ravimi ja ravimi väljastamise kohta; Euroopa ravikindlustuskaardi või selle asendussertifikaadi või kindlustajariigi pädeva asutuse väljastatud kehtiva vormikohase tõendi (E112, E123, S2, DA1) kohta (tervishoiuteenuse osutaja poolt paberkandjale välja kirjutatud retseptile lisatud dokumendi koopia korral). 3 (3) Juhul kui retsept on välja kirjutatud paberkandjale, esitab retsepti alusel ravimi väljastanud isik retseptikeskusesse lisaks lõikes 2 nimetatud andmetele ka lõikes 1 nimetatud need andmed, mis on retseptile kantud retsepti paberkandjal väljastanud isiku poolt. Juhul kui retsept on välja kirjutatud paberkandjale, esitab retsepti alusel ravimi väljastanud isik retseptikeskusesse lisaks lõikes 2 nimetatud andmetele ka lõikes 1 nimetatud need andmed, mis on retseptile kantud retsepti paberkandjal väljastanud isiku poolt. 4 (4) Meditsiiniseadme kaardi väljakirjutamise õigust omav isik esitab retseptikeskusesse meditsiiniseadme väljakirjutamisega seotud andmed: 1 1) meditsiiniseadme kaardi kohta; 2 2) tervishoiuteenuse osutaja kohta; 3 3) patsiendi kohta; 4 4) meditsiiniseadme ja lubatud koguse kohta. Meditsiiniseadme kaardi väljakirjutamise õigust omav isik esitab retseptikeskusesse meditsiiniseadme väljakirjutamisega seotud andmed: meditsiiniseadme kaardi kohta; tervishoiuteenuse osutaja kohta; patsiendi kohta; meditsiiniseadme ja lubatud koguse kohta. 5 (5) Meditsiiniseadme kaardi alusel meditsiiniseadme väljastanud isik esitab retseptikeskusesse meditsiiniseadme väljastamisega seotud andmed: 1 1) apteegiteenuse osutaja või meditsiiniseadme väljastanud muu juriidilise isiku kohta; 2 2) patsiendi kohta; 3 3) meditsiiniseadme ja meditsiiniseadme väljastamise kohta. Meditsiiniseadme kaardi alusel meditsiiniseadme väljastanud isik esitab retseptikeskusesse meditsiiniseadme väljastamisega seotud andmed: apteegiteenuse osutaja või meditsiiniseadme väljastanud muu juriidilise isiku kohta; patsiendi kohta; meditsiiniseadme ja meditsiiniseadme väljastamise kohta. 6 (6) Ravimiamet esitab retseptikeskusesse müügiloata ravimi ühekordse kasutusloa taotlemiseks otsuse ravimi kasutamise õigustatuse kohta. Ravimiamet esitab retseptikeskusesse müügiloata ravimi ühekordse kasutusloa taotlemiseks otsuse ravimi kasutamise õigustatuse kohta. 7 (7) Tervisekassa esitab retseptikeskusesse ravikindlustuse seaduse § 41 lõike 8 alusel ravimi müügi korral tasu maksmise kohustuse ülevõtmise andmed. RT I 2023-05-23 1 123052023001 2023-05-26 Tervisekassa esitab retseptikeskusesse ravikindlustuse seaduse § 41 lõike 8 alusel ravimi müügi korral tasu maksmise kohustuse ülevõtmise andmed. 8 (8) Lõigetes 1 ja 2 ning 4–7 nimetatud andmete täpne koosseis on toodud käesoleva määruse lisas. Lõigetes 1 ja 2 ning 4–7 nimetatud andmete täpne koosseis on toodud käesoleva määruse lisas. 9 (9) Andmeandjad täidavad oma kohustust avaliku teabe seaduse § 439 lõike 1 punkti 5 alusel kehtestatud infosüsteemide andmevahetuskihi abil. Andmeandjad täidavad oma kohustust avaliku teabe seaduse § 439 lõike 1 punkti 5 alusel kehtestatud infosüsteemide andmevahetuskihi abil.",
+      "estleg:summary": {
+        "@value": "1 (1) Retsepti väljakirjutamise õigust omav isik esitab retseptikeskusesse retsepti väljakirjutamisega seotud andmed: 1 1) retsepti kohta; 2 2) tervishoiuteenuse osutaja kohta; 3 3) patsiendi kohta; 4 4) ravimi ja selle kasutamise kohta. 2 (2) Retsepti alusel ravimi väljastanud isik esitab retseptikeskusesse ravimi väljastamisega seotud andmed: 1 1) retsepti kohta; 2 2) apteegiteenuse osutaja kohta; 3 3) patsiendi kohta; 4 4) ravimi ja ravimi väljastamise kohta; 5 5) Euroopa…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Retsepti väljakirjutamise õigust omav isik esitab retseptikeskusesse retsepti väljakirjutamisega seotud andmed: 1 1) retsepti kohta; 2 2) tervishoiuteenuse osutaja kohta; 3 3) patsiendi kohta; 4 4) ravimi ja selle kasutamise kohta. 2 (2) Retsepti alusel ravimi väljastanud isik esitab retseptikeskusesse ravimi väljastamisega seotud andmed: 1 1) retsepti kohta; 2 2) apteegiteenuse osutaja kohta; 3 3) patsiendi kohta; 4 4) ravimi ja ravimi väljastamise kohta; 5 5) Euroopa ravikindlustuskaardi või selle asendussertifikaadi või kindlustajariigi pädeva asutuse väljastatud kehtiva vormikohase tõendi (E112, E123, S2, DA1) kohta (tervishoiuteenuse osutaja poolt paberkandjale välja kirjutatud retseptile lisatud dokumendi koopia korral). 3 (3) Juhul kui retsept on välja kirjutatud paberkandjale, esitab retsepti alusel ravimi väljastanud isik retseptikeskusesse lisaks lõikes 2 nimetatud andmetele ka lõikes 1 nimetatud need andmed, mis on retseptile kantud retsepti paberkandjal väljastanud isiku poolt. 4 (4) Meditsiiniseadme kaardi väljakirjutamise õigust omav isik esitab retseptikeskusesse meditsiiniseadme väljakirjutamisega seotud andmed: 1 1) meditsiiniseadme kaardi kohta; 2 2) tervishoiuteenuse osutaja kohta; 3 3) patsiendi kohta; 4 4) meditsiiniseadme ja lubatud koguse kohta. 5 (5) Meditsiiniseadme kaardi alusel meditsiiniseadme väljastanud isik esitab retseptikeskusesse meditsiiniseadme väljastamisega seotud andmed: 1 1) apteegiteenuse osutaja või meditsiiniseadme väljastanud muu juriidilise isiku kohta; 2 2) patsiendi kohta; 3 3) meditsiiniseadme ja meditsiiniseadme väljastamise kohta. 6 (6) Ravimiamet esitab retseptikeskusesse müügiloata ravimi ühekordse kasutusloa taotlemiseks otsuse ravimi kasutamise õigustatuse kohta. 7 (7) Tervisekassa esitab retseptikeskusesse ravikindlustuse seaduse § 41 lõike 8 alusel ravimi müügi korral tasu maksmise kohustuse ülevõtmise andmed. RT I 2023-05-23 1 123052023001 2023-05-26 8 (8) Lõigetes 1 ja 2 ning 4–7 nimetatud andmete täpne koosseis on toodud käesoleva määruse lisas. 9 (9) Andmeandjad täidavad oma kohustust avaliku teabe seaduse § 439 lõike 1 punkti 5 alusel kehtestatud infosüsteemide andmevahetuskihi abil.",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_4_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_4_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_4_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_4_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_4_Lg_8"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_4_Lg_9"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_ravimiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:Reg_1041143_Par_4_v1041143"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Retsepti väljakirjutamise õigust omav isik esitab retseptikeskusesse retsepti väljakirjutamisega seotud andmed: 1) retsepti kohta; 2) tervishoiuteenuse osutaja kohta; 3) patsiendi kohta; 4) ravimi ja selle kasutamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
-        },
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Retsepti alusel ravimi väljastanud isik esitab retseptikeskusesse ravimi väljastamisega seotud andmed: 1) retsepti kohta; 2) apteegiteenuse osutaja kohta; 3) patsiendi kohta; 4) ravimi ja ravimi väljastamise kohta; 5) Euroopa ravikindlustuskaardi või selle asendussertifikaadi või kindlustajariigi pädeva asutuse väljastatud kehtiva vormikohase tõendi (E112, E123, S2, DA1) kohta (tervishoiuteenuse osutaja poolt paberkandjale välja kirjutatud retseptile lisatud dokumendi koopia korral).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Juhul kui retsept on välja kirjutatud paberkandjale, esitab retsepti alusel ravimi väljastanud isik retseptikeskusesse lisaks lõikes 2 nimetatud andmetele ka lõikes 1 nimetatud need andmed, mis on retseptile kantud retsepti paberkandjal väljastanud isiku poolt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Meditsiiniseadme kaardi väljakirjutamise õigust omav isik esitab retseptikeskusesse meditsiiniseadme väljakirjutamisega seotud andmed: 1) meditsiiniseadme kaardi kohta; 2) tervishoiuteenuse osutaja kohta; 3) patsiendi kohta; 4) meditsiiniseadme ja lubatud koguse kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_4_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Meditsiiniseadme kaardi alusel meditsiiniseadme väljastanud isik esitab retseptikeskusesse meditsiiniseadme väljastamisega seotud andmed: 1) apteegiteenuse osutaja või meditsiiniseadme väljastanud muu juriidilise isiku kohta; 2) patsiendi kohta; 3) meditsiiniseadme ja meditsiiniseadme väljastamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_4_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Ravimiamet esitab retseptikeskusesse müügiloata ravimi ühekordse kasutusloa taotlemiseks otsuse ravimi kasutamise õigustatuse kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 6",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_ravimiamet"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_4_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Tervisekassa esitab retseptikeskusesse ravikindlustuse seaduse § 41 lõike 8 alusel ravimi müügi korral tasu maksmise kohustuse ülevõtmise andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 7",
+      "estleg:references": [
+        {
+          "@id": "estleg:RaKS_Par_41_Lg_8"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_4_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Lõigetes 1 ja 2 ning 4–7 nimetatud andmete täpne koosseis on toodud käesoleva määruse lisas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 8"
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_4_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Andmeandjad täidavad oma kohustust avaliku teabe seaduse § 43⁹ lõike 1 punkti 5 alusel kehtestatud infosüsteemide andmevahetuskihi abil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 9",
+      "estleg:itemNumber": "5",
+      "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -239,14 +602,9 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
+      "estleg:references": [
         {
-          "@id": "estleg:Reg_1041143_Par_4_v1041143"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_ravimiamet"
+          "@id": "estleg:AVTS_Par_43_9_Lg_1"
         }
       ]
     },
@@ -257,13 +615,337 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Andmevahetus teiste andmekogudega",
+      "rdfs:label": {
+        "@value": "§ 5. Andmevahetus teiste andmekogudega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "1 (1) Tervishoiukorralduse infosüsteemist edastatakse retseptikeskusesse retsepti või meditsiiniseadme kaardi väljakirjutamisõigust omava isiku ja tema töökohaks oleva tervishoiuteenuse osutaja kohta: 1 1) tervishoiutöötaja eluloolised andmed; 2 2) tervishoiutöötaja kvalifikatsiooni tõendavad andmed; 3 3) tervishoiutöötaja registreerimisandmed; 4 4) tegevusloa omaja kontaktandmed; 5 5) tegevusloa andmed; 6 6) proviisori ja farmatseudi kohta andmed. RT I 2023-05-23 1 123052023001 2023-05-26 Tervi",
-      "estleg:legalText": "1 (1) Tervishoiukorralduse infosüsteemist edastatakse retseptikeskusesse retsepti või meditsiiniseadme kaardi väljakirjutamisõigust omava isiku ja tema töökohaks oleva tervishoiuteenuse osutaja kohta: 1 1) tervishoiutöötaja eluloolised andmed; 2 2) tervishoiutöötaja kvalifikatsiooni tõendavad andmed; 3 3) tervishoiutöötaja registreerimisandmed; 4 4) tegevusloa omaja kontaktandmed; 5 5) tegevusloa andmed; 6 6) proviisori ja farmatseudi kohta andmed. RT I 2023-05-23 1 123052023001 2023-05-26 Tervishoiukorralduse infosüsteemist edastatakse retseptikeskusesse retsepti või meditsiiniseadme kaardi väljakirjutamisõigust omava isiku ja tema töökohaks oleva tervishoiuteenuse osutaja kohta: tervishoiutöötaja eluloolised andmed; tervishoiutöötaja kvalifikatsiooni tõendavad andmed; tervishoiutöötaja registreerimisandmed; tegevusloa omaja kontaktandmed; tegevusloa andmed; proviisori ja farmatseudi kohta andmed. 2 (2) Kehtetu - RT I 2023-05-23 1 123052023001 2023-05-26 Kehtetu - 3 (3) Tervisekassa andmekogust edastatakse retseptikeskusesse Tervisekassa kehtiva kindlustuskaitsega patsiendi andmed. RT I 2023-05-23 1 123052023001 2023-05-26 Tervisekassa andmekogust edastatakse retseptikeskusesse Tervisekassa kehtiva kindlustuskaitsega patsiendi andmed. 4 (4) Ravimiregistrist edastatakse retseptikeskusesse ravimpreparaadi, standardiseeritud ekstemporaalse ravimi ja ravikindlustuse seaduse alusel hüvitatava eritoidu ja toidulisandi andmed. RT I 2026-03-26 1 126032026001 2026-05-01 Ravimiregistrist edastatakse retseptikeskusesse ravimpreparaadi, standardiseeritud ekstemporaalse ravimi ja ravikindlustuse seaduse alusel hüvitatava eritoidu ja toidulisandi andmed. 5 (5) Meditsiiniseadmete ja abivahendite andmekogust edastatakse retseptikeskusesse meditsiiniseadmete andmed. Meditsiiniseadmete ja abivahendite andmekogust edastatakse retseptikeskusesse meditsiiniseadmete andmed. 6 (6) Ravimiameti tegevuslubade registrist edastatakse retseptikeskusesse apteegiteenuse osutaja tegevusloa kohta andmed. Ravimiameti tegevuslubade registrist edastatakse retseptikeskusesse apteegiteenuse osutaja tegevusloa kohta andmed. 7 (7) Kehtetu - RT I 2023-05-23 1 123052023001 2023-05-26 Kehtetu - 7 (7¹) Tervise infosüsteemist edastatakse retseptikeskusesse tervishoiuteenuste korraldamise seaduse § 592 lõike 2 alusel kehtestatud ravimiskeemi teatise andmed ja retsepti välja ostma volitatud isiku isikukood. RT I 2025-04-10 1 110042025001 2025-04-13 Tervise infosüsteemist edastatakse retseptikeskusesse tervishoiuteenuste korraldamise seaduse § 592 lõike 2 alusel kehtestatud ravimiskeemi teatise andmed ja retsepti välja ostma volitatud isiku isikukood. 7 (7²) Rahvastikuregistrist edastatakse retseptikeskusesse patsiendi seadusjärgse esindaja nimi ja isikukood. RT I 2022-01-21 2 121012022002 2022-01-24 Rahvastikuregistrist edastatakse retseptikeskusesse patsiendi seadusjärgse esindaja nimi ja isikukood. 8 (8) Lõigetes 1–71 nimetatud andmete täpne koosseis on esitatud käesoleva määruse lisas. RT I 2025-04-10 1 110042025001 2025-04-13 Lõigetes 1–71 nimetatud andmete täpne koosseis on esitatud käesoleva määruse lisas. 9 (9) Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu avaliku teabe seaduse § 439 lõike 1 punkti 5 alusel kehtestatud korras. Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu avaliku teabe seaduse § 439 lõike 1 punkti 5 alusel kehtestatud korras.",
+      "estleg:summary": {
+        "@value": "1 (1) Tervishoiukorralduse infosüsteemist edastatakse retseptikeskusesse retsepti või meditsiiniseadme kaardi väljakirjutamisõigust omava isiku ja tema töökohaks oleva tervishoiuteenuse osutaja kohta: 1 1) tervishoiutöötaja eluloolised andmed; 2 2) tervishoiutöötaja kvalifikatsiooni tõendavad andmed; 3 3) tervishoiutöötaja registreerimisandmed; 4 4) tegevusloa omaja kontaktandmed; 5 5) tegevusloa andmed; 6 6) proviisori ja farmatseudi kohta andmed.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Tervishoiukorralduse infosüsteemist edastatakse retseptikeskusesse retsepti või meditsiiniseadme kaardi väljakirjutamisõigust omava isiku ja tema töökohaks oleva tervishoiuteenuse osutaja kohta: 1 1) tervishoiutöötaja eluloolised andmed; 2 2) tervishoiutöötaja kvalifikatsiooni tõendavad andmed; 3 3) tervishoiutöötaja registreerimisandmed; 4 4) tegevusloa omaja kontaktandmed; 5 5) tegevusloa andmed; 6 6) proviisori ja farmatseudi kohta andmed. RT I 2023-05-23 1 123052023001 2023-05-26 2 (2) Kehtetu - RT I 2023-05-23 1 123052023001 2023-05-26 3 (3) Tervisekassa andmekogust edastatakse retseptikeskusesse Tervisekassa kehtiva kindlustuskaitsega patsiendi andmed. RT I 2023-05-23 1 123052023001 2023-05-26 4 (4) Ravimiregistrist edastatakse retseptikeskusesse ravimpreparaadi, standardiseeritud ekstemporaalse ravimi ja ravikindlustuse seaduse alusel hüvitatava eritoidu ja toidulisandi andmed. RT I 2026-03-26 1 126032026001 2026-05-01 5 (5) Meditsiiniseadmete ja abivahendite andmekogust edastatakse retseptikeskusesse meditsiiniseadmete andmed. 6 (6) Ravimiameti tegevuslubade registrist edastatakse retseptikeskusesse apteegiteenuse osutaja tegevusloa kohta andmed. 7 (7) Kehtetu - RT I 2023-05-23 1 123052023001 2023-05-26 7 (7¹) Tervise infosüsteemist edastatakse retseptikeskusesse tervishoiuteenuste korraldamise seaduse § 592 lõike 2 alusel kehtestatud ravimiskeemi teatise andmed ja retsepti välja ostma volitatud isiku isikukood. RT I 2025-04-10 1 110042025001 2025-04-13 7 (7²) Rahvastikuregistrist edastatakse retseptikeskusesse patsiendi seadusjärgse esindaja nimi ja isikukood. RT I 2022-01-21 2 121012022002 2022-01-24 8 (8) Lõigetes 1–71 nimetatud andmete täpne koosseis on esitatud käesoleva määruse lisas. RT I 2025-04-10 1 110042025001 2025-04-13 9 (9) Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu avaliku teabe seaduse § 439 lõike 1 punkti 5 alusel kehtestatud korras.",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_5_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_5_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_5_Lg_7_1"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_5_Lg_7_2"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_5_Lg_8"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_5_Lg_9"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_ravimiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:Reg_1041143_Par_5_v1041143"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tervishoiukorralduse infosüsteemist edastatakse retseptikeskusesse retsepti või meditsiiniseadme kaardi väljakirjutamisõigust omava isiku ja tema töökohaks oleva tervishoiuteenuse osutaja kohta: 1) tervishoiutöötaja eluloolised andmed; 2) tervishoiutöötaja kvalifikatsiooni tõendavad andmed; 3) tervishoiutöötaja registreerimisandmed; 4) tegevusloa omaja kontaktandmed; 5) tegevusloa andmed; 6) proviisori ja farmatseudi kohta andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tervisekassa andmekogust edastatakse retseptikeskusesse Tervisekassa kehtiva kindlustuskaitsega patsiendi andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ravimiregistrist edastatakse retseptikeskusesse ravimpreparaadi, standardiseeritud ekstemporaalse ravimi ja ravikindlustuse seaduse alusel hüvitatava eritoidu ja toidulisandi andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Meditsiiniseadmete ja abivahendite andmekogust edastatakse retseptikeskusesse meditsiiniseadmete andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_5_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Ravimiameti tegevuslubade registrist edastatakse retseptikeskusesse apteegiteenuse osutaja tegevusloa kohta andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 6",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_ravimiamet"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_5_Lg_7_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7¹",
+      "estleg:legalText": "(7¹) Tervise infosüsteemist edastatakse retseptikeskusesse tervishoiuteenuste korraldamise seaduse § 59² lõike 2 alusel kehtestatud ravimiskeemi teatise andmed ja retsepti välja ostma volitatud isiku isikukood.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 7¹",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:references": [
+        {
+          "@id": "estleg:TTKS_Par_59_2_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_5_Lg_7_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7²",
+      "estleg:legalText": "(7²) Rahvastikuregistrist edastatakse retseptikeskusesse patsiendi seadusjärgse esindaja nimi ja isikukood.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 7²"
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_5_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Lõigetes 1–7¹ nimetatud andmete täpne koosseis on esitatud käesoleva määruse lisas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 8"
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_5_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu avaliku teabe seaduse § 43⁹ lõike 1 punkti 5 alusel kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 9",
+      "estleg:itemNumber": "5",
+      "estleg:references": [
+        {
+          "@id": "estleg:AVTS_Par_43_9_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
+      ],
+      "estleg:paragrahv": "§ 6.",
+      "rdfs:label": {
+        "@value": "§ 6. Retseptikeskuse turvameetmed ja turvaaste",
+        "@language": "et"
+      },
+      "estleg:sourceAct": "Retseptikeskuse põhimäärus",
+      "estleg:partOfAct": {
+        "@id": "estleg:Reg_1041143_Map"
+      },
+      "estleg:summary": {
+        "@value": "1 (1) Retseptikeskuse turvameetmed peavad tagama järgmised turvaosaklassid andmete: 1 1) käideldavuse osas – K3; 2 2) tervikluse osas – T3; 3 3) konfidentsiaalsuse osas – S2. 2 (2) Retseptikeskuse turbeaste on kõrge (H).",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Retseptikeskuse turvameetmed peavad tagama järgmised turvaosaklassid andmete: 1 1) käideldavuse osas – K3; 2 2) tervikluse osas – T3; 3 3) konfidentsiaalsuse osas – S2. 2 (2) Retseptikeskuse turbeaste on kõrge (H).",
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_6_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1021361_Par_6"
+        },
+        {
+          "@id": "estleg:Reg_1036829_Par_2_3"
+        },
+        {
+          "@id": "estleg:Reg_1062713_Par_4"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:Reg_1041143_Par_6_v1041143"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Retseptikeskuse turvameetmed peavad tagama järgmised turvaosaklassid andmete: 1) käideldavuse osas – K3; 2) tervikluse osas – T3; 3) konfidentsiaalsuse osas – S2.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Retseptikeskuse turbeaste on kõrge (H).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
+      ],
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": {
+        "@value": "§ 7. Ebaõigete andmete parandamine",
+        "@language": "et"
+      },
+      "estleg:sourceAct": "Retseptikeskuse põhimäärus",
+      "estleg:partOfAct": {
+        "@id": "estleg:Reg_1041143_Map"
+      },
+      "estleg:summary": {
+        "@value": "Kui vastutav töötleja tuvastab andmekogus ebaõigeid andmeid või kui temale on nendest teada antud, korraldab ta andmete parandamise viivitamata pärast ebaõigetest andmetest teadasaamist, lisades andmekogu toimikule õigeid andmeid tõendava dokumendi koopia või tehes andmekogusse märke paranduse tegemise aja ning paranduse teinud töötaja kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kui vastutav töötleja tuvastab andmekogus ebaõigeid andmeid või kui temale on nendest teada antud, korraldab ta andmete parandamise viivitamata pärast ebaõigetest andmetest teadasaamist, lisades andmekogu toimikule õigeid andmeid tõendava dokumendi koopia või tehes andmekogusse märke paranduse tegemise aja ning paranduse teinud töötaja kohta.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -276,72 +958,9 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1041143_Par_5_v1041143"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_ravimiamet"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:Reg_1041143_Par_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision"
-      ],
-      "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Retseptikeskuse turvameetmed ja turvaaste",
-      "estleg:sourceAct": "Retseptikeskuse põhimäärus",
-      "estleg:partOfAct": {
-        "@id": "estleg:Reg_1041143_Map"
-      },
-      "estleg:summary": "1 (1) Retseptikeskuse turvameetmed peavad tagama järgmised turvaosaklassid andmete: 1 1) käideldavuse osas – K3; 2 2) tervikluse osas – T3; 3 3) konfidentsiaalsuse osas – S2. Retseptikeskuse turvameetmed peavad tagama järgmised turvaosaklassid andmete: käideldavuse osas – K3; tervikluse osas – T3; konfidentsiaalsuse osas – S2. 2 (2) Retseptikeskuse turbeaste on kõrge (H). Retseptikeskuse turbeaste on kõrge (H).",
-      "estleg:legalText": "1 (1) Retseptikeskuse turvameetmed peavad tagama järgmised turvaosaklassid andmete: 1 1) käideldavuse osas – K3; 2 2) tervikluse osas – T3; 3 3) konfidentsiaalsuse osas – S2. Retseptikeskuse turvameetmed peavad tagama järgmised turvaosaklassid andmete: käideldavuse osas – K3; tervikluse osas – T3; konfidentsiaalsuse osas – S2. 2 (2) Retseptikeskuse turbeaste on kõrge (H). Retseptikeskuse turbeaste on kõrge (H).",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1036829_Par_2_3"
-        },
-        {
-          "@id": "estleg:Reg_1062713_Par_4"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:Reg_1041143_Par_6_v1041143"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:Reg_1041143_Par_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision"
-      ],
-      "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Ebaõigete andmete parandamine",
-      "estleg:sourceAct": "Retseptikeskuse põhimäärus",
-      "estleg:partOfAct": {
-        "@id": "estleg:Reg_1041143_Map"
-      },
-      "estleg:summary": "Kui vastutav töötleja tuvastab andmekogus ebaõigeid andmeid või kui temale on nendest teada antud, korraldab ta andmete parandamise viivitamata pärast ebaõigetest andmetest teadasaamist, lisades andmekogu toimikule õigeid andmeid tõendava dokumendi koopia või tehes andmekogusse märke paranduse tegemise aja ning paranduse teinud töötaja kohta.",
-      "estleg:legalText": "Kui vastutav töötleja tuvastab andmekogus ebaõigeid andmeid või kui temale on nendest teada antud, korraldab ta andmete parandamise viivitamata pärast ebaõigetest andmetest teadasaamist, lisades andmekogu toimikule õigeid andmeid tõendava dokumendi koopia või tehes andmekogusse märke paranduse tegemise aja ning paranduse teinud töötaja kohta. Kui vastutav töötleja tuvastab andmekogus ebaõigeid andmeid või kui temale on nendest teada antud, korraldab ta andmete parandamise viivitamata pärast ebaõigetest andmetest teadasaamist, lisades andmekogu toimikule õigeid andmeid tõendava dokumendi koopia või tehes andmekogusse märke paranduse tegemise aja ning paranduse teinud töötaja kohta.",
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_Business"
+          "@id": "estleg:Reg_1041143_Par_7_Lg_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -361,15 +980,36 @@
           "@id": "estleg:Reg_1050868_Par_23"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041143_Par_7_v1041143"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui vastutav töötleja tuvastab andmekogus ebaõigeid andmeid või kui temale on nendest teada antud, korraldab ta andmete parandamise viivitamata pärast ebaõigetest andmetest teadasaamist, lisades andmekogu toimikule õigeid andmeid tõendava dokumendi koopia või tehes andmekogusse märke paranduse tegemise aja ning paranduse teinud töötaja kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1041143_Par_7_7",
@@ -378,16 +1018,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7¹.",
-      "rdfs:label": "§ 7¹. Andmete logimine",
+      "rdfs:label": {
+        "@value": "§ 7¹. Andmete logimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "Vastutav töötleja tagab infotehnoloogiliste vahenditega andmekogus tehtud logid kande vaatamise, lisamise, muutmise ja kustutamise kohta. RT I 2019-03-12 41 112032019041 2019-03-15",
-      "estleg:legalText": "Vastutav töötleja tagab infotehnoloogiliste vahenditega andmekogus tehtud logid kande vaatamise, lisamise, muutmise ja kustutamise kohta. RT I 2019-03-12 41 112032019041 2019-03-15 Vastutav töötleja tagab infotehnoloogiliste vahenditega andmekogus tehtud logid kande vaatamise, lisamise, muutmise ja kustutamise kohta.",
+      "estleg:summary": {
+        "@value": "Vastutav töötleja tagab infotehnoloogiliste vahenditega andmekogus tehtud logid kande vaatamise, lisamise, muutmise ja kustutamise kohta. RT I 2019-03-12 41 112032019041 2019-03-15",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vastutav töötleja tagab infotehnoloogiliste vahenditega andmekogus tehtud logid kande vaatamise, lisamise, muutmise ja kustutamise kohta. RT I 2019-03-12 41 112032019041 2019-03-15",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_7_7_Lg_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -407,15 +1062,33 @@
           "@id": "estleg:Reg_1061721_Par_12"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041143_Par_7_7_v1041143"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_7_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vastutav töötleja tagab infotehnoloogiliste vahenditega andmekogus tehtud logid kande vaatamise, lisamise, muutmise ja kustutamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_7_7"
+      },
+      "rdfs:label": "§ 7¹ lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1041143_Par_8",
@@ -424,13 +1097,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Andmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 8. Andmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "1 (1) Retseptikeskuses säilitatakse andmeid seitse aastat nende andmekogusse kandmise hetkest arvates. RT I 2019-03-12 41 112032019041 2019-03-15 Retseptikeskuses säilitatakse andmeid seitse aastat nende andmekogusse kandmise hetkest arvates. 2 (2) Retseptikeskuses säilitatakse logiandmeid kolm aastat töötlemistoimingu tegemisest arvates. RT I 2019-03-12 41 112032019041 2019-03-15 Retseptikeskuses säilitatakse logiandmeid kolm aastat töötlemistoimingu tegemisest arvates.",
-      "estleg:legalText": "1 (1) Retseptikeskuses säilitatakse andmeid seitse aastat nende andmekogusse kandmise hetkest arvates. RT I 2019-03-12 41 112032019041 2019-03-15 Retseptikeskuses säilitatakse andmeid seitse aastat nende andmekogusse kandmise hetkest arvates. 2 (2) Retseptikeskuses säilitatakse logiandmeid kolm aastat töötlemistoimingu tegemisest arvates. RT I 2019-03-12 41 112032019041 2019-03-15 Retseptikeskuses säilitatakse logiandmeid kolm aastat töötlemistoimingu tegemisest arvates.",
+      "estleg:summary": {
+        "@value": "1 (1) Retseptikeskuses säilitatakse andmeid seitse aastat nende andmekogusse kandmise hetkest arvates. RT I 2019-03-12 41 112032019041 2019-03-15 2 (2) Retseptikeskuses säilitatakse logiandmeid kolm aastat töötlemistoimingu tegemisest arvates. RT I 2019-03-12 41 112032019041 2019-03-15",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Retseptikeskuses säilitatakse andmeid seitse aastat nende andmekogusse kandmise hetkest arvates. RT I 2019-03-12 41 112032019041 2019-03-15 2 (2) Retseptikeskuses säilitatakse logiandmeid kolm aastat töötlemistoimingu tegemisest arvates. RT I 2019-03-12 41 112032019041 2019-03-15",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_8_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1039196_Par_10"
@@ -440,6 +1127,12 @@
         },
         {
           "@id": "estleg:Reg_1039254_Par_11"
+        },
+        {
+          "@id": "estleg:Reg_1054537_Par_15"
+        },
+        {
+          "@id": "estleg:Reg_336930_Par_10"
         }
       ],
       "estleg:hasVersion": [
@@ -449,19 +1142,51 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041143_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Retseptikeskuses säilitatakse andmeid seitse aastat nende andmekogusse kandmise hetkest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Retseptikeskuses säilitatakse logiandmeid kolm aastat töötlemistoimingu tegemisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
       "@id": "estleg:Reg_1041143_Par_9",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Üldnõuded",
+      "rdfs:label": {
+        "@value": "§ 9. Üldnõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "1 (1) Andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate ja andmete väljastamise viisi üle peab arvestust vastutav töötleja. Andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate ja andmete väljastamise viisi üle peab arvestust vastutav töötleja. 2 (2) Andmeid lõikes 1 nimetatud andmete väljastamise kohta säilitatakse tähtajaga seitse aastat ning andmesubjektile ja Andmekaitse Inspektsioonile tagatakse juurdepääs nimetatud andmetele. Andmeid lõikes 1 nimetatud ",
-      "estleg:legalText": "1 (1) Andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate ja andmete väljastamise viisi üle peab arvestust vastutav töötleja. Andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate ja andmete väljastamise viisi üle peab arvestust vastutav töötleja. 2 (2) Andmeid lõikes 1 nimetatud andmete väljastamise kohta säilitatakse tähtajaga seitse aastat ning andmesubjektile ja Andmekaitse Inspektsioonile tagatakse juurdepääs nimetatud andmetele. Andmeid lõikes 1 nimetatud andmete väljastamise kohta säilitatakse tähtajaga seitse aastat ning andmesubjektile ja Andmekaitse Inspektsioonile tagatakse juurdepääs nimetatud andmetele.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate ja andmete väljastamise viisi üle peab arvestust vastutav töötleja. 2 (2) Andmeid lõikes 1 nimetatud andmete väljastamise kohta säilitatakse tähtajaga seitse aastat ning andmesubjektile ja Andmekaitse Inspektsioonile tagatakse juurdepääs nimetatud andmetele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate ja andmete väljastamise viisi üle peab arvestust vastutav töötleja. 2 (2) Andmeid lõikes 1 nimetatud andmete väljastamise kohta säilitatakse tähtajaga seitse aastat ning andmesubjektile ja Andmekaitse Inspektsioonile tagatakse juurdepääs nimetatud andmetele.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -470,18 +1195,78 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_9_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_andmekaitseinspektsioon"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041143_Par_9_v1041143"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate ja andmete väljastamise viisi üle peab arvestust vastutav töötleja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmeid lõikes 1 nimetatud andmete väljastamise kohta säilitatakse tähtajaga seitse aastat ning andmesubjektile ja Andmekaitse Inspektsioonile tagatakse juurdepääs nimetatud andmetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_andmekaitseinspektsioon"
@@ -495,17 +1280,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Juurdepääs andmetele",
+      "rdfs:label": {
+        "@value": "§ 10. Juurdepääs andmetele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "1 (1) Seadusega või seaduse alusel antud õigusaktiga pandud ülesannete täitmiseks on retseptikeskusest andmete saamise õigus: 1 1) retsepti või meditsiiniseadme kaardi väljakirjutamise õigust omaval isikul; 2 2) ravimit või meditsiiniseadet väljastaval isikul; 3 3) Kehtetu - RT I 2022-01-21 2 121012022002 2022-01-24 4 4) Terviseametil; 5 5) Ravimiametil; 6 6) Sotsiaalministeeriumil; 7 7) Andmekaitse Inspektsioonil. Seadusega või seaduse alusel antud õigusaktiga pandud ülesannete täitmiseks on re",
-      "estleg:legalText": "1 (1) Seadusega või seaduse alusel antud õigusaktiga pandud ülesannete täitmiseks on retseptikeskusest andmete saamise õigus: 1 1) retsepti või meditsiiniseadme kaardi väljakirjutamise õigust omaval isikul; 2 2) ravimit või meditsiiniseadet väljastaval isikul; 3 3) Kehtetu - RT I 2022-01-21 2 121012022002 2022-01-24 4 4) Terviseametil; 5 5) Ravimiametil; 6 6) Sotsiaalministeeriumil; 7 7) Andmekaitse Inspektsioonil. Seadusega või seaduse alusel antud õigusaktiga pandud ülesannete täitmiseks on retseptikeskusest andmete saamise õigus: retsepti või meditsiiniseadme kaardi väljakirjutamise õigust omaval isikul; ravimit või meditsiiniseadet väljastaval isikul; Kehtetu - Terviseametil; Ravimiametil; Sotsiaalministeeriumil; Andmekaitse Inspektsioonil. 2 (2) Isikul, kelle andmeid retseptikeskuses töödeldakse, on juurdepääs retseptikeskuses olevatele isikuandmetele ning tal on õigus keelata nende andmete edastamine välisriiki tervise infosüsteemi kaudu. RT I 2019-03-12 41 112032019041 2019-03-15 Isikul, kelle andmeid retseptikeskuses töödeldakse, on juurdepääs retseptikeskuses olevatele isikuandmetele ning tal on õigus keelata nende andmete edastamine välisriiki tervise infosüsteemi kaudu. 3 (3) Retseptikeskuse andmetele on juurdepääs isikul, kes arendab või hooldab andmekogu, arendus- või hoolduslepingus sätestatud ulatuses ja tingimustel. Retseptikeskuse andmetele on juurdepääs isikul, kes arendab või hooldab andmekogu, arendus- või hoolduslepingus sätestatud ulatuses ja tingimustel.",
+      "estleg:summary": {
+        "@value": "1 (1) Seadusega või seaduse alusel antud õigusaktiga pandud ülesannete täitmiseks on retseptikeskusest andmete saamise õigus: 1 1) retsepti või meditsiiniseadme kaardi väljakirjutamise õigust omaval isikul; 2 2) ravimit või meditsiiniseadet väljastaval isikul; 3 3) Kehtetu - RT I 2022-01-21 2 121012022002 2022-01-24 4 4) Terviseametil; 5 5) Ravimiametil; 6 6) Sotsiaalministeeriumil; 7 7) Andmekaitse Inspektsioonil.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Seadusega või seaduse alusel antud õigusaktiga pandud ülesannete täitmiseks on retseptikeskusest andmete saamise õigus: 1 1) retsepti või meditsiiniseadme kaardi väljakirjutamise õigust omaval isikul; 2 2) ravimit või meditsiiniseadet väljastaval isikul; 3 3) Kehtetu - RT I 2022-01-21 2 121012022002 2022-01-24 4 4) Terviseametil; 5 5) Ravimiametil; 6 6) Sotsiaalministeeriumil; 7 7) Andmekaitse Inspektsioonil. 2 (2) Isikul, kelle andmeid retseptikeskuses töödeldakse, on juurdepääs retseptikeskuses olevatele isikuandmetele ning tal on õigus keelata nende andmete edastamine välisriiki tervise infosüsteemi kaudu. RT I 2019-03-12 41 112032019041 2019-03-15 3 (3) Retseptikeskuse andmetele on juurdepääs isikul, kes arendab või hooldab andmekogu, arendus- või hoolduslepingus sätestatud ulatuses ja tingimustel.",
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
@@ -514,11 +1302,70 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_10_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_terviseamet"
+        },
+        {
+          "@id": "estleg:Institution_ravimiamet"
+        },
+        {
+          "@id": "estleg:Institution_sotsiaalministeerium"
+        },
+        {
+          "@id": "estleg:Institution_andmekaitseinspektsioon"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041143_Par_10_v1041143"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Seadusega või seaduse alusel antud õigusaktiga pandud ülesannete täitmiseks on retseptikeskusest andmete saamise õigus: 1) retsepti või meditsiiniseadme kaardi väljakirjutamise õigust omaval isikul; 2) ravimit või meditsiiniseadet väljastaval isikul; 3) 4) Terviseametil; 5) Ravimiametil; 6) Sotsiaalministeeriumil; 7) Andmekaitse Inspektsioonil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_terviseamet"
@@ -535,19 +1382,72 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1041143_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Isikul, kelle andmeid retseptikeskuses töödeldakse, on juurdepääs retseptikeskuses olevatele isikuandmetele ning tal on õigus keelata nende andmete edastamine välisriiki tervise infosüsteemi kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Retseptikeskuse andmetele on juurdepääs isikul, kes arendab või hooldab andmekogu, arendus- või hoolduslepingus sätestatud ulatuses ja tingimustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
       "@id": "estleg:Reg_1041143_Par_11",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Järelevalve",
+      "rdfs:label": {
+        "@value": "§ 11. Järelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "Järelevalvet retseptikeskuse pidamise üle teostavad retseptikeskuse vastutav töötleja, avaliku teabe seaduse § 531 lõikes 1 nimetatud asutus, Andmekaitse Inspektsioon, Terviseamet ja Ravimiamet vastavalt seadustes sätestatud pädevusele.",
-      "estleg:legalText": "Järelevalvet retseptikeskuse pidamise üle teostavad retseptikeskuse vastutav töötleja, avaliku teabe seaduse § 531 lõikes 1 nimetatud asutus, Andmekaitse Inspektsioon, Terviseamet ja Ravimiamet vastavalt seadustes sätestatud pädevusele. Järelevalvet retseptikeskuse pidamise üle teostavad retseptikeskuse vastutav töötleja, avaliku teabe seaduse § 531 lõikes 1 nimetatud asutus, Andmekaitse Inspektsioon, Terviseamet ja Ravimiamet vastavalt seadustes sätestatud pädevusele.",
+      "estleg:summary": {
+        "@value": "Järelevalvet retseptikeskuse pidamise üle teostavad retseptikeskuse vastutav töötleja, avaliku teabe seaduse § 531 lõikes 1 nimetatud asutus, Andmekaitse Inspektsioon, Terviseamet ja Ravimiamet vastavalt seadustes sätestatud pädevusele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Järelevalvet retseptikeskuse pidamise üle teostavad retseptikeskuse vastutav töötleja, avaliku teabe seaduse § 531 lõikes 1 nimetatud asutus, Andmekaitse Inspektsioon, Terviseamet ja Ravimiamet vastavalt seadustes sätestatud pädevusele.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -556,30 +1456,76 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_11_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_andmekaitseinspektsioon"
+        },
+        {
+          "@id": "estleg:Institution_terviseamet"
+        },
+        {
+          "@id": "estleg:Institution_ravimiamet"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
+          "@id": "estleg:Reg_1027701_Par_16"
+        },
+        {
           "@id": "estleg:Reg_1028185_Par_18"
+        },
+        {
+          "@id": "estleg:Reg_1039853_Par_23"
         },
         {
           "@id": "estleg:Reg_1041520_Par_14"
         },
         {
-          "@id": "estleg:Reg_1046451_Par_17"
+          "@id": "estleg:Reg_1043851_Par_20"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:Reg_1041143_Par_11_v1041143"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Järelevalvet retseptikeskuse pidamise üle teostavad retseptikeskuse vastutav töötleja, avaliku teabe seaduse § 53¹ lõikes 1 nimetatud asutus, Andmekaitse Inspektsioon, Terviseamet ja Ravimiamet vastavalt seadustes sätestatud pädevusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
         },
         {
-          "@id": "estleg:Reg_1046452_Par_19"
-        },
-        {
-          "@id": "estleg:Reg_1046456_Par_18"
+          "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
+      "estleg:references": [
         {
-          "@id": "estleg:Reg_1041143_Par_11_v1041143"
+          "@id": "estleg:AVTS_Par_53_1_Lg_1"
         }
       ],
       "estleg:mentionsInstitution": [
@@ -601,13 +1547,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Rakendussäte",
+      "rdfs:label": {
+        "@value": "§ 12. Rakendussäte",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "1 (1) Kehtetu - RT I 2026-03-26 1 126032026001 2026-05-01 Kehtetu - 2 (2) Rahvastikuregistrist edastatakse retseptikeskusesse käesoleva määruse § 5 lõikes 72 nimetatud andmed alates 1. jaanuarist 2027. a. Kuni nimetatud ajani kontrollitakse seadusjärgset esindusõigust volituste alusel tervise infosüsteemist. RT I 2022-01-21 2 121012022002 2022-01-24 Rahvastikuregistrist edastatakse retseptikeskusesse käesoleva määruse § 5 lõikes 72 nimetatud andmed alates 1. jaanuarist 2027. a. Kuni nimetatud aj",
-      "estleg:legalText": "1 (1) Kehtetu - RT I 2026-03-26 1 126032026001 2026-05-01 Kehtetu - 2 (2) Rahvastikuregistrist edastatakse retseptikeskusesse käesoleva määruse § 5 lõikes 72 nimetatud andmed alates 1. jaanuarist 2027. a. Kuni nimetatud ajani kontrollitakse seadusjärgset esindusõigust volituste alusel tervise infosüsteemist. RT I 2022-01-21 2 121012022002 2022-01-24 Rahvastikuregistrist edastatakse retseptikeskusesse käesoleva määruse § 5 lõikes 72 nimetatud andmed alates 1. jaanuarist 2027. a. Kuni nimetatud ajani kontrollitakse seadusjärgset esindusõigust volituste alusel tervise infosüsteemist. 3 (3) Meditsiiniseadme kaart, mille alusel ei ole kindlustatud isik kolme viimase järjestikuse limiitkoguse hüvitamise perioodi vältel teinud ühtegi ostutehingut, kaotab kehtivuse järgmise limiitkoguse hüvitamise perioodi uuenemisel retseptikeskuses. RT I 2025-04-10 1 110042025001 2025-04-13 Meditsiiniseadme kaart, mille alusel ei ole kindlustatud isik kolme viimase järjestikuse limiitkoguse hüvitamise perioodi vältel teinud ühtegi ostutehingut, kaotab kehtivuse järgmise limiitkoguse hüvitamise perioodi uuenemisel retseptikeskuses.",
+      "estleg:summary": {
+        "@value": "1 (1) Kehtetu - RT I 2026-03-26 1 126032026001 2026-05-01 2 (2) Rahvastikuregistrist edastatakse retseptikeskusesse käesoleva määruse § 5 lõikes 72 nimetatud andmed alates 1. jaanuarist 2027. a. Kuni nimetatud ajani kontrollitakse seadusjärgset esindusõigust volituste alusel tervise infosüsteemist. RT I 2022-01-21 2 121012022002 2022-01-24 3 (3) Meditsiiniseadme kaart, mille alusel ei ole kindlustatud isik kolme viimase järjestikuse limiitkoguse hüvitamise perioodi vältel teinud ühtegi…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kehtetu - RT I 2026-03-26 1 126032026001 2026-05-01 2 (2) Rahvastikuregistrist edastatakse retseptikeskusesse käesoleva määruse § 5 lõikes 72 nimetatud andmed alates 1. jaanuarist 2027. a. Kuni nimetatud ajani kontrollitakse seadusjärgset esindusõigust volituste alusel tervise infosüsteemist. RT I 2022-01-21 2 121012022002 2022-01-24 3 (3) Meditsiiniseadme kaart, mille alusel ei ole kindlustatud isik kolme viimase järjestikuse limiitkoguse hüvitamise perioodi vältel teinud ühtegi ostutehingut, kaotab kehtivuse järgmise limiitkoguse hüvitamise perioodi uuenemisel retseptikeskuses. RT I 2025-04-10 1 110042025001 2025-04-13",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -617,11 +1569,54 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1041143_Par_12_Lg_3"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041143_Par_12_v1041143"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvastikuregistrist edastatakse retseptikeskusesse käesoleva määruse § 5 lõikes 7² nimetatud andmed alates 1. jaanuarist 2027. a. Kuni nimetatud ajani kontrollitakse seadusjärgset esindusõigust volituste alusel tervise infosüsteemist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Meditsiiniseadme kaart, mille alusel ei ole kindlustatud isik kolme viimase järjestikuse limiitkoguse hüvitamise perioodi vältel teinud ühtegi ostutehingut, kaotab kehtivuse järgmise limiitkoguse hüvitamise perioodi uuenemisel retseptikeskuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Citizen"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1041143_Par_13",
@@ -630,18 +1625,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Registri likvideerimine",
+      "rdfs:label": {
+        "@value": "§ 13. Registri likvideerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "Andmekogu likvideeritakse seaduses sätestatud korras.",
-      "estleg:legalText": "Andmekogu likvideeritakse seaduses sätestatud korras. Andmekogu likvideeritakse seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Andmekogu likvideeritakse seaduses sätestatud korras.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu likvideeritakse seaduses sätestatud korras.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_13_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041143_Par_13_v1041143"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu likvideeritakse seaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:Reg_1041143_Par_14",
@@ -650,18 +1669,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 14. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Retseptikeskuse põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1041143_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. jaanuaril 2018. aastal.",
-      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2018. aastal. Määrus jõustub 1. jaanuaril 2018. aastal.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. jaanuaril 2018. aastal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2018. aastal.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1041143_Par_14_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1041143_Par_14_v1041143"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1041143_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. jaanuaril 2018. aastal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1041143_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1041143_P_11_1",

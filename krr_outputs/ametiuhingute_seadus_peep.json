@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:AUS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Ametiühingute seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Ametiühingute seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Ametiühingute seadus",
-      "dcterms:title": [
-        {
-          "@value": "Ametiühingute seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Trade Unions Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Ametiühingute seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/103022026016.xml"
+        "@id": "https://www.riigiteataja.ee/akt/103022026016"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/103022026016/xml"
+      },
+      "estleg:globalId": "103022026016",
+      "eli:id_local": "103022026016",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "152862",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "d4fd02937d71f771dfd591b2ca82eef1186a00b03c29a9114ee0443fb862c14e",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-02-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/511022026003"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/511022026003"
       },
       "estleg:references": [
@@ -69,6 +75,9 @@
         },
         {
           "@id": "estleg:AUS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:AUS_Par_21_1"
         },
         {
           "@id": "estleg:TUIS_Par_17"
@@ -99,23 +108,9 @@
         },
         {
           "@id": "estleg:TUIS_Par_22"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:AUS_Par_12"
         },
         {
-          "@id": "estleg:AUS_Par_12_Lg_1"
-        },
-        {
-          "@id": "estleg:AUS_Par_7"
-        },
-        {
-          "@id": "estleg:AUS_Par_7_Lg_2"
-        },
-        {
-          "@id": "estleg:AUS_Par_16_Lg_4"
+          "@id": "estleg:AUS_Par_26_1"
         }
       ],
       "dcterms:subject": [
@@ -140,6 +135,19 @@
           "@id": "http://eurovoc.europa.eu/668"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2000-07-23",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-02-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2026-02-03",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kohus"
@@ -152,14 +160,147 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU18_0287"
         }
+      ],
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_AÜS_4ffb35a9b9"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_db455cafa5"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_96f47072c1"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_26a25485a5"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_96a0935e9c"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_7618cb7331"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_3d4e7ce3a8"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_c23a62776a"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_49964d8b8a"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_f0f9e0746b"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_e672bb680a"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_5797c6cf37"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_19f178a0cf"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_4554dd9620"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_9e85d0420f"
+        },
+        {
+          "@id": "estleg:Amendment_AÜS_3238ac845b"
+        }
+      ],
+      "estleg:hasProposedAmendment": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU18_0287_AÜS"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:AUS_Map"
+        },
+        {
+          "@id": "estleg:AUS_Par_12"
+        },
+        {
+          "@id": "estleg:AUS_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:AUS_Par_7"
+        },
+        {
+          "@id": "estleg:AUS_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:AUS_Par_16_Lg_4"
+        },
+        {
+          "@id": "estleg:AUS_Par_21_2"
+        },
+        {
+          "@id": "estleg:AUS_Par_21_2_Lg_1"
+        },
+        {
+          "@id": "estleg:AUS_Par_24_1"
+        },
+        {
+          "@id": "estleg:AUS_Par_24_1_Lg_1"
+        },
+        {
+          "@id": "estleg:AUS_Par_26_8"
+        },
+        {
+          "@id": "estleg:AUS_Par_26_8_Lg_2"
+        }
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_2_1_28_01"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_133_07"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_13_10"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_81_13"
+        },
+        {
+          "@id": "estleg:RK_4_17_3766_25"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Cluster_AUS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–5 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–5 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:AUS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:AUS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Ametiühingute seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Ametiühingute seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_AUS_1"
@@ -191,26 +332,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_AUS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–5 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–5 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:AUS_TopicScheme"
-      },
-      "estleg:provisionCount": 5
-    },
-    {
       "@id": "estleg:Chapter_AUS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
@@ -230,8 +360,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§6–12 AMETIÜHINGUTE ÕIGUSVÕIME, ASUTAMINE JA JUHTIMINE",
-      "skos:prefLabel": "§6–12 AMETIÜHINGUTE ÕIGUSVÕIME, ASUTAMINE JA JUHTIMINE",
+      "rdfs:label": {
+        "@value": "§6–12 AMETIÜHINGUTE ÕIGUSVÕIME, ASUTAMINE JA JUHTIMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§6–12 AMETIÜHINGUTE ÕIGUSVÕIME, ASUTAMINE JA JUHTIMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AUS_TopicScheme"
       },
@@ -243,7 +379,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – AMETIÜHINGUTE ÕIGUSVÕIME, ASUTAMINE JA JUHTIMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – AMETIÜHINGUTE ÕIGUSVÕIME, ASUTAMINE JA JUHTIMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
@@ -263,8 +402,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§13–15 AMETIÜHINGUTE LÕPETAMINE",
-      "skos:prefLabel": "§13–15 AMETIÜHINGUTE LÕPETAMINE",
+      "rdfs:label": {
+        "@value": "§13–15 AMETIÜHINGUTE LÕPETAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§13–15 AMETIÜHINGUTE LÕPETAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AUS_TopicScheme"
       },
@@ -276,7 +421,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – AMETIÜHINGUTE LÕPETAMINE",
+      "rdfs:label": {
+        "@value": "3. peatükk – AMETIÜHINGUTE LÕPETAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
@@ -296,8 +444,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§16–18 AMETIÜHINGUTE PÄDEVUS JA ÕIGUSED",
-      "skos:prefLabel": "§16–18 AMETIÜHINGUTE PÄDEVUS JA ÕIGUSED",
+      "rdfs:label": {
+        "@value": "§16–18 AMETIÜHINGUTE PÄDEVUS JA ÕIGUSED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§16–18 AMETIÜHINGUTE PÄDEVUS JA ÕIGUSED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AUS_TopicScheme"
       },
@@ -309,7 +463,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – AMETIÜHINGUTE PÄDEVUS JA ÕIGUSED",
+      "rdfs:label": {
+        "@value": "4. peatükk – AMETIÜHINGUTE PÄDEVUS JA ÕIGUSED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
@@ -329,12 +486,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§19–24 AMETIÜHINGUTE SUHTED TÖÖANDJATEGA",
-      "skos:prefLabel": "§19–24 AMETIÜHINGUTE SUHTED TÖÖANDJATEGA",
+      "rdfs:label": {
+        "@value": "§19–24 AMETIÜHINGUTE SUHTED TÖÖANDJATEGA",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§19–24 AMETIÜHINGUTE SUHTED TÖÖANDJATEGA",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AUS_TopicScheme"
       },
-      "estleg:provisionCount": 6
+      "estleg:provisionCount": 8
     },
     {
       "@id": "estleg:Chapter_AUS_5",
@@ -342,7 +505,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – AMETIÜHINGUTE SUHTED TÖÖANDJATEGA",
+      "rdfs:label": {
+        "@value": "5. peatükk – AMETIÜHINGUTE SUHTED TÖÖANDJATEGA",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
@@ -362,12 +528,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§24–24 RIIKLIK JA HALDUSJÄRELEVALVE",
-      "skos:prefLabel": "§24–24 RIIKLIK JA HALDUSJÄRELEVALVE",
+      "rdfs:label": {
+        "@value": "§24–24 RIIKLIK JA HALDUSJÄRELEVALVE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§24–24 RIIKLIK JA HALDUSJÄRELEVALVE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AUS_TopicScheme"
       },
-      "estleg:provisionCount": 1
+      "estleg:provisionCount": 2
     },
     {
       "@id": "estleg:Chapter_AUS_5_69863942",
@@ -375,7 +547,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – RIIKLIK JA HALDUSJÄRELEVALVE",
+      "rdfs:label": {
+        "@value": "5. peatükk – RIIKLIK JA HALDUSJÄRELEVALVE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
@@ -395,8 +570,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§25–26 VAIDLUSTE LAHENDAMISE KORD",
-      "skos:prefLabel": "§25–26 VAIDLUSTE LAHENDAMISE KORD",
+      "rdfs:label": {
+        "@value": "§25–26 VAIDLUSTE LAHENDAMISE KORD",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§25–26 VAIDLUSTE LAHENDAMISE KORD",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AUS_TopicScheme"
       },
@@ -408,7 +589,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – VAIDLUSTE LAHENDAMISE KORD",
+      "rdfs:label": {
+        "@value": "6. peatükk – VAIDLUSTE LAHENDAMISE KORD",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
@@ -428,12 +612,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§26–26 VASTUTUS",
-      "skos:prefLabel": "§26–26 VASTUTUS",
+      "rdfs:label": {
+        "@value": "§26–26 VASTUTUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§26–26 VASTUTUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AUS_TopicScheme"
       },
-      "estleg:provisionCount": 1
+      "estleg:provisionCount": 8
     },
     {
       "@id": "estleg:Chapter_AUS_6_1e71b85e",
@@ -441,7 +631,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – VASTUTUS",
+      "rdfs:label": {
+        "@value": "6. peatükk – VASTUTUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
@@ -461,8 +654,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§27–30 SEADUSE RAKENDAMINE",
-      "skos:prefLabel": "§27–30 SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "§27–30 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§27–30 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AUS_TopicScheme"
       },
@@ -474,7 +673,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "7. peatükk – SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "7. peatükk – SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
@@ -494,12 +696,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse ülesanded",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus sätestab ametiühingute põhilised õigused, tegevuse alused, suhted riigi- ja kohaliku omavalitsuse asutuste ja tööandjatega. (2) Käesolev seadus sätestab erisused mittetulundusühingutena tegutsevate ametiühingute asutamise, tegevuse ja lõpetamise kohta.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus sätestab ametiühingute põhilised õigused, tegevuse alused, suhted riigi- ja kohaliku omavalitsuse asutuste ja tööandjatega. (2) Käesolev seadus sätestab erisused mittetulundusühingutena tegutsevate ametiühingute asutamise, tegevuse ja lõpetamise kohta.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus sätestab ametiühingute põhilised õigused, tegevuse alused, suhted riigi- ja kohaliku omavalitsuse asutuste ja tööandjatega. (2) Käesolev seadus sätestab erisused mittetulundusühingutena tegutsevate ametiühingute asutamise, tegevuse ja lõpetamise kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_1"
@@ -527,14 +735,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:AUS_Par_1_v26421"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:AUS_Par_1_v26421"
         }
       ]
     },
@@ -602,12 +810,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Ametiühingu mõiste ja eesmärgid",
+      "rdfs:label": {
+        "@value": "§ 2. Ametiühingu mõiste ja eesmärgid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühing on iseseisev omaalgatuslik ja vabatahtlik isikute ühendus, mille eesmärgiks on töötajate töö-, teenistus- ja kutsealaste, majanduslike ning sotsiaalsete õiguste ja huvide esindamine ning kaitsmine. (2) Käesolevas seaduses kasutatakse mõistet ametiühing kõikide käesolevas seaduses sätestatud ametiühinguliste ühenduste kohta. (3) Käesoleva seaduse tähenduses on töötajaks iga töötav isik, olenemata tehtava töö iseloomust.",
+      "estleg:summary": {
+        "@value": "(1) Ametiühing on iseseisev omaalgatuslik ja vabatahtlik isikute ühendus, mille eesmärgiks on töötajate töö-, teenistus- ja kutsealaste, majanduslike ning sotsiaalsete õiguste ja huvide esindamine ning kaitsmine. (2) Käesolevas seaduses kasutatakse mõistet ametiühing kõikide käesolevas seaduses sätestatud ametiühinguliste ühenduste kohta. (3) Käesoleva seaduse tähenduses on töötajaks iga töötav isik, olenemata tehtava töö iseloomust.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ametiühing on iseseisev omaalgatuslik ja vabatahtlik isikute ühendus, mille eesmärgiks on töötajate töö-, teenistus- ja kutsealaste, majanduslike ning sotsiaalsete õiguste ja huvide esindamine ning kaitsmine. (2) Käesolevas seaduses kasutatakse mõistet ametiühing kõikide käesolevas seaduses sätestatud ametiühinguliste ühenduste kohta. (3) Käesoleva seaduse tähenduses on töötajaks iga töötav isik, olenemata tehtava töö iseloomust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_1"
@@ -634,6 +848,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
       },
       "estleg:hasVersion": [
         {
@@ -663,6 +880,9 @@
         "@type": "xsd:decimal"
       },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:AUS_Map"
+        },
         {
           "@id": "estleg:AUS_Par_3"
         },
@@ -713,12 +933,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Ametiühing sotsiaalse dialoogi partnerina",
+      "rdfs:label": {
+        "@value": "§ 3. Ametiühing sotsiaalse dialoogi partnerina",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Ametiühingud saavutavad oma eesmärke, olles sotsiaalse dialoogi partnerid tööandjatele, tööandjate ühendustele, kohalikele omavalitsusüksustele ja Vabariigi Valitsusele vastastikuses informeerimises, konsulteerimises, kollektiivsetes läbirääkimistes ja käesoleva seaduse § 2 lõikes 1 toodud töötajate huve puudutavates küsimustes.",
+      "estleg:summary": {
+        "@value": "Ametiühingud saavutavad oma eesmärke, olles sotsiaalse dialoogi partnerid tööandjatele, tööandjate ühendustele, kohalikele omavalitsusüksustele ja Vabariigi Valitsusele vastastikuses informeerimises, konsulteerimises, kollektiivsetes läbirääkimistes ja käesoleva seaduse § 2 lõikes 1 toodud töötajate huve puudutavates küsimustes.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ametiühingud saavutavad oma eesmärke, olles sotsiaalse dialoogi partnerid tööandjatele, tööandjate ühendustele, kohalikele omavalitsusüksustele ja Vabariigi Valitsusele vastastikuses informeerimises, konsulteerimises, kollektiivsetes läbirääkimistes ja käesoleva seaduse § 2 lõikes 1 toodud töötajate huve puudutavates küsimustes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_1"
@@ -748,14 +974,14 @@
           "@id": "estleg:AUS_Par_2_Lg_1"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:AUS_Par_3_v26421"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:AUS_Par_3_v26421"
         }
       ]
     },
@@ -765,10 +991,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ametiühingud saavutavad oma eesmärke, olles sotsiaalse dialoogi partnerid tööandjatele, tööandjate ühendustele, kohalikele omavalitsusüksustele ja Vabariigi Valitsusele vastastikuses informeerimises, konsulteerimises, kollektiivsetes läbirääkimistes ja käesoleva seaduse § 2 lõikes 1 toodud töötajate huve puudutavates küsimustes.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiühingud saavutavad oma eesmärke, olles sotsiaalse dialoogi partnerid tööandjatele, tööandjate ühendustele, kohalikele omavalitsusüksustele ja Vabariigi Valitsusele vastastikuses informeerimises, konsulteerimises, kollektiivsetes läbirääkimistes ja käesoleva seaduse § 2 lõikes 1 toodud töötajate huve puudutavates küsimustes.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -799,12 +1027,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Ametiühingutesse ühinemise vabadus",
+      "rdfs:label": {
+        "@value": "§ 4. Ametiühingutesse ühinemise vabadus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Isikutel on õigus vabalt ilma eelneva loata asutada ametiühinguid, nendega ühineda või mitte ühineda. Tegevväelasel on keelatud asutada ametiühingut või sellega ühineda. (2) Ametiühingutel on töötajate õiguste ja huvide esindamiseks õigus moodustada liite ja keskliite ning nendega ühineda. Ametiühingutel on õigus liituda töötajate rahvusvaheliste organisatsioonidega.",
+      "estleg:summary": {
+        "@value": "(1) Isikutel on õigus vabalt ilma eelneva loata asutada ametiühinguid, nendega ühineda või mitte ühineda. Tegevväelasel on keelatud asutada ametiühingut või sellega ühineda. (2) Ametiühingutel on töötajate õiguste ja huvide esindamiseks õigus moodustada liite ja keskliite ning nendega ühineda. Ametiühingutel on õigus liituda töötajate rahvusvaheliste organisatsioonidega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Isikutel on õigus vabalt ilma eelneva loata asutada ametiühinguid, nendega ühineda või mitte ühineda. Tegevväelasel on keelatud asutada ametiühingut või sellega ühineda. (2) Ametiühingutel on töötajate õiguste ja huvide esindamiseks õigus moodustada liite ja keskliite ning nendega ühineda. Ametiühingutel on õigus liituda töötajate rahvusvaheliste organisatsioonidega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_1"
@@ -825,12 +1059,12 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasVersion": [
         {
@@ -853,12 +1087,12 @@
         "@id": "estleg:AUS_Par_4"
       },
       "rdfs:label": "§ 4 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -873,9 +1107,6 @@
         "@id": "estleg:AUS_Par_4"
       },
       "rdfs:label": "§ 4 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -884,6 +1115,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -893,12 +1127,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Ametiühingute sõltumatus",
+      "rdfs:label": {
+        "@value": "§ 5. Ametiühingute sõltumatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühingud on oma seaduslikus tegevuses sõltumatud tööandjatest, nende ühendustest ja nende esindajatest, riigiasutustest ja kohalikest omavalitsusüksustest ning teistest organisatsioonidest. (2) Ametiühingutel on õigus iseseisvalt korraldada oma tegevust ja juhtimist, sealhulgas töötada välja oma põhikiri, koostada tegevuskavasid ning vabalt valida oma esindajaid. (3) Tööandjatel, nende ühendustel ja esindajatel, riigiasutustel ja kohalikel omavalitsusüksustel on keelatud ametiühingute",
+      "estleg:summary": {
+        "@value": "(1) Ametiühingud on oma seaduslikus tegevuses sõltumatud tööandjatest, nende ühendustest ja nende esindajatest, riigiasutustest ja kohalikest omavalitsusüksustest ning teistest organisatsioonidest. (2) Ametiühingutel on õigus iseseisvalt korraldada oma tegevust ja juhtimist, sealhulgas töötada välja oma põhikiri, koostada tegevuskavasid ning vabalt valida oma esindajaid. (3) Tööandjatel, nende ühendustel ja esindajatel, riigiasutustel ja kohalikel omavalitsusüksustel on keelatud ametiühingute",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ametiühingud on oma seaduslikus tegevuses sõltumatud tööandjatest, nende ühendustest ja nende esindajatest, riigiasutustest ja kohalikest omavalitsusüksustest ning teistest organisatsioonidest. (2) Ametiühingutel on õigus iseseisvalt korraldada oma tegevust ja juhtimist, sealhulgas töötada välja oma põhikiri, koostada tegevuskavasid ning vabalt valida oma esindajaid. (3) Tööandjatel, nende ühendustel ja esindajatel, riigiasutustel ja kohalikel omavalitsusüksustel on keelatud ametiühingute laialisaatmine, tegevuse piiramine või keelustamine ja sekkumine ametiühingute siseasjadesse. (4) Ametiühingute tegevuse lõpetamine toimub ainult vabatahtlikult või kohtuotsuse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_1"
@@ -928,12 +1168,12 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasVersion": [
         {
@@ -983,12 +1223,12 @@
         "@id": "estleg:AUS_Par_5"
       },
       "rdfs:label": "§ 5 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -1003,9 +1243,6 @@
         "@id": "estleg:AUS_Par_5"
       },
       "rdfs:label": "§ 5 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1017,6 +1254,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -1039,12 +1279,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Ametiühingu õigusvõime",
+      "rdfs:label": {
+        "@value": "§ 6. Ametiühingu õigusvõime",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühing on eraõiguslik juriidiline isik, kui ta kantakse ametiühingute registrisse. Ametiühingule kohaldatakse mittetulundusühingute seadust käesolevast seadusest tulenevate erisustega. (2) Ametiühingu õigusvõime tekib ametiühingute registrisse (edaspidi register) kandmisega ja lõpeb registrist kustutamisega, kui ametiühingul puudub vara. (3) Ametiühingu ümberkujundamine teist liiki juriidiliseks isikuks ei ole lubatud.",
+      "estleg:summary": {
+        "@value": "(1) Ametiühing on eraõiguslik juriidiline isik, kui ta kantakse ametiühingute registrisse. Ametiühingule kohaldatakse mittetulundusühingute seadust käesolevast seadusest tulenevate erisustega. (2) Ametiühingu õigusvõime tekib ametiühingute registrisse (edaspidi register) kandmisega ja lõpeb registrist kustutamisega, kui ametiühingul puudub vara. (3) Ametiühingu ümberkujundamine teist liiki juriidiliseks isikuks ei ole lubatud.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ametiühing on eraõiguslik juriidiline isik, kui ta kantakse ametiühingute registrisse. Ametiühingule kohaldatakse mittetulundusühingute seadust käesolevast seadusest tulenevate erisustega. (2) Ametiühingu õigusvõime tekib ametiühingute registrisse (edaspidi register) kandmisega ja lõpeb registrist kustutamisega, kui ametiühingul puudub vara. (3) Ametiühingu ümberkujundamine teist liiki juriidiliseks isikuks ei ole lubatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_2"
@@ -1065,24 +1311,30 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_Business"
         },
         {
-          "@id": "estleg:TargetGroup_Business"
+          "@id": "estleg:TargetGroup_NGO"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:MTUS_Par_2"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KiKoS_Par_5"
+        },
+        {
+          "@id": "estleg:MAAPAR_Par_59"
+        },
+        {
+          "@id": "estleg:SAS_Par_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_6_v26421"
@@ -1148,9 +1400,6 @@
         "@id": "estleg:AUS_Par_6"
       },
       "rdfs:label": "§ 6 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1159,6 +1408,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -1168,13 +1420,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Asutamine",
+      "rdfs:label": {
+        "@value": "§ 7. Asutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühingu võivad asutada vähemalt viis töötajat. Ametiühingute liidu võivad asutada vähemalt viis ametiühingut. Ametiühingute keskliidu võivad asutada vähemalt viis üleriigiliselt tegutsevat tegevus- või kutseala ametiühingut või ametiühingute liitu. (2) Ametiühing asutatakse asutamiskoosolekul vastavalt käesoleva seaduse § 9 lõigetele 2, 4 ja 5. (3) Ametiühingu asutamine vormistatakse asutamislepinguga, milles tuleb lisaks mittetulundusühingute seaduses sätestatud nõuetele märkida:",
-      "estleg:legalText": "(1) Ametiühingu võivad asutada vähemalt viis töötajat. Ametiühingute liidu võivad asutada vähemalt viis ametiühingut. Ametiühingute keskliidu võivad asutada vähemalt viis üleriigiliselt tegutsevat tegevus- või kutseala ametiühingut või ametiühingute liitu. (2) Ametiühing asutatakse asutamiskoosolekul vastavalt käesoleva seaduse § 9 lõigetele 2, 4 ja 5. (3) Ametiühingu asutamine vormistatakse asutamislepinguga, milles tuleb lisaks mittetulundusühingute seaduses sätestatud nõuetele märkida: koosoleku toimumise aeg, koht, hääletustulemused ja vastuvõetud otsus; juhatuse liikmete nimed ja elukohad, samuti asutajate isiku- või registrikoodid. (4) Asutamislepinguga kinnitatakse põhikiri. Asutamislepingule ja põhikirjale kirjutavad alla koosoleku juhataja ja protokollija. Asutamislepingu lahutamatu lisa on asutamiskoosolekul osalenute nimekiri koos igaühe allkirjaga. Kui asutajateks on ametiühingud, lisatakse asutamislepingule asutajate organite otsused asutamise kohta ja registrikaardi ärakirjad.",
+      "estleg:summary": {
+        "@value": "(1) Ametiühingu võivad asutada vähemalt viis töötajat. Ametiühingute liidu võivad asutada vähemalt viis ametiühingut. Ametiühingute keskliidu võivad asutada vähemalt viis üleriigiliselt tegutsevat tegevus- või kutseala ametiühingut või ametiühingute liitu. (2) Ametiühing asutatakse asutamiskoosolekul vastavalt käesoleva seaduse § 9 lõigetele 2, 4 ja 5. (3) Ametiühingu asutamine vormistatakse asutamislepinguga, milles tuleb lisaks mittetulundusühingute seaduses sätestatud nõuetele märkida: 1)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ametiühingu võivad asutada vähemalt viis töötajat. Ametiühingute liidu võivad asutada vähemalt viis ametiühingut. Ametiühingute keskliidu võivad asutada vähemalt viis üleriigiliselt tegutsevat tegevus- või kutseala ametiühingut või ametiühingute liitu. (2) Ametiühing asutatakse asutamiskoosolekul vastavalt käesoleva seaduse § 9 lõigetele 2, 4 ja 5. (3) Ametiühingu asutamine vormistatakse asutamislepinguga, milles tuleb lisaks mittetulundusühingute seaduses sätestatud nõuetele märkida: 1) koosoleku toimumise aeg, koht, hääletustulemused ja vastuvõetud otsus; 2) juhatuse liikmete nimed ja elukohad, samuti asutajate isiku- või registrikoodid. (4) Asutamislepinguga kinnitatakse põhikiri. Asutamislepingule ja põhikirjale kirjutavad alla koosoleku juhataja ja protokollija. Asutamislepingu lahutamatu lisa on asutamiskoosolekul osalenute nimekiri koos igaühe allkirjaga. Kui asutajateks on ametiühingud, lisatakse asutamislepingule asutajate organite otsused asutamise kohta ja registrikaardi ärakirjad.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_2"
       },
@@ -1203,9 +1461,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1215,14 +1470,17 @@
           "@id": "estleg:AUS_Par_9"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:AUS_Par_7_v26421"
-        }
-      ],
       "estleg:interpretedBy": [
         {
           "@id": "estleg:RK_3_2_1_28_01"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:AUS_Par_7_v26421"
         }
       ]
     },
@@ -1248,6 +1506,9 @@
         "@type": "xsd:decimal"
       },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:AUS_Map"
+        },
         {
           "@id": "estleg:AUS_Par_14"
         },
@@ -1281,14 +1542,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Ametiühingu asutamine vormistatakse asutamislepinguga, milles tuleb lisaks mittetulundusühingute seaduses sätestatud nõuetele märkida: koosoleku toimumise aeg, koht, hääletustulemused ja vastuvõetud otsus; juhatuse liikmete nimed ja elukohad, samuti asutajate isiku- või registrikoodid.",
+      "estleg:legalText": "(3) Ametiühingu asutamine vormistatakse asutamislepinguga, milles tuleb lisaks mittetulundusühingute seaduses sätestatud nõuetele märkida: 1) koosoleku toimumise aeg, koht, hääletustulemused ja vastuvõetud otsus; 2) juhatuse liikmete nimed ja elukohad, samuti asutajate isiku- või registrikoodid.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1300,6 +1562,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1331,13 +1596,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Põhikiri",
+      "rdfs:label": {
+        "@value": "§ 8. Põhikiri",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Põhikiri peab olema kirjalik. Põhikirjas tuleb märkida: ametiühingu nimi ja asukoht; ametiühingu eesmärk; ametiühingu liikmeks vastuvõtmise ning ametiühingust väljaastumise ja väljaarvamise tingimused ja kord; liikmete õigused ja kohustused või kord, kuidas võib liikmetele kehtestada ühingu suhtes kohustusi; liikmete esindamise kord, liikmete vastutus; ametiühingu organisatsiooniline struktuur, struktuuriüksuste pädevus; ametiühingu organite nimetused, moodustamise kord, volituste tähtaeg,",
-      "estleg:legalText": "(1) Põhikiri peab olema kirjalik. Põhikirjas tuleb märkida: ametiühingu nimi ja asukoht; ametiühingu eesmärk; ametiühingu liikmeks vastuvõtmise ning ametiühingust väljaastumise ja väljaarvamise tingimused ja kord; liikmete õigused ja kohustused või kord, kuidas võib liikmetele kehtestada ühingu suhtes kohustusi; liikmete esindamise kord, liikmete vastutus; ametiühingu organisatsiooniline struktuur, struktuuriüksuste pädevus; ametiühingu organite nimetused, moodustamise kord, volituste tähtaeg, otsustusvõimelisus, pädevus ja otsuste tegemise kord; üldkoosoleku kokkukutsumise kord, sealhulgas kokkukutsumine liikmete nõudmisel; sisseastumis- ja liikmemaksude kehtestamise ja tasumise kord; põhikirja muutmise kord; ametiühingu organite tegevuse ja rahaliste vahendite kasutamise üle kontrolli teostamise, revidentide määramise ja nende aruandmise kord; ametiühingu lõpetamise kord; ametiühingu vara jaotamise põhimõtted ühingu lõpetamise korral; muud seadusega sätestatud tingimused. (2) Põhikirjas sätestatu peab tagama, et ametiühingu organite moodustamine ja esindajate valimine toimuks võimalikult paljude liikmete või nende esindajate osavõtul ning et liikmed oleksid võimalikult hästi organite tööst informeeritud. (3) Põhikirjaga võib ette näha ka muid tingimusi, mis ei ole seadusega vastuolus. Kui põhikirjasäte on vastuolus seaduses sätestatuga, kohaldatakse seaduses sätestatut.",
+      "estleg:summary": {
+        "@value": "(1) Põhikiri peab olema kirjalik. Põhikirjas tuleb märkida: 1) ametiühingu nimi ja asukoht; 2) ametiühingu eesmärk; 3) ametiühingu liikmeks vastuvõtmise ning ametiühingust väljaastumise ja väljaarvamise tingimused ja kord; 4) liikmete õigused ja kohustused või kord, kuidas võib liikmetele kehtestada ühingu suhtes kohustusi; 5) liikmete esindamise kord, liikmete vastutus; 6) ametiühingu organisatsiooniline struktuur, struktuuriüksuste pädevus; 7) ametiühingu organite nimetused, moodustamise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Põhikiri peab olema kirjalik. Põhikirjas tuleb märkida: 1) ametiühingu nimi ja asukoht; 2) ametiühingu eesmärk; 3) ametiühingu liikmeks vastuvõtmise ning ametiühingust väljaastumise ja väljaarvamise tingimused ja kord; 4) liikmete õigused ja kohustused või kord, kuidas võib liikmetele kehtestada ühingu suhtes kohustusi; 5) liikmete esindamise kord, liikmete vastutus; 6) ametiühingu organisatsiooniline struktuur, struktuuriüksuste pädevus; 7) ametiühingu organite nimetused, moodustamise kord, volituste tähtaeg, otsustusvõimelisus, pädevus ja otsuste tegemise kord; 8) üldkoosoleku kokkukutsumise kord, sealhulgas kokkukutsumine liikmete nõudmisel; 9) sisseastumis- ja liikmemaksude kehtestamise ja tasumise kord; 10) põhikirja muutmise kord; 11) ametiühingu organite tegevuse ja rahaliste vahendite kasutamise üle kontrolli teostamise, revidentide määramise ja nende aruandmise kord; 12) ametiühingu lõpetamise kord; 13) ametiühingu vara jaotamise põhimõtted ühingu lõpetamise korral; 14) muud seadusega sätestatud tingimused. (2) Põhikirjas sätestatu peab tagama, et ametiühingu organite moodustamine ja esindajate valimine toimuks võimalikult paljude liikmete või nende esindajate osavõtul ning et liikmed oleksid võimalikult hästi organite tööst informeeritud. (3) Põhikirjaga võib ette näha ka muid tingimusi, mis ei ole seadusega vastuolus. Kui põhikirjasäte on vastuolus seaduses sätestatuga, kohaldatakse seaduses sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_2"
       },
@@ -1360,19 +1631,22 @@
           "@id": "estleg:TargetGroup_NGO"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:MTUS_Par_7"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:AUS_Map"
+        },
         {
           "@id": "estleg:AUS_Par_12"
         },
@@ -1393,14 +1667,27 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Põhikiri peab olema kirjalik. Põhikirjas tuleb märkida: ametiühingu nimi ja asukoht; ametiühingu eesmärk; ametiühingu liikmeks vastuvõtmise ning ametiühingust väljaastumise ja väljaarvamise tingimused ja kord; liikmete õigused ja kohustused või kord, kuidas võib liikmetele kehtestada ühingu suhtes kohustusi; liikmete esindamise kord, liikmete vastutus; ametiühingu organisatsiooniline struktuur, struktuuriüksuste pädevus; ametiühingu organite nimetused, moodustamise kord, volituste tähtaeg, otsustusvõimelisus, pädevus ja otsuste tegemise kord; üldkoosoleku kokkukutsumise kord, sealhulgas kokkukutsumine liikmete nõudmisel; sisseastumis- ja liikmemaksude kehtestamise ja tasumise kord; põhikirja muutmise kord; ametiühingu organite tegevuse ja rahaliste vahendite kasutamise üle kontrolli teostamise, revidentide määramise ja nende aruandmise kord; ametiühingu lõpetamise kord; ametiühingu vara jaotamise põhimõtted ühingu lõpetamise korral; muud seadusega sätestatud tingimused.",
+      "estleg:legalText": "(1) Põhikiri peab olema kirjalik. Põhikirjas tuleb märkida: 1) ametiühingu nimi ja asukoht; 2) ametiühingu eesmärk; 3) ametiühingu liikmeks vastuvõtmise ning ametiühingust väljaastumise ja väljaarvamise tingimused ja kord; 4) liikmete õigused ja kohustused või kord, kuidas võib liikmetele kehtestada ühingu suhtes kohustusi; 5) liikmete esindamise kord, liikmete vastutus; 6) ametiühingu organisatsiooniline struktuur, struktuuriüksuste pädevus; 7) ametiühingu organite nimetused, moodustamise kord, volituste tähtaeg, otsustusvõimelisus, pädevus ja otsuste tegemise kord; 8) üldkoosoleku kokkukutsumise kord, sealhulgas kokkukutsumine liikmete nõudmisel; 9) sisseastumis- ja liikmemaksude kehtestamise ja tasumise kord; 10) põhikirja muutmise kord; 11) ametiühingu organite tegevuse ja rahaliste vahendite kasutamise üle kontrolli teostamise, revidentide määramise ja nende aruandmise kord; 12) ametiühingu lõpetamise kord; 13) ametiühingu vara jaotamise põhimõtted ühingu lõpetamise korral; 14) muud seadusega sätestatud tingimused.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_8"
       },
       "rdfs:label": "§ 8 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_NGO"
@@ -1409,6 +1696,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1423,12 +1713,12 @@
         "@id": "estleg:AUS_Par_8"
       },
       "rdfs:label": "§ 8 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1443,12 +1733,12 @@
         "@id": "estleg:AUS_Par_8"
       },
       "rdfs:label": "§ 8 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1458,13 +1748,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Üldkoosolek",
+      "rdfs:label": {
+        "@value": "§ 9. Üldkoosolek",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühingu kõrgeimaks organiks on vastavalt tema põhikirjale kas üldkoosolek, konverents või kongress (edaspidi üldkoosolek). Üldkoosolekul võivad osaleda kõik ametiühingu liikmed või nende poolt valitud esindajad vastavalt põhikirjas sätestatud korrale. (2) Üldkoosoleku otsused võetakse vastu, kui poolt hääletavad enam kui pooled koosolekul osalenud liikmetest või nende esindajatest, kui põhikirjas ei ole ette nähtud suurema häälteenamuse nõuet.",
-      "estleg:legalText": "(1) Ametiühingu kõrgeimaks organiks on vastavalt tema põhikirjale kas üldkoosolek, konverents või kongress (edaspidi üldkoosolek). Üldkoosolekul võivad osaleda kõik ametiühingu liikmed või nende poolt valitud esindajad vastavalt põhikirjas sätestatud korrale. (2) Üldkoosoleku otsused võetakse vastu, kui poolt hääletavad enam kui pooled koosolekul osalenud liikmetest või nende esindajatest, kui põhikirjas ei ole ette nähtud suurema häälteenamuse nõuet. (3) Üldkoosoleku pädevusse kuulub: põhikirja vastuvõtmine ja muutmine; eesmärkide muutmine; vabatahtlik lõpetamine; muud põhikirjas sätestatud küsimused. (4) Käesoleva paragrahvi lõike 3 punktides 1–3 sätestatud küsimustes on üldkoosoleku otsus vastu võetud, kui vähemalt 2/3 üldkoosolekul osalenud liikmetest või nende poolt valitud esindajatest hääletasid poolt, kui põhikirjas ei ole ette nähtud suurema häälteenamuse nõuet. (5) Igal füüsilisest isikust liikmel on üks hääl. Igal liikmeks oleval ametiühingul on üks hääl, kui põhikiri ei näe ette suuremat häälte arvu.",
+      "estleg:summary": {
+        "@value": "(1) Ametiühingu kõrgeimaks organiks on vastavalt tema põhikirjale kas üldkoosolek, konverents või kongress (edaspidi üldkoosolek). Üldkoosolekul võivad osaleda kõik ametiühingu liikmed või nende poolt valitud esindajad vastavalt põhikirjas sätestatud korrale. (2) Üldkoosoleku otsused võetakse vastu, kui poolt hääletavad enam kui pooled koosolekul osalenud liikmetest või nende esindajatest, kui põhikirjas ei ole ette nähtud suurema häälteenamuse nõuet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ametiühingu kõrgeimaks organiks on vastavalt tema põhikirjale kas üldkoosolek, konverents või kongress (edaspidi üldkoosolek). Üldkoosolekul võivad osaleda kõik ametiühingu liikmed või nende poolt valitud esindajad vastavalt põhikirjas sätestatud korrale. (2) Üldkoosoleku otsused võetakse vastu, kui poolt hääletavad enam kui pooled koosolekul osalenud liikmetest või nende esindajatest, kui põhikirjas ei ole ette nähtud suurema häälteenamuse nõuet. (3) Üldkoosoleku pädevusse kuulub: 1) põhikirja vastuvõtmine ja muutmine; 2) eesmärkide muutmine; 3) vabatahtlik lõpetamine; 4) muud põhikirjas sätestatud küsimused. (4) Käesoleva paragrahvi lõike 3 punktides 1–3 sätestatud küsimustes on üldkoosoleku otsus vastu võetud, kui vähemalt 2/3 üldkoosolekul osalenud liikmetest või nende poolt valitud esindajatest hääletasid poolt, kui põhikirjas ei ole ette nähtud suurema häälteenamuse nõuet. (5) Igal füüsilisest isikust liikmel on üks hääl. Igal liikmeks oleval ametiühingul on üks hääl, kui põhikiri ei näe ette suuremat häälte arvu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_2"
       },
@@ -1498,6 +1794,9 @@
         "@type": "xsd:decimal"
       },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:AUS_Map"
+        },
         {
           "@id": "estleg:AUS_Par_7"
         },
@@ -1550,11 +1849,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Üldkoosoleku pädevusse kuulub: põhikirja vastuvõtmine ja muutmine; eesmärkide muutmine; vabatahtlik lõpetamine; muud põhikirjas sätestatud küsimused.",
+      "estleg:legalText": "(3) Üldkoosoleku pädevusse kuulub: 1) põhikirja vastuvõtmine ja muutmine; 2) eesmärkide muutmine; 3) vabatahtlik lõpetamine; 4) muud põhikirjas sätestatud küsimused.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_9"
       },
-      "rdfs:label": "§ 9 lg 3"
+      "rdfs:label": "§ 9 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
     },
     {
       "@id": "estleg:AUS_Par_9_Lg_4",
@@ -1598,13 +1903,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Mittetulundusühingute seaduse kohaldamise erisused",
+      "rdfs:label": {
+        "@value": "§ 10. Mittetulundusühingute seaduse kohaldamise erisused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühingute suhtes kohaldatakse mittetulundusühingute seaduse § 13 lõikes 2, § 16 lõikes 4, §-des 19–201 ja §-des 22–23 esitatud nõudeid, kui põhikiri ei sätesta teisiti. (2) Ametiühingu suhtes kohaldatakse mittetulundusühingute seaduse § 36 lõigetes 2 ja 3 sätestatud nõuet aruannete üldkoosolekule esitamise ja üldkoosolekul kinnitamise kohta, kui põhikiri ei sätesta teisiti. (2¹) Ametiühing esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõigete 5 ja 51 kohaselt ilma",
-      "estleg:legalText": "(1) Ametiühingute suhtes kohaldatakse mittetulundusühingute seaduse § 13 lõikes 2, § 16 lõikes 4, §-des 19–201 ja §-des 22–23 esitatud nõudeid, kui põhikiri ei sätesta teisiti. (2) Ametiühingu suhtes kohaldatakse mittetulundusühingute seaduse § 36 lõigetes 2 ja 3 sätestatud nõuet aruannete üldkoosolekule esitamise ja üldkoosolekul kinnitamise kohta, kui põhikiri ei sätesta teisiti. (2¹) Ametiühing esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõigete 5 ja 51 kohaselt ilma põhitegevusala andmeteta elektrooniliselt äriregistri seaduse § 7 lõike 2 punkti 1 alusel kehtestatud korras. (3) Kehtetu - (4) Kehtetu - (5) Ametiühingu suhtes ei kohaldata mittetulundusühingute seaduse § 17 lõiget 1, § 21 lõikeid 5 ja 8, § 22 lõiget 4, § 25 lõike 1 teist lauset ja § 30.",
+      "estleg:summary": {
+        "@value": "(1) Ametiühingute suhtes kohaldatakse mittetulundusühingute seaduse § 13 lõikes 2, § 16 lõikes 4, §-des 19–20¹ ja §-des 22–23 esitatud nõudeid, kui põhikiri ei sätesta teisiti. (2) Ametiühingu suhtes kohaldatakse mittetulundusühingute seaduse § 36 lõigetes 2 ja 3 sätestatud nõuet aruannete üldkoosolekule esitamise ja üldkoosolekul kinnitamise kohta, kui põhikiri ei sätesta teisiti. (2¹) Ametiühing esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõigete 5 ja 5¹ kohaselt ilma",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ametiühingute suhtes kohaldatakse mittetulundusühingute seaduse § 13 lõikes 2, § 16 lõikes 4, §-des 19–20¹ ja §-des 22–23 esitatud nõudeid, kui põhikiri ei sätesta teisiti. (2) Ametiühingu suhtes kohaldatakse mittetulundusühingute seaduse § 36 lõigetes 2 ja 3 sätestatud nõuet aruannete üldkoosolekule esitamise ja üldkoosolekul kinnitamise kohta, kui põhikiri ei sätesta teisiti. (2¹) Ametiühing esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõigete 5 ja 5¹ kohaselt ilma põhitegevusala andmeteta elektrooniliselt äriregistri seaduse § 7 lõike 2 punkti 1 alusel kehtestatud korras. (5) Ametiühingu suhtes ei kohaldata mittetulundusühingute seaduse § 17 lõiget 1, § 21 lõikeid 5 ja 8, § 22 lõiget 4, § 25 lõike 1 teist lauset ja § 30.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_2"
       },
@@ -1620,12 +1931,6 @@
         },
         {
           "@id": "estleg:AUS_Par_10_Lg_2_1"
-        },
-        {
-          "@id": "estleg:AUS_Par_10_Lg_3"
-        },
-        {
-          "@id": "estleg:AUS_Par_10_Lg_4"
         },
         {
           "@id": "estleg:AUS_Par_10_Lg_5"
@@ -1673,7 +1978,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Ametiühingute suhtes kohaldatakse mittetulundusühingute seaduse § 13 lõikes 2, § 16 lõikes 4, §-des 19–201 ja §-des 22–23 esitatud nõudeid, kui põhikiri ei sätesta teisiti.",
+      "estleg:legalText": "(1) Ametiühingute suhtes kohaldatakse mittetulundusühingute seaduse § 13 lõikes 2, § 16 lõikes 4, §-des 19–20¹ ja §-des 22–23 esitatud nõudeid, kui põhikiri ei sätesta teisiti.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_10"
       },
@@ -1727,7 +2032,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2¹",
-      "estleg:legalText": "(2¹) Ametiühing esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõigete 5 ja 51 kohaselt ilma põhitegevusala andmeteta elektrooniliselt äriregistri seaduse § 7 lõike 2 punkti 1 alusel kehtestatud korras.",
+      "estleg:legalText": "(2¹) Ametiühing esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõigete 5 ja 5¹ kohaselt ilma põhitegevusala andmeteta elektrooniliselt äriregistri seaduse § 7 lõike 2 punkti 1 alusel kehtestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_10"
       },
@@ -1750,32 +2055,6 @@
           "@id": "estleg:MTUS_Par_36_Lg_5"
         }
       ]
-    },
-    {
-      "@id": "estleg:AUS_Par_10_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AUS_Par_10"
-      },
-      "rdfs:label": "§ 10 lg 3"
-    },
-    {
-      "@id": "estleg:AUS_Par_10_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AUS_Par_10"
-      },
-      "rdfs:label": "§ 10 lg 4"
     },
     {
       "@id": "estleg:AUS_Par_10_Lg_5",
@@ -1811,13 +2090,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Ametiühingute register",
+      "rdfs:label": {
+        "@value": "§ 11. Ametiühingute register",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühingute register on mittetulundusühingute ja sihtasutuste registri osa, mille suhtes kohaldatakse mittetulundusühingute ja sihtasutuste registri kohta õigusaktides sätestatut, kui käesolevast seadusest ei tulene teisiti. (2) Registrit peetakse ametiühingute kohta. (3) Registrit peab Tartu Maakohtu registriosakond (edaspidi registripidaja). (4) Kehtetu -",
-      "estleg:legalText": "(1) Ametiühingute register on mittetulundusühingute ja sihtasutuste registri osa, mille suhtes kohaldatakse mittetulundusühingute ja sihtasutuste registri kohta õigusaktides sätestatut, kui käesolevast seadusest ei tulene teisiti. (2) Registrit peetakse ametiühingute kohta. (3) Registrit peab Tartu Maakohtu registriosakond (edaspidi registripidaja). (4) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Ametiühingute register on mittetulundusühingute ja sihtasutuste registri osa, mille suhtes kohaldatakse mittetulundusühingute ja sihtasutuste registri kohta õigusaktides sätestatut, kui käesolevast seadusest ei tulene teisiti. (2) Registrit peetakse ametiühingute kohta. (3) Registrit peab Tartu Maakohtu registriosakond (edaspidi registripidaja).",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ametiühingute register on mittetulundusühingute ja sihtasutuste registri osa, mille suhtes kohaldatakse mittetulundusühingute ja sihtasutuste registri kohta õigusaktides sätestatut, kui käesolevast seadusest ei tulene teisiti. (2) Registrit peetakse ametiühingute kohta. (3) Registrit peab Tartu Maakohtu registriosakond (edaspidi registripidaja).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_2"
       },
@@ -1833,9 +2118,6 @@
         },
         {
           "@id": "estleg:AUS_Par_11_Lg_3"
-        },
-        {
-          "@id": "estleg:AUS_Par_11_Lg_4"
         }
       ],
       "estleg:targetGroup": [
@@ -1846,10 +2128,19 @@
           "@id": "estleg:TargetGroup_NGO"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
         {
-          "@id": "estleg:ERAS_Par_27"
-        },
+          "@id": "estleg:Institution_maakohus"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KORTER_Par_63"
         },
@@ -1858,15 +2149,11 @@
         },
         {
           "@id": "estleg:MAAPAR_Par_82"
+        },
+        {
+          "@id": "estleg:MTUS_Par_75"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_11_v26421"
@@ -1876,11 +2163,6 @@
         },
         {
           "@id": "estleg:AUS_Par_11_v112072014027"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_maakohus"
         }
       ]
     },
@@ -1947,31 +2229,24 @@
       ]
     },
     {
-      "@id": "estleg:AUS_Par_11_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AUS_Par_11"
-      },
-      "rdfs:label": "§ 11 lg 4"
-    },
-    {
       "@id": "estleg:AUS_Par_12",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Registrisse kandmata jätmise keeld",
+      "rdfs:label": {
+        "@value": "§ 12. Registrisse kandmata jätmise keeld",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Kui ametiühing vastab käesoleva seaduse nõuetele ametiühingulise eesmärgi, asutajate, liikmete, liikmete arvu, ametiühinguorganite asutamisotsuste, seadusest tulenevate juhtorganite olemasolu ja pädevuse osas ning kui ametiühingu põhikirjas on reguleeritud käesoleva seaduse §-s 8 sätestatud nõuded ning kui ametiühingu nimi ei ole eksitav ametiühingu pädevuse ulatuse ja õigusliku vormi osas, ei ole registripidajal õigust registreerimisest keelduda.",
+      "estleg:summary": {
+        "@value": "Kui ametiühing vastab käesoleva seaduse nõuetele ametiühingulise eesmärgi, asutajate, liikmete, liikmete arvu, ametiühinguorganite asutamisotsuste, seadusest tulenevate juhtorganite olemasolu ja pädevuse osas ning kui ametiühingu põhikirjas on reguleeritud käesoleva seaduse §-s 8 sätestatud nõuded ning kui ametiühingu nimi ei ole eksitav ametiühingu pädevuse ulatuse ja õigusliku vormi osas, ei ole registripidajal õigust registreerimisest keelduda.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui ametiühing vastab käesoleva seaduse nõuetele ametiühingulise eesmärgi, asutajate, liikmete, liikmete arvu, ametiühinguorganite asutamisotsuste, seadusest tulenevate juhtorganite olemasolu ja pädevuse osas ning kui ametiühingu põhikirjas on reguleeritud käesoleva seaduse §-s 8 sätestatud nõuded ning kui ametiühingu nimi ei ole eksitav ametiühingu pädevuse ulatuse ja õigusliku vormi osas, ei ole registripidajal õigust registreerimisest keelduda.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_2"
@@ -2010,10 +2285,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui ametiühing vastab käesoleva seaduse nõuetele ametiühingulise eesmärgi, asutajate, liikmete, liikmete arvu, ametiühinguorganite asutamisotsuste, seadusest tulenevate juhtorganite olemasolu ja pädevuse osas ning kui ametiühingu põhikirjas on reguleeritud käesoleva seaduse §-s 8 sätestatud nõuded ning kui ametiühingu nimi ei ole eksitav ametiühingu pädevuse ulatuse ja õigusliku vormi osas, ei ole registripidajal õigust registreerimisest keelduda.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui ametiühing vastab käesoleva seaduse nõuetele ametiühingulise eesmärgi, asutajate, liikmete, liikmete arvu, ametiühinguorganite asutamisotsuste, seadusest tulenevate juhtorganite olemasolu ja pädevuse osas ning kui ametiühingu põhikirjas on reguleeritud käesoleva seaduse §-s 8 sätestatud nõuded ning kui ametiühingu nimi ei ole eksitav ametiühingu pädevuse ulatuse ja õigusliku vormi osas, ei ole registripidajal õigust registreerimisest keelduda.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_12"
       },
+      "rdfs:label": "§ 12 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2036,12 +2313,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Ametiühingu vabatahtlik lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 13. Ametiühingu vabatahtlik lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Ametiühing lõpetatakse vabatahtlikult üldkoosoleku otsusega. Otsuse likvideerimise korra kohta võtab üldkoosolek vastu vastavalt põhikirjale ja seadusele.",
+      "estleg:summary": {
+        "@value": "Ametiühing lõpetatakse vabatahtlikult üldkoosoleku otsusega. Otsuse likvideerimise korra kohta võtab üldkoosolek vastu vastavalt põhikirjale ja seadusele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ametiühing lõpetatakse vabatahtlikult üldkoosoleku otsusega. Otsuse likvideerimise korra kohta võtab üldkoosolek vastu vastavalt põhikirjale ja seadusele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_3"
@@ -2066,10 +2349,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ametiühing lõpetatakse vabatahtlikult üldkoosoleku otsusega. Otsuse likvideerimise korra kohta võtab üldkoosolek vastu vastavalt põhikirjale ja seadusele.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiühing lõpetatakse vabatahtlikult üldkoosoleku otsusega. Otsuse likvideerimise korra kohta võtab üldkoosolek vastu vastavalt põhikirjale ja seadusele.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_13"
-      }
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:AUS_Par_14",
@@ -2078,13 +2363,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Lõpetamine kohtu määrusega",
+      "rdfs:label": {
+        "@value": "§ 14. Lõpetamine kohtu määrusega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühing lõpetatakse kohtu määrusega huvitatud isiku nõudel, kui: ametiühingu asutamine või tegevus on vastuolus seaduse või ametiühingu põhikirjaliste eesmärkidega; liikmete arv on langenud alla käesoleva seaduse § 7 lõikes 1 sätestatud arvu ja juhatus ei algata vabatahtlikku lõpetamist kuue kuu jooksul. kehtetu - (2) Kohus võib anda tähtaja käesoleva paragrahvi lõike 1 punktis 1 nimetatud puuduste kõrvaldamiseks.",
-      "estleg:legalText": "(1) Ametiühing lõpetatakse kohtu määrusega huvitatud isiku nõudel, kui: ametiühingu asutamine või tegevus on vastuolus seaduse või ametiühingu põhikirjaliste eesmärkidega; liikmete arv on langenud alla käesoleva seaduse § 7 lõikes 1 sätestatud arvu ja juhatus ei algata vabatahtlikku lõpetamist kuue kuu jooksul. kehtetu - (2) Kohus võib anda tähtaja käesoleva paragrahvi lõike 1 punktis 1 nimetatud puuduste kõrvaldamiseks.",
+      "estleg:summary": {
+        "@value": "(1) Ametiühing lõpetatakse kohtu määrusega huvitatud isiku nõudel, kui: 1) ametiühingu asutamine või tegevus on vastuolus seaduse või ametiühingu põhikirjaliste eesmärkidega; 2) liikmete arv on langenud alla käesoleva seaduse § 7 lõikes 1 sätestatud arvu ja juhatus ei algata vabatahtlikku lõpetamist kuue kuu jooksul. 3) (2) Kohus võib anda tähtaja käesoleva paragrahvi lõike 1 punktis 1 nimetatud puuduste kõrvaldamiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ametiühing lõpetatakse kohtu määrusega huvitatud isiku nõudel, kui: 1) ametiühingu asutamine või tegevus on vastuolus seaduse või ametiühingu põhikirjaliste eesmärkidega; 2) liikmete arv on langenud alla käesoleva seaduse § 7 lõikes 1 sätestatud arvu ja juhatus ei algata vabatahtlikku lõpetamist kuue kuu jooksul. 3) (2) Kohus võib anda tähtaja käesoleva paragrahvi lõike 1 punktis 1 nimetatud puuduste kõrvaldamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_3"
       },
@@ -2101,15 +2392,9 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -2119,6 +2404,15 @@
           "@id": "estleg:AUS_Par_7_Lg_1"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_14_v26421"
@@ -2129,13 +2423,7 @@
         {
           "@id": "estleg:AUS_Par_14_v13235586"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohus"
-        }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
       "@id": "estleg:AUS_Par_14_Lg_1",
@@ -2144,11 +2432,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Ametiühing lõpetatakse kohtu määrusega huvitatud isiku nõudel, kui: ametiühingu asutamine või tegevus on vastuolus seaduse või ametiühingu põhikirjaliste eesmärkidega; liikmete arv on langenud alla käesoleva seaduse § 7 lõikes 1 sätestatud arvu ja juhatus ei algata vabatahtlikku lõpetamist kuue kuu jooksul. kehtetu -",
+      "estleg:legalText": "(1) Ametiühing lõpetatakse kohtu määrusega huvitatud isiku nõudel, kui: 1) ametiühingu asutamine või tegevus on vastuolus seaduse või ametiühingu põhikirjaliste eesmärkidega; 2) liikmete arv on langenud alla käesoleva seaduse § 7 lõikes 1 sätestatud arvu ja juhatus ei algata vabatahtlikku lõpetamist kuue kuu jooksul. 3)",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_14"
       },
       "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2177,9 +2470,6 @@
       },
       "rdfs:label": "§ 14 lg 2",
       "estleg:itemNumber": "1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2188,6 +2478,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:competentAuthority": [
         {
@@ -2203,12 +2496,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Vara jaotamine",
+      "rdfs:label": {
+        "@value": "§ 15. Vara jaotamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühingu likvideerimise korral jaotatakse pärast võlausaldajate kõigi nõuete rahuldamist ja raha deponeerimist allesjäänud vara vastavalt põhikirjale. (2) Kui põhikirjas ettenähtud vara jaotamise korda ei ole võimalik kohaldada, antakse käesoleva paragrahvi lõikes 1 sätestatud allesjäänud vara liidule või keskliidule, kuhu likvideeritud ametiühing kuulus. Kui ametiühing ei kuulunud liitu ega keskliitu, jaotatakse allesjäänud vara sarnase tegevusala või kutseala ametiühingutele.",
+      "estleg:summary": {
+        "@value": "(1) Ametiühingu likvideerimise korral jaotatakse pärast võlausaldajate kõigi nõuete rahuldamist ja raha deponeerimist allesjäänud vara vastavalt põhikirjale. (2) Kui põhikirjas ettenähtud vara jaotamise korda ei ole võimalik kohaldada, antakse käesoleva paragrahvi lõikes 1 sätestatud allesjäänud vara liidule või keskliidule, kuhu likvideeritud ametiühing kuulus. Kui ametiühing ei kuulunud liitu ega keskliitu, jaotatakse allesjäänud vara sarnase tegevusala või kutseala ametiühingutele.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ametiühingu likvideerimise korral jaotatakse pärast võlausaldajate kõigi nõuete rahuldamist ja raha deponeerimist allesjäänud vara vastavalt põhikirjale. (2) Kui põhikirjas ettenähtud vara jaotamise korda ei ole võimalik kohaldada, antakse käesoleva paragrahvi lõikes 1 sätestatud allesjäänud vara liidule või keskliidule, kuhu likvideeritud ametiühing kuulus. Kui ametiühing ei kuulunud liitu ega keskliitu, jaotatakse allesjäänud vara sarnase tegevusala või kutseala ametiühingutele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_3"
@@ -2281,12 +2580,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Töötajate esindamise põhimõtted",
+      "rdfs:label": {
+        "@value": "§ 16. Töötajate esindamise põhimõtted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Kollektiivsetes töösuhetes on ametiühingul oma pädevuse piires õigus esindada ja kaitsta töötajate õigusi ja huve. (2) Individuaalsetes töösuhetes esindab ja kaitseb ametiühing oma liikmete õigusi ja huve liikme volituse alusel, kui seadustes ei ole sätestatud teisiti. (3) Ametiühingul on individuaalsetes töösuhetes õigus esindada ja kaitsta ametiühingu liikmeks mitteoleva töötaja õigusi ja huve tingimusel, et ta esitab ametiühingule vastava kirjaliku volituse.",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivsetes töösuhetes on ametiühingul oma pädevuse piires õigus esindada ja kaitsta töötajate õigusi ja huve. (2) Individuaalsetes töösuhetes esindab ja kaitseb ametiühing oma liikmete õigusi ja huve liikme volituse alusel, kui seadustes ei ole sätestatud teisiti. (3) Ametiühingul on individuaalsetes töösuhetes õigus esindada ja kaitsta ametiühingu liikmeks mitteoleva töötaja õigusi ja huve tingimusel, et ta esitab ametiühingule vastava kirjaliku volituse.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kollektiivsetes töösuhetes on ametiühingul oma pädevuse piires õigus esindada ja kaitsta töötajate õigusi ja huve. (2) Individuaalsetes töösuhetes esindab ja kaitseb ametiühing oma liikmete õigusi ja huve liikme volituse alusel, kui seadustes ei ole sätestatud teisiti. (3) Ametiühingul on individuaalsetes töösuhetes õigus esindada ja kaitsta ametiühingu liikmeks mitteoleva töötaja õigusi ja huve tingimusel, et ta esitab ametiühingule vastava kirjaliku volituse. (4) Ametiühingu valitud esindajat, kes on tööandja töötaja ja täidab käesoleva seaduse §-s 21 nimetatud valitud esindaja kohustusi (edaspidi ametiühingu usaldusisik), käsitletakse töötajate esindajana töölepingu seaduse tähenduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_4"
@@ -2320,6 +2625,11 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_2_1_133_07"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_16_v26421"
@@ -2329,11 +2639,6 @@
         },
         {
           "@id": "estleg:AUS_Par_16_v13149209"
-        }
-      ],
-      "estleg:interpretedBy": [
-        {
-          "@id": "estleg:RK_3_2_1_133_07"
         }
       ]
     },
@@ -2431,13 +2736,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Ametiühingute pädevus",
+      "rdfs:label": {
+        "@value": "§ 17. Ametiühingute pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Töötajate õiguste ja huvide esindamiseks, teostamiseks ja kaitsmiseks kuulub ametiühingute pädevusse: kollektiiv- või muude töö-, teenistus- või sotsiaalvaldkonda puudutavate lepingute sõlmimine tööandjate ja nende ühendustega, riigiasutuste ning kohalike omavalitsusüksuste ja Vabariigi Valitsusega; õigusaktide eelnõudesse ettepanekute esitamine töötajate töö-, teenistus- ja kutsealaseid ning majanduslikke ja sotsiaalseid õigusi ja huve puudutavates küsimustes; riigi- ja kohalike omavalitsuste",
-      "estleg:legalText": "Töötajate õiguste ja huvide esindamiseks, teostamiseks ja kaitsmiseks kuulub ametiühingute pädevusse: kollektiiv- või muude töö-, teenistus- või sotsiaalvaldkonda puudutavate lepingute sõlmimine tööandjate ja nende ühendustega, riigiasutuste ning kohalike omavalitsusüksuste ja Vabariigi Valitsusega; õigusaktide eelnõudesse ettepanekute esitamine töötajate töö-, teenistus- ja kutsealaseid ning majanduslikke ja sotsiaalseid õigusi ja huve puudutavates küsimustes; riigi- ja kohalike omavalitsuste asutustele ettepanekute esitamine töö- ja sotsiaalküsimusi reguleerivate õigusaktide täiendamiseks ja muutmiseks; tööohutuse ja töötervishoiu olukorra parandamiseks koostöö tegemine vastavate riigi- ja valitsusasutuste ning tööandjate ja nende ühendustega; riigi tööturuasutuste ja kohalike omavalitsustega koostöö tegemine tööga hõlmatuse, väljaõppe, täiendkoolituse, kutseoskuse ja erialase ettevalmistuse parandamise küsimustes; osalemine töötajate informeerimisel ja konsulteerimisel ametiühingu usaldusisiku kaudu käesolevas seaduses sätestatud korras; oma liikmete esindamine ja kaitsmine töövaidlusorganites, suhetes riigi- ja kohalike omavalitsuste asutuste, tööandjate ja tööandjate ühendustega.",
+      "estleg:summary": {
+        "@value": "Töötajate õiguste ja huvide esindamiseks, teostamiseks ja kaitsmiseks kuulub ametiühingute pädevusse: 1) kollektiiv- või muude töö-, teenistus- või sotsiaalvaldkonda puudutavate lepingute sõlmimine tööandjate ja nende ühendustega, riigiasutuste ning kohalike omavalitsusüksuste ja Vabariigi Valitsusega; 2) õigusaktide eelnõudesse ettepanekute esitamine töötajate töö-, teenistus- ja kutsealaseid ning majanduslikke ja sotsiaalseid õigusi ja huve puudutavates küsimustes; 3) riigi- ja kohalike",
+        "@language": "et"
+      },
+      "estleg:legalText": "Töötajate õiguste ja huvide esindamiseks, teostamiseks ja kaitsmiseks kuulub ametiühingute pädevusse: 1) kollektiiv- või muude töö-, teenistus- või sotsiaalvaldkonda puudutavate lepingute sõlmimine tööandjate ja nende ühendustega, riigiasutuste ning kohalike omavalitsusüksuste ja Vabariigi Valitsusega; 2) õigusaktide eelnõudesse ettepanekute esitamine töötajate töö-, teenistus- ja kutsealaseid ning majanduslikke ja sotsiaalseid õigusi ja huve puudutavates küsimustes; 3) riigi- ja kohalike omavalitsuste asutustele ettepanekute esitamine töö- ja sotsiaalküsimusi reguleerivate õigusaktide täiendamiseks ja muutmiseks; 4) tööohutuse ja töötervishoiu olukorra parandamiseks koostöö tegemine vastavate riigi- ja valitsusasutuste ning tööandjate ja nende ühendustega; 5) riigi tööturuasutuste ja kohalike omavalitsustega koostöö tegemine tööga hõlmatuse, väljaõppe, täiendkoolituse, kutseoskuse ja erialase ettevalmistuse parandamise küsimustes; 6) osalemine töötajate informeerimisel ja konsulteerimisel ametiühingu usaldusisiku kaudu käesolevas seaduses sätestatud korras; 7) oma liikmete esindamine ja kaitsmine töövaidlusorganites, suhetes riigi- ja kohalike omavalitsuste asutuste, tööandjate ja tööandjate ühendustega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_4"
       },
@@ -2461,14 +2772,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:AUS_Par_17_v26421"
-        },
-        {
-          "@id": "estleg:AUS_Par_17_v12775000"
-        }
-      ],
       "estleg:interpretedBy": [
         {
           "@id": "estleg:RK_3_2_1_133_07"
@@ -2478,6 +2781,14 @@
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:AUS_Par_17_v26421"
+        },
+        {
+          "@id": "estleg:AUS_Par_17_v12775000"
+        }
       ]
     },
     {
@@ -2486,10 +2797,21 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Töötajate õiguste ja huvide esindamiseks, teostamiseks ja kaitsmiseks kuulub ametiühingute pädevusse: kollektiiv- või muude töö-, teenistus- või sotsiaalvaldkonda puudutavate lepingute sõlmimine tööandjate ja nende ühendustega, riigiasutuste ning kohalike omavalitsusüksuste ja Vabariigi Valitsusega; õigusaktide eelnõudesse ettepanekute esitamine töötajate töö-, teenistus- ja kutsealaseid ning majanduslikke ja sotsiaalseid õigusi ja huve puudutavates küsimustes; riigi- ja kohalike omavalitsuste asutustele ettepanekute esitamine töö- ja sotsiaalküsimusi reguleerivate õigusaktide täiendamiseks ja muutmiseks; tööohutuse ja töötervishoiu olukorra parandamiseks koostöö tegemine vastavate riigi- ja valitsusasutuste ning tööandjate ja nende ühendustega; riigi tööturuasutuste ja kohalike omavalitsustega koostöö tegemine tööga hõlmatuse, väljaõppe, täiendkoolituse, kutseoskuse ja erialase ettevalmistuse parandamise küsimustes; osalemine töötajate informeerimisel ja konsulteerimisel ametiühingu usaldusisiku kaudu käesolevas seaduses sätestatud korras; oma liikmete esindamine ja kaitsmine töövaidlusorganites, suhetes riigi- ja kohalike omavalitsuste asutuste, tööandjate ja tööandjate ühendustega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töötajate õiguste ja huvide esindamiseks, teostamiseks ja kaitsmiseks kuulub ametiühingute pädevusse: 1) kollektiiv- või muude töö-, teenistus- või sotsiaalvaldkonda puudutavate lepingute sõlmimine tööandjate ja nende ühendustega, riigiasutuste ning kohalike omavalitsusüksuste ja Vabariigi Valitsusega; 2) õigusaktide eelnõudesse ettepanekute esitamine töötajate töö-, teenistus- ja kutsealaseid ning majanduslikke ja sotsiaalseid õigusi ja huve puudutavates küsimustes; 3) riigi- ja kohalike omavalitsuste asutustele ettepanekute esitamine töö- ja sotsiaalküsimusi reguleerivate õigusaktide täiendamiseks ja muutmiseks; 4) tööohutuse ja töötervishoiu olukorra parandamiseks koostöö tegemine vastavate riigi- ja valitsusasutuste ning tööandjate ja nende ühendustega; 5) riigi tööturuasutuste ja kohalike omavalitsustega koostöö tegemine tööga hõlmatuse, väljaõppe, täiendkoolituse, kutseoskuse ja erialase ettevalmistuse parandamise küsimustes; 6) osalemine töötajate informeerimisel ja konsulteerimisel ametiühingu usaldusisiku kaudu käesolevas seaduses sätestatud korras; 7) oma liikmete esindamine ja kaitsmine töövaidlusorganites, suhetes riigi- ja kohalike omavalitsuste asutuste, tööandjate ja tööandjate ühendustega.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_17"
       },
+      "rdfs:label": "§ 17 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2515,13 +2837,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Ametiühingute õigused",
+      "rdfs:label": {
+        "@value": "§ 18. Ametiühingute õigused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Pädevuse teostamiseks on ametiühingutel õigus: saada tööandjatelt, nende esindajatelt, riigiasutustelt ja kohaliku omavalitsuse üksustelt takistamatult töö- ja sotsiaalalast informatsiooni ning muud teavet töötajate huve puudutavates küsimustes; pidada töö-, teenistus- ja sotsiaalsetes küsimustes läbirääkimisi tööandjate ja nende ühenduste, riigiasutuste ja kohaliku omavalitsuse üksustega kollektiiv- ja muude lepingute sõlmimiseks; esitada ettepanekuid õigusakti eelnõu kohta, mis puudutab",
-      "estleg:legalText": "(1) Pädevuse teostamiseks on ametiühingutel õigus: saada tööandjatelt, nende esindajatelt, riigiasutustelt ja kohaliku omavalitsuse üksustelt takistamatult töö- ja sotsiaalalast informatsiooni ning muud teavet töötajate huve puudutavates küsimustes; pidada töö-, teenistus- ja sotsiaalsetes küsimustes läbirääkimisi tööandjate ja nende ühenduste, riigiasutuste ja kohaliku omavalitsuse üksustega kollektiiv- ja muude lepingute sõlmimiseks; esitada ettepanekuid õigusakti eelnõu kohta, mis puudutab selle ametiühingu (liidu) liikmete töö-, teenistus- ja kutsealaseid ning majanduslikke ja sotsiaalseid õigusi ja huve; saada ametiühingu valitud esindaja kaudu teavet riigi tööturuasutustelt tööturu olukorrast, vabadest töökohtadest ja tööturukoolituse võimalustest; avaldada oma seisukohti massimeedia kaudu, omada trükibaasi ja massiteabevahendeid, arendada kirjastustegevust, sealhulgas välja anda ja levitada ajalehti ning muid trükiseid; oma eesmärkide saavutamiseks korraldada seadustes ettenähtud korras koosolekuid, miitinguid, tänavarongkäike, pikette ja streike; vabalt arendada põhikirjaliste eesmärkide elluviimiseks mis tahes välissuhteid, sealhulgas ühineda töötajate rahvusvaheliste organisatsioonidega; koolitada ja nõustada oma liikmeid töö-, sotsiaal- ja muudes töötajate huve puudutavates küsimustes. (2) Ametiühingutel on õigus teostada ka muid seadustes või lepingutes ettenähtud õigusi.",
+      "estleg:summary": {
+        "@value": "(1) Pädevuse teostamiseks on ametiühingutel õigus: 1) saada tööandjatelt, nende esindajatelt, riigiasutustelt ja kohaliku omavalitsuse üksustelt takistamatult töö- ja sotsiaalalast informatsiooni ning muud teavet töötajate huve puudutavates küsimustes; 2) pidada töö-, teenistus- ja sotsiaalsetes küsimustes läbirääkimisi tööandjate ja nende ühenduste, riigiasutuste ja kohaliku omavalitsuse üksustega kollektiiv- ja muude lepingute sõlmimiseks; 3) esitada ettepanekuid õigusakti eelnõu kohta, mis",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Pädevuse teostamiseks on ametiühingutel õigus: 1) saada tööandjatelt, nende esindajatelt, riigiasutustelt ja kohaliku omavalitsuse üksustelt takistamatult töö- ja sotsiaalalast informatsiooni ning muud teavet töötajate huve puudutavates küsimustes; 2) pidada töö-, teenistus- ja sotsiaalsetes küsimustes läbirääkimisi tööandjate ja nende ühenduste, riigiasutuste ja kohaliku omavalitsuse üksustega kollektiiv- ja muude lepingute sõlmimiseks; 3) esitada ettepanekuid õigusakti eelnõu kohta, mis puudutab selle ametiühingu (liidu) liikmete töö-, teenistus- ja kutsealaseid ning majanduslikke ja sotsiaalseid õigusi ja huve; 4) saada ametiühingu valitud esindaja kaudu teavet riigi tööturuasutustelt tööturu olukorrast, vabadest töökohtadest ja tööturukoolituse võimalustest; 5) avaldada oma seisukohti massimeedia kaudu, omada trükibaasi ja massiteabevahendeid, arendada kirjastustegevust, sealhulgas välja anda ja levitada ajalehti ning muid trükiseid; 6) oma eesmärkide saavutamiseks korraldada seadustes ettenähtud korras koosolekuid, miitinguid, tänavarongkäike, pikette ja streike; 7) vabalt arendada põhikirjaliste eesmärkide elluviimiseks mis tahes välissuhteid, sealhulgas ühineda töötajate rahvusvaheliste organisatsioonidega; 8) koolitada ja nõustada oma liikmeid töö-, sotsiaal- ja muudes töötajate huve puudutavates küsimustes. (2) Ametiühingutel on õigus teostada ka muid seadustes või lepingutes ettenähtud õigusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_4"
       },
@@ -2548,14 +2876,17 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:AUS_Par_18_v26421"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:AUS_Par_18_v26421"
         }
       ]
     },
@@ -2566,11 +2897,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Pädevuse teostamiseks on ametiühingutel õigus: saada tööandjatelt, nende esindajatelt, riigiasutustelt ja kohaliku omavalitsuse üksustelt takistamatult töö- ja sotsiaalalast informatsiooni ning muud teavet töötajate huve puudutavates küsimustes; pidada töö-, teenistus- ja sotsiaalsetes küsimustes läbirääkimisi tööandjate ja nende ühenduste, riigiasutuste ja kohaliku omavalitsuse üksustega kollektiiv- ja muude lepingute sõlmimiseks; esitada ettepanekuid õigusakti eelnõu kohta, mis puudutab selle ametiühingu (liidu) liikmete töö-, teenistus- ja kutsealaseid ning majanduslikke ja sotsiaalseid õigusi ja huve; saada ametiühingu valitud esindaja kaudu teavet riigi tööturuasutustelt tööturu olukorrast, vabadest töökohtadest ja tööturukoolituse võimalustest; avaldada oma seisukohti massimeedia kaudu, omada trükibaasi ja massiteabevahendeid, arendada kirjastustegevust, sealhulgas välja anda ja levitada ajalehti ning muid trükiseid; oma eesmärkide saavutamiseks korraldada seadustes ettenähtud korras koosolekuid, miitinguid, tänavarongkäike, pikette ja streike; vabalt arendada põhikirjaliste eesmärkide elluviimiseks mis tahes välissuhteid, sealhulgas ühineda töötajate rahvusvaheliste organisatsioonidega; koolitada ja nõustada oma liikmeid töö-, sotsiaal- ja muudes töötajate huve puudutavates küsimustes.",
+      "estleg:legalText": "(1) Pädevuse teostamiseks on ametiühingutel õigus: 1) saada tööandjatelt, nende esindajatelt, riigiasutustelt ja kohaliku omavalitsuse üksustelt takistamatult töö- ja sotsiaalalast informatsiooni ning muud teavet töötajate huve puudutavates küsimustes; 2) pidada töö-, teenistus- ja sotsiaalsetes küsimustes läbirääkimisi tööandjate ja nende ühenduste, riigiasutuste ja kohaliku omavalitsuse üksustega kollektiiv- ja muude lepingute sõlmimiseks; 3) esitada ettepanekuid õigusakti eelnõu kohta, mis puudutab selle ametiühingu (liidu) liikmete töö-, teenistus- ja kutsealaseid ning majanduslikke ja sotsiaalseid õigusi ja huve; 4) saada ametiühingu valitud esindaja kaudu teavet riigi tööturuasutustelt tööturu olukorrast, vabadest töökohtadest ja tööturukoolituse võimalustest; 5) avaldada oma seisukohti massimeedia kaudu, omada trükibaasi ja massiteabevahendeid, arendada kirjastustegevust, sealhulgas välja anda ja levitada ajalehti ning muid trükiseid; 6) oma eesmärkide saavutamiseks korraldada seadustes ettenähtud korras koosolekuid, miitinguid, tänavarongkäike, pikette ja streike; 7) vabalt arendada põhikirjaliste eesmärkide elluviimiseks mis tahes välissuhteid, sealhulgas ühineda töötajate rahvusvaheliste organisatsioonidega; 8) koolitada ja nõustada oma liikmeid töö-, sotsiaal- ja muudes töötajate huve puudutavates küsimustes.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_18"
       },
       "rdfs:label": "§ 18 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2609,12 +2950,12 @@
         "@id": "estleg:AUS_Par_18"
       },
       "rdfs:label": "§ 18 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -2624,13 +2965,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Töötaja õigused",
+      "rdfs:label": {
+        "@value": "§ 19. Töötaja õigused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Töötajal on õigus kuuluda oma töökohajärgsesse või mõnda muusse ametiühingusse. Töötajal on õigus tegutseda ametiühingu valitud esindajana. (2) Töötaja ja tööotsija õigusi ei või piirata sõltuvalt tema kuulumisest või mittekuulumisest ametiühingusse, ametiühingu valitud esindajaks olemisest või muust seaduslikust ametiühingualasest tegevusest. (3) Käesoleva paragrahvi lõikes 2 sätestatud õiguste piiramise all mõistetakse ametiühingutegevuse tõttu: töötaja tööle mittelubamist; töötajaga",
-      "estleg:legalText": "(1) Töötajal on õigus kuuluda oma töökohajärgsesse või mõnda muusse ametiühingusse. Töötajal on õigus tegutseda ametiühingu valitud esindajana. (2) Töötaja ja tööotsija õigusi ei või piirata sõltuvalt tema kuulumisest või mittekuulumisest ametiühingusse, ametiühingu valitud esindajaks olemisest või muust seaduslikust ametiühingualasest tegevusest. (3) Käesoleva paragrahvi lõikes 2 sätestatud õiguste piiramise all mõistetakse ametiühingutegevuse tõttu: töötaja tööle mittelubamist; töötajaga töölepingu ülesütlemist või teenistusest vabastamist; töötaja töötingimuste halvendamist; töötasu, palga või lisatasu vähendamist või mittemaksmist; distsiplinaarkaristuse määramist; ähvardamist töölepingu ülesütlemise, teenistusest vabastamise, töötingimuste halvendamise ja karistuse määramisega; muud ebavõrdset kohtlemist. (4) Töötajal, kelle õigusi käesoleva paragrahvi lõikes 3 sätestatud viisil piirati, on õigus nõuda piiramise lõpetamist, talle tekitatud varalise või mittevaralise kahju hüvitamist ning endise olukorra taastamist. (5) Tööandja vabaneb vastutusest üksnes siis, kui tõestab, et töötaja õiguste piiramine oli seaduslik ega olnud seotud töötaja ametiühingualase tegevusega. (6) Ebavõrdseks kohtlemiseks ei loeta eeliste andmist ametiühingusse kuulumise või töötajate esindamise tõttu.",
+      "estleg:summary": {
+        "@value": "(1) Töötajal on õigus kuuluda oma töökohajärgsesse või mõnda muusse ametiühingusse. Töötajal on õigus tegutseda ametiühingu valitud esindajana. (2) Töötaja ja tööotsija õigusi ei või piirata sõltuvalt tema kuulumisest või mittekuulumisest ametiühingusse, ametiühingu valitud esindajaks olemisest või muust seaduslikust ametiühingualasest tegevusest. (3) Käesoleva paragrahvi lõikes 2 sätestatud õiguste piiramise all mõistetakse ametiühingutegevuse tõttu: 1) töötaja tööle mittelubamist; 2)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Töötajal on õigus kuuluda oma töökohajärgsesse või mõnda muusse ametiühingusse. Töötajal on õigus tegutseda ametiühingu valitud esindajana. (2) Töötaja ja tööotsija õigusi ei või piirata sõltuvalt tema kuulumisest või mittekuulumisest ametiühingusse, ametiühingu valitud esindajaks olemisest või muust seaduslikust ametiühingualasest tegevusest. (3) Käesoleva paragrahvi lõikes 2 sätestatud õiguste piiramise all mõistetakse ametiühingutegevuse tõttu: 1) töötaja tööle mittelubamist; 2) töötajaga töölepingu ülesütlemist või teenistusest vabastamist; 3) töötaja töötingimuste halvendamist; 4) töötasu, palga või lisatasu vähendamist või mittemaksmist; 5) distsiplinaarkaristuse määramist; 6) ähvardamist töölepingu ülesütlemise, teenistusest vabastamise, töötingimuste halvendamise ja karistuse määramisega; 7) muud ebavõrdset kohtlemist. (4) Töötajal, kelle õigusi käesoleva paragrahvi lõikes 3 sätestatud viisil piirati, on õigus nõuda piiramise lõpetamist, talle tekitatud varalise või mittevaralise kahju hüvitamist ning endise olukorra taastamist. (5) Tööandja vabaneb vastutusest üksnes siis, kui tõestab, et töötaja õiguste piiramine oli seaduslik ega olnud seotud töötaja ametiühingualase tegevusega. (6) Ebavõrdseks kohtlemiseks ei loeta eeliste andmist ametiühingusse kuulumise või töötajate esindamise tõttu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_5"
       },
@@ -2665,12 +3012,20 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_2_1_133_07"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_13_10"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
       },
       "estleg:hasVersion": [
         {
@@ -2678,14 +3033,6 @@
         },
         {
           "@id": "estleg:AUS_Par_19_v13149209"
-        }
-      ],
-      "estleg:interpretedBy": [
-        {
-          "@id": "estleg:RK_3_2_1_133_07"
-        },
-        {
-          "@id": "estleg:RK_3_3_1_13_10"
         }
       ]
     },
@@ -2701,9 +3048,6 @@
         "@id": "estleg:AUS_Par_19"
       },
       "rdfs:label": "§ 19 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2712,6 +3056,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -2726,9 +3073,6 @@
         "@id": "estleg:AUS_Par_19"
       },
       "rdfs:label": "§ 19 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2745,7 +3089,10 @@
         {
           "@id": "estleg:RK_3_2_1_167_16"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
     },
     {
       "@id": "estleg:AUS_Par_19_Lg_3",
@@ -2754,14 +3101,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 2 sätestatud õiguste piiramise all mõistetakse ametiühingutegevuse tõttu: töötaja tööle mittelubamist; töötajaga töölepingu ülesütlemist või teenistusest vabastamist; töötaja töötingimuste halvendamist; töötasu, palga või lisatasu vähendamist või mittemaksmist; distsiplinaarkaristuse määramist; ähvardamist töölepingu ülesütlemise, teenistusest vabastamise, töötingimuste halvendamise ja karistuse määramisega; muud ebavõrdset kohtlemist.",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 2 sätestatud õiguste piiramise all mõistetakse ametiühingutegevuse tõttu: 1) töötaja tööle mittelubamist; 2) töötajaga töölepingu ülesütlemist või teenistusest vabastamist; 3) töötaja töötingimuste halvendamist; 4) töötasu, palga või lisatasu vähendamist või mittemaksmist; 5) distsiplinaarkaristuse määramist; 6) ähvardamist töölepingu ülesütlemise, teenistusest vabastamise, töötingimuste halvendamise ja karistuse määramisega; 7) muud ebavõrdset kohtlemist.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_19"
       },
       "rdfs:label": "§ 19 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Definition"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2770,6 +3123,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
       }
     },
     {
@@ -2784,9 +3140,6 @@
         "@id": "estleg:AUS_Par_19"
       },
       "rdfs:label": "§ 19 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2800,7 +3153,10 @@
         {
           "@id": "estleg:RK_3_2_1_167_16"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
     },
     {
       "@id": "estleg:AUS_Par_19_Lg_5",
@@ -2861,13 +3217,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Tööandja kohustused suhetes ametiühinguga",
+      "rdfs:label": {
+        "@value": "§ 20. Tööandja kohustused suhetes ametiühinguga",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Tööandja on kohustatud: andma ametiühingule võimalusel tööruumi; andma vähemalt kord kuus ruumi ametiühinguürituste läbiviimiseks ja lubama neile üritustele ühingu, asutuse või muu organisatsiooni ametiühingu liikmeid, samuti teisi ametiühingute poolt kutsutud isikuid. Ametiühingu poolt väljaspool ühingut, asutust või muud organisatsiooni kutsutud isikute osavõtust tuleb eelnevalt tööandjale teatada; võimaldama ametiühingu liikmele ametiühingu poolt esitatud kirjalike kutsete alusel aastas",
-      "estleg:legalText": "(1) Tööandja on kohustatud: andma ametiühingule võimalusel tööruumi; andma vähemalt kord kuus ruumi ametiühinguürituste läbiviimiseks ja lubama neile üritustele ühingu, asutuse või muu organisatsiooni ametiühingu liikmeid, samuti teisi ametiühingute poolt kutsutud isikuid. Ametiühingu poolt väljaspool ühingut, asutust või muud organisatsiooni kutsutud isikute osavõtust tuleb eelnevalt tööandjale teatada; võimaldama ametiühingu liikmele ametiühingu poolt esitatud kirjalike kutsete alusel aastas vähemalt viis tööst vaba päeva osalemiseks ametiühingu poolt korraldatavas koolituses või ametiühingute organite töös tingimusel, et sellega ei kaasne olulisi takistusi tööandja majandustegevuses. Käesoleva punkti alusel antavatel tööst vabadel päevadel säilitatakse töötajale tema keskmine palk kahe päeva eest aastas; asuma ametiühingu valitud esindaja taotlusel läbirääkimistesse kollektiiv- ja muude töö-, teenistus- või sotsiaalvaldkonda puudutava lepingu sõlmimiseks, täiendamiseks ning muutmiseks; lubama ametiühingu poolt valitud esindajaid takistamatult tutvuda töötajate töökorralduse ja tingimustega ühingus, asutuses või muus organisatsioonis, kus töötab selle ametiühingu liikmeid. Lubama valitud esindajal esitada arvamusi, ettepanekuid töötajate esindamise küsimustes; täitma ametiühingute suhtes muid seadustest või kollektiivlepingust tulenevaid kohustusi. (2) Käesoleva paragrahvi lõikes 1 loetletud kohustusi võib laiendada kollektiiv- või muu poolte vahel sõlmitud lepinguga.",
+      "estleg:summary": {
+        "@value": "(1) Tööandja on kohustatud: 1) andma ametiühingule võimalusel tööruumi; 2) andma vähemalt kord kuus ruumi ametiühinguürituste läbiviimiseks ja lubama neile üritustele ühingu, asutuse või muu organisatsiooni ametiühingu liikmeid, samuti teisi ametiühingute poolt kutsutud isikuid. Ametiühingu poolt väljaspool ühingut, asutust või muud organisatsiooni kutsutud isikute osavõtust tuleb eelnevalt tööandjale teatada; 3) võimaldama ametiühingu liikmele ametiühingu poolt esitatud kirjalike kutsete",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Tööandja on kohustatud: 1) andma ametiühingule võimalusel tööruumi; 2) andma vähemalt kord kuus ruumi ametiühinguürituste läbiviimiseks ja lubama neile üritustele ühingu, asutuse või muu organisatsiooni ametiühingu liikmeid, samuti teisi ametiühingute poolt kutsutud isikuid. Ametiühingu poolt väljaspool ühingut, asutust või muud organisatsiooni kutsutud isikute osavõtust tuleb eelnevalt tööandjale teatada; 3) võimaldama ametiühingu liikmele ametiühingu poolt esitatud kirjalike kutsete alusel aastas vähemalt viis tööst vaba päeva osalemiseks ametiühingu poolt korraldatavas koolituses või ametiühingute organite töös tingimusel, et sellega ei kaasne olulisi takistusi tööandja majandustegevuses. Käesoleva punkti alusel antavatel tööst vabadel päevadel säilitatakse töötajale tema keskmine palk kahe päeva eest aastas; 4) asuma ametiühingu valitud esindaja taotlusel läbirääkimistesse kollektiiv- ja muude töö-, teenistus- või sotsiaalvaldkonda puudutava lepingu sõlmimiseks, täiendamiseks ning muutmiseks; 5) lubama ametiühingu poolt valitud esindajaid takistamatult tutvuda töötajate töökorralduse ja tingimustega ühingus, asutuses või muus organisatsioonis, kus töötab selle ametiühingu liikmeid. Lubama valitud esindajal esitada arvamusi, ettepanekuid töötajate esindamise küsimustes; 6) täitma ametiühingute suhtes muid seadustest või kollektiivlepingust tulenevaid kohustusi. (2) Käesoleva paragrahvi lõikes 1 loetletud kohustusi võib laiendada kollektiiv- või muu poolte vahel sõlmitud lepinguga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_5"
       },
@@ -2887,6 +3249,10 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2895,10 +3261,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_20_v26421"
@@ -2915,18 +3277,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Tööandja on kohustatud: andma ametiühingule võimalusel tööruumi; andma vähemalt kord kuus ruumi ametiühinguürituste läbiviimiseks ja lubama neile üritustele ühingu, asutuse või muu organisatsiooni ametiühingu liikmeid, samuti teisi ametiühingute poolt kutsutud isikuid. Ametiühingu poolt väljaspool ühingut, asutust või muud organisatsiooni kutsutud isikute osavõtust tuleb eelnevalt tööandjale teatada; võimaldama ametiühingu liikmele ametiühingu poolt esitatud kirjalike kutsete alusel aastas vähemalt viis tööst vaba päeva osalemiseks ametiühingu poolt korraldatavas koolituses või ametiühingute organite töös tingimusel, et sellega ei kaasne olulisi takistusi tööandja majandustegevuses. Käesoleva punkti alusel antavatel tööst vabadel päevadel säilitatakse töötajale tema keskmine palk kahe päeva eest aastas; asuma ametiühingu valitud esindaja taotlusel läbirääkimistesse kollektiiv- ja muude töö-, teenistus- või sotsiaalvaldkonda puudutava lepingu sõlmimiseks, täiendamiseks ning muutmiseks; lubama ametiühingu poolt valitud esindajaid takistamatult tutvuda töötajate töökorralduse ja tingimustega ühingus, asutuses või muus organisatsioonis, kus töötab selle ametiühingu liikmeid. Lubama valitud esindajal esitada arvamusi, ettepanekuid töötajate esindamise küsimustes; täitma ametiühingute suhtes muid seadustest või kollektiivlepingust tulenevaid kohustusi.",
+      "estleg:legalText": "(1) Tööandja on kohustatud: 1) andma ametiühingule võimalusel tööruumi; 2) andma vähemalt kord kuus ruumi ametiühinguürituste läbiviimiseks ja lubama neile üritustele ühingu, asutuse või muu organisatsiooni ametiühingu liikmeid, samuti teisi ametiühingute poolt kutsutud isikuid. Ametiühingu poolt väljaspool ühingut, asutust või muud organisatsiooni kutsutud isikute osavõtust tuleb eelnevalt tööandjale teatada; 3) võimaldama ametiühingu liikmele ametiühingu poolt esitatud kirjalike kutsete alusel aastas vähemalt viis tööst vaba päeva osalemiseks ametiühingu poolt korraldatavas koolituses või ametiühingute organite töös tingimusel, et sellega ei kaasne olulisi takistusi tööandja majandustegevuses. Käesoleva punkti alusel antavatel tööst vabadel päevadel säilitatakse töötajale tema keskmine palk kahe päeva eest aastas; 4) asuma ametiühingu valitud esindaja taotlusel läbirääkimistesse kollektiiv- ja muude töö-, teenistus- või sotsiaalvaldkonda puudutava lepingu sõlmimiseks, täiendamiseks ning muutmiseks; 5) lubama ametiühingu poolt valitud esindajaid takistamatult tutvuda töötajate töökorralduse ja tingimustega ühingus, asutuses või muus organisatsioonis, kus töötab selle ametiühingu liikmeid. Lubama valitud esindajal esitada arvamusi, ettepanekuid töötajate esindamise küsimustes; 6) täitma ametiühingute suhtes muid seadustest või kollektiivlepingust tulenevaid kohustusi.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_20"
       },
       "rdfs:label": "§ 20 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
         {
           "@id": "estleg:TargetGroup_Business"
         }
@@ -2938,6 +3302,14 @@
       "estleg:interpretedBy": [
         {
           "@id": "estleg:RK_4_17_3766_25"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Business"
         }
       ]
     },
@@ -2953,12 +3325,12 @@
         "@id": "estleg:AUS_Par_20"
       },
       "rdfs:label": "§ 20 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -2968,13 +3340,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Ametiühingu valitud esindaja kohustused suhetes tööandjaga",
+      "rdfs:label": {
+        "@value": "§ 21. Ametiühingu valitud esindaja kohustused suhetes tööandjaga",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühingu valitud esindaja on kohustatud: teatama kirjalikult tööandjale ametiühingu asutamisest selles ühingus, asutuses või muus organisatsioonis hiljemalt kuu aja jooksul, arvates ametiühingu asutamiskoosoleku toimumisest; teatama kirjalikult tööandjale ametiühingu usaldusisiku ning ametiühingu juhatuse liikmete ees- ja perekonnanimed, töökohad ja volituste kestuse; kindlustama töörahu seaduse ja kollektiivlepinguga määratud ajal; kindlustama kollektiivlepingute täitmise ametiühingul",
-      "estleg:legalText": "(1) Ametiühingu valitud esindaja on kohustatud: teatama kirjalikult tööandjale ametiühingu asutamisest selles ühingus, asutuses või muus organisatsioonis hiljemalt kuu aja jooksul, arvates ametiühingu asutamiskoosoleku toimumisest; teatama kirjalikult tööandjale ametiühingu usaldusisiku ning ametiühingu juhatuse liikmete ees- ja perekonnanimed, töökohad ja volituste kestuse; kindlustama töörahu seaduse ja kollektiivlepinguga määratud ajal; kindlustama kollektiivlepingute täitmise ametiühingul lasuvate kohustuste osas; vahendama vajaduse korral informeerimisel ja konsulteerimisel erinevaid osapooli; kehtetu - tegema koostööd töötajate usaldusisiku, töökeskkonna voliniku ja töökeskkonna nõukoguga; täitma tööandja suhtes muid seadustest või kollektiivlepingust tulenevaid kohustusi. (2) Käesoleva paragrahvi lõikes 1 loetletud kohustusi võib laiendada kollektiiv- või muu poolte vahel sõlmitud lepinguga.",
+      "estleg:summary": {
+        "@value": "(1) Ametiühingu valitud esindaja on kohustatud: 1) teatama kirjalikult tööandjale ametiühingu asutamisest selles ühingus, asutuses või muus organisatsioonis hiljemalt kuu aja jooksul, arvates ametiühingu asutamiskoosoleku toimumisest; 2) teatama kirjalikult tööandjale ametiühingu usaldusisiku ning ametiühingu juhatuse liikmete ees- ja perekonnanimed, töökohad ja volituste kestuse; 3) kindlustama töörahu seaduse ja kollektiivlepinguga määratud ajal; 4) kindlustama kollektiivlepingute täitmise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ametiühingu valitud esindaja on kohustatud: 1) teatama kirjalikult tööandjale ametiühingu asutamisest selles ühingus, asutuses või muus organisatsioonis hiljemalt kuu aja jooksul, arvates ametiühingu asutamiskoosoleku toimumisest; 2) teatama kirjalikult tööandjale ametiühingu usaldusisiku ning ametiühingu juhatuse liikmete ees- ja perekonnanimed, töökohad ja volituste kestuse; 3) kindlustama töörahu seaduse ja kollektiivlepinguga määratud ajal; 4) kindlustama kollektiivlepingute täitmise ametiühingul lasuvate kohustuste osas; 5) vahendama vajaduse korral informeerimisel ja konsulteerimisel erinevaid osapooli; 6) 7) tegema koostööd töötajate usaldusisiku, töökeskkonna voliniku ja töökeskkonna nõukoguga; 8) täitma tööandja suhtes muid seadustest või kollektiivlepingust tulenevaid kohustusi. (2) Käesoleva paragrahvi lõikes 1 loetletud kohustusi võib laiendada kollektiiv- või muu poolte vahel sõlmitud lepinguga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_5"
       },
@@ -2997,12 +3375,12 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:referencedBy": [
         {
@@ -3028,14 +3406,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Ametiühingu valitud esindaja on kohustatud: teatama kirjalikult tööandjale ametiühingu asutamisest selles ühingus, asutuses või muus organisatsioonis hiljemalt kuu aja jooksul, arvates ametiühingu asutamiskoosoleku toimumisest; teatama kirjalikult tööandjale ametiühingu usaldusisiku ning ametiühingu juhatuse liikmete ees- ja perekonnanimed, töökohad ja volituste kestuse; kindlustama töörahu seaduse ja kollektiivlepinguga määratud ajal; kindlustama kollektiivlepingute täitmise ametiühingul lasuvate kohustuste osas; vahendama vajaduse korral informeerimisel ja konsulteerimisel erinevaid osapooli; kehtetu - tegema koostööd töötajate usaldusisiku, töökeskkonna voliniku ja töökeskkonna nõukoguga; täitma tööandja suhtes muid seadustest või kollektiivlepingust tulenevaid kohustusi.",
+      "estleg:legalText": "(1) Ametiühingu valitud esindaja on kohustatud: 1) teatama kirjalikult tööandjale ametiühingu asutamisest selles ühingus, asutuses või muus organisatsioonis hiljemalt kuu aja jooksul, arvates ametiühingu asutamiskoosoleku toimumisest; 2) teatama kirjalikult tööandjale ametiühingu usaldusisiku ning ametiühingu juhatuse liikmete ees- ja perekonnanimed, töökohad ja volituste kestuse; 3) kindlustama töörahu seaduse ja kollektiivlepinguga määratud ajal; 4) kindlustama kollektiivlepingute täitmise ametiühingul lasuvate kohustuste osas; 5) vahendama vajaduse korral informeerimisel ja konsulteerimisel erinevaid osapooli; 6) 7) tegema koostööd töötajate usaldusisiku, töökeskkonna voliniku ja töökeskkonna nõukoguga; 8) täitma tööandja suhtes muid seadustest või kollektiivlepingust tulenevaid kohustusi.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_21"
       },
       "rdfs:label": "§ 21 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3047,6 +3432,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -3061,12 +3449,12 @@
         "@id": "estleg:AUS_Par_21"
       },
       "rdfs:label": "§ 21 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -3076,13 +3464,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21¹.",
-      "rdfs:label": "§ 21¹. Ametiühingu usaldusisiku ülesannete täitmise aeg",
+      "rdfs:label": {
+        "@value": "§ 21¹. Ametiühingu usaldusisiku ülesannete täitmise aeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühingu usaldusisik täidab oma ülesandeid kokkuleppel tööandjaga tööajal või väljaspool tööaega. (2) Tööandja tagab vähemalt ühele ametiühingu usaldusisikule tema ülesannete täitmiseks tööajal: tööandja juures töötava 5 kuni 100 ametiühingu liikme esindamise korral vähemalt 4 tundi töönädalas; tööandja juures töötava 101 kuni 300 ametiühingu liikme esindamise korral vähemalt 8 tundi töönädalas; tööandja juures töötava 301 kuni 500 ametiühingu liikme esindamise korral vähemalt 16 tundi",
-      "estleg:legalText": "(1) Ametiühingu usaldusisik täidab oma ülesandeid kokkuleppel tööandjaga tööajal või väljaspool tööaega. (2) Tööandja tagab vähemalt ühele ametiühingu usaldusisikule tema ülesannete täitmiseks tööajal: tööandja juures töötava 5 kuni 100 ametiühingu liikme esindamise korral vähemalt 4 tundi töönädalas; tööandja juures töötava 101 kuni 300 ametiühingu liikme esindamise korral vähemalt 8 tundi töönädalas; tööandja juures töötava 301 kuni 500 ametiühingu liikme esindamise korral vähemalt 16 tundi töönädalas; tööandja juures töötava üle 500 ametiühingu liikme esindamise korral vähemalt 40 tundi töönädalas. (2¹) Kahe või enama usaldusisiku korral tagab tööandja usaldusisikutele ülesannete täitmiseks aja kahele usaldusisikule ettenähtud ulatuses. Usaldusisikud lepivad kokku aja omavahelise jaotamise. (3) Ametiühing teatab tööandjale ametiühingu usaldusisiku ülesannete täitmiseks ette nähtud aja andmiseks tööandja juures töötavate ametiühingu liikmete arvu.",
+      "estleg:summary": {
+        "@value": "(1) Ametiühingu usaldusisik täidab oma ülesandeid kokkuleppel tööandjaga tööajal või väljaspool tööaega. (2) Tööandja tagab vähemalt ühele ametiühingu usaldusisikule tema ülesannete täitmiseks tööajal: 1) tööandja juures töötava 5 kuni 100 ametiühingu liikme esindamise korral vähemalt 4 tundi töönädalas; 2) tööandja juures töötava 101 kuni 300 ametiühingu liikme esindamise korral vähemalt 8 tundi töönädalas; 3) tööandja juures töötava 301 kuni 500 ametiühingu liikme esindamise korral vähemalt",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ametiühingu usaldusisik täidab oma ülesandeid kokkuleppel tööandjaga tööajal või väljaspool tööaega. (2) Tööandja tagab vähemalt ühele ametiühingu usaldusisikule tema ülesannete täitmiseks tööajal: 1) tööandja juures töötava 5 kuni 100 ametiühingu liikme esindamise korral vähemalt 4 tundi töönädalas; 2) tööandja juures töötava 101 kuni 300 ametiühingu liikme esindamise korral vähemalt 8 tundi töönädalas; 3) tööandja juures töötava 301 kuni 500 ametiühingu liikme esindamise korral vähemalt 16 tundi töönädalas; 4) tööandja juures töötava üle 500 ametiühingu liikme esindamise korral vähemalt 40 tundi töönädalas. (2¹) Kahe või enama usaldusisiku korral tagab tööandja usaldusisikutele ülesannete täitmiseks aja kahele usaldusisikule ettenähtud ulatuses. Usaldusisikud lepivad kokku aja omavahelise jaotamise. (3) Ametiühing teatab tööandjale ametiühingu usaldusisiku ülesannete täitmiseks ette nähtud aja andmiseks tööandja juures töötavate ametiühingu liikmete arvu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_5"
       },
@@ -3108,15 +3502,32 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:TUIS_Par_13"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:AUS_Map"
+        },
+        {
+          "@id": "estleg:AUS_Par_21_2"
+        },
+        {
+          "@id": "estleg:AUS_Par_21_2_Lg_1"
+        },
+        {
+          "@id": "estleg:AUS_Par_24_1"
+        },
+        {
+          "@id": "estleg:AUS_Par_24_1_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_21_1_v12775000"
@@ -3155,11 +3566,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Tööandja tagab vähemalt ühele ametiühingu usaldusisikule tema ülesannete täitmiseks tööajal: tööandja juures töötava 5 kuni 100 ametiühingu liikme esindamise korral vähemalt 4 tundi töönädalas; tööandja juures töötava 101 kuni 300 ametiühingu liikme esindamise korral vähemalt 8 tundi töönädalas; tööandja juures töötava 301 kuni 500 ametiühingu liikme esindamise korral vähemalt 16 tundi töönädalas; tööandja juures töötava üle 500 ametiühingu liikme esindamise korral vähemalt 40 tundi töönädalas.",
+      "estleg:legalText": "(2) Tööandja tagab vähemalt ühele ametiühingu usaldusisikule tema ülesannete täitmiseks tööajal: 1) tööandja juures töötava 5 kuni 100 ametiühingu liikme esindamise korral vähemalt 4 tundi töönädalas; 2) tööandja juures töötava 101 kuni 300 ametiühingu liikme esindamise korral vähemalt 8 tundi töönädalas; 3) tööandja juures töötava 301 kuni 500 ametiühingu liikme esindamise korral vähemalt 16 tundi töönädalas; 4) tööandja juures töötava üle 500 ametiühingu liikme esindamise korral vähemalt 40 tundi töönädalas.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_21_1"
       },
       "rdfs:label": "§ 21¹ lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -3221,13 +3638,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21².",
-      "rdfs:label": "§ 21². Tagatis ametiühingu usaldusisiku ülesannete täitmise ajaks",
+      "rdfs:label": {
+        "@value": "§ 21². Tagatis ametiühingu usaldusisiku ülesannete täitmise ajaks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Ametiühingu usaldusisiku ülesannete täitmise aja eest vastavalt käesoleva seaduse §-le 211 säilitatakse ametiühingu usaldusisikule keskmine töötasu.",
-      "estleg:legalText": "Ametiühingu usaldusisiku ülesannete täitmise aja eest vastavalt käesoleva seaduse §-le 211 säilitatakse ametiühingu usaldusisikule keskmine töötasu.",
+      "estleg:summary": {
+        "@value": "Ametiühingu usaldusisiku ülesannete täitmise aja eest vastavalt käesoleva seaduse §-le 21¹ säilitatakse ametiühingu usaldusisikule keskmine töötasu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ametiühingu usaldusisiku ülesannete täitmise aja eest vastavalt käesoleva seaduse §-le 21¹ säilitatakse ametiühingu usaldusisikule keskmine töötasu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_5"
       },
@@ -3237,6 +3660,11 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:AUS_Par_21_2_Lg_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:AUS_Par_21_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -3256,10 +3684,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ametiühingu usaldusisiku ülesannete täitmise aja eest vastavalt käesoleva seaduse §-le 211 säilitatakse ametiühingu usaldusisikule keskmine töötasu.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiühingu usaldusisiku ülesannete täitmise aja eest vastavalt käesoleva seaduse §-le 21¹ säilitatakse ametiühingu usaldusisikule keskmine töötasu.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_21_2"
-      }
+      },
+      "rdfs:label": "§ 21² lg 1",
+      "estleg:references": [
+        {
+          "@id": "estleg:AUS_Par_21_1"
+        }
+      ]
     },
     {
       "@id": "estleg:AUS_Par_22",
@@ -3268,12 +3703,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Ametiühingu usaldusisiku osalemine informeerimisel ja konsulteerimisel",
+      "rdfs:label": {
+        "@value": "§ 22. Ametiühingu usaldusisiku osalemine informeerimisel ja konsulteerimisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Tööandja informeerib ametiühingu usaldusisikut ja konsulteerib temaga töötajate usaldusisiku seaduse §-des 17–21 ette nähtud tingimustel ja korras. (2) Ametiühingu usaldusisik on kohustatud edastama saadud teabe töötajatele. (3) Konfidentsiaalse teabe saamisel ja hoidmisel ning teabe andmisest keeldumise korral informeerimise ja konsulteerimise kohustuse täitmisel kohaldatakse töötajate usaldusisiku seaduses sätestatut.",
+      "estleg:summary": {
+        "@value": "(1) Tööandja informeerib ametiühingu usaldusisikut ja konsulteerib temaga töötajate usaldusisiku seaduse §-des 17–21 ette nähtud tingimustel ja korras. (2) Ametiühingu usaldusisik on kohustatud edastama saadud teabe töötajatele. (3) Konfidentsiaalse teabe saamisel ja hoidmisel ning teabe andmisest keeldumise korral informeerimise ja konsulteerimise kohustuse täitmisel kohaldatakse töötajate usaldusisiku seaduses sätestatut.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tööandja informeerib ametiühingu usaldusisikut ja konsulteerib temaga töötajate usaldusisiku seaduse §-des 17–21 ette nähtud tingimustel ja korras. (2) Ametiühingu usaldusisik on kohustatud edastama saadud teabe töötajatele. (3) Konfidentsiaalse teabe saamisel ja hoidmisel ning teabe andmisest keeldumise korral informeerimise ja konsulteerimise kohustuse täitmisel kohaldatakse töötajate usaldusisiku seaduses sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_5"
@@ -3300,9 +3741,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -3324,6 +3762,9 @@
           "@id": "estleg:TUIS_Par_21"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_22_v26421"
@@ -3379,6 +3820,9 @@
       ],
       "estleg:referencedBy": [
         {
+          "@id": "estleg:AUS_Map"
+        },
+        {
           "@id": "estleg:AUS_Par_24_1"
         },
         {
@@ -3398,9 +3842,6 @@
         "@id": "estleg:AUS_Par_22"
       },
       "rdfs:label": "§ 22 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3409,6 +3850,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -3440,12 +3884,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Ametiühingu ja selle valitud esindajate õiguste kaitse asutuse, organisatsiooni ja ühingu ühinemisel, jagunemisel, ümberkujundamisel, ettevõtte või selle osa ülemineku korral",
+      "rdfs:label": {
+        "@value": "§ 23. Ametiühingu ja selle valitud esindajate õiguste kaitse asutuse, organisatsiooni ja ühingu ühinemisel, jagunemisel, ümberkujundamisel, ettevõtte või selle osa ülemineku korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Ametiühingu ja selle valitud esindajate õigused ja kohustused tööandja suhtes ei muutu tööandja õiguste ja kohustuste ülemineku korral.",
+      "estleg:summary": {
+        "@value": "Ametiühingu ja selle valitud esindajate õigused ja kohustused tööandja suhtes ei muutu tööandja õiguste ja kohustuste ülemineku korral.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ametiühingu ja selle valitud esindajate õigused ja kohustused tööandja suhtes ei muutu tööandja õiguste ja kohustuste ülemineku korral.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_5"
@@ -3482,10 +3932,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ametiühingu ja selle valitud esindajate õigused ja kohustused tööandja suhtes ei muutu tööandja õiguste ja kohustuste ülemineku korral.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiühingu ja selle valitud esindajate õigused ja kohustused tööandja suhtes ei muutu tööandja õiguste ja kohustuste ülemineku korral.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_23"
       },
+      "rdfs:label": "§ 23 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -3506,12 +3958,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Ametiühingute pädevus tööalaste seaduste ja sõlmitud lepingute täitmise üle kontrolli teostamisel",
+      "rdfs:label": {
+        "@value": "§ 24. Ametiühingute pädevus tööalaste seaduste ja sõlmitud lepingute täitmise üle kontrolli teostamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Kui tööandja rikub töö- ja teenistussuhteid reguleerivaid seadusi, töö- ja kollektiivlepingut ning ametiühingu liikmete huve puudutavaid muid lepinguid, on ametiühingul õigus pöörduda Tööinspektsiooni poole. Järelevalveasutusel on kohustus vastata kirjalikule pöördumisele hiljemalt kahe nädala jooksul. (2) Kui tööandja või tema esindaja seadust või lepingut ei täida või seda rikub, on ametiühingul, kelle liige töötaja on, õigus töötaja vastava pöördumise korral nõuda tööandjalt seaduse või",
+      "estleg:summary": {
+        "@value": "(1) Kui tööandja rikub töö- ja teenistussuhteid reguleerivaid seadusi, töö- ja kollektiivlepingut ning ametiühingu liikmete huve puudutavaid muid lepinguid, on ametiühingul õigus pöörduda Tööinspektsiooni poole. Järelevalveasutusel on kohustus vastata kirjalikule pöördumisele hiljemalt kahe nädala jooksul. (2) Kui tööandja või tema esindaja seadust või lepingut ei täida või seda rikub, on ametiühingul, kelle liige töötaja on, õigus töötaja vastava pöördumise korral nõuda tööandjalt seaduse või",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui tööandja rikub töö- ja teenistussuhteid reguleerivaid seadusi, töö- ja kollektiivlepingut ning ametiühingu liikmete huve puudutavaid muid lepinguid, on ametiühingul õigus pöörduda Tööinspektsiooni poole. Järelevalveasutusel on kohustus vastata kirjalikule pöördumisele hiljemalt kahe nädala jooksul. (2) Kui tööandja või tema esindaja seadust või lepingut ei täida või seda rikub, on ametiühingul, kelle liige töötaja on, õigus töötaja vastava pöördumise korral nõuda tööandjalt seaduse või lepingu täitmist või rikkumise lõpetamist. Ametiühingu pädevusse kuulub oma liikme vastava pöördumise korral töö- ja kollektiivlepinguid, töötingimusi, töö- ja puhkeaega ning töörežiimi, palgatingimusi, palga maksmise aluseid, tööohutust, sotsiaalkindlustuse makse või maksete tegemist puudutavate dokumentide kontrollimine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_5"
@@ -3535,13 +3993,18 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_tooinspektsioon"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_24_v26421"
@@ -3554,11 +4017,6 @@
         },
         {
           "@id": "estleg:AUS_Par_24_v13149209"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_tooinspektsioon"
         }
       ]
     },
@@ -3574,9 +4032,6 @@
         "@id": "estleg:AUS_Par_24"
       },
       "rdfs:label": "§ 24 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -3585,6 +4040,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:mentionsInstitution": [
         {
@@ -3624,18 +4082,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24¹.",
-      "rdfs:label": "§ 24¹. Riikliku ja haldusjärelevalve teostamine",
+      "rdfs:label": {
+        "@value": "§ 24¹. Riikliku ja haldusjärelevalve teostamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 211 lõigetes 2, 21 ja 3 ning §-s 22 sätestatud nõuete täitmise üle teostab Tööinspektsioon. (2) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 22 lõikes 1 sätestatud nõuete üle teostab Tööinspektsioon, arvestades töötajate usaldusisiku seaduse §-s 22 sätestatud erisusi. (3) Tööinspektsioon võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku",
-      "estleg:legalText": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 211 lõigetes 2, 21 ja 3 ning §-s 22 sätestatud nõuete täitmise üle teostab Tööinspektsioon. (2) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 22 lõikes 1 sätestatud nõuete üle teostab Tööinspektsioon, arvestades töötajate usaldusisiku seaduse §-s 22 sätestatud erisusi. (3) Tööinspektsioon võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:summary": {
+        "@value": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 21¹ lõigetes 2, 2¹ ja 3 ning §-s 22 sätestatud nõuete täitmise üle teostab Tööinspektsioon. (2) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 22 lõikes 1 sätestatud nõuete üle teostab Tööinspektsioon, arvestades töötajate usaldusisiku seaduse §-s 22 sätestatud erisusi. (3) Tööinspektsioon võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 21¹ lõigetes 2, 2¹ ja 3 ning §-s 22 sätestatud nõuete täitmise üle teostab Tööinspektsioon. (2) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 22 lõikes 1 sätestatud nõuete üle teostab Tööinspektsioon, arvestades töötajate usaldusisiku seaduse §-s 22 sätestatud erisusi. (3) Tööinspektsioon võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_AUS_5"
+        "@id": "estleg:Cluster_AUS_5_24_24"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_AUS_5"
+        "@id": "estleg:Chapter_AUS_5_69863942"
       },
       "estleg:hasSubsection": [
         {
@@ -3653,31 +4117,14 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:AVTS_Par_53_2"
-        },
-        {
-          "@id": "estleg:KTTS_Par_4"
-        },
-        {
-          "@id": "estleg:TOOLEP_Par_115"
-        },
-        {
-          "@id": "estleg:TTOS_Par_25"
-        },
-        {
-          "@id": "estleg:TUIS_Par_22"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
       "estleg:references": [
+        {
+          "@id": "estleg:AUS_Par_21_1"
+        },
         {
           "@id": "estleg:AUS_Par_22_Lg_1"
         },
@@ -3694,6 +4141,32 @@
           "@id": "estleg:TUIS_Par_22"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_tooinspektsioon"
+        }
+      ],
+      "estleg:competenceType": "enforcement",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Meret_seadus_Par_73"
+        },
+        {
+          "@id": "estleg:PTEKS_Par_7"
+        },
+        {
+          "@id": "estleg:TOOLEP_Par_115"
+        },
+        {
+          "@id": "estleg:TUIS_Par_22"
+        },
+        {
+          "@id": "estleg:kollektiivlepingu_seadus_Par_16_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_24_1_v12775000"
@@ -3707,13 +4180,7 @@
         {
           "@id": "estleg:AUS_Par_24_1_v112112021013"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_tooinspektsioon"
-        }
-      ],
-      "estleg:competenceType": "enforcement"
+      ]
     },
     {
       "@id": "estleg:AUS_Par_24_1_Lg_1",
@@ -3722,11 +4189,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 211 lõigetes 2, 21 ja 3 ning §-s 22 sätestatud nõuete täitmise üle teostab Tööinspektsioon.",
+      "estleg:legalText": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse § 21¹ lõigetes 2, 2¹ ja 3 ning §-s 22 sätestatud nõuete täitmise üle teostab Tööinspektsioon.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_24_1"
       },
       "rdfs:label": "§ 24¹ lg 1",
+      "estleg:references": [
+        {
+          "@id": "estleg:AUS_Par_21_1"
+        }
+      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_tooinspektsioon"
@@ -3782,9 +4254,6 @@
         "@id": "estleg:AUS_Par_24_1"
       },
       "rdfs:label": "§ 24¹ lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -3800,6 +4269,9 @@
           "@id": "estleg:KORS_Par_32"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_tooinspektsioon"
@@ -3813,19 +4285,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24².",
-      "rdfs:label": "§ 24². Ettekirjutuse vaidemenetlus",
+      "rdfs:label": {
+        "@value": "§ 24². Ettekirjutuse vaidemenetlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 24². Ettekirjutuse vaidemenetlus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_AUS_5"
+        "@id": "estleg:Cluster_AUS_5_24_24"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_AUS_5"
+        "@id": "estleg:Chapter_AUS_5_69863942"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_24_2_v12775000"
@@ -3845,12 +4323,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Vaidluste lahendamine",
+      "rdfs:label": {
+        "@value": "§ 25. Vaidluste lahendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse sätete kohaldamisel tekkinud individuaalsed töövaidlused töötajate või ametiühingu valitud esindajate ja tööandja vahel lahendatakse individuaalsete töövaidluste lahendamise korras ning avalikus teenistuses tekkinud vaidlused lahendatakse halduskohtumenetluse seadustikus sätestatud korras. (2) Käesoleva seadusega sätete kohaldamisel tekkinud muud vaidlused lahendatakse kohtu korras.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse sätete kohaldamisel tekkinud individuaalsed töövaidlused töötajate või ametiühingu valitud esindajate ja tööandja vahel lahendatakse individuaalsete töövaidluste lahendamise korras ning avalikus teenistuses tekkinud vaidlused lahendatakse halduskohtumenetluse seadustikus sätestatud korras. (2) Käesoleva seadusega sätete kohaldamisel tekkinud muud vaidlused lahendatakse kohtu korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse sätete kohaldamisel tekkinud individuaalsed töövaidlused töötajate või ametiühingu valitud esindajate ja tööandja vahel lahendatakse individuaalsete töövaidluste lahendamise korras ning avalikus teenistuses tekkinud vaidlused lahendatakse halduskohtumenetluse seadustikus sätestatud korras. (2) Käesoleva seadusega sätete kohaldamisel tekkinud muud vaidlused lahendatakse kohtu korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_6"
@@ -3952,12 +4436,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Kahju hüvitamine",
+      "rdfs:label": {
+        "@value": "§ 26. Kahju hüvitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Ametiühingul, mille õigusi rikuti, on õigus nõuda rikkumise lõpetamist, kohustuse täitmist ning tekitatud varalise ja mittevaralise kahju hüvitamist.",
+      "estleg:summary": {
+        "@value": "Ametiühingul, mille õigusi rikuti, on õigus nõuda rikkumise lõpetamist, kohustuse täitmist ning tekitatud varalise ja mittevaralise kahju hüvitamist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ametiühingul, mille õigusi rikuti, on õigus nõuda rikkumise lõpetamist, kohustuse täitmist ning tekitatud varalise ja mittevaralise kahju hüvitamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_6"
@@ -3970,12 +4460,20 @@
           "@id": "estleg:AUS_Par_26_Lg_1"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_1_1_81_13"
+        },
+        {
+          "@id": "estleg:RK_4_17_3766_25"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       },
       "estleg:hasVersion": [
         {
@@ -3987,14 +4485,6 @@
         {
           "@id": "estleg:AUS_Par_26_v12775000"
         }
-      ],
-      "estleg:interpretedBy": [
-        {
-          "@id": "estleg:RK_3_1_1_81_13"
-        },
-        {
-          "@id": "estleg:RK_4_17_3766_25"
-        }
       ]
     },
     {
@@ -4003,16 +4493,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ametiühingul, mille õigusi rikuti, on õigus nõuda rikkumise lõpetamist, kohustuse täitmist ning tekitatud varalise ja mittevaralise kahju hüvitamist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiühingul, mille õigusi rikuti, on õigus nõuda rikkumise lõpetamist, kohustuse täitmist ning tekitatud varalise ja mittevaralise kahju hüvitamist.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_26"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
+      "rdfs:label": "§ 26 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -4022,18 +4514,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26¹.",
-      "rdfs:label": "§ 26¹. Kohustuste täitmata jätmine suhetes ametiühinguga",
+      "rdfs:label": {
+        "@value": "§ 26¹. Kohustuste täitmata jätmine suhetes ametiühinguga",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Kollektiiv- või muu lepingu sõlmimise või muutmise läbirääkimistesse asumata jätmise eest, samuti ametiühingu organi töös või koolituses osalemise võimaldamata jätmise eest, töötaja ametiühingusse kuulumise või ametiühingu valitud esindajana tegutsemise tõttu tema õiguste piiramise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli käesolevas seaduses sätestatud tööandja kohustuse täitmise tagamine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut.",
+      "estleg:summary": {
+        "@value": "(1) Kollektiiv- või muu lepingu sõlmimise või muutmise läbirääkimistesse asumata jätmise eest, samuti ametiühingu organi töös või koolituses osalemise võimaldamata jätmise eest, töötaja ametiühingusse kuulumise või ametiühingu valitud esindajana tegutsemise tõttu tema õiguste piiramise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli käesolevas seaduses sätestatud tööandja kohustuse täitmise tagamine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kollektiiv- või muu lepingu sõlmimise või muutmise läbirääkimistesse asumata jätmise eest, samuti ametiühingu organi töös või koolituses osalemise võimaldamata jätmise eest, töötaja ametiühingusse kuulumise või ametiühingu valitud esindajana tegutsemise tõttu tema õiguste piiramise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli käesolevas seaduses sätestatud tööandja kohustuse täitmise tagamine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_AUS_6"
+        "@id": "estleg:Cluster_AUS_6_26_26"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_AUS_6"
+        "@id": "estleg:Chapter_AUS_6_1e71b85e"
       },
       "estleg:hasSubsection": [
         {
@@ -4051,29 +4549,12 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:TOOLEP_Par_117"
-        },
-        {
-          "@id": "estleg:TOOLEP_Par_120"
-        },
-        {
-          "@id": "estleg:TOOLEP_Par_126"
-        },
-        {
-          "@id": "estleg:TOOLEP_Par_127"
-        },
-        {
-          "@id": "estleg:TUIS_Par_24"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasSanction": [
         {
@@ -4084,6 +4565,17 @@
         }
       ],
       "estleg:enforcedAtLevel": "state",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:AUS_Map"
+        },
+        {
+          "@id": "estleg:AUS_Par_26_8"
+        },
+        {
+          "@id": "estleg:AUS_Par_26_8_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_26_1_v191347"
@@ -4114,9 +4606,6 @@
         "@id": "estleg:AUS_Par_26_1"
       },
       "rdfs:label": "§ 26¹ lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -4128,6 +4617,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasSanction": [
         {
@@ -4148,9 +4640,6 @@
         "@id": "estleg:AUS_Par_26_1"
       },
       "rdfs:label": "§ 26¹ lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -4159,6 +4648,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasSanction": [
         {
@@ -4174,18 +4666,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26².",
-      "rdfs:label": "§ 26². Ametiühingu valitud esindaja tegevuse takistamine",
+      "rdfs:label": {
+        "@value": "§ 26². Ametiühingu valitud esindaja tegevuse takistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Kohas, kus töötab ametiühingu liige, ametiühingu valitud esindajal töötajate töökorralduse või -tingimustega tutvuda takistamise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli käesolevas seaduses sätestatud tööandja kohustuse täitmise tagamine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Kohas, kus töötab ametiühingu liige, ametiühingu valitud esindajal töötajate töökorralduse või -tingimustega tutvuda takistamise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli käesolevas seaduses sätestatud tööandja kohustuse täitmise tagamine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kohas, kus töötab ametiühingu liige, ametiühingu valitud esindajal töötajate töökorralduse või -tingimustega tutvuda takistamise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli käesolevas seaduses sätestatud tööandja kohustuse täitmise tagamine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_AUS_6"
+        "@id": "estleg:Cluster_AUS_6_26_26"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_AUS_6"
+        "@id": "estleg:Chapter_AUS_6_1e71b85e"
       },
       "estleg:hasSubsection": [
         {
@@ -4203,6 +4701,22 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_AUS_Par_26_2_fine"
+        },
+        {
+          "@id": "estleg:Sanction_AUS_Par_26_2_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:TOOLEP_Par_117"
@@ -4214,28 +4728,12 @@
           "@id": "estleg:TOOLEP_Par_125"
         },
         {
-          "@id": "estleg:TUIS_Par_24"
+          "@id": "estleg:TOOLEP_Par_126"
         },
         {
-          "@id": "estleg:VALISM_Par_301_1"
+          "@id": "estleg:TOOLEP_Par_127"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_AUS_Par_26_2_fine"
-        },
-        {
-          "@id": "estleg:Sanction_AUS_Par_26_2_fine_2"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_26_2_v191347"
@@ -4266,9 +4764,6 @@
         "@id": "estleg:AUS_Par_26_2"
       },
       "rdfs:label": "§ 26² lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -4280,6 +4775,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasSanction": [
         {
@@ -4300,9 +4798,6 @@
         "@id": "estleg:AUS_Par_26_2"
       },
       "rdfs:label": "§ 26² lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -4311,6 +4806,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasSanction": [
         {
@@ -4326,19 +4824,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26³.",
-      "rdfs:label": "§ 26³. Informeerimise ja konsulteerimise kohustuse rikkumine",
+      "rdfs:label": {
+        "@value": "§ 26³. Informeerimise ja konsulteerimise kohustuse rikkumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 26³. Informeerimise ja konsulteerimise kohustuse rikkumine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_AUS_6"
+        "@id": "estleg:Cluster_AUS_6_26_26"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_AUS_6"
+        "@id": "estleg:Chapter_AUS_6_1e71b85e"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_26_3_v191347"
@@ -4358,18 +4862,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26⁴.",
-      "rdfs:label": "§ 26⁴. Ametiühingu valitud esindaja kohustuste täitmata jätmine suhetes tööandjaga",
+      "rdfs:label": {
+        "@value": "§ 26⁴. Ametiühingu valitud esindaja kohustuste täitmata jätmine suhetes tööandjaga",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Ametiühingu valitud esindaja poolt seaduse või kollektiivlepinguga määratud ajal töörahu kindlustamata jätmise eest –karistatakse rahatrahviga kuni 300 trahviühikut.",
+      "estleg:summary": {
+        "@value": "Ametiühingu valitud esindaja poolt seaduse või kollektiivlepinguga määratud ajal töörahu kindlustamata jätmise eest –karistatakse rahatrahviga kuni 300 trahviühikut.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ametiühingu valitud esindaja poolt seaduse või kollektiivlepinguga määratud ajal töörahu kindlustamata jätmise eest –karistatakse rahatrahviga kuni 300 trahviühikut.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_AUS_6"
+        "@id": "estleg:Cluster_AUS_6_26_26"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_AUS_6"
+        "@id": "estleg:Chapter_AUS_6_1e71b85e"
       },
       "estleg:hasSubsection": [
         {
@@ -4381,29 +4891,12 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:AUTOVE_Par_72_1"
-        },
-        {
-          "@id": "estleg:KORRUP_Par_19"
-        },
-        {
-          "@id": "estleg:LIIKLU_2_Par_239"
-        },
-        {
-          "@id": "estleg:MSOS_Par_94_3"
-        },
-        {
-          "@id": "estleg:Meret_seadus_Par_78"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasSanction": [
         {
@@ -4411,6 +4904,11 @@
         }
       ],
       "estleg:enforcedAtLevel": "state",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:AUTOVE_Par_72_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_26_4_v191347"
@@ -4432,16 +4930,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ametiühingu valitud esindaja poolt seaduse või kollektiivlepinguga määratud ajal töörahu kindlustamata jätmise eest –karistatakse rahatrahviga kuni 300 trahviühikut.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiühingu valitud esindaja poolt seaduse või kollektiivlepinguga määratud ajal töörahu kindlustamata jätmise eest –karistatakse rahatrahviga kuni 300 trahviühikut.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_26_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
+      "rdfs:label": "§ 26⁴ lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasSanction": [
         {
@@ -4457,18 +4957,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26⁵.",
-      "rdfs:label": "§ 26⁵. Ametiühingu seadusliku tegevuse takistamine",
+      "rdfs:label": {
+        "@value": "§ 26⁵. Ametiühingu seadusliku tegevuse takistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Ametiühingu seadusliku tegevuse takistamise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli käesolevas seaduses sätestatud tööandja kohustuse täitmise tagamine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Ametiühingu seadusliku tegevuse takistamise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli käesolevas seaduses sätestatud tööandja kohustuse täitmise tagamine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ametiühingu seadusliku tegevuse takistamise eest tööandja, tema juhatuse liikme või muu esindaja poolt, kellele oli käesolevas seaduses sätestatud tööandja kohustuse täitmise tagamine delegeeritud, –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_AUS_6"
+        "@id": "estleg:Cluster_AUS_6_26_26"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_AUS_6"
+        "@id": "estleg:Chapter_AUS_6_1e71b85e"
       },
       "estleg:hasSubsection": [
         {
@@ -4483,6 +4989,22 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_AUS_Par_26_5_fine"
+        },
+        {
+          "@id": "estleg:Sanction_AUS_Par_26_5_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RAUDTEE_Par_171"
@@ -4494,28 +5016,12 @@
           "@id": "estleg:TOOLEP_Par_125"
         },
         {
-          "@id": "estleg:TUIS_Par_24"
+          "@id": "estleg:TOOLEP_Par_126"
         },
         {
-          "@id": "estleg:VALISM_Par_301_1"
+          "@id": "estleg:TOOLEP_Par_127"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_AUS_Par_26_5_fine"
-        },
-        {
-          "@id": "estleg:Sanction_AUS_Par_26_5_fine_2"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_26_5_v191347"
@@ -4546,9 +5052,6 @@
         "@id": "estleg:AUS_Par_26_5"
       },
       "rdfs:label": "§ 26⁵ lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -4557,6 +5060,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasSanction": [
         {
@@ -4577,9 +5083,6 @@
         "@id": "estleg:AUS_Par_26_5"
       },
       "rdfs:label": "§ 26⁵ lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -4588,6 +5091,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       },
       "estleg:hasSanction": [
         {
@@ -4603,19 +5109,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26⁶.",
-      "rdfs:label": "§ 26⁶. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 26⁶.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 26⁶.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_AUS_6"
+        "@id": "estleg:Cluster_AUS_6_26_26"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_AUS_6"
+        "@id": "estleg:Chapter_AUS_6_1e71b85e"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_26_6_v191347"
@@ -4635,19 +5147,30 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26⁷.",
-      "rdfs:label": "§ 26⁷. Konfidentsiaalse teabe hoidmise kohustuse rikkumine",
+      "rdfs:label": {
+        "@value": "§ 26⁷. Konfidentsiaalse teabe hoidmise kohustuse rikkumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 26⁷. Konfidentsiaalse teabe hoidmise kohustuse rikkumine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_AUS_6"
+        "@id": "estleg:Cluster_AUS_6_26_26"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_AUS_6"
+        "@id": "estleg:Chapter_AUS_6_1e71b85e"
       },
+      "estleg:provisionRepealed": true,
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KREDII_Par_101"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_26_7_v12775000"
@@ -4664,30 +5187,43 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26⁸.",
-      "rdfs:label": "§ 26⁸. Menetlus",
+      "rdfs:label": {
+        "@value": "§ 26⁸. Menetlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Käesoleva seaduse §-des 261, 262, 264 ja 265 sätestatud väärtegude kohtuväline menetleja on Tööinspektsioon.",
-      "estleg:legalText": "(1) Kehtetu - (2) Käesoleva seaduse §-des 261, 262, 264 ja 265 sätestatud väärtegude kohtuväline menetleja on Tööinspektsioon.",
+      "estleg:summary": {
+        "@value": "(2) Käesoleva seaduse §-des 26¹, 26², 26⁴ ja 26⁵ sätestatud väärtegude kohtuväline menetleja on Tööinspektsioon.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(2) Käesoleva seaduse §-des 26¹, 26², 26⁴ ja 26⁵ sätestatud väärtegude kohtuväline menetleja on Tööinspektsioon.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_AUS_6"
+        "@id": "estleg:Cluster_AUS_6_26_26"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_AUS_6"
+        "@id": "estleg:Chapter_AUS_6_1e71b85e"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:AUS_Par_26_8_Lg_1"
-        },
         {
           "@id": "estleg:AUS_Par_26_8_Lg_2"
         }
       ],
+      "estleg:references": [
+        {
+          "@id": "estleg:AUS_Par_26_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_tooinspektsioon"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:KTL_Par_23_4"
+          "@id": "estleg:ELTTS_Par_9_5"
         },
         {
           "@id": "estleg:TOOLEP_Par_130"
@@ -4709,25 +5245,7 @@
         {
           "@id": "estleg:AUS_Par_26_8_v112072014027"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_tooinspektsioon"
-        }
       ]
-    },
-    {
-      "@id": "estleg:AUS_Par_26_8_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AUS_Par_26_8"
-      },
-      "rdfs:label": "§ 26⁸ lg 1"
     },
     {
       "@id": "estleg:AUS_Par_26_8_Lg_2",
@@ -4736,11 +5254,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva seaduse §-des 261, 262, 264 ja 265 sätestatud väärtegude kohtuväline menetleja on Tööinspektsioon.",
+      "estleg:legalText": "(2) Käesoleva seaduse §-des 26¹, 26², 26⁴ ja 26⁵ sätestatud väärtegude kohtuväline menetleja on Tööinspektsioon.",
       "estleg:parentProvision": {
         "@id": "estleg:AUS_Par_26_8"
       },
       "rdfs:label": "§ 26⁸ lg 2",
+      "estleg:references": [
+        {
+          "@id": "estleg:AUS_Par_26_1"
+        }
+      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_tooinspektsioon"
@@ -4754,12 +5277,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Käesoleva seaduse kohaldamine ametiühingutele",
+      "rdfs:label": {
+        "@value": "§ 27. Käesoleva seaduse kohaldamine ametiühingutele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "(1) Alates käesoleva seaduse jõustumisest võib ametiühinguid asutada ainult käesolevas seaduses sätestatud korras ja neile kohaldatakse käesolevas seaduses sätestatut. (2) Enne käesoleva seaduse jõustumist asutatud ning mittetulundusühingute ja sihtasutuste registrisse kantud ametiühingu kannab registripidaja, lähtudes ametiühingu nimest või põhikirjas sätestatud eesmärgist, mittetulundusühingute ja sihtasutuste registri allosana peetavasse ametiühingute registrisse kuue kuu jooksul käesoleva",
+      "estleg:summary": {
+        "@value": "(1) Alates käesoleva seaduse jõustumisest võib ametiühinguid asutada ainult käesolevas seaduses sätestatud korras ja neile kohaldatakse käesolevas seaduses sätestatut. (2) Enne käesoleva seaduse jõustumist asutatud ning mittetulundusühingute ja sihtasutuste registrisse kantud ametiühingu kannab registripidaja, lähtudes ametiühingu nimest või põhikirjas sätestatud eesmärgist, mittetulundusühingute ja sihtasutuste registri allosana peetavasse ametiühingute registrisse kuue kuu jooksul käesoleva",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Alates käesoleva seaduse jõustumisest võib ametiühinguid asutada ainult käesolevas seaduses sätestatud korras ja neile kohaldatakse käesolevas seaduses sätestatut. (2) Enne käesoleva seaduse jõustumist asutatud ning mittetulundusühingute ja sihtasutuste registrisse kantud ametiühingu kannab registripidaja, lähtudes ametiühingu nimest või põhikirjas sätestatud eesmärgist, mittetulundusühingute ja sihtasutuste registri allosana peetavasse ametiühingute registrisse kuue kuu jooksul käesoleva seaduse jõustumisest. Registripidaja teatab vastavale ametiühingule kandeotsusest. Mittetulundusühingute ja sihtasutuste registrisse kantud ametiühingul, mis ei ole kantud ametiühingute registrisse, on õigus taotleda registrisse kandmist. (3) Ametiühingul, mis oli asutatud ENSV ametiühingute seaduse (ENSV Teataja 1989, 40, 623; RT 1992, 35, 462) alusel ja ei olnud ümber registreeritud mittetulundusühingute seaduse alusel, on õigus taotleda registrisse kandmist asutamisdokumentide alusel, kui selle põhikiri ei ole vastuolus käesoleva seaduse nõuetega. Ametiühingul, mis ei olnud ümber registreeritud mittetulundusühingute seaduse alusel, on õigus taotleda registrisse kandmist kuue kuu jooksul käesoleva seaduse jõustumisest. Registrisse kandmise avalduses tuleb märkida seaduses sätestatud andmed, avaldusele tuleb lisada seaduses sätestatud dokumendid, välja arvatud asutamisleping, samuti ettevõtte registris registreerimise tunnistus. (4) Ettevõtte töötajate hulgast valitud ametiühingu esindajale antakse pärast tema volituste lõppemist valitaval ametikohal tagasi endine töö või amet, selle puudumisel teine samaväärne töö- või ametikoht.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_7"
@@ -4789,20 +5318,12 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:MTUS_Par_91"
-        },
-        {
-          "@id": "estleg:ariseadustik_Par_506"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       },
       "estleg:hasVersion": [
         {
@@ -4825,12 +5346,12 @@
         "@id": "estleg:AUS_Par_27"
       },
       "rdfs:label": "§ 27 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -4845,9 +5366,6 @@
         "@id": "estleg:AUS_Par_27"
       },
       "rdfs:label": "§ 27 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -4859,6 +5377,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -4873,9 +5394,6 @@
         "@id": "estleg:AUS_Par_27"
       },
       "rdfs:label": "§ 27 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_NGO"
@@ -4884,6 +5402,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -4918,18 +5439,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28.",
+      "rdfs:label": {
+        "@value": "§ 28. [–]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
+      "estleg:summary": "§ 28.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_AUS_7"
       },
-      "estleg:summary": "§ 28.",
+      "estleg:provisionOmitted": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:AUS_Par_28_v26421"
@@ -4943,12 +5468,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 30. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ametiühingute seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AUS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AUS_7"
@@ -4966,70 +5497,20 @@
       ]
     },
     {
-      "@id": "estleg:Citation_AUS_P_21_2_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/511022026003",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:AUS_Par_21_2"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationText": "käesoleva seaduse §-le 211"
-    },
-    {
-      "@id": "estleg:Citation_AUS_P_21_2_Lg_1_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:AUS_Par_21_2_Lg_1"
+      "eli:realizes": {
+        "@id": "estleg:AUS_Map"
       },
-      "estleg:citationText": "käesoleva seaduse §-le 211"
-    },
-    {
-      "@id": "estleg:Citation_AUS_P_24_1_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:AUS_Par_24_1"
-      },
-      "estleg:citationText": "käesoleva seaduse § 211"
-    },
-    {
-      "@id": "estleg:Citation_AUS_P_24_1_Lg_1_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:AUS_Par_24_1_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse § 211"
-    },
-    {
-      "@id": "estleg:Citation_AUS_P_26_8_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:AUS_Par_26_8"
-      },
-      "estleg:citationText": "Käesoleva seaduse §-des 261"
-    },
-    {
-      "@id": "estleg:Citation_AUS_P_26_8_Lg_2_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:AUS_Par_26_8_Lg_2"
-      },
-      "estleg:citationText": "Käesoleva seaduse §-des 261"
+      "rdfs:label": {
+        "@value": "Trade Unions Act",
+        "@language": "en"
+      }
     }
   ]
 }

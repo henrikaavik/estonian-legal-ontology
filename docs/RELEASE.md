@@ -1,7 +1,7 @@
 # Release build DAG
 
 `scripts/run_all_integration.py` owns the enrichment pipeline **and** the
-release build. Its 35 steps form an explicit, declarative directed acyclic
+release build. Its 36 steps form an explicit, declarative directed acyclic
 graph (DAG) in four tiers: ingest (network fetches), enrichment (offline
 corpus passes and aggregate rebuilds), build (the combined/INDEX rebuild) and
 package (release assets). The runner topologically sorts it, runs it
@@ -382,7 +382,7 @@ This is the **unified release command**. It:
    `--no-restore-on-failure` or `--snapshot none`). With `--snapshot auto`
    and a clean `git status --porcelain krr_outputs`, the copy is skipped
    and a failure rolls back to git HEAD instead (#722).
-3. Runs all 35 steps in topo order. Ingest-tier steps are recorded as
+3. Runs all 36 steps in topo order. Ingest-tier steps are recorded as
    `skipped_ingest` unless `--with-ingest` is given. A failed step skips its
    dependents; the first hard failure stops the run and the snapshot is
    restored.
@@ -418,7 +418,7 @@ Useful flags:
 
 ## Incremental builds (`--only-changed`)
 
-A one-file correction does not need all 35 steps (#729). The runner keeps a
+A one-file correction does not need all 36 steps (#729). The runner keeps a
 per-file content-hash manifest and runs only the steps the change reaches.
 
 ```bash
@@ -660,6 +660,17 @@ that publish step stays manual.
 ---
 
 ## Runtime, memory and disk envelope
+
+The full public-load gate (`validate_seadusloome_sync.py`) uses a temporary
+disk-backed RDF store. The wave-six union contains 18.2 million statements;
+an in-memory prototype exceeded 17 GB, exhausting a standard CI runner.
+The gate keeps RDFLib's JSON-LD parser and SPARQL evaluator and the existing
+pySHACL rules. Literal values are stored losslessly so storage cannot change
+validation results. The temporary database is closed and removed after the
+run, including validation failures. Set `TMPDIR` to a volume with enough free
+space when the system temporary directory is small; do not put it on a RAM disk.
+The separate bucket validator (`shacl_validate_all.py`) applies RDFS inference
+to its disposable graph in place, avoiding a second full corpus copy.
 
 Measured on the `tier1/wave4` branch (Apple Silicon laptop, SSD, Python 3.14)
 unless marked as an estimate. Use these figures to size a runner. They are

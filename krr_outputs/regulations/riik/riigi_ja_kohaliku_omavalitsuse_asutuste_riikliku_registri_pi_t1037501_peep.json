@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,18 +39,15 @@
       "estleg:globalId": "107012017001",
       "estleg:terviktekstId": "1037501",
       "estleg:preambleText": "Määrus kehtestatakse kohtute seaduse § 16 lõike 2",
-      "estleg:entryIntoForce": {
-        "@value": "2017-01-11",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2017-01-07",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
+      },
+      "dcterms:title": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
       },
       "estleg:issuedUnder": [
         {
@@ -76,7 +80,16 @@
         {
           "@id": "http://eurovoc.europa.eu/5188"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2017-01-11",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2017-01-07",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1037501_Par_1",
@@ -85,38 +98,76 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1037501_Map"
       },
-      "estleg:summary": "Käesoleva määrusega kehtestatakse riigi- ja kohaliku omavalitsuse asutuste riikliku registri (edaspidi register) pidamise kord.",
-      "estleg:legalText": "Käesoleva määrusega kehtestatakse riigi- ja kohaliku omavalitsuse asutuste riikliku registri (edaspidi register) pidamise kord. Käesoleva määrusega kehtestatakse riigi- ja kohaliku omavalitsuse asutuste riikliku registri (edaspidi register) pidamise kord.",
+      "estleg:summary": {
+        "@value": "Käesoleva määrusega kehtestatakse riigi- ja kohaliku omavalitsuse asutuste riikliku registri (edaspidi register) pidamise kord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva määrusega kehtestatakse riigi- ja kohaliku omavalitsuse asutuste riikliku registri (edaspidi register) pidamise kord.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1000524_Par_1"
-        },
-        {
-          "@id": "estleg:Reg_1031277_Par_1"
-        },
-        {
-          "@id": "estleg:Reg_1060853_Par_1"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1037501_Par_1_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RKS_Par_5_1"
+        },
+        {
+          "@id": "estleg:Reg_1031277_Par_1"
+        },
+        {
+          "@id": "estleg:Reg_340008_Par_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1037501_Par_1_v1037501"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva määrusega kehtestatakse riigi- ja kohaliku omavalitsuse asutuste riikliku registri (edaspidi register) pidamise kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
@@ -130,13 +181,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Registripidaja",
+      "rdfs:label": {
+        "@value": "§ 2. Registripidaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1037501_Map"
       },
-      "estleg:summary": "Registripidaja ülesandeid täidab Tartu Maakohtu registriosakonna registrisekretär, kes: 1 1) vaatab läbi käesoleva määruse § 3 lõikes 2 esitatud avalduse; 2 2) vajaduse korral küsib andmeandjalt täiendavaid andmeid või dokumente; 3 3) avalikustab esitatud andmed ja dokumendid. Registripidaja ülesandeid täidab Tartu Maakohtu registriosakonna registrisekretär, kes: vaatab läbi käesoleva määruse § 3 lõikes 2 esitatud avalduse; vajaduse korral küsib andmeandjalt täiendavaid andmeid või dokumente; av",
-      "estleg:legalText": "Registripidaja ülesandeid täidab Tartu Maakohtu registriosakonna registrisekretär, kes: 1 1) vaatab läbi käesoleva määruse § 3 lõikes 2 esitatud avalduse; 2 2) vajaduse korral küsib andmeandjalt täiendavaid andmeid või dokumente; 3 3) avalikustab esitatud andmed ja dokumendid. Registripidaja ülesandeid täidab Tartu Maakohtu registriosakonna registrisekretär, kes: vaatab läbi käesoleva määruse § 3 lõikes 2 esitatud avalduse; vajaduse korral küsib andmeandjalt täiendavaid andmeid või dokumente; avalikustab esitatud andmed ja dokumendid.",
+      "estleg:summary": {
+        "@value": "Registripidaja ülesandeid täidab Tartu Maakohtu registriosakonna registrisekretär, kes: 1 1) vaatab läbi käesoleva määruse § 3 lõikes 2 esitatud avalduse; 2 2) vajaduse korral küsib andmeandjalt täiendavaid andmeid või dokumente; 3 3) avalikustab esitatud andmed ja dokumendid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registripidaja ülesandeid täidab Tartu Maakohtu registriosakonna registrisekretär, kes: 1 1) vaatab läbi käesoleva määruse § 3 lõikes 2 esitatud avalduse; 2 2) vajaduse korral küsib andmeandjalt täiendavaid andmeid või dokumente; 3 3) avalikustab esitatud andmed ja dokumendid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -149,11 +206,51 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1037501_Par_2_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maakohus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1037501_Par_2_v1037501"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registripidaja ülesandeid täidab Tartu Maakohtu registriosakonna registrisekretär, kes: 1) vaatab läbi käesoleva määruse § 3 lõikes 2 esitatud avalduse; 2) vajaduse korral küsib andmeandjalt täiendavaid andmeid või dokumente; 3) avalikustab esitatud andmed ja dokumendid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_maakohus"
@@ -167,13 +264,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Asutuse registreerimine",
+      "rdfs:label": {
+        "@value": "§ 3. Asutuse registreerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1037501_Map"
       },
-      "estleg:summary": "1 (1) Asutuse registreerimise aluseks on: 1 1) seadus, millega avalik-õiguslik juriidiline isik on asutatud või põhiseaduslik institutsioon, Vabariigi Valimiskomisjon või kohus on moodustatud; 2 2) otsus, millega avalik-õigusliku juriidilise isiku asutus on moodustatud; 3 3) seadus, Vabariigi Valitsuse, ministri, riigisekretäri või maavanema õigusakt, millega riigiasutus on moodustatud, või 4 4) kohaliku omavalitsuse volikogu õigusakt, millega kohaliku omavalitsuse asutus on moodustatud. Asutuse",
-      "estleg:legalText": "1 (1) Asutuse registreerimise aluseks on: 1 1) seadus, millega avalik-õiguslik juriidiline isik on asutatud või põhiseaduslik institutsioon, Vabariigi Valimiskomisjon või kohus on moodustatud; 2 2) otsus, millega avalik-õigusliku juriidilise isiku asutus on moodustatud; 3 3) seadus, Vabariigi Valitsuse, ministri, riigisekretäri või maavanema õigusakt, millega riigiasutus on moodustatud, või 4 4) kohaliku omavalitsuse volikogu õigusakt, millega kohaliku omavalitsuse asutus on moodustatud. Asutuse registreerimise aluseks on: seadus, millega avalik-õiguslik juriidiline isik on asutatud või põhiseaduslik institutsioon, Vabariigi Valimiskomisjon või kohus on moodustatud; otsus, millega avalik-õigusliku juriidilise isiku asutus on moodustatud; seadus, Vabariigi Valitsuse, ministri, riigisekretäri või maavanema õigusakt, millega riigiasutus on moodustatud, või kohaliku omavalitsuse volikogu õigusakt, millega kohaliku omavalitsuse asutus on moodustatud. 2 (2) Asutus esitab registripidajale Vabariigi Valitsuse 7. detsembri 1999. a määrusega nr 371 „Riigi- ja kohaliku omavalitsuse asutuste riikliku registri asutamine” kinnitatud riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise põhimääruse § 5 punktides 1, 3–10, 17 ja 21–22 loetletud andmetega avalduse viivitamata pärast asutuse moodustamise akti või asutamise või moodustamise seaduse jõustumist. Asutus esitab registripidajale Vabariigi Valitsuse 7. detsembri 1999. a määrusega nr 371 „Riigi- ja kohaliku omavalitsuse asutuste riikliku registri asutamine” kinnitatud riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise põhimääruse § 5 punktides 1, 3–10, 17 ja 21–22 loetletud andmetega avalduse viivitamata pärast asutuse moodustamise akti või asutamise või moodustamise seaduse jõustumist. 3 (3) Registripidaja registreerib asutuse viie tööpäeva jooksul kõikide kohustuslike andmete esitamisest arvates ja väljastab selle kohta andmeandjale elektroonilise ärakirja. Registripidaja registreerib asutuse viie tööpäeva jooksul kõikide kohustuslike andmete esitamisest arvates ja väljastab selle kohta andmeandjale elektroonilise ärakirja.",
+      "estleg:summary": {
+        "@value": "1 (1) Asutuse registreerimise aluseks on: 1 1) seadus, millega avalik-õiguslik juriidiline isik on asutatud või põhiseaduslik institutsioon, Vabariigi Valimiskomisjon või kohus on moodustatud; 2 2) otsus, millega avalik-õigusliku juriidilise isiku asutus on moodustatud; 3 3) seadus, Vabariigi Valitsuse, ministri, riigisekretäri või maavanema õigusakt, millega riigiasutus on moodustatud, või 4 4) kohaliku omavalitsuse volikogu õigusakt, millega kohaliku omavalitsuse asutus on moodustatud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Asutuse registreerimise aluseks on: 1 1) seadus, millega avalik-õiguslik juriidiline isik on asutatud või põhiseaduslik institutsioon, Vabariigi Valimiskomisjon või kohus on moodustatud; 2 2) otsus, millega avalik-õigusliku juriidilise isiku asutus on moodustatud; 3 3) seadus, Vabariigi Valitsuse, ministri, riigisekretäri või maavanema õigusakt, millega riigiasutus on moodustatud, või 4 4) kohaliku omavalitsuse volikogu õigusakt, millega kohaliku omavalitsuse asutus on moodustatud. 2 (2) Asutus esitab registripidajale Vabariigi Valitsuse 7. detsembri 1999. a määrusega nr 371 „Riigi- ja kohaliku omavalitsuse asutuste riikliku registri asutamine” kinnitatud riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise põhimääruse § 5 punktides 1, 3–10, 17 ja 21–22 loetletud andmetega avalduse viivitamata pärast asutuse moodustamise akti või asutamise või moodustamise seaduse jõustumist. 3 (3) Registripidaja registreerib asutuse viie tööpäeva jooksul kõikide kohustuslike andmete esitamisest arvates ja väljastab selle kohta andmeandjale elektroonilise ärakirja.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -186,11 +289,64 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1037501_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1037501_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1037501_Par_3_Lg_3"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohus"
+        },
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1037501_Par_3_v1037501"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Asutuse registreerimise aluseks on: 1) seadus, millega avalik-õiguslik juriidiline isik on asutatud või põhiseaduslik institutsioon, Vabariigi Valimiskomisjon või kohus on moodustatud; 2) otsus, millega avalik-õigusliku juriidilise isiku asutus on moodustatud; 3) seadus, Vabariigi Valitsuse, ministri, riigisekretäri või maavanema õigusakt, millega riigiasutus on moodustatud, või 4) kohaliku omavalitsuse volikogu õigusakt, millega kohaliku omavalitsuse asutus on moodustatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohus"
@@ -204,19 +360,47 @@
       ]
     },
     {
-      "@id": "estleg:Reg_1037501_Par_4",
+      "@id": "estleg:Reg_1037501_Par_3_Lg_2",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Andmete muutmine",
-      "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
-      "estleg:partOfAct": {
-        "@id": "estleg:Reg_1037501_Map"
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Asutus esitab registripidajale Vabariigi Valitsuse 7. detsembri 1999. a määrusega nr 371 „Riigi- ja kohaliku omavalitsuse asutuste riikliku registri asutamine” kinnitatud riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise põhimääruse § 5 punktides 1, 3–10, 17 ja 21–22 loetletud andmetega avalduse viivitamata pärast asutuse moodustamise akti või asutamise või moodustamise seaduse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_3"
       },
-      "estleg:summary": "1 (1) Registris avalikustatud andmete muutumisel on asutus kohustatud registripidajale esitama elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse uute andmetega viie tööpäeva jooksul andmete muutumisest arvates. Registripidaja muudab andmed viie tööpäeva jooksul arvates andmete esitamisest. Registris avalikustatud andmete muutumisel on asutus kohustatud registripidajale esitama elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse uute andmetega viie tööpäeva jooksul andmete m",
-      "estleg:legalText": "1 (1) Registris avalikustatud andmete muutumisel on asutus kohustatud registripidajale esitama elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse uute andmetega viie tööpäeva jooksul andmete muutumisest arvates. Registripidaja muudab andmed viie tööpäeva jooksul arvates andmete esitamisest. Registris avalikustatud andmete muutumisel on asutus kohustatud registripidajale esitama elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse uute andmetega viie tööpäeva jooksul andmete muutumisest arvates. Registripidaja muudab andmed viie tööpäeva jooksul arvates andmete esitamisest. 2 (2) Sidevahendite ja tegevusala andmete muudatused avalikustatakse automaatselt pärast andmete esitamist. Sidevahendite ja tegevusala andmete muudatused avalikustatakse automaatselt pärast andmete esitamist. 3 (3) Registripidaja võib registrit puudutavate suuremahuliste muudatuste korral muudatuste tegemise tähtaega pikendada, teavitades sellest andmeandjat e-kirjaga. Registripidaja võib registrit puudutavate suuremahuliste muudatuste korral muudatuste tegemise tähtaega pikendada, teavitades sellest andmeandjat e-kirjaga.",
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Registripidaja registreerib asutuse viie tööpäeva jooksul kõikide kohustuslike andmete esitamisest arvates ja väljastab selle kohta andmeandjale elektroonilise ärakirja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -228,6 +412,53 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
+      ],
+      "estleg:paragrahv": "§ 4.",
+      "rdfs:label": {
+        "@value": "§ 4. Andmete muutmine",
+        "@language": "et"
+      },
+      "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
+      "estleg:partOfAct": {
+        "@id": "estleg:Reg_1037501_Map"
+      },
+      "estleg:summary": {
+        "@value": "1 (1) Registris avalikustatud andmete muutumisel on asutus kohustatud registripidajale esitama elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse uute andmetega viie tööpäeva jooksul andmete muutumisest arvates. Registripidaja muudab andmed viie tööpäeva jooksul arvates andmete esitamisest. 2 (2) Sidevahendite ja tegevusala andmete muudatused avalikustatakse automaatselt pärast andmete esitamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Registris avalikustatud andmete muutumisel on asutus kohustatud registripidajale esitama elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse uute andmetega viie tööpäeva jooksul andmete muutumisest arvates. Registripidaja muudab andmed viie tööpäeva jooksul arvates andmete esitamisest. 2 (2) Sidevahendite ja tegevusala andmete muudatused avalikustatakse automaatselt pärast andmete esitamist. 3 (3) Registripidaja võib registrit puudutavate suuremahuliste muudatuste korral muudatuste tegemise tähtaega pikendada, teavitades sellest andmeandjat e-kirjaga.",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1037501_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1037501_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1037501_Par_4_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -236,19 +467,91 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1037501_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registris avalikustatud andmete muutumisel on asutus kohustatud registripidajale esitama elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse uute andmetega viie tööpäeva jooksul andmete muutumisest arvates. Registripidaja muudab andmed viie tööpäeva jooksul arvates andmete esitamisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sidevahendite ja tegevusala andmete muudatused avalikustatakse automaatselt pärast andmete esitamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Registripidaja võib registrit puudutavate suuremahuliste muudatuste korral muudatuste tegemise tähtaega pikendada, teavitades sellest andmeandjat e-kirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
       "@id": "estleg:Reg_1037501_Par_5",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Asutuse ümberkorraldamine",
+      "rdfs:label": {
+        "@value": "§ 5. Asutuse ümberkorraldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1037501_Map"
       },
-      "estleg:summary": "1 (1) Asutuse ümberkorraldamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse, milles märgib muutunud andmed ning millele lisab ümberkorraldusotsuse akti või ümberkorraldamise seaduse nimetuse ja vastuvõtmise kuupäeva, registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates. Asutuse ümberkorraldamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse, milles märgib muutunud andmed ning millele lisab ümberkorr",
-      "estleg:legalText": "1 (1) Asutuse ümberkorraldamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse, milles märgib muutunud andmed ning millele lisab ümberkorraldusotsuse akti või ümberkorraldamise seaduse nimetuse ja vastuvõtmise kuupäeva, registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates. Asutuse ümberkorraldamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse, milles märgib muutunud andmed ning millele lisab ümberkorraldusotsuse akti või ümberkorraldamise seaduse nimetuse ja vastuvõtmise kuupäeva, registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates. 2 (2) Registripidaja avalikustab andmed asutuse ümberkorraldamise kohta viie tööpäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud teabe esitamisest arvates. Registripidaja avalikustab andmed asutuse ümberkorraldamise kohta viie tööpäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud teabe esitamisest arvates.",
+      "estleg:summary": {
+        "@value": "1 (1) Asutuse ümberkorraldamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse, milles märgib muutunud andmed ning millele lisab ümberkorraldusotsuse akti või ümberkorraldamise seaduse nimetuse ja vastuvõtmise kuupäeva, registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates. 2 (2) Registripidaja avalikustab andmed asutuse ümberkorraldamise kohta viie tööpäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud teabe esitamisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Asutuse ümberkorraldamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse, milles märgib muutunud andmed ning millele lisab ümberkorraldusotsuse akti või ümberkorraldamise seaduse nimetuse ja vastuvõtmise kuupäeva, registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates. 2 (2) Registripidaja avalikustab andmed asutuse ümberkorraldamise kohta viie tööpäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud teabe esitamisest arvates.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -261,11 +564,66 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1037501_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1037501_Par_5_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1037501_Par_5_v1037501"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Asutuse ümberkorraldamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse, milles märgib muutunud andmed ning millele lisab ümberkorraldusotsuse akti või ümberkorraldamise seaduse nimetuse ja vastuvõtmise kuupäeva, registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registripidaja avalikustab andmed asutuse ümberkorraldamise kohta viie tööpäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud teabe esitamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1037501_Par_6",
@@ -274,13 +632,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Asutuse lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 6. Asutuse lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1037501_Map"
       },
-      "estleg:summary": "1 (1) Asutuse tegevuse lõpetamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse koos lõpetamisotsuse akti või lõpetamise seaduse nimetuse ja vastuvõtmise kuupäevaga registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates. Asutuse tegevuse lõpetamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse koos lõpetamisotsuse akti või lõpetamise seaduse nimetuse ja vastuvõtmise kuupäevaga registripidajale viie tööp",
-      "estleg:legalText": "1 (1) Asutuse tegevuse lõpetamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse koos lõpetamisotsuse akti või lõpetamise seaduse nimetuse ja vastuvõtmise kuupäevaga registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates. Asutuse tegevuse lõpetamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse koos lõpetamisotsuse akti või lõpetamise seaduse nimetuse ja vastuvõtmise kuupäevaga registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates. 2 (2) Registripidaja avalikustab andmed asutuse tegevuse lõpetamise kohta viie tööpäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud teabe esitamisest arvates. Registripidaja avalikustab andmed asutuse tegevuse lõpetamise kohta viie tööpäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud teabe esitamisest arvates.",
+      "estleg:summary": {
+        "@value": "1 (1) Asutuse tegevuse lõpetamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse koos lõpetamisotsuse akti või lõpetamise seaduse nimetuse ja vastuvõtmise kuupäevaga registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates. 2 (2) Registripidaja avalikustab andmed asutuse tegevuse lõpetamise kohta viie tööpäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud teabe esitamisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Asutuse tegevuse lõpetamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse koos lõpetamisotsuse akti või lõpetamise seaduse nimetuse ja vastuvõtmise kuupäevaga registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates. 2 (2) Registripidaja avalikustab andmed asutuse tegevuse lõpetamise kohta viie tööpäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud teabe esitamisest arvates.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -293,11 +657,66 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1037501_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1037501_Par_6_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1037501_Par_6_v1037501"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Asutuse tegevuse lõpetamise korral esitab andmeandja elektrooniliselt äriregistri ettevõtjaportaali kaudu avalduse koos lõpetamisotsuse akti või lõpetamise seaduse nimetuse ja vastuvõtmise kuupäevaga registripidajale viie tööpäeva jooksul otsuse jõustumisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registripidaja avalikustab andmed asutuse tegevuse lõpetamise kohta viie tööpäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud teabe esitamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1037501_Par_7",
@@ -306,21 +725,37 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Ebaõigete andmete parandamine",
+      "rdfs:label": {
+        "@value": "§ 7. Ebaõigete andmete parandamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1037501_Map"
       },
-      "estleg:summary": "1 (1) Kui registripidaja saab teadlikuks, et registris on ebaõigeid andmeid, teavitab ta sellest e-kirjaga andmeandjat. Andmeandja on kohustatud esitama õiged andmed viie tööpäeva jooksul registripidajalt teate saabumise päevast arvates. Kui registripidaja saab teadlikuks, et registris on ebaõigeid andmeid, teavitab ta sellest e-kirjaga andmeandjat. Andmeandja on kohustatud esitama õiged andmed viie tööpäeva jooksul registripidajalt teate saabumise päevast arvates. 2 (2) Kui andmeandja saab tead",
-      "estleg:legalText": "1 (1) Kui registripidaja saab teadlikuks, et registris on ebaõigeid andmeid, teavitab ta sellest e-kirjaga andmeandjat. Andmeandja on kohustatud esitama õiged andmed viie tööpäeva jooksul registripidajalt teate saabumise päevast arvates. Kui registripidaja saab teadlikuks, et registris on ebaõigeid andmeid, teavitab ta sellest e-kirjaga andmeandjat. Andmeandja on kohustatud esitama õiged andmed viie tööpäeva jooksul registripidajalt teate saabumise päevast arvates. 2 (2) Kui andmeandja saab teadlikuks, et registris on asutuse kohta ebaõiged andmed, on ta kohustatud viivitamata registripidajale õiged andmed esitama. Registripidaja parandab ebaõiged andmed viie tööpäeva jooksul õigete andmete esitamisest arvates. Kui andmeandja saab teadlikuks, et registris on asutuse kohta ebaõiged andmed, on ta kohustatud viivitamata registripidajale õiged andmed esitama. Registripidaja parandab ebaõiged andmed viie tööpäeva jooksul õigete andmete esitamisest arvates. 3 (3) Registripidaja parandab omaalgatuslikult tema eksimusel andmete avalikustamisel tekkinud vea. Andmeandjat teavitatakse vea parandamisest elektroonilise ärakirja saatmisega andmeandja e-posti aadressil. Registripidaja parandab omaalgatuslikult tema eksimusel andmete avalikustamisel tekkinud vea. Andmeandjat teavitatakse vea parandamisest elektroonilise ärakirja saatmisega andmeandja e-posti aadressil.",
+      "estleg:summary": {
+        "@value": "1 (1) Kui registripidaja saab teadlikuks, et registris on ebaõigeid andmeid, teavitab ta sellest e-kirjaga andmeandjat. Andmeandja on kohustatud esitama õiged andmed viie tööpäeva jooksul registripidajalt teate saabumise päevast arvates. 2 (2) Kui andmeandja saab teadlikuks, et registris on asutuse kohta ebaõiged andmed, on ta kohustatud viivitamata registripidajale õiged andmed esitama. Registripidaja parandab ebaõiged andmed viie tööpäeva jooksul õigete andmete esitamisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kui registripidaja saab teadlikuks, et registris on ebaõigeid andmeid, teavitab ta sellest e-kirjaga andmeandjat. Andmeandja on kohustatud esitama õiged andmed viie tööpäeva jooksul registripidajalt teate saabumise päevast arvates. 2 (2) Kui andmeandja saab teadlikuks, et registris on asutuse kohta ebaõiged andmed, on ta kohustatud viivitamata registripidajale õiged andmed esitama. Registripidaja parandab ebaõiged andmed viie tööpäeva jooksul õigete andmete esitamisest arvates. 3 (3) Registripidaja parandab omaalgatuslikult tema eksimusel andmete avalikustamisel tekkinud vea. Andmeandjat teavitatakse vea parandamisest elektroonilise ärakirja saatmisega andmeandja e-posti aadressil.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:semanticallySimilarTo": [
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_154103_Par_20"
+          "@id": "estleg:Reg_1037501_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1037501_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1037501_Par_7_Lg_3"
         }
       ],
       "estleg:normativeType": {
@@ -331,15 +766,91 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1037501_Par_7_v1037501"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui registripidaja saab teadlikuks, et registris on ebaõigeid andmeid, teavitab ta sellest e-kirjaga andmeandjat. Andmeandja on kohustatud esitama õiged andmed viie tööpäeva jooksul registripidajalt teate saabumise päevast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui andmeandja saab teadlikuks, et registris on asutuse kohta ebaõiged andmed, on ta kohustatud viivitamata registripidajale õiged andmed esitama. Registripidaja parandab ebaõiged andmed viie tööpäeva jooksul õigete andmete esitamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Registripidaja parandab omaalgatuslikult tema eksimusel andmete avalikustamisel tekkinud vea. Andmeandjat teavitatakse vea parandamisest elektroonilise ärakirja saatmisega andmeandja e-posti aadressil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        },
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1037501_Par_8",
@@ -348,18 +859,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Registriandmete ja -dokumentide avalikkus",
+      "rdfs:label": {
+        "@value": "§ 8. Registriandmete ja -dokumentide avalikkus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1037501_Map"
       },
-      "estleg:summary": "Registriandmed ja -dokumendid on avalikud ja tasuta kättesaadavad ning nendega on võimalik tutvuda äriregistri veebilehe kaudu.",
-      "estleg:legalText": "Registriandmed ja -dokumendid on avalikud ja tasuta kättesaadavad ning nendega on võimalik tutvuda äriregistri veebilehe kaudu. Registriandmed ja -dokumendid on avalikud ja tasuta kättesaadavad ning nendega on võimalik tutvuda äriregistri veebilehe kaudu.",
+      "estleg:summary": {
+        "@value": "Registriandmed ja -dokumendid on avalikud ja tasuta kättesaadavad ning nendega on võimalik tutvuda äriregistri veebilehe kaudu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registriandmed ja -dokumendid on avalikud ja tasuta kättesaadavad ning nendega on võimalik tutvuda äriregistri veebilehe kaudu.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1037501_Par_8_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1037501_Par_8_v1037501"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registriandmed ja -dokumendid on avalikud ja tasuta kättesaadavad ning nendega on võimalik tutvuda äriregistri veebilehe kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
     },
     {
       "@id": "estleg:Reg_1037501_Par_9",
@@ -368,13 +903,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Registriandmete kinnitatud väljatrükk",
+      "rdfs:label": {
+        "@value": "§ 9. Registriandmete kinnitatud väljatrükk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1037501_Map"
       },
-      "estleg:summary": "Registriandmete kinnitatud väljatrükk väljastatakse notaribüroos.",
-      "estleg:legalText": "Registriandmete kinnitatud väljatrükk väljastatakse notaribüroos. Registriandmete kinnitatud väljatrükk väljastatakse notaribüroos.",
+      "estleg:summary": {
+        "@value": "Registriandmete kinnitatud väljatrükk väljastatakse notaribüroos.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registriandmete kinnitatud väljatrükk väljastatakse notaribüroos.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -384,11 +925,38 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1037501_Par_9_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1037501_Par_9_v1037501"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registriandmete kinnitatud väljatrükk väljastatakse notaribüroos.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Official"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1037501_Par_10",
@@ -397,13 +965,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Registriandmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 10. Registriandmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1037501_Map"
       },
-      "estleg:summary": "Registris säilitatakse alaliselt digitaalselt kõik asutuse registreerimiseks, registrisse kantud andmete muutmiseks ja tegevuse lõpetanud asutuse andmete registri arhiivi kandmise aluseks olevad dokumendid. Registris ei säilitata asutuse moodustamise ega lõpetamise õigusakte.",
-      "estleg:legalText": "Registris säilitatakse alaliselt digitaalselt kõik asutuse registreerimiseks, registrisse kantud andmete muutmiseks ja tegevuse lõpetanud asutuse andmete registri arhiivi kandmise aluseks olevad dokumendid. Registris ei säilitata asutuse moodustamise ega lõpetamise õigusakte. Registris säilitatakse alaliselt digitaalselt kõik asutuse registreerimiseks, registrisse kantud andmete muutmiseks ja tegevuse lõpetanud asutuse andmete registri arhiivi kandmise aluseks olevad dokumendid. Registris ei säilitata asutuse moodustamise ega lõpetamise õigusakte.",
+      "estleg:summary": {
+        "@value": "Registris säilitatakse alaliselt digitaalselt kõik asutuse registreerimiseks, registrisse kantud andmete muutmiseks ja tegevuse lõpetanud asutuse andmete registri arhiivi kandmise aluseks olevad dokumendid. Registris ei säilitata asutuse moodustamise ega lõpetamise õigusakte.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registris säilitatakse alaliselt digitaalselt kõik asutuse registreerimiseks, registrisse kantud andmete muutmiseks ja tegevuse lõpetanud asutuse andmete registri arhiivi kandmise aluseks olevad dokumendid. Registris ei säilitata asutuse moodustamise ega lõpetamise õigusakte.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -413,11 +987,38 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1037501_Par_10_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1037501_Par_10_v1037501"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registris säilitatakse alaliselt digitaalselt kõik asutuse registreerimiseks, registrisse kantud andmete muutmiseks ja tegevuse lõpetanud asutuse andmete registri arhiivi kandmise aluseks olevad dokumendid. Registris ei säilitata asutuse moodustamise ega lõpetamise õigusakte.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1037501_Par_11",
@@ -426,18 +1027,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 11. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi- ja kohaliku omavalitsuse asutuste riikliku registri pidamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1037501_Map"
       },
-      "estleg:summary": "Määrus jõustub 11. jaanuaril 2017. aastal.",
-      "estleg:legalText": "Määrus jõustub 11. jaanuaril 2017. aastal. Määrus jõustub 11. jaanuaril 2017. aastal.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 11. jaanuaril 2017. aastal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 11. jaanuaril 2017. aastal.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1037501_Par_11_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1037501_Par_11_v1037501"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1037501_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 11. jaanuaril 2017. aastal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1037501_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1037501_Map_1",

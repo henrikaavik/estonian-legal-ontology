@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Euroopa Komisjoni teate alusel Rahandusministeeriumile esitatava informatsiooni käsitlemise ja Euroopa Komisjonile edastamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Euroopa Komisjoni teate alusel Rahandusministeeriumile esitatava informatsiooni käsitlemise ja Euroopa Komisjonile edastamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Euroopa Komisjoni teate alusel Rahandusministeeriumile esitatava informatsiooni käsitlemise ja Euroopa Komisjonile edastamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,19 +39,21 @@
       "estleg:globalId": "115082017004",
       "estleg:terviktekstId": "1039673",
       "estleg:preambleText": "Määrus kehtestatakse riigihangete seaduse § 212 lõike 2 alusel.",
-      "estleg:entryIntoForce": {
-        "@value": "2017-09-01",
-        "@type": "xsd:date"
-      },
-      "estleg:publicationDate": {
-        "@value": "2017-08-15",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
+      "dcterms:title": "Euroopa Komisjoni teate alusel Rahandusministeeriumile esitatava informatsiooni käsitlemise ja Euroopa Komisjonile edastamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:transposesDirectiveAsserted": [
+        {
+          "@id": "estleg:EU_32007L0066"
+        }
+      ],
       "estleg:issuedUnder": [
         {
           "@id": "estleg:RIIGIH_Map"
@@ -70,7 +79,16 @@
         {
           "@id": "http://eurovoc.europa.eu/525"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2017-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2017-08-15",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1039673_Par_1",
@@ -79,13 +97,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Komisjoni teate alusel Rahandusministeeriumile esitatava informatsiooni käsitlemise ja Euroopa Komisjonile edastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1039673_Map"
       },
-      "estleg:summary": "Käesolev määrus reguleerib hankija ja Rahandusministeeriumi (edaspidi ministeerium) tegevust, kui Euroopa Komisjon (edaspidi Komisjon) on kirjalikult teavitanud hankijat Euroopa Liidu riigihangete alaste õigusaktide või neid rakendavate siseriiklike õigusaktide sätete rikkumisest riigihanke läbiviimisel.",
-      "estleg:legalText": "Käesolev määrus reguleerib hankija ja Rahandusministeeriumi (edaspidi ministeerium) tegevust, kui Euroopa Komisjon (edaspidi Komisjon) on kirjalikult teavitanud hankijat Euroopa Liidu riigihangete alaste õigusaktide või neid rakendavate siseriiklike õigusaktide sätete rikkumisest riigihanke läbiviimisel. Käesolev määrus reguleerib hankija ja Rahandusministeeriumi (edaspidi ministeerium) tegevust, kui Euroopa Komisjon (edaspidi Komisjon) on kirjalikult teavitanud hankijat Euroopa Liidu riigihangete alaste õigusaktide või neid rakendavate siseriiklike õigusaktide sätete rikkumisest riigihanke läbiviimisel.",
+      "estleg:summary": {
+        "@value": "Käesolev määrus reguleerib hankija ja Rahandusministeeriumi (edaspidi ministeerium) tegevust, kui Euroopa Komisjon (edaspidi Komisjon) on kirjalikult teavitanud hankijat Euroopa Liidu riigihangete alaste õigusaktide või neid rakendavate siseriiklike õigusaktide sätete rikkumisest riigihanke läbiviimisel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolev määrus reguleerib hankija ja Rahandusministeeriumi (edaspidi ministeerium) tegevust, kui Euroopa Komisjon (edaspidi Komisjon) on kirjalikult teavitanud hankijat Euroopa Liidu riigihangete alaste õigusaktide või neid rakendavate siseriiklike õigusaktide sätete rikkumisest riigihanke läbiviimisel.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -95,11 +119,43 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1039673_Par_1_Lg_1"
+        }
+      ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_rahandusministeerium"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1039673_Par_1_v1039673"
         }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1039673_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev määrus reguleerib hankija ja Rahandusministeeriumi (edaspidi ministeerium) tegevust, kui Euroopa Komisjon (edaspidi Komisjon) on kirjalikult teavitanud hankijat Euroopa Liidu riigihangete alaste õigusaktide või neid rakendavate siseriiklike õigusaktide sätete rikkumisest riigihanke läbiviimisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1039673_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_rahandusministeerium"
@@ -113,24 +169,35 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Hankija tegevus Euroopa Komisjonilt teate saamisel",
+      "rdfs:label": {
+        "@value": "§ 2. Hankija tegevus Euroopa Komisjonilt teate saamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Komisjoni teate alusel Rahandusministeeriumile esitatava informatsiooni käsitlemise ja Euroopa Komisjonile edastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1039673_Map"
       },
-      "estleg:summary": "Hankija on kohustatud käesoleva määruse §-s 1 nimetatud teate saamisel Komisjonilt kohe edastama ministeeriumile Komisjoni teate koopia ja kolme tööpäeva jooksul edastama ministeeriumile kogu asjakohase informatsiooni vastava riigihanke kohta.",
-      "estleg:legalText": "Hankija on kohustatud käesoleva määruse §-s 1 nimetatud teate saamisel Komisjonilt kohe edastama ministeeriumile Komisjoni teate koopia ja kolme tööpäeva jooksul edastama ministeeriumile kogu asjakohase informatsiooni vastava riigihanke kohta. Hankija on kohustatud käesoleva määruse §-s 1 nimetatud teate saamisel Komisjonilt kohe edastama ministeeriumile Komisjoni teate koopia ja kolme tööpäeva jooksul edastama ministeeriumile kogu asjakohase informatsiooni vastava riigihanke kohta.",
+      "estleg:summary": {
+        "@value": "Hankija on kohustatud käesoleva määruse §-s 1 nimetatud teate saamisel Komisjonilt kohe edastama ministeeriumile Komisjoni teate koopia ja kolme tööpäeva jooksul edastama ministeeriumile kogu asjakohase informatsiooni vastava riigihanke kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Hankija on kohustatud käesoleva määruse §-s 1 nimetatud teate saamisel Komisjonilt kohe edastama ministeeriumile Komisjoni teate koopia ja kolme tööpäeva jooksul edastama ministeeriumile kogu asjakohase informatsiooni vastava riigihanke kohta.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1039673_Par_2_Lg_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -139,19 +206,50 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1039673_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hankija on kohustatud käesoleva määruse §-s 1 nimetatud teate saamisel Komisjonilt kohe edastama ministeeriumile Komisjoni teate koopia ja kolme tööpäeva jooksul edastama ministeeriumile kogu asjakohase informatsiooni vastava riigihanke kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1039673_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
       "@id": "estleg:Reg_1039673_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Rahandusministeeriumi tegevus Euroopa Komisjonilt teate saamisel või hankijalt riigihanke kohta informatsiooni saamisel",
+      "rdfs:label": {
+        "@value": "§ 3. Rahandusministeeriumi tegevus Euroopa Komisjonilt teate saamisel või hankijalt riigihanke kohta informatsiooni saamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Komisjoni teate alusel Rahandusministeeriumile esitatava informatsiooni käsitlemise ja Euroopa Komisjonile edastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1039673_Map"
       },
-      "estleg:summary": "1 (1) Komisjonilt saadud teate või hankija poolt ministeeriumile edastatud informatsiooni alusel kontrollib ministeerium hankija poolt riigihanke läbiviimise vastavust õigusaktides sätestatule. Komisjonilt saadud teate või hankija poolt ministeeriumile edastatud informatsiooni alusel kontrollib ministeerium hankija poolt riigihanke läbiviimise vastavust õigusaktides sätestatule. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud kontrolli teostab ministeerium riigihangete seaduses sätestatud riikliku",
-      "estleg:legalText": "1 (1) Komisjonilt saadud teate või hankija poolt ministeeriumile edastatud informatsiooni alusel kontrollib ministeerium hankija poolt riigihanke läbiviimise vastavust õigusaktides sätestatule. Komisjonilt saadud teate või hankija poolt ministeeriumile edastatud informatsiooni alusel kontrollib ministeerium hankija poolt riigihanke läbiviimise vastavust õigusaktides sätestatule. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud kontrolli teostab ministeerium riigihangete seaduses sätestatud riikliku ja haldusjärelevalve teostamise korras. Käesoleva paragrahvi lõikes 1 nimetatud kontrolli teostab ministeerium riigihangete seaduses sätestatud riikliku ja haldusjärelevalve teostamise korras.",
+      "estleg:summary": {
+        "@value": "1 (1) Komisjonilt saadud teate või hankija poolt ministeeriumile edastatud informatsiooni alusel kontrollib ministeerium hankija poolt riigihanke läbiviimise vastavust õigusaktides sätestatule. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud kontrolli teostab ministeerium riigihangete seaduses sätestatud riikliku ja haldusjärelevalve teostamise korras.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Komisjonilt saadud teate või hankija poolt ministeeriumile edastatud informatsiooni alusel kontrollib ministeerium hankija poolt riigihanke läbiviimise vastavust õigusaktides sätestatule. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud kontrolli teostab ministeerium riigihangete seaduses sätestatud riikliku ja haldusjärelevalve teostamise korras.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -161,11 +259,63 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1039673_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1039673_Par_3_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1039673_Par_3_v1039673"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1039673_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Komisjonilt saadud teate või hankija poolt ministeeriumile edastatud informatsiooni alusel kontrollib ministeerium hankija poolt riigihanke läbiviimise vastavust õigusaktides sätestatule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1039673_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1039673_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud kontrolli teostab ministeerium riigihangete seaduses sätestatud riikliku ja haldusjärelevalve teostamise korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1039673_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1039673_Par_4",
@@ -174,13 +324,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Informatsiooni edastamine Euroopa Komisjonile",
+      "rdfs:label": {
+        "@value": "§ 4. Informatsiooni edastamine Euroopa Komisjonile",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Komisjoni teate alusel Rahandusministeeriumile esitatava informatsiooni käsitlemise ja Euroopa Komisjonile edastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1039673_Map"
       },
-      "estleg:summary": "1 (1) Ministeerium saadab Komisjonile käesoleva määruse §-s 3 nimetatud kontrolli tulemuse kohta kirjaliku teate, milles on ära näidatud tuvastatud rikkumised ja nende kõrvaldamise kohta kasutusele võetud meetmed ning vajadusel põhjendatud selgitused, miks rikkumisi ei ole kõrvaldatud. Ministeerium saadab Komisjonile käesoleva määruse §-s 3 nimetatud kontrolli tulemuse kohta kirjaliku teate, milles on ära näidatud tuvastatud rikkumised ja nende kõrvaldamise kohta kasutusele võetud meetmed ning v",
-      "estleg:legalText": "1 (1) Ministeerium saadab Komisjonile käesoleva määruse §-s 3 nimetatud kontrolli tulemuse kohta kirjaliku teate, milles on ära näidatud tuvastatud rikkumised ja nende kõrvaldamise kohta kasutusele võetud meetmed ning vajadusel põhjendatud selgitused, miks rikkumisi ei ole kõrvaldatud. Ministeerium saadab Komisjonile käesoleva määruse §-s 3 nimetatud kontrolli tulemuse kohta kirjaliku teate, milles on ära näidatud tuvastatud rikkumised ja nende kõrvaldamise kohta kasutusele võetud meetmed ning vajadusel põhjendatud selgitused, miks rikkumisi ei ole kõrvaldatud. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud teate saadab ministeerium Komisjonile 21 päeva jooksul Komisjoni teate saamisest. Ministeerium saadab hankijale koopia Komisjonile saadetavast teatest. Käesoleva paragrahvi lõikes 1 nimetatud teate saadab ministeerium Komisjonile 21 päeva jooksul Komisjoni teate saamisest. Ministeerium saadab hankijale koopia Komisjonile saadetavast teatest. 3 (3) Kui käesoleva paragrahvi lõikes 1 nimetatud selgitus põhineb asjaolul, et sama riigihankega seoses on esitatud hankija tegevuse peale vaidlustus riigihangete vaidlustuskomisjonile, saadab ministeerium vastavas menetluses siduva otsuse jõustumisel teate selle kohta Komisjonile. Kui käesoleva paragrahvi lõikes 1 nimetatud selgitus põhineb asjaolul, et sama riigihankega seoses on esitatud hankija tegevuse peale vaidlustus riigihangete vaidlustuskomisjonile, saadab ministeerium vastavas menetluses siduva otsuse jõustumisel teate selle kohta Komisjonile.",
+      "estleg:summary": {
+        "@value": "1 (1) Ministeerium saadab Komisjonile käesoleva määruse §-s 3 nimetatud kontrolli tulemuse kohta kirjaliku teate, milles on ära näidatud tuvastatud rikkumised ja nende kõrvaldamise kohta kasutusele võetud meetmed ning vajadusel põhjendatud selgitused, miks rikkumisi ei ole kõrvaldatud. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud teate saadab ministeerium Komisjonile 21 päeva jooksul Komisjoni teate saamisest. Ministeerium saadab hankijale koopia Komisjonile saadetavast teatest.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ministeerium saadab Komisjonile käesoleva määruse §-s 3 nimetatud kontrolli tulemuse kohta kirjaliku teate, milles on ära näidatud tuvastatud rikkumised ja nende kõrvaldamise kohta kasutusele võetud meetmed ning vajadusel põhjendatud selgitused, miks rikkumisi ei ole kõrvaldatud. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud teate saadab ministeerium Komisjonile 21 päeva jooksul Komisjoni teate saamisest. Ministeerium saadab hankijale koopia Komisjonile saadetavast teatest. 3 (3) Kui käesoleva paragrahvi lõikes 1 nimetatud selgitus põhineb asjaolul, et sama riigihankega seoses on esitatud hankija tegevuse peale vaidlustus riigihangete vaidlustuskomisjonile, saadab ministeerium vastavas menetluses siduva otsuse jõustumisel teate selle kohta Komisjonile.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -190,11 +346,88 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1039673_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1039673_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1039673_Par_4_Lg_3"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1039673_Par_4_v1039673"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1039673_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ministeerium saadab Komisjonile käesoleva määruse §-s 3 nimetatud kontrolli tulemuse kohta kirjaliku teate, milles on ära näidatud tuvastatud rikkumised ja nende kõrvaldamise kohta kasutusele võetud meetmed ning vajadusel põhjendatud selgitused, miks rikkumisi ei ole kõrvaldatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1039673_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1039673_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud teate saadab ministeerium Komisjonile 21 päeva jooksul Komisjoni teate saamisest. Ministeerium saadab hankijale koopia Komisjonile saadetavast teatest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1039673_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:Reg_1039673_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui käesoleva paragrahvi lõikes 1 nimetatud selgitus põhineb asjaolul, et sama riigihankega seoses on esitatud hankija tegevuse peale vaidlustus riigihangete vaidlustuskomisjonile, saadab ministeerium vastavas menetluses siduva otsuse jõustumisel teate selle kohta Komisjonile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1039673_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1039673_Par_5",
@@ -203,18 +436,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Jõustumissäte",
+      "rdfs:label": {
+        "@value": "§ 5. Jõustumissäte",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Komisjoni teate alusel Rahandusministeeriumile esitatava informatsiooni käsitlemise ja Euroopa Komisjonile edastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1039673_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. septembril 2017. a.",
-      "estleg:legalText": "Määrus jõustub 1. septembril 2017. a. Määrus jõustub 1. septembril 2017. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. septembril 2017. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. septembril 2017. a.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1039673_Par_5_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1039673_Par_5_v1039673"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1039673_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. septembril 2017. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1039673_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1039673_Map_1",

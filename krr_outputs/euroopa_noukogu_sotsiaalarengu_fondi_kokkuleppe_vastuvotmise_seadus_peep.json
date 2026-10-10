@@ -5,54 +5,67 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:ENSFKV_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus",
       "dcterms:title": "Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/78842.xml"
+        "@id": "https://www.riigiteataja.ee/akt/78842"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/78842/xml"
+      },
+      "estleg:globalId": "78842",
+      "eli:id_local": "78842",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "118759",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "cb186358b0ab35febd5268039d8b0dbbd6dce3fa64bd0618e360c851b08472dd",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
         "@type": "xsd:boolean"
       },
-      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
-    },
-    {
-      "@id": "estleg:ENSFKV_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_ENSFKV_default"
-        }
-      ]
+      "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528).",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1998-04-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_ENSFKV_default",
@@ -61,12 +74,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus",
-      "skos:prefLabel": "§1–3 Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus",
+      "rdfs:label": {
+        "@value": "§1–3 Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:ENSFKV_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:ENSFKV_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_ENSFKV_default"
+        }
+      ]
     },
     {
       "@id": "estleg:ENSFKV_Par_1",
@@ -75,13 +109,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Võetakse vastu juurdelisatud Euroopa Nõukogu Sotsiaalarengu Fondi./78839 (edaspi...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Võetakse vastu juurdelisatud Euroopa Nõukogu Sotsiaalarengu Fondi (edaspidifond)...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ENSFKV_Map"
       },
-      "estleg:summary": "Võetakse vastu juurdelisatud (edaspidifond) kokkulepe.",
-      "estleg:legalText": "Võetakse vastu juurdelisatud (edaspidifond) kokkulepe.",
+      "estleg:summary": {
+        "@value": "Võetakse vastu juurdelisatud Euroopa Nõukogu Sotsiaalarengu Fondi (edaspidifond) kokkulepe.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Võetakse vastu juurdelisatud Euroopa Nõukogu Sotsiaalarengu Fondi (edaspidifond) kokkulepe.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ENSFKV_default"
       },
@@ -90,15 +130,15 @@
           "@id": "estleg:ENSFKV_Par_1_Lg_1"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_NGO"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:ENSFKV_Par_1_v78842"
@@ -111,9 +151,20 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Võetakse vastu juurdelisatud (edaspidifond) kokkulepe.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Võetakse vastu juurdelisatud Euroopa Nõukogu Sotsiaalarengu Fondi (edaspidifond) kokkulepe.",
       "estleg:parentProvision": {
         "@id": "estleg:ENSFKV_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_NGO"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
       }
     },
     {
@@ -123,12 +174,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Eesti Vabariigi valitsus on volitatud tellima osalussertifikaate arvul, mis on m...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Eesti Vabariigi valitsus on volitatud tellima osalussertifikaate arvul, mis on m...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ENSFKV_Map"
       },
-      "estleg:summary": "Eesti Vabariigi valitsus on volitatud tellima osalussertifikaate arvul, mis on määratud kokkuleppel fondi juhatusega käesoleva seadusega vastuvõetud kokkuleppe artikli IX § 3 lõike 1 punkti a kohaselt.",
+      "estleg:summary": {
+        "@value": "Eesti Vabariigi valitsus on volitatud tellima osalussertifikaate arvul, mis on määratud kokkuleppel fondi juhatusega käesoleva seadusega vastuvõetud kokkuleppe artikli IX § 3 lõike 1 punkti a kohaselt.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Vabariigi valitsus on volitatud tellima osalussertifikaate arvul, mis on määratud kokkuleppel fondi juhatusega käesoleva seadusega vastuvõetud kokkuleppe artikli IX § 3 lõike 1 punkti a kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ENSFKV_default"
@@ -150,14 +207,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:ENSFKV_Par_2_v78842"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:ENSFKV_Par_2_v78842"
         }
       ]
     },
@@ -167,10 +224,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti Vabariigi valitsus on volitatud tellima osalussertifikaate arvul, mis on määratud kokkuleppel fondi juhatusega käesoleva seadusega vastuvõetud kokkuleppe artikli IX § 3 lõike 1 punkti a kohaselt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Vabariigi valitsus on volitatud tellima osalussertifikaate arvul, mis on määratud kokkuleppel fondi juhatusega käesoleva seadusega vastuvõetud kokkuleppe artikli IX § 3 lõike 1 punkti a kohaselt.",
       "estleg:parentProvision": {
         "@id": "estleg:ENSFKV_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -196,12 +255,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Eesti Vabariik kinnitab oma kavatsust ühineda esimesel võimalusel Euroopa Nõukog...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Eesti Vabariik kinnitab oma kavatsust ühineda esimesel võimalusel Euroopa Nõukog...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Nõukogu Sotsiaalarengu Fondi kokkuleppe vastuvõtmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ENSFKV_Map"
       },
-      "estleg:summary": "Eesti Vabariik kinnitab oma kavatsust ühineda esimesel võimalusel Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmanda protokolliga ja rakendab kuni selle jõustumiseni Eesti Vabariigi suhtes nimetatud protokolli järgseid õiguslikke meetmeid fondi omandi, varade ja tehingute suhtes ning annab fondi organitele ja personalile protokollijärgse õigusliku staatuse. Riigikogu esimees Toomas SAVI Õiend Akti metaandmed ja sisu tehniliselt korrastatud",
+      "estleg:summary": {
+        "@value": "Eesti Vabariik kinnitab oma kavatsust ühineda esimesel võimalusel Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmanda protokolliga ja rakendab kuni selle jõustumiseni Eesti Vabariigi suhtes nimetatud protokolli järgseid õiguslikke meetmeid fondi omandi, varade ja tehingute suhtes ning annab fondi organitele ja personalile protokollijärgse õigusliku staatuse. Riigikogu esimees Toomas SAVI Õiend Akti metaandmed ja sisu tehniliselt korrastatud",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Vabariik kinnitab oma kavatsust ühineda esimesel võimalusel Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmanda protokolliga ja rakendab kuni selle jõustumiseni Eesti Vabariigi suhtes nimetatud protokolli järgseid õiguslikke meetmeid fondi omandi, varade ja tehingute suhtes ning annab fondi organitele ja personalile protokollijärgse õigusliku staatuse. Riigikogu esimees Toomas SAVI Õiend Akti metaandmed ja sisu tehniliselt korrastatud",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ENSFKV_default"
@@ -232,14 +297,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:ENSFKV_Par_3_v78842"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:ENSFKV_Par_3_v78842"
         }
       ]
     },
@@ -249,10 +314,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti Vabariik kinnitab oma kavatsust ühineda esimesel võimalusel Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmanda protokolliga ja rakendab kuni selle jõustumiseni Eesti Vabariigi suhtes nimetatud protokolli järgseid õiguslikke meetmeid fondi omandi, varade ja tehingute suhtes ning annab fondi organitele ja personalile protokollijärgse õigusliku staatuse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Vabariik kinnitab oma kavatsust ühineda esimesel võimalusel Euroopa Nõukogu privileegide ja immuniteetide üldkokkuleppe kolmanda protokolliga ja rakendab kuni selle jõustumiseni Eesti Vabariigi suhtes nimetatud protokolli järgseid õiguslikke meetmeid fondi omandi, varade ja tehingute suhtes ning annab fondi organitele ja personalile protokollijärgse õigusliku staatuse.",
       "estleg:parentProvision": {
         "@id": "estleg:ENSFKV_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_NGO"
@@ -269,10 +336,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigikogu esimees Toomas SAVI",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigikogu esimees Toomas SAVI",
       "estleg:parentProvision": {
         "@id": "estleg:ENSFKV_Par_3"
       },
+      "rdfs:label": "§ 3 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -297,10 +366,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Õiend",
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Õiend",
       "estleg:parentProvision": {
         "@id": "estleg:ENSFKV_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:ENSFKV_Par_3_Lg_4",
@@ -308,10 +379,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Akti metaandmed ja sisu tehniliselt korrastatud",
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Akti metaandmed ja sisu tehniliselt korrastatud",
       "estleg:parentProvision": {
         "@id": "estleg:ENSFKV_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 4"
     }
   ]
 }

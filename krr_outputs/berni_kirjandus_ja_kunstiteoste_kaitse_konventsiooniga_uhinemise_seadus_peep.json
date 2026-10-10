@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:BKKKKU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Berni kirjandus- ja kunstiteoste kaitse konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Berni kirjandus- ja kunstiteoste kaitse konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Berni kirjandus- ja kunstiteoste kaitse konventsiooniga ühinemise seadus",
       "dcterms:title": "Berni kirjandus- ja kunstiteoste kaitse konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/24662.xml"
+        "@id": "https://www.riigiteataja.ee/akt/24662"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/24662/xml"
+      },
+      "estleg:globalId": "24662",
+      "eli:id_local": "24662",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "151610",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "ea61dc1647997c464ea5278c456792ef12060abf80e004615ebfdbe9a860886f",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -46,24 +58,28 @@
           "@id": "estleg:BKKKKU_Par_1"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1994-06-10",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:BKKKKU_Map"
+        },
         {
           "@id": "estleg:BKKKKU_Par_3"
         },
         {
           "@id": "estleg:BKKKKU_Par_3_Lg_1"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:BKKKKU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Berni kirjandus- ja kunstiteoste kaitse konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_BKKKKU_default"
         }
       ]
     },
@@ -74,12 +90,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Lepingu sätted",
-      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:BKKKKU_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:BKKKKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Berni kirjandus- ja kunstiteoste kaitse konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_BKKKKU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:BKKKKU_Par_1",
@@ -88,13 +125,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Taasühinemiseks Berni kirjandus- ja kunstiteoste kaitse 1886. aasta konventsioon...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Taasühinemiseks Berni kirjandus- ja kunstiteoste kaitse 1886. aasta konventsioon...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Berni kirjandus- ja kunstiteoste kaitse konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:BKKKKU_Map"
       },
-      "estleg:summary": "Taasühinemiseks Berni kirjandus- ja kunstiteoste kaitse 1886. aasta konventsiooniga, mille revideeritud tekstiga ühines Eesti Vabariik 1927. aasta 31. märtsi seaduse (RT 1927, 44, 41) alusel, ühineda juurdelisatud Pariisi 1971. aasta 24. juuli redaktsiooniga (muudatustega 1979. aasta 28. septembrist).",
-      "estleg:legalText": "Taasühinemiseks Berni kirjandus- ja kunstiteoste kaitse 1886. aasta konventsiooniga, mille revideeritud tekstiga ühines Eesti Vabariik 1927. aasta 31. märtsi seaduse (RT 1927, 44, 41) alusel, ühineda juurdelisatud Pariisi 1971. aasta 24. juuli redaktsiooniga (muudatustega 1979. aasta 28. septembrist).",
+      "estleg:summary": {
+        "@value": "Taasühinemiseks Berni kirjandus- ja kunstiteoste kaitse 1886. aasta konventsiooniga, mille revideeritud tekstiga ühines Eesti Vabariik 1927. aasta 31. märtsi seaduse (RT 1927, 44, 41) alusel, ühineda juurdelisatud Berni kirjandus- ja kunstiteoste kaitse konventsiooni Pariisi 1971. aasta 24. juuli redaktsiooniga (muudatustega 1979. aasta 28. septembrist).",
+        "@language": "et"
+      },
+      "estleg:legalText": "Taasühinemiseks Berni kirjandus- ja kunstiteoste kaitse 1886. aasta konventsiooniga, mille revideeritud tekstiga ühines Eesti Vabariik 1927. aasta 31. märtsi seaduse (RT 1927, 44, 41) alusel, ühineda juurdelisatud Berni kirjandus- ja kunstiteoste kaitse konventsiooni Pariisi 1971. aasta 24. juuli redaktsiooniga (muudatustega 1979. aasta 28. septembrist).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_BKKKKU_default"
       },
@@ -104,6 +147,9 @@
         }
       ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:BKKKKU_Map"
+        },
         {
           "@id": "estleg:BKKKKU_Par_3"
         },
@@ -123,10 +169,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Taasühinemiseks Berni kirjandus- ja kunstiteoste kaitse 1886. aasta konventsiooniga, mille revideeritud tekstiga ühines Eesti Vabariik 1927. aasta 31. märtsi seaduse (RT 1927, 44, 41) alusel, ühineda juurdelisatud Pariisi 1971. aasta 24. juuli redaktsiooniga (muudatustega 1979. aasta 28. septembrist).",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Taasühinemiseks Berni kirjandus- ja kunstiteoste kaitse 1886. aasta konventsiooniga, mille revideeritud tekstiga ühines Eesti Vabariik 1927. aasta 31. märtsi seaduse (RT 1927, 44, 41) alusel, ühineda juurdelisatud Berni kirjandus- ja kunstiteoste kaitse konventsiooni Pariisi 1971. aasta 24. juuli redaktsiooniga (muudatustega 1979. aasta 28. septembrist).",
       "estleg:parentProvision": {
         "@id": "estleg:BKKKKU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:BKKKKU_Par_2",
@@ -135,12 +183,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Deklareerida, et Berni konventsiooniga kaitstud teost, mis on käesoleva seaduse...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Deklareerida, et Berni konventsiooniga kaitstud teost, mis on käesoleva seaduse...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Berni kirjandus- ja kunstiteoste kaitse konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:BKKKKU_Map"
       },
-      "estleg:summary": "Deklareerida, et Berni konventsiooniga kaitstud teost, mis on käesoleva seaduse jõustumise päevaks juba tõlgitud eesti keelde, kuid ei ole veel avaldatud, võib 18 kuu jooksul käesoleva seaduse jõustumisest arvates avaldada või muul viisil sihipäraselt kasutada (lavastada, avalikult esitada, üle kanda raadios või televisioonis) autorile tasu maksmata.",
+      "estleg:summary": {
+        "@value": "Deklareerida, et Berni konventsiooniga kaitstud teost, mis on käesoleva seaduse jõustumise päevaks juba tõlgitud eesti keelde, kuid ei ole veel avaldatud, võib 18 kuu jooksul käesoleva seaduse jõustumisest arvates avaldada või muul viisil sihipäraselt kasutada (lavastada, avalikult esitada, üle kanda raadios või televisioonis) autorile tasu maksmata.",
+        "@language": "et"
+      },
       "estleg:legalText": "Deklareerida, et Berni konventsiooniga kaitstud teost, mis on käesoleva seaduse jõustumise päevaks juba tõlgitud eesti keelde, kuid ei ole veel avaldatud, võib 18 kuu jooksul käesoleva seaduse jõustumisest arvates avaldada või muul viisil sihipäraselt kasutada (lavastada, avalikult esitada, üle kanda raadios või televisioonis) autorile tasu maksmata.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_BKKKKU_default"
@@ -150,12 +204,12 @@
           "@id": "estleg:BKKKKU_Par_2_Lg_1"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -169,16 +223,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Deklareerida, et Berni konventsiooniga kaitstud teost, mis on käesoleva seaduse jõustumise päevaks juba tõlgitud eesti keelde, kuid ei ole veel avaldatud, võib 18 kuu jooksul käesoleva seaduse jõustumisest arvates avaldada või muul viisil sihipäraselt kasutada (lavastada, avalikult esitada, üle kanda raadios või televisioonis) autorile tasu maksmata.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Deklareerida, et Berni konventsiooniga kaitstud teost, mis on käesoleva seaduse jõustumise päevaks juba tõlgitud eesti keelde, kuid ei ole veel avaldatud, võib 18 kuu jooksul käesoleva seaduse jõustumisest arvates avaldada või muul viisil sihipäraselt kasutada (lavastada, avalikult esitada, üle kanda raadios või televisioonis) autorile tasu maksmata.",
       "estleg:parentProvision": {
         "@id": "estleg:BKKKKU_Par_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -188,12 +244,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Deklareerida, et vastavalt käesoleva seaduse §-s 1 nimetatud konventsiooni artik...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Deklareerida, et vastavalt käesoleva seaduse §-s 1 nimetatud konventsiooni artik...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Berni kirjandus- ja kunstiteoste kaitse konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:BKKKKU_Map"
       },
-      "estleg:summary": "Deklareerida, et vastavalt käesoleva seaduse §-s 1 nimetatud konventsiooni artiklile 25(4)(a) ja (b) soovib Eesti Vabariik kuuluda oma liikmemaksu suuruse arvestuselt VII klassi.",
+      "estleg:summary": {
+        "@value": "Deklareerida, et vastavalt käesoleva seaduse §-s 1 nimetatud konventsiooni artiklile 25(4)(a) ja (b) soovib Eesti Vabariik kuuluda oma liikmemaksu suuruse arvestuselt VII klassi.",
+        "@language": "et"
+      },
       "estleg:legalText": "Deklareerida, et vastavalt käesoleva seaduse §-s 1 nimetatud konventsiooni artiklile 25(4)(a) ja (b) soovib Eesti Vabariik kuuluda oma liikmemaksu suuruse arvestuselt VII klassi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_BKKKKU_default"
@@ -203,26 +265,14 @@
           "@id": "estleg:BKKKKU_Par_3_Lg_1"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:EVEISGR_laenulepi_Par_2"
-        },
-        {
-          "@id": "estleg:Eesti_Vabariigi_ja_Rahvusvahel_Par_3"
-        },
-        {
-          "@id": "estleg:PPR_Par_2"
-        },
-        {
-          "@id": "estleg:TKPKR_Par_2"
-        },
-        {
-          "@id": "estleg:euroopa_kohaliku_omavalitsuse_harta_rati_Par_2"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:BKKKKU_Par_1"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ASKU_Par_2"
         }
       ],
       "estleg:hasVersion": [
@@ -237,10 +287,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Deklareerida, et vastavalt käesoleva seaduse §-s 1 nimetatud konventsiooni artiklile 25(4)(a) ja (b) soovib Eesti Vabariik kuuluda oma liikmemaksu suuruse arvestuselt VII klassi.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Deklareerida, et vastavalt käesoleva seaduse §-s 1 nimetatud konventsiooni artiklile 25(4)(a) ja (b) soovib Eesti Vabariik kuuluda oma liikmemaksu suuruse arvestuselt VII klassi.",
       "estleg:parentProvision": {
         "@id": "estleg:BKKKKU_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:BKKKKU_Par_1"

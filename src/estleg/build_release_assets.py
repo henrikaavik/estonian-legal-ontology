@@ -22,13 +22,22 @@ committed corpus into the files a GitHub Release carries:
    under the release directory), gzipped to ``chunks.jsonl.gz``.
 4. **Combined dumps.** The four combined JSON-LD files advertised in
    ``metadata.jsonld`` plus the annotations layer, gzipped.
-5. **Small assets.** INDEX, controlled vocabulary, SHACL shapes, VoID,
+5. **RT source XML** (#692). Every Riigi Teataja act XML the generators
+   cached under ``data/riigiteataja/**`` (git-ignored) is packed into
+   ``rt_xml_<kehtiv>.tar.gz`` together with ``krr_outputs/fetch_content_hashes.json``,
+   with member paths relative to the repository root so each hash row's
+   ``cacheFile`` names its member. ``<kehtiv>`` is the laws snapshot date from
+   ``generation_manifest_laws.json``. Every attested file must be present with
+   the attested SHA-256, or the step fails. The tar is deterministic (sorted
+   members, GNU format, mtime/uid/gid zeroed). With no cached XML the asset is
+   skipped and the reason recorded.
+6. **Small assets.** INDEX, controlled vocabulary, SHACL shapes, VoID,
    dataset build manifest, LICENSE / NOTICE / data-rights / data-protection
    notices, copied verbatim.
-6. **Catalogue.** ``dcat:byteSize`` and ``spdx:checksum`` (SHA-256) on every
+7. **Catalogue.** ``dcat:byteSize`` and ``spdx:checksum`` (SHA-256) on every
    ``metadata.jsonld`` distribution whose ``dcat:downloadURL`` names a built
    asset; the updated ``metadata.jsonld`` is then copied in as an asset.
-7. **SHA256SUMS** in the format of the hand-made v1.0.0 file
+8. **SHA256SUMS** in the format of the hand-made v1.0.0 file
    (``<sha256>  <name>``, byte-sorted by name) over every top-level asset,
    plus ``release_assets.json`` recording sources, sizes and skipped parts.
 
@@ -53,6 +62,7 @@ import json
 import re
 import shutil
 import sys
+import tarfile
 import time
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -114,6 +124,10 @@ COPY_ASSETS: tuple[tuple[str, str], ...] = (
     ("docs/DATA_RIGHTS.md", "DATA_RIGHTS.md"),
     ("docs/DATA_PROTECTION.md", "DATA_PROTECTION.md"),
 )
+RT_XML_RELDIR = Path("data") / "riigiteataja"
+RT_XML_ASSET_TEMPLATE = "rt_xml_{kehtiv}.tar.gz"
+FETCH_HASHES_NAME = "fetch_content_hashes.json"
+LAWS_MANIFEST_NAME = "generation_manifest_laws.json"
 NAMED_GRAPH_ASSET = "estleg_all.nq.gz"
 CHUNKS_ASSET = "chunks.jsonl.gz"
 METADATA_ASSET = "metadata.jsonld"
@@ -156,6 +170,7 @@ class BuildResult:
     rdf_dumps: dict[str, dict] = field(default_factory=dict)
     named_graph_counts: dict[str, int] = field(default_factory=dict)
     chunk_stats: dict = field(default_factory=dict)
+    rt_xml: dict = field(default_factory=dict)
     catalogued: list[str] = field(default_factory=list)
     catalogue_warnings: list[str] = field(default_factory=list)
     timings: dict[str, float] = field(default_factory=dict)
@@ -288,6 +303,117 @@ def build_named_graphs(
     overrides = {"combined_ontology.nq": laws_nq} if laws_nq is not None else None
     return write_full_dump(krr_dir=krr_dir, dest=dest, source_overrides=overrides)
 
+
+
+def rt_xml_snapshot_date(krr_dir: Path) -> str:
+    """The laws ``--kehtiv`` the cached XML belongs to (#692).
+
+    Read from ``generation_manifest_laws.json`` (``source.kehtiv``), else the
+    latest ``kehtiv`` in ``fetch_content_hashes.json``, else the build
+    evaluation date.
+    """
+    try:
+        manifest = json.loads((krr_dir / LAWS_MANIFEST_NAME).read_text(encoding="utf-8"))
+        kehtiv = (manifest.get("source") or {}).get("kehtiv")
+        if isinstance(kehtiv, str) and kehtiv:
+            return kehtiv
+    except (OSError, json.JSONDecodeError, AttributeError):
+        pass
+    dates = [
+        row.get("kehtiv")
+        for row in _load_fetch_hashes(krr_dir).values()
+        if isinstance(row, dict) and isinstance(row.get("kehtiv"), str)
+    ]
+    return max(dates) if dates else BUILD_EVALUATION_DATE
+
+
+def _load_fetch_hashes(krr_dir: Path) -> dict:
+    try:
+        data = json.loads((krr_dir / FETCH_HASHES_NAME).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def check_rt_xml_attestation(krr_dir: Path, repo_root: Path) -> tuple[int, list[str]]:
+    """Re-hash every cache file ``fetch_content_hashes.json`` attests.
+
+    Returns ``(attested files that match, problems)``. A row without a
+    ``cacheFile`` (pre-#692 rows) is reported, since it attests nothing that
+    can be shipped.
+    """
+    ok = 0
+    problems: list[str] = []
+    for key, row in sorted(_load_fetch_hashes(krr_dir).items()):
+        if not isinstance(row, dict):
+            continue
+        rel = row.get("cacheFile")
+        if not isinstance(rel, str) or not rel:
+            problems.append(f"{key}: no cacheFile (re-run generate_all_laws)")
+            continue
+        path = repo_root / rel
+        if not path.is_file():
+            problems.append(f"{key}: attested file {rel} is missing")
+        elif sha256_file(path) != row.get("sha256"):
+            problems.append(f"{key}: {rel} does not match its attested sha256")
+        else:
+            ok += 1
+    return ok, problems
+
+
+def _tar_add(tar: tarfile.TarFile, path: Path, arcname: str) -> None:
+    info = tarfile.TarInfo(arcname)
+    info.size = path.stat().st_size
+    info.mtime = 0
+    info.mode = 0o644
+    info.uid = info.gid = 0
+    info.uname = info.gname = ""
+    with path.open("rb") as handle:
+        tar.addfile(info, handle)
+
+
+def build_rt_xml_archive(
+    krr_dir: Path, repo_root: Path, release_dir: Path
+) -> tuple[str, dict] | None:
+    """Pack the cached RT XML into ``rt_xml_<kehtiv>.tar.gz``; None when absent."""
+    xml_dir = repo_root / RT_XML_RELDIR
+    files = sorted(
+        (p for p in xml_dir.rglob("*.xml") if p.is_file()),
+        key=lambda p: p.relative_to(repo_root).as_posix().encode("utf-8"),
+    ) if xml_dir.is_dir() else []
+    if not files:
+        return None
+    attested, problems = check_rt_xml_attestation(krr_dir, repo_root)
+    if problems:
+        raise ReleaseAssetError(
+            f"{len(problems)} fetch_content_hashes.json row(s) do not match the "
+            f"cached RT XML, e.g. {problems[0]}; re-run generate_all_laws "
+            "(or pass --skip-rt-xml)"
+        )
+    kehtiv = rt_xml_snapshot_date(krr_dir)
+    name = RT_XML_ASSET_TEMPLATE.format(kehtiv=kehtiv)
+    dest = release_dir / name
+    tmp = dest.with_name(dest.name + ".tmp")
+    total = 0
+    try:
+        with tmp.open("wb") as raw:
+            with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0, compresslevel=9) as gz:
+                with tarfile.open(fileobj=gz, mode="w", format=tarfile.GNU_FORMAT) as tar:
+                    hashes = krr_dir / FETCH_HASHES_NAME
+                    if hashes.is_file():
+                        _tar_add(tar, hashes, f"krr_outputs/{FETCH_HASHES_NAME}")
+                    for path in files:
+                        total += path.stat().st_size
+                        _tar_add(tar, path, path.relative_to(repo_root).as_posix())
+        tmp.replace(dest)
+    finally:
+        tmp.unlink(missing_ok=True)
+    return name, {
+        "kehtiv": kehtiv,
+        "files": len(files),
+        "uncompressedBytes": total,
+        "attested": attested,
+    }
 
 
 def build_chunks(krr_dir: Path, scratch: Path, dest: Path) -> dict:
@@ -469,6 +595,7 @@ def build_release_assets(
     skip_rdf_dumps: bool = False,
     skip_named_graphs: bool = False,
     skip_chunks: bool = False,
+    skip_rt_xml: bool = False,
     allow_unstamped: bool = False,
     batch_size: int = 5000,
 ) -> BuildResult:
@@ -543,6 +670,22 @@ def build_release_assets(
         _record(result, release_dir, CHUNKS_ASSET, _rel(scratch / "chunks.jsonl"),
                 "generate_retrieval_projection --chunks-only")
 
+    if skip_rt_xml:
+        result.skipped["rt-xml"] = "--skip-rt-xml"
+    else:
+        packed = _timed(
+            result, "rt-xml", lambda: build_rt_xml_archive(krr_dir, repo_root, release_dir)
+        )
+        if packed is None:
+            result.skipped["rt-xml"] = (
+                f"no RT XML under {RT_XML_RELDIR.as_posix()}/ "
+                "(run generate_all_laws.py first)"
+            )
+        else:
+            name, result.rt_xml = packed
+            _record(result, release_dir, name, f"{RT_XML_RELDIR.as_posix()}/**/*.xml",
+                    "tarfile (GNU, mtime=0) + gzip (mtime=0)")
+
     for relpath, name in GZIP_ASSETS:
         source = source_path(relpath)
         _require_source(source)
@@ -573,6 +716,7 @@ def build_release_assets(
         "stamped": result.stamped,
         "unstampedHeads": result.unstamped,
         "rdfDumps": result.rdf_dumps,
+        "rtXml": result.rt_xml,
         "namedGraphs": result.named_graph_counts,
         "catalogued": result.catalogued,
         "catalogueWarnings": result.catalogue_warnings,
@@ -608,6 +752,8 @@ def print_summary(result: BuildResult, release_dir: Path) -> None:
             print(f"  named graph {iri}: {n} quads")
     if result.chunk_stats:
         print(f"  chunks: {result.chunk_stats.get('total_chunks')} records")
+    if result.rt_xml:
+        print(f"  RT XML: {json.dumps(result.rt_xml)}")
     print(f"  catalogued in metadata.jsonld: {', '.join(result.catalogued) or '(none)'}")
     for warning in result.catalogue_warnings:
         print(f"  WARNING: {warning}")
@@ -626,6 +772,9 @@ def main(argv: list[str] | None = None) -> int:
                         help="Do not write estleg_all.nq.gz.")
     parser.add_argument("--skip-chunks", action="store_true",
                         help="Do not build retrieval chunks.jsonl.gz.")
+    parser.add_argument("--skip-rt-xml", action="store_true",
+                        help="Do not pack data/riigiteataja/**/*.xml into "
+                        "rt_xml_<kehtiv>.tar.gz.")
     parser.add_argument("--allow-unstamped", action="store_true",
                         help="Package even when a combined head lacks "
                         "owl:versionInfo=ONTOLOGY_VERSION (recorded in "
@@ -639,6 +788,7 @@ def main(argv: list[str] | None = None) -> int:
             skip_rdf_dumps=args.skip_rdf_dumps,
             skip_named_graphs=args.skip_named_graphs,
             skip_chunks=args.skip_chunks,
+            skip_rt_xml=args.skip_rt_xml,
             allow_unstamped=args.allow_unstamped,
             batch_size=args.batch_size,
         )

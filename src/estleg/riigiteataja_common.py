@@ -36,6 +36,7 @@ import requests  # tests monkeypatch ``requests.get``
 from estleg.estleg_common import (  # noqa: F401  -- re-exports for public API
     _ESTONIAN_TRANSLITERATION,
     _TRANSLIT_TABLE,
+    _sup_to_unicode,
     CONTEXT,
     KRR_DIR,
     NS,
@@ -95,7 +96,7 @@ def _child_text(el: ET.Element) -> str:
             text = text.translate(_SUPERSCRIPT_DIGITS)
         parts.append(text)
         parts.append(child.tail or "")
-    return "".join(parts)
+    return _sup_to_unicode("".join(parts))
 
 
 def ct(el: ET.Element, name: str) -> str | None:
@@ -172,7 +173,7 @@ def _iter_outermost_text(el: ET.Element) -> Iterator[str]:
     """
     for child in el:
         if ln(child.tag) in _TEXT_TAGS:
-            txt = re.sub(r"\s+", " ", "".join(child.itertext())).strip()
+            txt = re.sub(r"\s+", " ", _child_text(child)).strip()
             if len(txt) > 3:
                 yield txt
         else:
@@ -403,6 +404,47 @@ def build_xml_url(url: str | int) -> str:
 def build_metadata_url(url: str | int) -> str:
     """Public-API JSON metadata URL for an act id/path/URL (#691)."""
     return _public_api_url(url, "")
+
+
+def build_act_page_url(url_or_id: str | int) -> str:
+    """Human-readable Riigi Teataja page of one redaction (#707).
+
+    ``https://www.riigiteataja.ee/akt/{globaalID}`` — the page a reader opens,
+    as opposed to :func:`build_xml_url`, the machine manifestation. The id is
+    taken through :func:`rt_act_id`, so ``/akt/{id}.xml`` (the search API's
+    ``url``) and a public-API URL both map onto the same page.
+    """
+    return f"{BASE_URL}/akt/{rt_act_id(url_or_id)}"
+
+
+def _gid_number(gid: object) -> int:
+    text = str(gid or "").strip()
+    return int(text) if text.isdigit() else -1
+
+
+def redaction_rank(row: dict) -> tuple[str, int, str]:
+    """Sort key that ranks the newest redaction of an act highest (#695).
+
+    Riigi Teataja globaalIDs are opaque: ``231052021002`` (23.05.2021) sorts
+    above ``107052025017`` (07.05.2025) as a string and as an integer, and the
+    5–8 digit legacy ids are a different family altogether. The redaction's
+    validity start is the real order: ``kehtivus.algus`` on a search row (or a
+    flat ``kehtivuseAlgus`` / ``kehtivusAlgus`` key, as the law generator
+    stores it). The integer globaalID only breaks ties between redactions that
+    start on the same day; the raw string is the last, deterministic tie-break.
+    A row without a parseable start ranks below every dated row.
+    """
+    start = ""
+    kehtivus = row.get("kehtivus")
+    if isinstance(kehtivus, dict):
+        start = str(kehtivus.get("algus") or "")
+    if not start:
+        start = str(row.get("kehtivuseAlgus") or row.get("kehtivusAlgus") or "")
+    start = start.strip()[:10]
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", start):
+        start = ""
+    gid = row.get("globaalID", row.get("gid"))
+    return (start, _gid_number(gid), str(gid or ""))
 
 
 def is_html_payload(body: str | bytes, content_type: str | None = None) -> bool:
@@ -794,10 +836,11 @@ def strip_html_tags(text: str) -> str:
     Tags are stripped again *after* unescape (#554) so ``&lt;script&gt;``
     cannot reconstitute a live tag in published legal text.
     """
+    text = _sup_to_unicode(text)
     text = re.sub(r"<br\s*/?>", "\n", text, flags=re.IGNORECASE)
     text = re.sub(r"</p>", "\n", text, flags=re.IGNORECASE)
     text = re.sub(r"<[^>]+>", "", text)
-    text = html.unescape(text)
+    text = _sup_to_unicode(html.unescape(text))
     text = re.sub(r"<[^>]+>", "", text)
     text = re.sub(r" ", " ", text)
     text = re.sub(r"\s+", " ", text)
@@ -880,6 +923,10 @@ def parse_act_metadata(root: ET.Element) -> dict[str, str | None]:
       * `entryIntoForce`     — `<kehtivus><kehtivuseAlgus>` (date, no offset)
       * `repealDate`         — `<kehtivus><kehtivuseLopp>` (or None)
       * `lastAmendmentDate`  — date of the latest `<muutmismarge>`, or None
+      * `schemaName`         — `<skeemiNimi>` (the XSD the text follows, #692)
+      * `originalEntryIntoForce` — `<vastuvoetud><joustumine>`: when the act
+        itself entered into force, as opposed to `entryIntoForce`, the start
+        of this redaction's validity (#695)
     """
     meta: dict[str, str | None] = {
         "globalId": None,
@@ -890,6 +937,8 @@ def parse_act_metadata(root: ET.Element) -> dict[str, str | None]:
         "entryIntoForce": None,
         "repealDate": None,
         "lastAmendmentDate": None,
+        "schemaName": None,
+        "originalEntryIntoForce": None,
     }
 
     def _strip_offset(date_str: str | None) -> str | None:
@@ -920,10 +969,15 @@ def parse_act_metadata(root: ET.Element) -> dict[str, str | None]:
                     meta["documentType"] = child.text.strip()
                 elif ctag == "valjaandja" and child.text:
                     meta["issuer"] = child.text.strip()
+                elif ctag == "skeemiNimi" and child.text:
+                    meta["schemaName"] = child.text.strip()
                 elif ctag == "vastuvoetud":
                     nr = ct(child, "aktiNr")
                     if nr:
                         meta["actNumber"] = nr
+                    joustumine = ct(child, "joustumine")
+                    if joustumine:
+                        meta["originalEntryIntoForce"] = _strip_offset(joustumine)
                 elif ctag == "kehtivus":
                     algus = ct(child, "kehtivuseAlgus")
                     lopp = ct(child, "kehtivuseLopp")

@@ -5,47 +5,53 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:KBFIS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Keemilise ja Bioloogilise Füüsika Instituudi seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Keemilise ja Bioloogilise Füüsika Instituudi seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
-      "dcterms:title": [
-        {
-          "@value": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "National Institute of Chemical Physics and Biophysics Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/112072025015.xml"
+        "@id": "https://www.riigiteataja.ee/akt/112072025015"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/112072025015/xml"
+      },
+      "estleg:globalId": "112072025015",
+      "eli:id_local": "112072025015",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "159374",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "f6ec9c0625aab024b60ce25f6a2a6f98d50dcc3ca48f51f897ee1f87316c8627",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-10-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/503102025006"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/503102025006"
       },
       "estleg:references": [
@@ -57,14 +63,6 @@
         },
         {
           "@id": "estleg:KBFIS_Par_7"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:KBFIS_Par_16"
-        },
-        {
-          "@id": "estleg:KBFIS_Par_16_Lg_2"
         }
       ],
       "dcterms:subject": [
@@ -89,6 +87,19 @@
           "@id": "http://eurovoc.europa.eu/5050"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "1998-11-30",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-10-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2025-07-12",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_haridus_ja_teadusministeerium"
@@ -96,17 +107,45 @@
         {
           "@id": "estleg:Institution_rahandusministeerium"
         }
-      ]
-    },
-    {
-      "@id": "estleg:KBFIS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Keemilise ja Bioloogilise Füüsika Instituudi seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_KBFIS_default"
+          "@id": "estleg:Amendment_KBFIS_3932142a78"
+        },
+        {
+          "@id": "estleg:Amendment_KBFIS_865785752d"
+        },
+        {
+          "@id": "estleg:Amendment_KBFIS_e7d4f02aa5"
+        },
+        {
+          "@id": "estleg:Amendment_KBFIS_2223fec6d3"
+        },
+        {
+          "@id": "estleg:Amendment_KBFIS_ba23a418a3"
+        },
+        {
+          "@id": "estleg:Amendment_KBFIS_e70b2fb143"
+        },
+        {
+          "@id": "estleg:Amendment_KBFIS_3e0018e4eb"
+        },
+        {
+          "@id": "estleg:Amendment_KBFIS_a4b69463de"
+        },
+        {
+          "@id": "estleg:Amendment_KBFIS_5025f23437"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KBFIS_Map"
+        },
+        {
+          "@id": "estleg:KBFIS_Par_16"
+        },
+        {
+          "@id": "estleg:KBFIS_Par_16_Lg_2"
         }
       ]
     },
@@ -117,12 +156,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–16 Keemilise ja Bioloogilise Füüsika Instituudi seadus",
-      "skos:prefLabel": "§1–16 Keemilise ja Bioloogilise Füüsika Instituudi seadus",
+      "rdfs:label": {
+        "@value": "§1–16 Keemilise ja Bioloogilise Füüsika Instituudi seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–16 Keemilise ja Bioloogilise Füüsika Instituudi seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KBFIS_TopicScheme"
       },
-      "estleg:provisionCount": 16
+      "estleg:provisionCount": 18
+    },
+    {
+      "@id": "estleg:KBFIS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Keemilise ja Bioloogilise Füüsika Instituudi seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_KBFIS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:KBFIS_Par_1",
@@ -131,12 +191,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse ülesanne",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse ülesanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "Käesolev seadus sätestab Keemilise ja Bioloogilise Füüsika Instituudi (edaspidi KBFI) tegevuse õiguslikud alused teaduskeskusena.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus sätestab Keemilise ja Bioloogilise Füüsika Instituudi (edaspidi KBFI) tegevuse õiguslikud alused teaduskeskusena.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus sätestab Keemilise ja Bioloogilise Füüsika Instituudi (edaspidi KBFI) tegevuse õiguslikud alused teaduskeskusena.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -158,10 +224,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus sätestab Keemilise ja Bioloogilise Füüsika Instituudi (edaspidi KBFI) tegevuse õiguslikud alused teaduskeskusena.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab Keemilise ja Bioloogilise Füüsika Instituudi (edaspidi KBFI) tegevuse õiguslikud alused teaduskeskusena.",
       "estleg:parentProvision": {
         "@id": "estleg:KBFIS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:KBFIS_Par_1_1",
@@ -170,12 +238,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1¹.",
-      "rdfs:label": "§ 1¹. Haldusmenetluse seaduse kohaldamine",
+      "rdfs:label": {
+        "@value": "§ 1¹. Haldusmenetluse seaduse kohaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:summary": {
+        "@value": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -214,10 +288,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:parentProvision": {
         "@id": "estleg:KBFIS_Par_1_1"
-      }
+      },
+      "rdfs:label": "§ 1¹ lg 1"
     },
     {
       "@id": "estleg:KBFIS_Par_2",
@@ -226,12 +302,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Õiguslik seisund",
+      "rdfs:label": {
+        "@value": "§ 2. Õiguslik seisund",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) KBFI on avalik-õiguslik juriidiline isik. (2) KBFI tegutseb käesoleva seaduse, teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse, oma põhikirja ja teiste õigusaktide alusel. (3) KBFI põhikirja ja selles tehtavad muudatused kinnitab teadusnõukogu ning registreerib Haridus- ja Teadusministeerium. Põhikiri ja selle muudatused jõustuvad registreerimise hetkest. (4) KBFI lõpetatakse seadusega. (5) KBFI registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris",
+      "estleg:summary": {
+        "@value": "(1) KBFI on avalik-õiguslik juriidiline isik. (2) KBFI tegutseb käesoleva seaduse, teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse, oma põhikirja ja teiste õigusaktide alusel. (3) KBFI põhikirja ja selles tehtavad muudatused kinnitab teadusnõukogu ning registreerib Haridus- ja Teadusministeerium. Põhikiri ja selle muudatused jõustuvad registreerimise hetkest. (4) KBFI lõpetatakse seadusega. (5) KBFI registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) KBFI on avalik-õiguslik juriidiline isik. (2) KBFI tegutseb käesoleva seaduse, teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse, oma põhikirja ja teiste õigusaktide alusel. (3) KBFI põhikirja ja selles tehtavad muudatused kinnitab teadusnõukogu ning registreerib Haridus- ja Teadusministeerium. Põhikiri ja selle muudatused jõustuvad registreerimise hetkest. (4) KBFI lõpetatakse seadusega. (5) KBFI registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -261,21 +343,29 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:EESTI_3_Par_2"
         },
         {
           "@id": "estleg:ROS_Par_4"
-        },
-        {
-          "@id": "estleg:TAS_Par_3"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:KBFIS_Par_2_v22420"
@@ -291,17 +381,6 @@
         },
         {
           "@id": "estleg:KBFIS_Par_2_v112072025015"
-        }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ]
     },
@@ -343,6 +422,9 @@
       },
       "rdfs:label": "§ 2 lg 2",
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:TAIKS_Map"
+        },
         {
           "@id": "estleg:TAIKS_Par_42"
         }
@@ -414,12 +496,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Ülesanded",
+      "rdfs:label": {
+        "@value": "§ 3. Ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) KBFI teostab alus- ja rakendusuuringuid ning tegeleb arendustegevusega materjaliteaduse, geeni- ja biotehnoloogia, keskkonnatehnoloogia ja informaatika uusimate teadussuundade alal. (2) KBFI aitab kaasa teadlaste uue põlvkonna ettevalmistamisele vastavalt assotsiatsiooni- ja muudele lepingutele ülikoolide ning teiste akadeemiliste asutustega. (3) KBFI osaleb riiklike, Euroopa ja teiste rahvusvaheliste programmide, lepingute ja uurimis- ning arendustoetuste taotlemise kaudu riigisiseses ja",
+      "estleg:summary": {
+        "@value": "(1) KBFI teostab alus- ja rakendusuuringuid ning tegeleb arendustegevusega materjaliteaduse, geeni- ja biotehnoloogia, keskkonnatehnoloogia ja informaatika uusimate teadussuundade alal. (2) KBFI aitab kaasa teadlaste uue põlvkonna ettevalmistamisele vastavalt assotsiatsiooni- ja muudele lepingutele ülikoolide ning teiste akadeemiliste asutustega. (3) KBFI osaleb riiklike, Euroopa ja teiste rahvusvaheliste programmide, lepingute ja uurimis- ning arendustoetuste taotlemise kaudu riigisiseses ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) KBFI teostab alus- ja rakendusuuringuid ning tegeleb arendustegevusega materjaliteaduse, geeni- ja biotehnoloogia, keskkonnatehnoloogia ja informaatika uusimate teadussuundade alal. (2) KBFI aitab kaasa teadlaste uue põlvkonna ettevalmistamisele vastavalt assotsiatsiooni- ja muudele lepingutele ülikoolide ning teiste akadeemiliste asutustega. (3) KBFI osaleb riiklike, Euroopa ja teiste rahvusvaheliste programmide, lepingute ja uurimis- ning arendustoetuste taotlemise kaudu riigisiseses ja rahvusvahelises teadus- ja arendustöös.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -505,12 +593,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Juhtimise korraldus",
+      "rdfs:label": {
+        "@value": "§ 4. Juhtimise korraldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "KBFI juhtorganid on direktor ja teadusnõukogu.",
+      "estleg:summary": {
+        "@value": "KBFI juhtorganid on direktor ja teadusnõukogu.",
+        "@language": "et"
+      },
       "estleg:legalText": "KBFI juhtorganid on direktor ja teadusnõukogu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -541,10 +635,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "KBFI juhtorganid on direktor ja teadusnõukogu.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) KBFI juhtorganid on direktor ja teadusnõukogu.",
       "estleg:parentProvision": {
         "@id": "estleg:KBFIS_Par_4"
       },
+      "rdfs:label": "§ 4 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -562,12 +658,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Direktor",
+      "rdfs:label": {
+        "@value": "§ 5. Direktor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) KBFI-d juhib direktor, kelle valib avaliku konkursi tulemuste alusel KBFI teadusnõukogu ja kellega sõlmib KBFI nimel viieks aastaks töölepingu teadusnõukogu vanim liige. (2) Direktori ametikohale võib kandideerida Eesti kodanik, kes valdab riigikeelt seadusega sätestatud ulatuses, kellel on Eesti doktorikraad või mõnes teises riigis omandatud akadeemiline kraad, mis tasemelt sellele vastab, ja on noorem kui 65 aastat. (3) Direktor valitakse käesoleva paragrahvi lõikes 2 esitatud nõuetele",
+      "estleg:summary": {
+        "@value": "(1) KBFI-d juhib direktor, kelle valib avaliku konkursi tulemuste alusel KBFI teadusnõukogu ja kellega sõlmib KBFI nimel viieks aastaks töölepingu teadusnõukogu vanim liige. (2) Direktori ametikohale võib kandideerida Eesti kodanik, kes valdab riigikeelt seadusega sätestatud ulatuses, kellel on Eesti doktorikraad või mõnes teises riigis omandatud akadeemiline kraad, mis tasemelt sellele vastab, ja on noorem kui 65 aastat. (3) Direktor valitakse käesoleva paragrahvi lõikes 2 esitatud nõuetele",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) KBFI-d juhib direktor, kelle valib avaliku konkursi tulemuste alusel KBFI teadusnõukogu ja kellega sõlmib KBFI nimel viieks aastaks töölepingu teadusnõukogu vanim liige. (2) Direktori ametikohale võib kandideerida Eesti kodanik, kes valdab riigikeelt seadusega sätestatud ulatuses, kellel on Eesti doktorikraad või mõnes teises riigis omandatud akadeemiline kraad, mis tasemelt sellele vastab, ja on noorem kui 65 aastat. (3) Direktor valitakse käesoleva paragrahvi lõikes 2 esitatud nõuetele vastavate kandidaatide hulgast KBFI põhikirjas sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -591,12 +693,12 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -638,9 +740,6 @@
         "@id": "estleg:KBFIS_Par_5"
       },
       "rdfs:label": "§ 5 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -652,6 +751,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -683,13 +785,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Direktori pädevus",
+      "rdfs:label": {
+        "@value": "§ 6. Direktori pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) Direktor: hoolitseb teadus- ja arendustegevuse otstarbeka korralduse eest; esindab KBFI-d kõigis õigustoimingutes käesoleva seaduse, teiste õigusaktide ja KBFI põhikirjaga antud volituste ulatuses; annab aru teadusnõukogule; kinnitab KBFI töösisekorra- ja asjaajamiseeskirjad, samuti raamatupidamise sise-eeskirjad; sõlmib töölepinguid KBFI töötajatega ja määrab kindlaks nende töötasu; korraldab teadusnõukogu otsuste täitmist; määrab asedirektorite ja teadussekretäri esindusõiguse ja",
-      "estleg:legalText": "(1) Direktor: hoolitseb teadus- ja arendustegevuse otstarbeka korralduse eest; esindab KBFI-d kõigis õigustoimingutes käesoleva seaduse, teiste õigusaktide ja KBFI põhikirjaga antud volituste ulatuses; annab aru teadusnõukogule; kinnitab KBFI töösisekorra- ja asjaajamiseeskirjad, samuti raamatupidamise sise-eeskirjad; sõlmib töölepinguid KBFI töötajatega ja määrab kindlaks nende töötasu; korraldab teadusnõukogu otsuste täitmist; määrab asedirektorite ja teadussekretäri esindusõiguse ja tööülesanded; kannab vastutust KBFI kogu tegevuse ja arengu ning rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; tagab KBFI eelarveprojekti koostamise; tagab KBFI eelarve täitmise; lahendab teisi seaduse ja KBFI põhikirjaga tema pädevusse antud ülesandeid. (2) Direktor teeb oma pädevuse piires korraldusi ja annab käskkirju.",
+      "estleg:summary": {
+        "@value": "(1) Direktor: 1) hoolitseb teadus- ja arendustegevuse otstarbeka korralduse eest; 2) esindab KBFI-d kõigis õigustoimingutes käesoleva seaduse, teiste õigusaktide ja KBFI põhikirjaga antud volituste ulatuses; 3) annab aru teadusnõukogule; 4) kinnitab KBFI töösisekorra- ja asjaajamiseeskirjad, samuti raamatupidamise sise-eeskirjad; 5) sõlmib töölepinguid KBFI töötajatega ja määrab kindlaks nende töötasu; 6) korraldab teadusnõukogu otsuste täitmist; 7) määrab asedirektorite ja teadussekretäri",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Direktor: 1) hoolitseb teadus- ja arendustegevuse otstarbeka korralduse eest; 2) esindab KBFI-d kõigis õigustoimingutes käesoleva seaduse, teiste õigusaktide ja KBFI põhikirjaga antud volituste ulatuses; 3) annab aru teadusnõukogule; 4) kinnitab KBFI töösisekorra- ja asjaajamiseeskirjad, samuti raamatupidamise sise-eeskirjad; 5) sõlmib töölepinguid KBFI töötajatega ja määrab kindlaks nende töötasu; 6) korraldab teadusnõukogu otsuste täitmist; 7) määrab asedirektorite ja teadussekretäri esindusõiguse ja tööülesanded; 8) kannab vastutust KBFI kogu tegevuse ja arengu ning rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; 9) tagab KBFI eelarveprojekti koostamise; 10) tagab KBFI eelarve täitmise; 11) lahendab teisi seaduse ja KBFI põhikirjaga tema pädevusse antud ülesandeid. (2) Direktor teeb oma pädevuse piires korraldusi ja annab käskkirju.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
       },
@@ -729,11 +837,24 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Direktor: hoolitseb teadus- ja arendustegevuse otstarbeka korralduse eest; esindab KBFI-d kõigis õigustoimingutes käesoleva seaduse, teiste õigusaktide ja KBFI põhikirjaga antud volituste ulatuses; annab aru teadusnõukogule; kinnitab KBFI töösisekorra- ja asjaajamiseeskirjad, samuti raamatupidamise sise-eeskirjad; sõlmib töölepinguid KBFI töötajatega ja määrab kindlaks nende töötasu; korraldab teadusnõukogu otsuste täitmist; määrab asedirektorite ja teadussekretäri esindusõiguse ja tööülesanded; kannab vastutust KBFI kogu tegevuse ja arengu ning rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; tagab KBFI eelarveprojekti koostamise; tagab KBFI eelarve täitmise; lahendab teisi seaduse ja KBFI põhikirjaga tema pädevusse antud ülesandeid.",
+      "estleg:legalText": "(1) Direktor: 1) hoolitseb teadus- ja arendustegevuse otstarbeka korralduse eest; 2) esindab KBFI-d kõigis õigustoimingutes käesoleva seaduse, teiste õigusaktide ja KBFI põhikirjaga antud volituste ulatuses; 3) annab aru teadusnõukogule; 4) kinnitab KBFI töösisekorra- ja asjaajamiseeskirjad, samuti raamatupidamise sise-eeskirjad; 5) sõlmib töölepinguid KBFI töötajatega ja määrab kindlaks nende töötasu; 6) korraldab teadusnõukogu otsuste täitmist; 7) määrab asedirektorite ja teadussekretäri esindusõiguse ja tööülesanded; 8) kannab vastutust KBFI kogu tegevuse ja arengu ning rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest; 9) tagab KBFI eelarveprojekti koostamise; 10) tagab KBFI eelarve täitmise; 11) lahendab teisi seaduse ja KBFI põhikirjaga tema pädevusse antud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:KBFIS_Par_6"
       },
       "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -776,13 +897,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Teadusnõukogu",
+      "rdfs:label": {
+        "@value": "§ 7. Teadusnõukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) Teadusnõukogu on KBFI kollegiaalne otsustuskogu, mis koosneb 19 liikmest. Teadusnõukogusse kuuluvad: direktor; asedirektorid; teadussekretär; KBFI ja siduserialade juhtivteadlased. (2) Teadusnõukogu liikmed valivad nõukogu esimehe ja aseesimehe käesoleva paragrahvi lõike 1 punktis 4 nimetatud isikute hulgast. (3) Teadusnõukogu esimehe ja aseesimehe volituste tähtaeg on viis aastat. Käesoleva paragrahvi lõike 1 punktis 4 nimetatud teadusnõukogu liikmete volituste tähtaeg on kolm aastat.",
-      "estleg:legalText": "(1) Teadusnõukogu on KBFI kollegiaalne otsustuskogu, mis koosneb 19 liikmest. Teadusnõukogusse kuuluvad: direktor; asedirektorid; teadussekretär; KBFI ja siduserialade juhtivteadlased. (2) Teadusnõukogu liikmed valivad nõukogu esimehe ja aseesimehe käesoleva paragrahvi lõike 1 punktis 4 nimetatud isikute hulgast. (3) Teadusnõukogu esimehe ja aseesimehe volituste tähtaeg on viis aastat. Käesoleva paragrahvi lõike 1 punktis 4 nimetatud teadusnõukogu liikmete volituste tähtaeg on kolm aastat. (4) Teadusnõukogu liikme volitused lõpevad tähtaja lõppemise, ametikohalt lahkumise, tagasiastumise või surma tõttu väljalangemise korral. Teadusnõukogu liikme vakantse koha täitmine toimub valimiste teel KBFI põhikirjas ettenähtud korras. Teadusnõukogusse liikmekandidaadi esitamise õigus on igal teadusnõukogu liikmel.",
+      "estleg:summary": {
+        "@value": "(1) Teadusnõukogu on KBFI kollegiaalne otsustuskogu, mis koosneb 19 liikmest. Teadusnõukogusse kuuluvad: 1) direktor; 2) asedirektorid; 3) teadussekretär; 4) KBFI ja siduserialade juhtivteadlased. (2) Teadusnõukogu liikmed valivad nõukogu esimehe ja aseesimehe käesoleva paragrahvi lõike 1 punktis 4 nimetatud isikute hulgast. (3) Teadusnõukogu esimehe ja aseesimehe volituste tähtaeg on viis aastat. Käesoleva paragrahvi lõike 1 punktis 4 nimetatud teadusnõukogu liikmete volituste tähtaeg on kolm",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Teadusnõukogu on KBFI kollegiaalne otsustuskogu, mis koosneb 19 liikmest. Teadusnõukogusse kuuluvad: 1) direktor; 2) asedirektorid; 3) teadussekretär; 4) KBFI ja siduserialade juhtivteadlased. (2) Teadusnõukogu liikmed valivad nõukogu esimehe ja aseesimehe käesoleva paragrahvi lõike 1 punktis 4 nimetatud isikute hulgast. (3) Teadusnõukogu esimehe ja aseesimehe volituste tähtaeg on viis aastat. Käesoleva paragrahvi lõike 1 punktis 4 nimetatud teadusnõukogu liikmete volituste tähtaeg on kolm aastat. (4) Teadusnõukogu liikme volitused lõpevad tähtaja lõppemise, ametikohalt lahkumise, tagasiastumise või surma tõttu väljalangemise korral. Teadusnõukogu liikme vakantse koha täitmine toimub valimiste teel KBFI põhikirjas ettenähtud korras. Teadusnõukogusse liikmekandidaadi esitamise õigus on igal teadusnõukogu liikmel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
       },
@@ -812,7 +939,13 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:KBFIS_Map"
+        },
         {
           "@id": "estleg:KBFIS_Par_16"
         },
@@ -833,11 +966,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Teadusnõukogu on KBFI kollegiaalne otsustuskogu, mis koosneb 19 liikmest. Teadusnõukogusse kuuluvad: direktor; asedirektorid; teadussekretär; KBFI ja siduserialade juhtivteadlased.",
+      "estleg:legalText": "(1) Teadusnõukogu on KBFI kollegiaalne otsustuskogu, mis koosneb 19 liikmest. Teadusnõukogusse kuuluvad: 1) direktor; 2) asedirektorid; 3) teadussekretär; 4) KBFI ja siduserialade juhtivteadlased.",
       "estleg:parentProvision": {
         "@id": "estleg:KBFIS_Par_7"
       },
       "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -897,12 +1036,12 @@
         "@id": "estleg:KBFIS_Par_7"
       },
       "rdfs:label": "§ 7 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -912,13 +1051,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Teadusnõukogu pädevus",
+      "rdfs:label": {
+        "@value": "§ 8. Teadusnõukogu pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "Teadusnõukogu: kinnitab KBFI tegevuse põhisuunad, teostab järelevalvet nende täitmise üle; kinnitab KBFI põhikirja ja teeb selles muudatusi; kinnitab KBFI teadus- ja arendustegevuse ning muud aruanded; otsustab käesoleva seadusega sätestatud ulatuses ja korras KBFI varaga seotud küsimusi; otsustab laenude võtmise küsimusi; määrab kindlaks KBFI tegevuse sisekontrolli teostamise korra; valib KBFI korralised teadustöötajad; teeb ülikoolidele ettepanekuid teadus- ja arendustegevuse korraldamise",
-      "estleg:legalText": "Teadusnõukogu: kinnitab KBFI tegevuse põhisuunad, teostab järelevalvet nende täitmise üle; kinnitab KBFI põhikirja ja teeb selles muudatusi; kinnitab KBFI teadus- ja arendustegevuse ning muud aruanded; otsustab käesoleva seadusega sätestatud ulatuses ja korras KBFI varaga seotud küsimusi; otsustab laenude võtmise küsimusi; määrab kindlaks KBFI tegevuse sisekontrolli teostamise korra; valib KBFI korralised teadustöötajad; teeb ülikoolidele ettepanekuid teadus- ja arendustegevuse korraldamise kohta; esitab silmapaistvamad uurimused preemiate taotlemiseks; kinnitab KBFI finantsplaani.",
+      "estleg:summary": {
+        "@value": "Teadusnõukogu: 1) kinnitab KBFI tegevuse põhisuunad, teostab järelevalvet nende täitmise üle; 2) kinnitab KBFI põhikirja ja teeb selles muudatusi; 3) kinnitab KBFI teadus- ja arendustegevuse ning muud aruanded; 4) otsustab käesoleva seadusega sätestatud ulatuses ja korras KBFI varaga seotud küsimusi; 5) otsustab laenude võtmise küsimusi; 6) määrab kindlaks KBFI tegevuse sisekontrolli teostamise korra; 7) valib KBFI korralised teadustöötajad; 8) teeb ülikoolidele ettepanekuid teadus- ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "Teadusnõukogu: 1) kinnitab KBFI tegevuse põhisuunad, teostab järelevalvet nende täitmise üle; 2) kinnitab KBFI põhikirja ja teeb selles muudatusi; 3) kinnitab KBFI teadus- ja arendustegevuse ning muud aruanded; 4) otsustab käesoleva seadusega sätestatud ulatuses ja korras KBFI varaga seotud küsimusi; 5) otsustab laenude võtmise küsimusi; 6) määrab kindlaks KBFI tegevuse sisekontrolli teostamise korra; 7) valib KBFI korralised teadustöötajad; 8) teeb ülikoolidele ettepanekuid teadus- ja arendustegevuse korraldamise kohta; 9) esitab silmapaistvamad uurimused preemiate taotlemiseks; 10) kinnitab KBFI finantsplaani.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
       },
@@ -945,10 +1090,24 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Teadusnõukogu: kinnitab KBFI tegevuse põhisuunad, teostab järelevalvet nende täitmise üle; kinnitab KBFI põhikirja ja teeb selles muudatusi; kinnitab KBFI teadus- ja arendustegevuse ning muud aruanded; otsustab käesoleva seadusega sätestatud ulatuses ja korras KBFI varaga seotud küsimusi; otsustab laenude võtmise küsimusi; määrab kindlaks KBFI tegevuse sisekontrolli teostamise korra; valib KBFI korralised teadustöötajad; teeb ülikoolidele ettepanekuid teadus- ja arendustegevuse korraldamise kohta; esitab silmapaistvamad uurimused preemiate taotlemiseks; kinnitab KBFI finantsplaani.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Teadusnõukogu: 1) kinnitab KBFI tegevuse põhisuunad, teostab järelevalvet nende täitmise üle; 2) kinnitab KBFI põhikirja ja teeb selles muudatusi; 3) kinnitab KBFI teadus- ja arendustegevuse ning muud aruanded; 4) otsustab käesoleva seadusega sätestatud ulatuses ja korras KBFI varaga seotud küsimusi; 5) otsustab laenude võtmise küsimusi; 6) määrab kindlaks KBFI tegevuse sisekontrolli teostamise korra; 7) valib KBFI korralised teadustöötajad; 8) teeb ülikoolidele ettepanekuid teadus- ja arendustegevuse korraldamise kohta; 9) esitab silmapaistvamad uurimused preemiate taotlemiseks; 10) kinnitab KBFI finantsplaani.",
       "estleg:parentProvision": {
         "@id": "estleg:KBFIS_Par_8"
-      }
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ]
     },
     {
       "@id": "estleg:KBFIS_Par_9",
@@ -957,12 +1116,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Teadusnõukogu töökord",
+      "rdfs:label": {
+        "@value": "§ 9. Teadusnõukogu töökord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) Teadusnõukogu töövorm on istung. (2) Teadusnõukogu istungid toimuvad vastavalt vajadusele, kuid mitte harvemini kui kord kvartalis. Istungi kutsub kokku teadusnõukogu esimees, tema äraolekul aseesimees. Teadusnõukogu istungi päevakord tehakse teadusnõukogu liikmetele kirjalikult teatavaks vähemalt kümme päeva enne istungi toimumist. (3) Teadusnõukogu on otsustusvõimeline, kui kohal on vähemalt kümme teadusnõukogu liiget, sealhulgas esimees või aseesimees.",
+      "estleg:summary": {
+        "@value": "(1) Teadusnõukogu töövorm on istung. (2) Teadusnõukogu istungid toimuvad vastavalt vajadusele, kuid mitte harvemini kui kord kvartalis. Istungi kutsub kokku teadusnõukogu esimees, tema äraolekul aseesimees. Teadusnõukogu istungi päevakord tehakse teadusnõukogu liikmetele kirjalikult teatavaks vähemalt kümme päeva enne istungi toimumist. (3) Teadusnõukogu on otsustusvõimeline, kui kohal on vähemalt kümme teadusnõukogu liiget, sealhulgas esimees või aseesimees.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teadusnõukogu töövorm on istung. (2) Teadusnõukogu istungid toimuvad vastavalt vajadusele, kuid mitte harvemini kui kord kvartalis. Istungi kutsub kokku teadusnõukogu esimees, tema äraolekul aseesimees. Teadusnõukogu istungi päevakord tehakse teadusnõukogu liikmetele kirjalikult teatavaks vähemalt kümme päeva enne istungi toimumist. (3) Teadusnõukogu on otsustusvõimeline, kui kohal on vähemalt kümme teadusnõukogu liiget, sealhulgas esimees või aseesimees. (4) Teadusnõukogu võtab otsuseid vastu kohalviibivate liikmete lihthäälteenamusega. Häälte võrdse jagunemise korral on otsustav esimehe või teda asendava aseesimehe hääl. Otsusele kirjutab alla esimees, tema äraolekul aseesimees. (5) Teadusnõukogu otsus tehakse teatavaks KBFI töötajatele ja Haridus- ja Teadusministeeriumile. (6) Teadusnõukogu täpsema töökorra sätestab KBFI põhikiri.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -995,6 +1160,15 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KultKS_Par_13"
@@ -1007,15 +1181,8 @@
         },
         {
           "@id": "estleg:Reg_157290_Par_5"
-        },
-        {
-          "@id": "estleg:Reg_329642_Par_9"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:KBFIS_Par_9_v22420"
@@ -1025,11 +1192,6 @@
         },
         {
           "@id": "estleg:KBFIS_Par_9_v215551"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
         }
       ]
     },
@@ -1159,12 +1321,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Struktuur",
+      "rdfs:label": {
+        "@value": "§ 10. Struktuur",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "KBFI struktuuri kuuluvad teaduslikud, administratiivsed ja majanduslikud allüksused.",
+      "estleg:summary": {
+        "@value": "KBFI struktuuri kuuluvad teaduslikud, administratiivsed ja majanduslikud allüksused.",
+        "@language": "et"
+      },
       "estleg:legalText": "KBFI struktuuri kuuluvad teaduslikud, administratiivsed ja majanduslikud allüksused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -1186,10 +1354,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "KBFI struktuuri kuuluvad teaduslikud, administratiivsed ja majanduslikud allüksused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) KBFI struktuuri kuuluvad teaduslikud, administratiivsed ja majanduslikud allüksused.",
       "estleg:parentProvision": {
         "@id": "estleg:KBFIS_Par_10"
-      }
+      },
+      "rdfs:label": "§ 10 lg 1"
     },
     {
       "@id": "estleg:KBFIS_Par_11",
@@ -1198,16 +1368,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 11.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 11.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
       },
+      "estleg:provisionRepealed": true,
       "estleg:hasVersion": [
         {
           "@id": "estleg:KBFIS_Par_11_v22420"
@@ -1224,12 +1400,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Finantseerimine",
+      "rdfs:label": {
+        "@value": "§ 12. Finantseerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) KBFI tegevust finantseeritakse riigieelarvest ja muudest allikatest. (2) KBFI-l on õigus osutada teistele isikutele oma põhikirjalisest tegevusest tulenevaid tasulisi teenuseid, millest saadud tulu läheb KBFI eelarvesse. (3) KBFI rahalisi vahendeid käsutab direktor teadusnõukogu kehtestatud tingimustel ja korras.",
+      "estleg:summary": {
+        "@value": "(1) KBFI tegevust finantseeritakse riigieelarvest ja muudest allikatest. (2) KBFI-l on õigus osutada teistele isikutele oma põhikirjalisest tegevusest tulenevaid tasulisi teenuseid, millest saadud tulu läheb KBFI eelarvesse. (3) KBFI rahalisi vahendeid käsutab direktor teadusnõukogu kehtestatud tingimustel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) KBFI tegevust finantseeritakse riigieelarvest ja muudest allikatest. (2) KBFI-l on õigus osutada teistele isikutele oma põhikirjalisest tegevusest tulenevaid tasulisi teenuseid, millest saadud tulu läheb KBFI eelarvesse. (3) KBFI rahalisi vahendeid käsutab direktor teadusnõukogu kehtestatud tingimustel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -1250,13 +1432,18 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TAS_Par_20"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:KBFIS_Par_12_v22420"
@@ -1288,12 +1475,12 @@
         "@id": "estleg:KBFIS_Par_12"
       },
       "rdfs:label": "§ 12 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -1325,12 +1512,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Eelarve",
+      "rdfs:label": {
+        "@value": "§ 13. Eelarve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) KBFI kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama KBFI finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele. (2) KBFI eelarve ja selle täitmise aruande kinnitab teadusnõukogu.",
+      "estleg:summary": {
+        "@value": "(1) KBFI kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama KBFI finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele. (2) KBFI eelarve ja selle täitmise aruande kinnitab teadusnõukogu.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) KBFI kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama KBFI finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele. (2) KBFI eelarve ja selle täitmise aruande kinnitab teadusnõukogu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -1343,12 +1536,21 @@
           "@id": "estleg:KBFIS_Par_13_Lg_2"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.70",
+        "@type": "xsd:decimal"
+      },
+      "estleg:references": [
+        {
+          "@id": "estleg:REELS_Par_6"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:EESTI_3_Par_20"
-        },
-        {
-          "@id": "estleg:ERHS_Par_7"
         },
         {
           "@id": "estleg:KAITSE_Par_83"
@@ -1358,18 +1560,6 @@
         },
         {
           "@id": "estleg:TAS_Par_21"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:assertionConfidence": {
-        "@value": "0.70",
-        "@type": "xsd:decimal"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:REELS_Par_6"
         }
       ],
       "estleg:hasVersion": [
@@ -1393,9 +1583,6 @@
         "@id": "estleg:KBFIS_Par_13"
       },
       "rdfs:label": "§ 13 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -1404,7 +1591,10 @@
         {
           "@id": "estleg:REELS_Par_6"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:KBFIS_Par_13_Lg_2",
@@ -1426,12 +1616,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13¹.",
-      "rdfs:label": "§ 13¹. KBFI finantsplaan",
+      "rdfs:label": {
+        "@value": "§ 13¹. KBFI finantsplaan",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) KBFI koostab igal aastal finantsplaani, mis on aluseks KBFI eelarve koostamisel. (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:summary": {
+        "@value": "(1) KBFI koostab igal aastal finantsplaani, mis on aluseks KBFI eelarve koostamisel. (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) KBFI koostab igal aastal finantsplaani, mis on aluseks KBFI eelarve koostamisel. (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -1442,6 +1638,11 @@
         },
         {
           "@id": "estleg:KBFIS_Par_13_1_Lg_2"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:REELS_Par_12"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -1459,11 +1660,6 @@
         },
         {
           "@id": "estleg:TAS_Par_21_1"
-        }
-      ],
-      "estleg:references": [
-        {
-          "@id": "estleg:REELS_Par_12"
         }
       ],
       "estleg:hasVersion": [
@@ -1510,12 +1706,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Aruandlus ja kontroll",
+      "rdfs:label": {
+        "@value": "§ 14. Aruandlus ja kontroll",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) KBFI peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. (2) KBFI-le teadus- ja arendustegevuseks eraldatud riiklike vahendite sihtotstarbelist kasutamist kontrollib Rahandusministeerium. KBFI tegevust kontrollib vastavalt Riigikontrolli seadusele Riigikontroll.",
+      "estleg:summary": {
+        "@value": "(1) KBFI peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. (2) KBFI-le teadus- ja arendustegevuseks eraldatud riiklike vahendite sihtotstarbelist kasutamist kontrollib Rahandusministeerium. KBFI tegevust kontrollib vastavalt Riigikontrolli seadusele Riigikontroll.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) KBFI peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. (2) KBFI-le teadus- ja arendustegevuseks eraldatud riiklike vahendite sihtotstarbelist kasutamist kontrollib Rahandusministeerium. KBFI tegevust kontrollib vastavalt Riigikontrolli seadusele Riigikontroll.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -1528,32 +1730,29 @@
           "@id": "estleg:KBFIS_Par_14_Lg_2"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:ROS_Par_17"
-        },
-        {
-          "@id": "estleg:TAS_Par_22"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:KBFIS_Par_14_v22420"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_rahandusministeerium"
         }
       ],
-      "estleg:competenceType": "enforcement"
+      "estleg:competenceType": "enforcement",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TAS_Par_22"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:KBFIS_Par_14_v22420"
+        }
+      ]
     },
     {
       "@id": "estleg:KBFIS_Par_14_Lg_1",
@@ -1567,12 +1766,12 @@
         "@id": "estleg:KBFIS_Par_14"
       },
       "rdfs:label": "§ 14 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1601,12 +1800,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Haldusjärelevalve",
+      "rdfs:label": {
+        "@value": "§ 15. Haldusjärelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) Haldusjärelevalvet KBFI tegevuse seaduslikkuse üle teostab Haridus- ja Teadusministeerium. (2) Valdkonna eest vastutaval ministril on õigus peatada teadusnõukogu ja direktori seadusevastast toimingut või õigusakti kehtivust ja teha ettekirjutusi toimingu või õigusakti puuduste kõrvaldamiseks.",
+      "estleg:summary": {
+        "@value": "(1) Haldusjärelevalvet KBFI tegevuse seaduslikkuse üle teostab Haridus- ja Teadusministeerium. (2) Valdkonna eest vastutaval ministril on õigus peatada teadusnõukogu ja direktori seadusevastast toimingut või õigusakti kehtivust ja teha ettekirjutusi toimingu või õigusakti puuduste kõrvaldamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Haldusjärelevalvet KBFI tegevuse seaduslikkuse üle teostab Haridus- ja Teadusministeerium. (2) Valdkonna eest vastutaval ministril on õigus peatada teadusnõukogu ja direktori seadusevastast toimingut või õigusakti kehtivust ja teha ettekirjutusi toimingu või õigusakti puuduste kõrvaldamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -1624,13 +1829,19 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
+        }
+      ],
+      "estleg:competenceType": "enforcement",
       "estleg:hasVersion": [
         {
           "@id": "estleg:KBFIS_Par_15_v22420"
@@ -1641,13 +1852,7 @@
         {
           "@id": "estleg:KBFIS_Par_15_v113032014034"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
-        }
-      ],
-      "estleg:competenceType": "enforcement"
+      ]
     },
     {
       "@id": "estleg:KBFIS_Par_15_Lg_1",
@@ -1680,9 +1885,6 @@
         "@id": "estleg:KBFIS_Par_15"
       },
       "rdfs:label": "§ 15 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -1691,6 +1893,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -1700,12 +1905,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Seaduse rakendamine",
+      "rdfs:label": {
+        "@value": "§ 16. Seaduse rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keemilise ja Bioloogilise Füüsika Instituudi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KBFIS_Map"
       },
-      "estleg:summary": "(1) KBFI põhikiri viiakse käesoleva seadusega vastavusse kolme kuu jooksul seaduse jõustumisest arvates. (2) Pärast käesoleva seaduse jõustumist valib KBFI nõukogu oma esimesel istungil teadusnõukogu esimehe ja aseesimehe ning korraldab liikmete kinnitamise vastavalt käesoleva seaduse §-le 7. (3) Teadusnõukogu kuulutab välja avaliku konkursi KBFI direktori valimiseks kolm kuud pärast käesoleva seaduse jõustumist. (4) Vabariigi Valitsuse määratud riigivara valitseja annab KBFI valduses ja",
+      "estleg:summary": {
+        "@value": "(1) KBFI põhikiri viiakse käesoleva seadusega vastavusse kolme kuu jooksul seaduse jõustumisest arvates. (2) Pärast käesoleva seaduse jõustumist valib KBFI nõukogu oma esimesel istungil teadusnõukogu esimehe ja aseesimehe ning korraldab liikmete kinnitamise vastavalt käesoleva seaduse §-le 7. (3) Teadusnõukogu kuulutab välja avaliku konkursi KBFI direktori valimiseks kolm kuud pärast käesoleva seaduse jõustumist. (4) Vabariigi Valitsuse määratud riigivara valitseja annab KBFI valduses ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) KBFI põhikiri viiakse käesoleva seadusega vastavusse kolme kuu jooksul seaduse jõustumisest arvates. (2) Pärast käesoleva seaduse jõustumist valib KBFI nõukogu oma esimesel istungil teadusnõukogu esimehe ja aseesimehe ning korraldab liikmete kinnitamise vastavalt käesoleva seaduse §-le 7. (3) Teadusnõukogu kuulutab välja avaliku konkursi KBFI direktori valimiseks kolm kuud pärast käesoleva seaduse jõustumist. (4) Vabariigi Valitsuse määratud riigivara valitseja annab KBFI valduses ja kasutuses oleva ning tema tegevuseks vajaliku vallasvara KBFI omandisse hiljemalt kolme kuu jooksul käesoleva seaduse jõustumisest arvates. KBFI valduses ja kasutuses oleva kinnisvara võõrandamine KBFI-le toimub riigivaraseaduses (RT I 1995, 22, 327; 1998, 30, 409) sätestatud korras. (5) KBFI nimi inglise keeles on National Institute of Chemical Physics and Biophysics.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KBFIS_default"
@@ -1744,6 +1955,11 @@
           "@id": "estleg:KBFIS_Par_7"
         }
       ],
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:KBFIS_Par_16_v22420"
@@ -1753,11 +1969,6 @@
         },
         {
           "@id": "estleg:KBFIS_Par_16_v215551"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
         }
       ]
     },
@@ -1853,6 +2064,22 @@
         "@id": "estleg:KBFIS_Par_16"
       },
       "rdfs:label": "§ 16 lg 5"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/503102025006",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:KBFIS_Map"
+      },
+      "rdfs:label": {
+        "@value": "National Institute of Chemical Physics and Biophysics Act",
+        "@language": "en"
+      }
     }
   ]
 }

@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:KRKEKR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsiooni ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsiooni ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsiooni ratifitseerimise seadus",
       "dcterms:title": "Kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsiooni ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/26934.xml"
+        "@id": "https://www.riigiteataja.ee/akt/26934"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/26934/xml"
+      },
+      "estleg:globalId": "26934",
+      "eli:id_local": "26934",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "153275",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "ecfa11f7d9e8aa58505394de6586010cd70bbf882dc92dad1677bf97e4bd741b",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -50,19 +62,20 @@
         {
           "@id": "http://eurovoc.europa.eu/3474"
         }
-      ]
-    },
-    {
-      "@id": "estleg:KRKEKR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsiooni ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_KRKEKR_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2001-03-27",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_KRKEKR_default",
@@ -71,12 +84,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KRKEKR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:KRKEKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsiooni ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_KRKEKR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:KRKEKR_Par_1",
@@ -85,13 +119,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud kohtuotsuste rahvusvahelise kehtivuse Euroopa konve...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud kohtuotsuste rahvusvahelise kehtivuse Euroopa konve...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRKEKR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on alla kirjutatud Londonis 2000. aasta 8. juunil.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on alla kirjutatud Londonis 2000. aasta 8. juunil.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsioon , mis on alla kirjutatud Londonis 2000. aasta 8. juunil.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsioon , mis on alla kirjutatud Londonis 2000. aasta 8. juunil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRKEKR_default"
       },
@@ -102,19 +142,19 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:EKIKAKUVLR_Par_3"
-        },
-        {
           "@id": "estleg:ENSR_Par_1"
         },
         {
-          "@id": "estleg:EVIVKKIUKR_Par_1"
+          "@id": "estleg:KKRKR_Par_1"
         },
         {
-          "@id": "estleg:EVLSAIMKR_Par_1"
+          "@id": "estleg:PPR_Par_1"
         },
         {
-          "@id": "estleg:EVVAUVRMPFKR_Par_1"
+          "@id": "estleg:UROKKROMLR_Par_1"
+        },
+        {
+          "@id": "estleg:ukraina_kahjunouete_rahvusvahelise_komis_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -129,10 +169,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on alla kirjutatud Londonis 2000. aasta 8. juunil.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsioon , mis on alla kirjutatud Londonis 2000. aasta 8. juunil.",
       "estleg:parentProvision": {
         "@id": "estleg:KRKEKR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:KRKEKR_Par_2",
@@ -141,15 +183,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid:",
+      "rdfs:label": {
+        "@value": "§ 2. Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid:",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuotsuste rahvusvahelise kehtivuse Euroopa konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KRKEKR_Map"
       },
+      "estleg:summary": "§ 2. Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid:",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRKEKR_default"
       },
-      "estleg:summary": "§ 2. Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid:",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:LSTKRKU_Par_2"

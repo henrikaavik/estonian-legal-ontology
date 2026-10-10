@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Vara merepääste 1989. aasta rahvusvahelise konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Vara merepääste 1989. aasta rahvusvahelise konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Vara merepääste 1989. aasta rahvusvahelise konventsiooniga ühinemise seadus",
       "dcterms:title": "Vara merepääste 1989. aasta rahvusvahelise konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/27141.xml"
+        "@id": "https://www.riigiteataja.ee/akt/27141"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/27141/xml"
+      },
+      "estleg:globalId": "27141",
+      "eli:id_local": "27141",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "153453",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "f7c01a51167e711657490d45bcabe4e94ce750046ef16ef83ad4b2468d9a78b9",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -51,23 +63,24 @@
           "@id": "http://eurovoc.europa.eu/3474"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2001-07-09",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_KLIM18_0448"
         }
-      ]
-    },
-    {
-      "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Vara merepääste 1989. aasta rahvusvahelise konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_vara_merepaaste_1989_aasta_rahvusvahelis_default"
-        }
-      ]
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_vara_merepaaste_1989_aasta_rahvusvahelis_default",
@@ -76,12 +89,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Lepingu sätted",
-      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Vara merepääste 1989. aasta rahvusvahelise konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_vara_merepaaste_1989_aasta_rahvusvahelis_default"
+        }
+      ]
     },
     {
       "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Par_1",
@@ -90,13 +124,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud vara merepääste 1989. aasta rahvusvahelise konventsiooniga...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud vara merepääste 1989. aasta rahvusvahelise konventsiooniga...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vara merepääste 1989. aasta rahvusvahelise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud (edaspidi konventsioon), mis on koostatud 1989. aasta 28. aprillil Londonis.",
-      "estleg:legalText": "Ühineda juurdelisatud (edaspidi konventsioon), mis on koostatud 1989. aasta 28. aprillil Londonis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud vara merepääste 1989. aasta rahvusvahelise konventsiooniga (edaspidi konventsioon), mis on koostatud 1989. aasta 28. aprillil Londonis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ühineda juurdelisatud vara merepääste 1989. aasta rahvusvahelise konventsiooniga (edaspidi konventsioon), mis on koostatud 1989. aasta 28. aprillil Londonis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_vara_merepaaste_1989_aasta_rahvusvahelis_default"
       },
@@ -107,7 +147,7 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:1992_aasta_rahvusvahelise_konventsiooni_Par_1"
+          "@id": "estleg:KATMKKU_Par_1"
         },
         {
           "@id": "estleg:LKKSKRKU_Par_1"
@@ -134,10 +174,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud (edaspidi konventsioon), mis on koostatud 1989. aasta 28. aprillil Londonis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud vara merepääste 1989. aasta rahvusvahelise konventsiooniga (edaspidi konventsioon), mis on koostatud 1989. aasta 28. aprillil Londonis.",
       "estleg:parentProvision": {
         "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Par_2",
@@ -146,12 +188,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Konventsiooni artikli 4 lõike 1 alusel kohaldab Eesti Vabariik konventsiooni sõj...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Konventsiooni artikli 4 lõike 1 alusel kohaldab Eesti Vabariik konventsiooni sõj...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vara merepääste 1989. aasta rahvusvahelise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Map"
       },
-      "estleg:summary": "Konventsiooni artikli 4 lõike 1 alusel kohaldab Eesti Vabariik konventsiooni sõjalaeva ja riigile kuuluva või riigi käsutuses oleva muu laeva suhtes, millele rahvusvahelise õiguse üldtunnustatud põhimõtete järgi on päästeoperatsiooni ajaks antud riiklik puutumatus.",
+      "estleg:summary": {
+        "@value": "Konventsiooni artikli 4 lõike 1 alusel kohaldab Eesti Vabariik konventsiooni sõjalaeva ja riigile kuuluva või riigi käsutuses oleva muu laeva suhtes, millele rahvusvahelise õiguse üldtunnustatud põhimõtete järgi on päästeoperatsiooni ajaks antud riiklik puutumatus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Konventsiooni artikli 4 lõike 1 alusel kohaldab Eesti Vabariik konventsiooni sõjalaeva ja riigile kuuluva või riigi käsutuses oleva muu laeva suhtes, millele rahvusvahelise õiguse üldtunnustatud põhimõtete järgi on päästeoperatsiooni ajaks antud riiklik puutumatus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_vara_merepaaste_1989_aasta_rahvusvahelis_default"
@@ -173,10 +221,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Konventsiooni artikli 4 lõike 1 alusel kohaldab Eesti Vabariik konventsiooni sõjalaeva ja riigile kuuluva või riigi käsutuses oleva muu laeva suhtes, millele rahvusvahelise õiguse üldtunnustatud põhimõtete järgi on päästeoperatsiooni ajaks antud riiklik puutumatus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Konventsiooni artikli 4 lõike 1 alusel kohaldab Eesti Vabariik konventsiooni sõjalaeva ja riigile kuuluva või riigi käsutuses oleva muu laeva suhtes, millele rahvusvahelise õiguse üldtunnustatud põhimõtete järgi on päästeoperatsiooni ajaks antud riiklik puutumatus.",
       "estleg:parentProvision": {
         "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Par_3",
@@ -185,12 +235,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Konventsiooni artikli 30 lõike 1 alusel reserveerib Eesti Vabariik endale õiguse...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Konventsiooni artikli 30 lõike 1 alusel reserveerib Eesti Vabariik endale õiguse...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vara merepääste 1989. aasta rahvusvahelise konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Map"
       },
-      "estleg:summary": "Konventsiooni artikli 30 lõike 1 alusel reserveerib Eesti Vabariik endale õiguse loobuda konventsiooni kohaldamisest, kui:",
+      "estleg:summary": {
+        "@value": "Konventsiooni artikli 30 lõike 1 alusel reserveerib Eesti Vabariik endale õiguse loobuda konventsiooni kohaldamisest, kui:",
+        "@language": "et"
+      },
       "estleg:legalText": "Konventsiooni artikli 30 lõike 1 alusel reserveerib Eesti Vabariik endale õiguse loobuda konventsiooni kohaldamisest, kui:",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_vara_merepaaste_1989_aasta_rahvusvahelis_default"
@@ -205,16 +261,7 @@
           "@id": "estleg:IENKR_Par_2"
         },
         {
-          "@id": "estleg:LKSASKEKENKR_Par_2"
-        },
-        {
-          "@id": "estleg:MTWTTLVRR_Par_2"
-        },
-        {
-          "@id": "estleg:NRLEKR2007_Par_2"
-        },
-        {
-          "@id": "estleg:rahvusvahelise_organiseeritud_kuritegevu_Par_4"
+          "@id": "estleg:VOHMEKR_Par_2"
         }
       ],
       "estleg:hasVersion": [
@@ -229,10 +276,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Konventsiooni artikli 30 lõike 1 alusel reserveerib Eesti Vabariik endale õiguse loobuda konventsiooni kohaldamisest, kui:",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Konventsiooni artikli 30 lõike 1 alusel reserveerib Eesti Vabariik endale õiguse loobuda konventsiooni kohaldamisest, kui:",
       "estleg:parentProvision": {
         "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     }
   ]
 }

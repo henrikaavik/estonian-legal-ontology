@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:eurocontroli_lennuliikluse_ohutuse_alast_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Eurocontroli lennuliikluse ohutuse alast koostööd käsitlevate protokollide ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Eurocontroli lennuliikluse ohutuse alast koostööd käsitlevate protokollide ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Eurocontroli lennuliikluse ohutuse alast koostööd käsitlevate protokollide ratifitseerimise seadus",
       "dcterms:title": "Eurocontroli lennuliikluse ohutuse alast koostööd käsitlevate protokollide ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/220102017001.xml"
+        "@id": "https://www.riigiteataja.ee/akt/220102017001"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/220102017001/xml"
+      },
+      "estleg:globalId": "220102017001",
+      "eli:id_local": "220102017001",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "1040562",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "510c1ba28deeed75168645797760e3051c64c8d567ce80beb1b36bc620319bca",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2017-10-30",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -57,23 +69,24 @@
           "@id": "http://eurovoc.europa.eu/525"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2017-10-30",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2017-10-20",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_MKM17_0022"
         }
-      ]
-    },
-    {
-      "@id": "estleg:eurocontroli_lennuliikluse_ohutuse_alast_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Eurocontroli lennuliikluse ohutuse alast koostööd käsitlevate protokollide ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_eurocontroli_lennuliikluse_ohutuse_alast_default"
-        }
-      ]
+      "estleg:lastAmendmentDate": {
+        "@value": "2017-10-30",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_eurocontroli_lennuliikluse_ohutuse_alast_default",
@@ -82,12 +95,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:eurocontroli_lennuliikluse_ohutuse_alast_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:eurocontroli_lennuliikluse_ohutuse_alast_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Eurocontroli lennuliikluse ohutuse alast koostööd käsitlevate protokollide ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_eurocontroli_lennuliikluse_ohutuse_alast_default"
+        }
+      ]
     },
     {
       "@id": "estleg:eurocontroli_lennuliikluse_ohutuse_alast_Par_1",
@@ -96,31 +130,28 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud , mis on koostatud 1997. aasta 27. juunil Brüsselis...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud Eurocontroli lennuliikluse ohutuse alast koostööd k...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eurocontroli lennuliikluse ohutuse alast koostööd käsitlevate protokollide ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:eurocontroli_lennuliikluse_ohutuse_alast_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1997. aasta 27. juunil Brüsselis ja millele Eesti Vabariik on alla kirjutanud 2014. aasta 26. novembril Brüsselis.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1997. aasta 27. juunil Brüsselis ja millele Eesti Vabariik on alla kirjutanud 2014. aasta 26. novembril Brüsselis.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud Eurocontroli lennuliikluse ohutuse alast koostööd käsitlevat 13. detsembri 1960. aasta rahvusvahelist konventsiooni, nagu seda on korduvalt muudetud, konsolideeriv protokoll , mis on koostatud 1997. aasta 27. juunil Brüsselis ja millele Eesti Vabariik on alla kirjutanud 2014. aasta 26. novembril Brüsselis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud Eurocontroli lennuliikluse ohutuse alast koostööd käsitlevat 13. detsembri 1960. aasta rahvusvahelist konventsiooni, nagu seda on korduvalt muudetud, konsolideeriv protokoll , mis on koostatud 1997. aasta 27. juunil Brüsselis ja millele Eesti Vabariik on alla kirjutanud 2014. aasta 26. novembril Brüsselis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_eurocontroli_lennuliikluse_ohutuse_alast_default"
       },
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:euroopa_stabiilsusmehhanismi_asutamislep_Par_1"
+          "@id": "estleg:bioloogilise_mitmekesisuse_konventsiooni_Par_1"
         },
         {
-          "@id": "estleg:osamaksete_uhtsesse_kriisilahendusfondi_Par_1"
-        },
-        {
-          "@id": "estleg:uhtset_patendikohut_kasitleva_lepingu_ni_Par_2"
-        },
-        {
-          "@id": "estleg:ulemaailmse_postiliidu_ar_riy_i_erakorra_Par_1"
-        },
-        {
-          "@id": "estleg:ulemaailmse_postiliidu_ar_riy_i_erakorra_Par_2"
+          "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konventsiooni_protokolli_nr_16_rat_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -136,12 +167,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ratifitseerida protokoll Euroopa Ühenduse ühinemise kohta Eurocontroli lennunavi...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ratifitseerida protokoll Euroopa Ühenduse ühinemise kohta Eurocontroli lennunavi...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eurocontroli lennuliikluse ohutuse alast koostööd käsitlevate protokollide ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:eurocontroli_lennuliikluse_ohutuse_alast_Map"
       },
-      "estleg:summary": "Ratifitseerida protokoll Euroopa Ühenduse ühinemise kohta Eurocontroli lennunavigatsiooni ohutuse alast koostööd käsitleva 13. detsembri 1960. aasta rahvusvahelise konventsiooniga, nagu seda on muudetud ja konsolideeritud 27. juuni 1997. aasta protokolliga (ELT L 304, 30.09.2004, lk 210–215; eestikeelne eriväljaanne: peatükk 7, köide 8, lk 331–334), mis on koostatud 2002. aasta 8. oktoobril Brüsselis ja millele Eesti Vabariik on alla kirjutanud 2014. aasta 26. novembril Brüsselis.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida protokoll Euroopa Ühenduse ühinemise kohta Eurocontroli lennunavigatsiooni ohutuse alast koostööd käsitleva 13. detsembri 1960. aasta rahvusvahelise konventsiooniga, nagu seda on muudetud ja konsolideeritud 27. juuni 1997. aasta protokolliga (ELT L 304, 30.09.2004, lk 210–215; eestikeelne eriväljaanne: peatükk 7, köide 8, lk 331–334), mis on koostatud 2002. aasta 8. oktoobril Brüsselis ja millele Eesti Vabariik on alla kirjutanud 2014. aasta 26. novembril Brüsselis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida protokoll Euroopa Ühenduse ühinemise kohta Eurocontroli lennunavigatsiooni ohutuse alast koostööd käsitleva 13. detsembri 1960. aasta rahvusvahelise konventsiooniga, nagu seda on muudetud ja konsolideeritud 27. juuni 1997. aasta protokolliga (ELT L 304, 30.09.2004, lk 210–215; eestikeelne eriväljaanne: peatükk 7, köide 8, lk 331–334), mis on koostatud 2002. aasta 8. oktoobril Brüsselis ja millele Eesti Vabariik on alla kirjutanud 2014. aasta 26. novembril Brüsselis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_eurocontroli_lennuliikluse_ohutuse_alast_default"

@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:ukraina_kahjunouete_rahvusvahelise_komis_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Ukraina kahjunõuete rahvusvahelise komisjoni asutamise konventsiooni ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Ukraina kahjunõuete rahvusvahelise komisjoni asutamise konventsiooni ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Ukraina kahjunõuete rahvusvahelise komisjoni asutamise konventsiooni ratifitseerimise seadus",
       "dcterms:title": "Ukraina kahjunõuete rahvusvahelise komisjoni asutamise konventsiooni ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/219032026001.xml"
+        "@id": "https://www.riigiteataja.ee/akt/219032026001"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/219032026001/xml"
+      },
+      "estleg:globalId": "219032026001",
+      "eli:id_local": "219032026001",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "1063101",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "602d9eb53b74b11280ddca07b98b2b3f960c1fdfb6779e5b785541cbcfe4b2b0",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2026-03-20",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -56,19 +68,20 @@
         {
           "@id": "http://eurovoc.europa.eu/523"
         }
-      ]
-    },
-    {
-      "@id": "estleg:ukraina_kahjunouete_rahvusvahelise_komis_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Ukraina kahjunõuete rahvusvahelise komisjoni asutamise konventsiooni ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_ukraina_kahjunouete_rahvusvahelise_komis_default"
-        }
-      ]
+      "estleg:entryIntoForce": {
+        "@value": "2026-03-20",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2026-03-19",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:lastAmendmentDate": {
+        "@value": "2026-03-20",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_ukraina_kahjunouete_rahvusvahelise_komis_default",
@@ -77,12 +90,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:ukraina_kahjunouete_rahvusvahelise_komis_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:ukraina_kahjunouete_rahvusvahelise_komis_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Ukraina kahjunõuete rahvusvahelise komisjoni asutamise konventsiooni ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_ukraina_kahjunouete_rahvusvahelise_komis_default"
+        }
+      ]
     },
     {
       "@id": "estleg:ukraina_kahjunouete_rahvusvahelise_komis_Par_1",
@@ -91,31 +125,28 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud , mis on alla kirjutatud 2025. aasta 16. detsembril...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud Ukraina kahjunõuete rahvusvahelise komisjoni asutam...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ukraina kahjunõuete rahvusvahelise komisjoni asutamise konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ukraina_kahjunouete_rahvusvahelise_komis_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 2025. aasta 16. detsembril Haagis.",
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on alla kirjutatud 2025. aasta 16. detsembril Haagis.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud Ukraina kahjunõuete rahvusvahelise komisjoni asutamise konventsioon , mis on alla kirjutatud 2025. aasta 16. detsembril Haagis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud Ukraina kahjunõuete rahvusvahelise komisjoni asutamise konventsioon , mis on alla kirjutatud 2025. aasta 16. detsembril Haagis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ukraina_kahjunouete_rahvusvahelise_komis_default"
       },
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:EVIVKKIUKR_Par_1"
+          "@id": "estleg:KRKEKR_Par_1"
         },
         {
-          "@id": "estleg:EVLSAIMKR_Par_1"
-        },
-        {
-          "@id": "estleg:EVVAUVRMPFKR_Par_1"
-        },
-        {
-          "@id": "estleg:EVVBKVTTVMHT_Par_1"
-        },
-        {
-          "@id": "estleg:EVVTKVTTVMHT_Par_1"
+          "@id": "estleg:UIOOWAKR_Par_1"
         }
       ],
       "estleg:hasVersion": [
@@ -131,12 +162,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.]",
+      "rdfs:label": {
+        "@value": "§ 2. [Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ukraina kahjunõuete rahvusvahelise komisjoni asutamise konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ukraina_kahjunouete_rahvusvahelise_komis_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ukraina_kahjunouete_rahvusvahelise_komis_default"

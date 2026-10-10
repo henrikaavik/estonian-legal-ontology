@@ -5,36 +5,48 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:OKAMPAPT1999_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Osoonikihti kahandavate ainete Montreali protokolli 1999. aastal Pekingis tehtud paranduste ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Osoonikihti kahandavate ainete Montreali protokolli 1999. aastal Pekingis tehtud paranduste ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Osoonikihti kahandavate ainete Montreali protokolli 1999. aastal Pekingis tehtud paranduste ratifitseerimise seadus",
       "dcterms:title": "Osoonikihti kahandavate ainete Montreali protokolli 1999. aastal Pekingis tehtud paranduste ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/639430.xml"
+        "@id": "https://www.riigiteataja.ee/akt/639430"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/639430/xml"
+      },
+      "estleg:globalId": "639430",
+      "eli:id_local": "639430",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "156830",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "bfd2981493419f497793c5fa335d3978525ea44686d8d6fd627f7d17cca6361b",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2003-11-17",
-        "@type": "xsd:date"
       },
       "estleg:isRatificationShell": {
         "@value": "true",
@@ -51,23 +63,24 @@
           "@id": "http://eurovoc.europa.eu/3474"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2003-11-17",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2003-11-07",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
-      ]
-    },
-    {
-      "@id": "estleg:OKAMPAPT1999_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Osoonikihti kahandavate ainete Montreali protokolli 1999. aastal Pekingis tehtud paranduste ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_OKAMPAPT1999_default"
-        }
-      ]
+      "estleg:lastAmendmentDate": {
+        "@value": "2003-11-17",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Cluster_OKAMPAPT1999_default",
@@ -76,12 +89,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:OKAMPAPT1999_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:OKAMPAPT1999_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Osoonikihti kahandavate ainete Montreali protokolli 1999. aastal Pekingis tehtud paranduste ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_OKAMPAPT1999_default"
+        }
+      ]
     },
     {
       "@id": "estleg:OKAMPAPT1999_Par_1",
@@ -90,13 +124,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud osoonikihti kahandavate ainete Montreali protokolli...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud osoonikihti kahandavate ainete Montreali protokolli...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Osoonikihti kahandavate ainete Montreali protokolli 1999. aastal Pekingis tehtud paranduste ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OKAMPAPT1999_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud",
-      "estleg:legalText": "Ratifitseerida juurdelisatud",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud osoonikihti kahandavate ainete Montreali protokolli 1999. aasta 3. detsembril Pekingis tehtud parandused .",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ratifitseerida juurdelisatud osoonikihti kahandavate ainete Montreali protokolli 1999. aasta 3. detsembril Pekingis tehtud parandused .",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OKAMPAPT1999_default"
       },
@@ -117,10 +157,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud osoonikihti kahandavate ainete Montreali protokolli 1999. aasta 3. detsembril Pekingis tehtud parandused .",
       "estleg:parentProvision": {
         "@id": "estleg:OKAMPAPT1999_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:OKAMPAPT1999_Par_2",
@@ -129,13 +171,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Vabariigi Valitsus korraldab osoonikihti kahandavate ainete Montreali protokolli...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Vabariigi Valitsus korraldab osoonikihti kahandavate ainete Montreali protokolli...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Osoonikihti kahandavate ainete Montreali protokolli 1999. aastal Pekingis tehtud paranduste ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OKAMPAPT1999_Map"
       },
-      "estleg:summary": "Vabariigi Valitsus korraldab avaldamise Riigi Teatajas.",
-      "estleg:legalText": "Vabariigi Valitsus korraldab avaldamise Riigi Teatajas.",
+      "estleg:summary": {
+        "@value": "Vabariigi Valitsus korraldab osoonikihti kahandavate ainete Montreali protokolli tervikteksti avaldamise Riigi Teatajas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vabariigi Valitsus korraldab osoonikihti kahandavate ainete Montreali protokolli tervikteksti avaldamise Riigi Teatajas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OKAMPAPT1999_default"
       },
@@ -149,38 +197,32 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:FMAKLTAETEOL_Par_2"
-        },
-        {
-          "@id": "estleg:PLR_Par_2"
-        },
-        {
-          "@id": "estleg:POKKPOSP1979_Par_3"
-        },
-        {
-          "@id": "estleg:POKKRPU1979_Par_3"
-        },
-        {
-          "@id": "estleg:POKKVHEV1979_Par_3"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:OKAMPAPT1999_Par_2_v639430"
-        }
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
       ],
-      "estleg:competenceType": "enforcement"
+      "estleg:competenceType": "enforcement",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KrMSRS_Par_24"
+        },
+        {
+          "@id": "estleg:TsMSRS_Par_100"
+        },
+        {
+          "@id": "estleg:VKS_Par_107"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:OKAMPAPT1999_Par_2_v639430"
+        }
+      ]
     },
     {
       "@id": "estleg:OKAMPAPT1999_Par_2_Lg_1",
@@ -188,10 +230,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vabariigi Valitsus korraldab avaldamise Riigi Teatajas.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsus korraldab osoonikihti kahandavate ainete Montreali protokolli tervikteksti avaldamise Riigi Teatajas.",
       "estleg:parentProvision": {
         "@id": "estleg:OKAMPAPT1999_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"

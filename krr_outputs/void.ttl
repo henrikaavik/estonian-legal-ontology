@@ -56,6 +56,9 @@
     void:subset <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-eurovoc> ,
                 <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-cellar> ,
                 <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-riigiteataja> ,
+                <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-riigiteataja-xml> ,
+                <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-riigiteataja-english> ,
+                <https://w3id.org/estleg/dataset/estonian-legal-ontology#legacy-iri-bridge> ,
                 <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-wikidata> ,
                 <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-wikidata-institutions> ,
                 <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-wikidata-acts> ,
@@ -86,7 +89,7 @@
 estleg:Activity_CorpusBuild_1_0_0
     a prov:Activity ;
     rdfs:label "Estonian Legal Ontology 1.0.0 corpus build"@en ;
-    prov:startedAtTime "2026-06-01T00:00:00+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-10-09T00:00:00+00:00"^^xsd:dateTime ;
     prov:used <https://www.riigiteataja.ee/> , <https://eelnoud.valitsus.ee/> .
 
 <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-eurovoc>
@@ -108,7 +111,31 @@ estleg:Activity_CorpusBuild_1_0_0
     void:linkPredicate dcterms:source ;
     void:target <https://www.riigiteataja.ee/> ;
     void:subjectsTarget <https://w3id.org/estleg/dataset/estonian-legal-ontology> ;
-    void:objectsTarget <https://www.riigiteataja.ee/> .
+    void:objectsTarget <https://www.riigiteataja.ee/> ;
+    rdfs:comment "On law roots, dcterms:source is the human Riigi Teataja page of the redaction (https://www.riigiteataja.ee/akt/{globaalID}); the same globaalID is estleg:globalId and eli:id_local (#707). Regulation roots still cite the /akt/{id}.xml form."@en .
+
+<https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-riigiteataja-xml>
+    a void:Linkset ;
+    void:linkPredicate estleg:sourceXml ;
+    void:target <https://www.riigiteataja.ee/public-api/api/v1/akt/> ;
+    void:subjectsTarget <https://w3id.org/estleg/dataset/estonian-legal-ontology> ;
+    void:objectsTarget <https://www.riigiteataja.ee/public-api/api/v1/akt/> ;
+    rdfs:comment "Law roots: the Riigi Teataja XML manifestation each act was parsed from (public API /akt/{globaalID}/xml). estleg:contentHash is its SHA-256, attested per act in krr_outputs/fetch_content_hashes.json; the files ship as the rt_xml_<kehtiv>.tar.gz release asset (#692)."@en .
+
+<https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-riigiteataja-english>
+    a void:Linkset ;
+    void:linkPredicate <http://data.europa.eu/eli/ontology#is_realized_by> ;
+    void:target <https://www.riigiteataja.ee/en/eli/> ;
+    void:subjectsTarget <https://w3id.org/estleg/dataset/estonian-legal-ontology> ;
+    void:objectsTarget <https://www.riigiteataja.ee/en/eli/> ;
+    rdfs:comment "Act roots to the official English Riigi Teataja consolidation, described in the corpus as an eli:LegalExpression with eli:language English (#707). No owl:sameAs to an Estonian Riigi Teataja ELI URI is published until Riigi Teataja confirms its template."@en .
+
+<https://w3id.org/estleg/dataset/estonian-legal-ontology#legacy-iri-bridge>
+    a void:Dataset ;
+    dcterms:title "Legacy act IRI bridge"@en ;
+    dcterms:description "krr_outputs/bridges/act_iri_v2_sameas.jsonld on the Seadusloome load surface: <legacy estleg act IRI> owl:sameAs <current act IRI> for every act IRI reminted by #445 (yearless, ASCII). Not merged into combined_ontology.jsonld (#707)."@en ;
+    void:feature <http://www.w3.org/ns/formats/JSON-LD> ;
+    dcterms:isPartOf <https://w3id.org/estleg/dataset/estonian-legal-ontology> .
 
 <https://w3id.org/estleg/dataset/estonian-legal-ontology#linkset-wikidata>
     a void:Linkset ;

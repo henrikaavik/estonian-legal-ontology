@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
 from estleg import generate_all_laws, law_structure, riigiteataja_common
 
@@ -31,8 +32,12 @@ def test_laws_fetch_xml_delegates_to_commons(monkeypatch, tmp_path) -> None:
     assert seen["cache_name"] == "slugX__tid99"
     kwargs = seen["kwargs"]
     assert kwargs["cache_dir"] == tmp_path
-    assert kwargs["fallback_cache_name"] == "slugX"
-    assert kwargs["validate_root"] is generate_all_laws._is_trustworthy_xml_root
+    # #692: the laws wrapper reads its own (redaction-checked) cache first, so
+    # the network call always downloads and writes the tid-keyed file.
+    assert kwargs["refresh"] is True
+    assert "fallback_cache_name" not in kwargs
+    assert callable(kwargs["validate_root"])
+    assert not kwargs["validate_root"](ET.fromstring("<html/>"))
     assert kwargs["min_size"] == generate_all_laws.MIN_XML_BYTES
 
 
@@ -51,7 +56,11 @@ def test_single_and_multipart_share_emit() -> None:
 def test_generate_all_laws_no_longer_owns_duplicate_emission() -> None:
     lines = Path(generate_all_laws.__file__).read_text(encoding="utf-8").count("\n")
     # Pre-fix the module was 3,599 lines with two copy-pasted emitters.
-    assert lines < 2300, lines
+    # #692/#695/#707 added the redaction-checked cache, the hash attestation,
+    # the map-root wrapper and the committed-IRI freeze (the stamping itself
+    # lives in backfill_rt_eli). test_single_and_multipart_share_emit above
+    # pins the single emission path this budget originally guarded.
+    assert lines < 2600, lines
     assert (REPO / "scripts" / "law_structure.py").is_file()
 
 

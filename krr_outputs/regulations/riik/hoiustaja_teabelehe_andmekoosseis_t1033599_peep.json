@@ -5,8 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -16,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Hoiustaja teabelehe andmekoosseis (määrus)",
+      "rdfs:label": {
+        "@value": "Hoiustaja teabelehe andmekoosseis (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Hoiustaja teabelehe andmekoosseis",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -39,15 +47,12 @@
           "@id": "estleg:Reg_1033599_Annex_2"
         }
       ],
-      "estleg:entryIntoForce": {
-        "@value": "2016-05-31",
+      "dcterms:title": "Hoiustaja teabelehe andmekoosseis",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2016-03-11",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:issuedUnder": [
         {
           "@id": "estleg:TFS_Map"
@@ -57,7 +62,16 @@
         {
           "@id": "estleg:Citation_Reg_1033599_Map_1"
         }
-      ]
+      ],
+      "estleg:entryIntoForce": {
+        "@value": "2016-05-31",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2016-03-11",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce"
     },
     {
       "@id": "estleg:Reg_1033599_Annex_1",
@@ -65,7 +79,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Hoiustaja teabeleht",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -74,7 +91,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -84,18 +104,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Hoiustaja teabelehe andmekoosseis",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1033599_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse hoiustajale esitatava hoiuste tagamist puudutava teabelehe andmekoosseis.",
-      "estleg:legalText": "Määrusega kehtestatakse hoiustajale esitatava hoiuste tagamist puudutava teabelehe andmekoosseis. Määrusega kehtestatakse hoiustajale esitatava hoiuste tagamist puudutava teabelehe andmekoosseis.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse hoiustajale esitatava hoiuste tagamist puudutava teabelehe andmekoosseis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse hoiustajale esitatava hoiuste tagamist puudutava teabelehe andmekoosseis.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1033599_Par_1_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1033599_Par_1_v1033599"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1033599_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse hoiustajale esitatava hoiuste tagamist puudutava teabelehe andmekoosseis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1033599_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1033599_Par_2",
@@ -104,16 +148,31 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kohaldamisala",
+      "rdfs:label": {
+        "@value": "§ 2. Kohaldamisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Hoiustaja teabelehe andmekoosseis",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1033599_Map"
       },
-      "estleg:summary": "Määrust kohaldatakse kõikidele Eestis asutatud krediidiasutustele ja välisriikide krediidiasutuste Eestis asutatud filiaalidele.",
-      "estleg:legalText": "Määrust kohaldatakse kõikidele Eestis asutatud krediidiasutustele ja välisriikide krediidiasutuste Eestis asutatud filiaalidele. Määrust kohaldatakse kõikidele Eestis asutatud krediidiasutustele ja välisriikide krediidiasutuste Eestis asutatud filiaalidele.",
+      "estleg:summary": {
+        "@value": "Määrust kohaldatakse kõikidele Eestis asutatud krediidiasutustele ja välisriikide krediidiasutuste Eestis asutatud filiaalidele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrust kohaldatakse kõikidele Eestis asutatud krediidiasutustele ja välisriikide krediidiasutuste Eestis asutatud filiaalidele.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1033599_Par_2_Lg_1"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -127,15 +186,33 @@
           "@id": "estleg:Reg_1027187_Par_2"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1033599_Par_2_v1033599"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1033599_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrust kohaldatakse kõikidele Eestis asutatud krediidiasutustele ja välisriikide krediidiasutuste Eestis asutatud filiaalidele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1033599_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:targetGroup": [
+        {
+          "@id": "estleg:TargetGroup_Business"
+        }
+      ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      }
     },
     {
       "@id": "estleg:Reg_1033599_Par_3",
@@ -144,16 +221,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Teabelehe koostamine",
+      "rdfs:label": {
+        "@value": "§ 3. Teabelehe koostamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Hoiustaja teabelehe andmekoosseis",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1033599_Map"
       },
-      "estleg:summary": "Hoiustaja teabeleht koostatakse vastavalt määruse lisale (lisatud).",
-      "estleg:legalText": "Hoiustaja teabeleht koostatakse vastavalt määruse lisale (lisatud). Hoiustaja teabeleht koostatakse vastavalt määruse lisale (lisatud).",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": {
+        "@value": "Hoiustaja teabeleht koostatakse vastavalt määruse lisale (lisatud).",
+        "@language": "et"
+      },
+      "estleg:legalText": "Hoiustaja teabeleht koostatakse vastavalt määruse lisale (lisatud).",
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_1037582_Par_8"
+          "@id": "estleg:Reg_1033599_Par_3_Lg_1"
         }
       ],
       "estleg:hasVersion": [
@@ -163,24 +246,61 @@
       ]
     },
     {
+      "@id": "estleg:Reg_1033599_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hoiustaja teabeleht koostatakse vastavalt määruse lisale (lisatud).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1033599_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
       "@id": "estleg:Reg_1033599_Par_4",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 4. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Hoiustaja teabelehe andmekoosseis",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1033599_Map"
       },
-      "estleg:summary": "Määrus jõustub 31. mail 2016. aastal.",
-      "estleg:legalText": "Määrus jõustub 31. mail 2016. aastal. Määrus jõustub 31. mail 2016. aastal.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 31. mail 2016. aastal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 31. mail 2016. aastal.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1033599_Par_4_Lg_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1033599_Par_4_v1033599"
         }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1033599_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 31. mail 2016. aastal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1033599_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Citation_Reg_1033599_Map_1",

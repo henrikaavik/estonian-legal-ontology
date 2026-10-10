@@ -5,50 +5,65 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:MaaRKMOS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Act on Acquisition of Land Subject to Usufruct in Land Reform",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/104122024021.xml"
+        "@id": "https://www.riigiteataja.ee/akt/104122024021"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/104122024021/xml"
+      },
+      "estleg:globalId": "104122024021",
+      "eli:id_local": "104122024021",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
+      "estleg:terviktekstId": "333860",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "7a0dda2f4345354756296b52367a376c011277c2cdbadc7e714891009783b64b",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-01-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/523122024005"
       },
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/523122024005"
+      },
       "estleg:references": [
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_7"
+        },
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_6"
+        },
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_2"
+        },
         {
           "@id": "estleg:MaaRKMOS_Par_4_Lg_1"
         },
@@ -63,6 +78,9 @@
         },
         {
           "@id": "estleg:MaaRKMOS_Par_3_Lg_5"
+        },
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_3"
         }
       ],
       "dcterms:subject": [
@@ -87,6 +105,19 @@
           "@id": "http://eurovoc.europa.eu/2475"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2009-03-28",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2009-03-18",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_muinsuskaitseamet"
@@ -99,17 +130,30 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU19_1008"
         }
-      ]
-    },
-    {
-      "@id": "estleg:MaaRKMOS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_MaaRKMOS_default"
+          "@id": "estleg:Amendment_MaaRKMOS_d139bda9cd"
+        },
+        {
+          "@id": "estleg:Amendment_MaaRKMOS_a4b69463de"
+        },
+        {
+          "@id": "estleg:Amendment_MaaRKMOS_026c07ab4b"
+        },
+        {
+          "@id": "estleg:Amendment_MaaRKMOS_55e913f636"
+        },
+        {
+          "@id": "estleg:Amendment_MaaRKMOS_8e5bdd8ae6"
+        },
+        {
+          "@id": "estleg:Amendment_MaaRKMOS_86c30dd1d4"
+        }
+      ],
+      "estleg:hasProposedAmendment": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU19_1008_MaaRKMOS"
         }
       ]
     },
@@ -120,12 +164,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–15 Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
-      "skos:prefLabel": "§1–15 Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
+      "rdfs:label": {
+        "@value": "§1–15 Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–15 Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MaaRKMOS_TopicScheme"
       },
       "estleg:provisionCount": 15
+    },
+    {
+      "@id": "estleg:MaaRKMOS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_MaaRKMOS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaRKMOS_Par_1",
@@ -134,12 +199,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "Käesolev seadus reguleerib maareformi seaduse alusel kasutusvaldusesse antud maa (edaspidi kasutusvaldusesse antud maa) omandamist.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus reguleerib maareformi seaduse alusel kasutusvaldusesse antud maa (edaspidi kasutusvaldusesse antud maa) omandamist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus reguleerib maareformi seaduse alusel kasutusvaldusesse antud maa (edaspidi kasutusvaldusesse antud maa) omandamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
@@ -147,6 +218,23 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:MaaRKMOS_Par_1_Lg_1"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RIIGIL_2_Par_138_1"
+        },
+        {
+          "@id": "estleg:RIIGIL_2_Par_235_5"
+        },
+        {
+          "@id": "estleg:RIIGIL_2_Par_261_8"
+        },
+        {
+          "@id": "estleg:RIIGIL_2_Par_327"
+        },
+        {
+          "@id": "estleg:RIIGIL_2_Par_346_1"
         }
       ],
       "estleg:hasVersion": [
@@ -164,10 +252,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus reguleerib maareformi seaduse alusel kasutusvaldusesse antud maa (edaspidi kasutusvaldusesse antud maa) omandamist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus reguleerib maareformi seaduse alusel kasutusvaldusesse antud maa (edaspidi kasutusvaldusesse antud maa) omandamist.",
       "estleg:parentProvision": {
         "@id": "estleg:MaaRKMOS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:MaaRKMOS_Par_2",
@@ -176,12 +266,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Seaduse kohaldamine",
+      "rdfs:label": {
+        "@value": "§ 2. Seaduse kohaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse alusel maa omandamisele ei kohaldata riigivaraseaduses sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse alusel maa omandamisele ei kohaldata riigivaraseaduses sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse alusel maa omandamisele ei kohaldata riigivaraseaduses sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
@@ -206,10 +302,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse alusel maa omandamisele ei kohaldata riigivaraseaduses sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse alusel maa omandamisele ei kohaldata riigivaraseaduses sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
       "estleg:parentProvision": {
         "@id": "estleg:MaaRKMOS_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:MaaRKMOS_Par_3",
@@ -218,13 +316,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Omandamisele kuuluv maa",
+      "rdfs:label": {
+        "@value": "§ 3. Omandamisele kuuluv maa",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "(1) Omandada võib maareformi seaduse alusel kasutusvaldusesse antud maad, mis ei ole vajalik riigivõimu teostamiseks, kohalikule omavalitsusele tema ülesannete täitmiseks või muul avalikul eesmärgil. (2) Maad, mis sisaldab maavara maapõueseaduse tähenduses, võib omandada valdkonna eest vastutava ministri loal. Loa andmise või sellest keeldumise otsustab valdkonna eest vastutav minister kooskõlas maapõueseadusega, arvestades maavarale juurdepääsu ja maavara kaevandamisväärsena säilimise tagamise",
-      "estleg:legalText": "(1) Omandada võib maareformi seaduse alusel kasutusvaldusesse antud maad, mis ei ole vajalik riigivõimu teostamiseks, kohalikule omavalitsusele tema ülesannete täitmiseks või muul avalikul eesmärgil. (2) Maad, mis sisaldab maavara maapõueseaduse tähenduses, võib omandada valdkonna eest vastutava ministri loal. Loa andmise või sellest keeldumise otsustab valdkonna eest vastutav minister kooskõlas maapõueseadusega, arvestades maavarale juurdepääsu ja maavara kaevandamisväärsena säilimise tagamise vajadust. (3) Hoiuala maad, kaitsealade sihtkaitse- või piiranguvööndi maad, püsielupaiga maad, kaitstava looduse üksik- ja muu objekti juurde kuuluvat maad ning Natura 2000 võrgustiku maad võib omandada kaitstava loodusobjekti valitseja loal. Loa andmise või sellest keeldumise otsustab kaitstava loodusobjekti valitseja kooskõlas looduskaitseseadusega ja arvestades kehtestatud kaitserežiimi. (4) Mälestise ja muinsuskaitseala kaitsevööndi maad võib omandada Muinsuskaitseameti loal. Loa andmise või sellest keeldumise otsustab Muinsuskaitseamet kooskõlas muinsuskaitseseadusega ja arvestades kehtestatud kaitserežiimi. (4¹) Riigimaantee, raudtee, torujuhtme, kõrgepingeliini või muu joonehitise rajamiseks vajaminevat maad võib omandada valdkonna eest vastutava ministri või tema volitatud asutuse loal. Loa andmise või sellest keeldumise otsustab valdkonna eest vastutav minister või tema volitatud asutus kooskõlas planeeringu ja joonehitise kinnitatud ehitusprojektiga. Kui planeeringu koostamise kohustus puudub, siis otsustatakse loa andmine või sellest keeldumine joonehitise kinnitatud ehitusprojekti alusel. (4²) Kohaliku omavalitsuse ülesannete täitmiseks või muul avalikul eesmärgil vajaliku maa võõrandamise võimalikkuse otsustab Maa- ja Ruumiameti peadirektor. (5) Kui kasutusvaldusesse antud maa koosseisus on käesoleva paragrahvi lõikes 2, 3, 4, 41 või 42 nimetatud maad või muud riigivõimu teostamiseks või avalikul eesmärgil vajalikku maad, mis ei kuulu käesoleva seaduse alusel omandamisele, võib omandada vaid sellist kasutusvaldusesse antud maad, mille omandamiseks ei ole piiranguid. Omandamisele kuuluva maa eraldamiseks kinnisasi jagatakse.",
+      "estleg:summary": {
+        "@value": "(1) Omandada võib maareformi seaduse alusel kasutusvaldusesse antud maad, mis ei ole vajalik riigivõimu teostamiseks, kohalikule omavalitsusele tema ülesannete täitmiseks või muul avalikul eesmärgil. (2) Maad, mis sisaldab maavara maapõueseaduse tähenduses, võib omandada valdkonna eest vastutava ministri loal. Loa andmise või sellest keeldumise otsustab valdkonna eest vastutav minister kooskõlas maapõueseadusega, arvestades maavarale juurdepääsu ja maavara kaevandamisväärsena säilimise tagamise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Omandada võib maareformi seaduse alusel kasutusvaldusesse antud maad, mis ei ole vajalik riigivõimu teostamiseks, kohalikule omavalitsusele tema ülesannete täitmiseks või muul avalikul eesmärgil. (2) Maad, mis sisaldab maavara maapõueseaduse tähenduses, võib omandada valdkonna eest vastutava ministri loal. Loa andmise või sellest keeldumise otsustab valdkonna eest vastutav minister kooskõlas maapõueseadusega, arvestades maavarale juurdepääsu ja maavara kaevandamisväärsena säilimise tagamise vajadust. (3) Hoiuala maad, kaitsealade sihtkaitse- või piiranguvööndi maad, püsielupaiga maad, kaitstava looduse üksik- ja muu objekti juurde kuuluvat maad ning Natura 2000 võrgustiku maad võib omandada kaitstava loodusobjekti valitseja loal. Loa andmise või sellest keeldumise otsustab kaitstava loodusobjekti valitseja kooskõlas looduskaitseseadusega ja arvestades kehtestatud kaitserežiimi. (4) Mälestise ja muinsuskaitseala kaitsevööndi maad võib omandada Muinsuskaitseameti loal. Loa andmise või sellest keeldumise otsustab Muinsuskaitseamet kooskõlas muinsuskaitseseadusega ja arvestades kehtestatud kaitserežiimi. (4¹) Riigimaantee, raudtee, torujuhtme, kõrgepingeliini või muu joonehitise rajamiseks vajaminevat maad võib omandada valdkonna eest vastutava ministri või tema volitatud asutuse loal. Loa andmise või sellest keeldumise otsustab valdkonna eest vastutav minister või tema volitatud asutus kooskõlas planeeringu ja joonehitise kinnitatud ehitusprojektiga. Kui planeeringu koostamise kohustus puudub, siis otsustatakse loa andmine või sellest keeldumine joonehitise kinnitatud ehitusprojekti alusel. (4²) Kohaliku omavalitsuse ülesannete täitmiseks või muul avalikul eesmärgil vajaliku maa võõrandamise võimalikkuse otsustab Maa- ja Ruumiameti peadirektor. (5) Kui kasutusvaldusesse antud maa koosseisus on käesoleva paragrahvi lõikes 2, 3, 4, 4¹ või 4² nimetatud maad või muud riigivõimu teostamiseks või avalikul eesmärgil vajalikku maad, mis ei kuulu käesoleva seaduse alusel omandamisele, võib omandada vaid sellist kasutusvaldusesse antud maad, mille omandamiseks ei ole piiranguid. Omandamisele kuuluva maa eraldamiseks kinnisasi jagatakse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
       },
@@ -259,32 +363,13 @@
           "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:RIIGIV_Par_105_1"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MaaRKMOS_Par_3_v13157586"
-        },
-        {
-          "@id": "estleg:MaaRKMOS_Par_3_v114012014005"
-        },
-        {
-          "@id": "estleg:MaaRKMOS_Par_3_v104072017048"
-        },
-        {
-          "@id": "estleg:MaaRKMOS_Par_3_v104122024021"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_muinsuskaitseamet"
@@ -297,6 +382,20 @@
         },
         {
           "@id": "estleg:Institution_maa_ja_ruumiamet"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MaaRKMOS_Par_3_v13157586"
+        },
+        {
+          "@id": "estleg:MaaRKMOS_Par_3_v114012014005"
+        },
+        {
+          "@id": "estleg:MaaRKMOS_Par_3_v104072017048"
+        },
+        {
+          "@id": "estleg:MaaRKMOS_Par_3_v104122024021"
         }
       ]
     },
@@ -312,9 +411,6 @@
         "@id": "estleg:MaaRKMOS_Par_3"
       },
       "rdfs:label": "§ 3 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -323,6 +419,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -337,9 +436,6 @@
         "@id": "estleg:MaaRKMOS_Par_3"
       },
       "rdfs:label": "§ 3 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -349,9 +445,15 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
         {
           "@id": "estleg:Maapueseadus_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:MaaRKMOS_Map"
         },
         {
           "@id": "estleg:MaaRKMOS_Par_8"
@@ -373,12 +475,12 @@
         "@id": "estleg:MaaRKMOS_Par_3"
       },
       "rdfs:label": "§ 3 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -393,12 +495,12 @@
         "@id": "estleg:MaaRKMOS_Par_3"
       },
       "rdfs:label": "§ 3 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:competentAuthority": [
         {
@@ -419,9 +521,6 @@
         "@id": "estleg:MaaRKMOS_Par_3"
       },
       "rdfs:label": "§ 3 lg 4¹",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -433,6 +532,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -472,19 +574,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kui kasutusvaldusesse antud maa koosseisus on käesoleva paragrahvi lõikes 2, 3, 4, 41 või 42 nimetatud maad või muud riigivõimu teostamiseks või avalikul eesmärgil vajalikku maad, mis ei kuulu käesoleva seaduse alusel omandamisele, võib omandada vaid sellist kasutusvaldusesse antud maad, mille omandamiseks ei ole piiranguid. Omandamisele kuuluva maa eraldamiseks kinnisasi jagatakse.",
+      "estleg:legalText": "(5) Kui kasutusvaldusesse antud maa koosseisus on käesoleva paragrahvi lõikes 2, 3, 4, 4¹ või 4² nimetatud maad või muud riigivõimu teostamiseks või avalikul eesmärgil vajalikku maad, mis ei kuulu käesoleva seaduse alusel omandamisele, võib omandada vaid sellist kasutusvaldusesse antud maad, mille omandamiseks ei ole piiranguid. Omandamisele kuuluva maa eraldamiseks kinnisasi jagatakse.",
       "estleg:parentProvision": {
         "@id": "estleg:MaaRKMOS_Par_3"
       },
       "rdfs:label": "§ 3 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MaaRKMOS_Map"
+        },
         {
           "@id": "estleg:MaaRKMOS_Par_8_Lg_3"
         },
@@ -503,13 +608,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kasutusvaldusesse antud maa omandamiseks õigustatud isikud",
+      "rdfs:label": {
+        "@value": "§ 4. Kasutusvaldusesse antud maa omandamiseks õigustatud isikud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "(1) Kasutusvaldusesse antud maad võib omandada isik, kelle kasuks kasutusvaldus seati või kes on kasutusvalduse lepingusse astunud maareformi seaduse § 341 lõike 7 alusel (edaspidi kasutusvaldaja) ja kes: tegeleb põllumajandusliku tootmisega; kasutab maad sihtotstarbeliselt ja head põllumajandustava järgides; ei ole andnud maad teise isiku kasutusse, välja arvatud maareformi seaduse § 341 lõikes 62 sätestatud juhul; ei ole raiunud kasutusvaldusesse antud maal kasvavat metsa, välja arvatud",
-      "estleg:legalText": "(1) Kasutusvaldusesse antud maad võib omandada isik, kelle kasuks kasutusvaldus seati või kes on kasutusvalduse lepingusse astunud maareformi seaduse § 341 lõike 7 alusel (edaspidi kasutusvaldaja) ja kes: tegeleb põllumajandusliku tootmisega; kasutab maad sihtotstarbeliselt ja head põllumajandustava järgides; ei ole andnud maad teise isiku kasutusse, välja arvatud maareformi seaduse § 341 lõikes 62 sätestatud juhul; ei ole raiunud kasutusvaldusesse antud maal kasvavat metsa, välja arvatud maareformi seaduse § 341 lõikes 31 sätestatud erandi alusel; ei oma riigi ees kasutusvaldusega ega maa erastamisega seotud võlgnevusi. (2) Kasutusvaldusesse antud maa omandamise õigus on päritav üldises korras.",
+      "estleg:summary": {
+        "@value": "(1) Kasutusvaldusesse antud maad võib omandada isik, kelle kasuks kasutusvaldus seati või kes on kasutusvalduse lepingusse astunud maareformi seaduse § 34¹ lõike 7 alusel (edaspidi kasutusvaldaja) ja kes: 1) tegeleb põllumajandusliku tootmisega; 2) kasutab maad sihtotstarbeliselt ja head põllumajandustava järgides; 3) ei ole andnud maad teise isiku kasutusse, välja arvatud maareformi seaduse § 34¹ lõikes 6² sätestatud juhul; 4) ei ole raiunud kasutusvaldusesse antud maal kasvavat metsa, välja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kasutusvaldusesse antud maad võib omandada isik, kelle kasuks kasutusvaldus seati või kes on kasutusvalduse lepingusse astunud maareformi seaduse § 34¹ lõike 7 alusel (edaspidi kasutusvaldaja) ja kes: 1) tegeleb põllumajandusliku tootmisega; 2) kasutab maad sihtotstarbeliselt ja head põllumajandustava järgides; 3) ei ole andnud maad teise isiku kasutusse, välja arvatud maareformi seaduse § 34¹ lõikes 6² sätestatud juhul; 4) ei ole raiunud kasutusvaldusesse antud maal kasvavat metsa, välja arvatud maareformi seaduse § 34¹ lõikes 3¹ sätestatud erandi alusel; 5) ei oma riigi ees kasutusvaldusega ega maa erastamisega seotud võlgnevusi. (2) Kasutusvaldusesse antud maa omandamise õigus on päritav üldises korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
       },
@@ -526,12 +637,25 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:references": [
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_7"
+        },
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_6"
+        }
+      ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_7"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -552,14 +676,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kasutusvaldusesse antud maad võib omandada isik, kelle kasuks kasutusvaldus seati või kes on kasutusvalduse lepingusse astunud maareformi seaduse § 341 lõike 7 alusel (edaspidi kasutusvaldaja) ja kes: tegeleb põllumajandusliku tootmisega; kasutab maad sihtotstarbeliselt ja head põllumajandustava järgides; ei ole andnud maad teise isiku kasutusse, välja arvatud maareformi seaduse § 341 lõikes 62 sätestatud juhul; ei ole raiunud kasutusvaldusesse antud maal kasvavat metsa, välja arvatud maareformi seaduse § 341 lõikes 31 sätestatud erandi alusel; ei oma riigi ees kasutusvaldusega ega maa erastamisega seotud võlgnevusi.",
+      "estleg:legalText": "(1) Kasutusvaldusesse antud maad võib omandada isik, kelle kasuks kasutusvaldus seati või kes on kasutusvalduse lepingusse astunud maareformi seaduse § 34¹ lõike 7 alusel (edaspidi kasutusvaldaja) ja kes: 1) tegeleb põllumajandusliku tootmisega; 2) kasutab maad sihtotstarbeliselt ja head põllumajandustava järgides; 3) ei ole andnud maad teise isiku kasutusse, välja arvatud maareformi seaduse § 34¹ lõikes 6² sätestatud juhul; 4) ei ole raiunud kasutusvaldusesse antud maal kasvavat metsa, välja arvatud maareformi seaduse § 34¹ lõikes 3¹ sätestatud erandi alusel; 5) ei oma riigi ees kasutusvaldusega ega maa erastamisega seotud võlgnevusi.",
       "estleg:parentProvision": {
         "@id": "estleg:MaaRKMOS_Par_4"
       },
       "rdfs:label": "§ 4 lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -569,7 +697,29 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:references": [
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_7"
+        },
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_6"
+        },
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_3"
+        }
+      ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_7"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MaaRKMOS_Map"
+        },
         {
           "@id": "estleg:MaaRKMOS_Par_8"
         },
@@ -590,12 +740,12 @@
         "@id": "estleg:MaaRKMOS_Par_4"
       },
       "rdfs:label": "§ 4 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
       }
     },
     {
@@ -605,13 +755,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Maa omandamise õiguse tekkimine ja lõppemine",
+      "rdfs:label": {
+        "@value": "§ 5. Maa omandamise õiguse tekkimine ja lõppemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "(1) Kasutusvaldusesse antud maa omandamise õigus tekib kahe aasta möödumisel kasutusvalduse seadmisest. Maareformi seaduse § 341 lõikes 2 nimetatud taotluse alusel pikendatud lepinguga seatud kasutusvalduse korral on isikul õigus taotleda maa omandamist pärast kasutusvalduse seadmist. (2) Kasutusvaldusesse antud maa omandamise õigus lõpeb kasutusvalduse lõppemisega. Tähtaegselt maa omandamise taotluse esitanud isikul säilib maa omandamise õigus maa omandamise menetluse lõpuleviimiseni, välja",
-      "estleg:legalText": "(1) Kasutusvaldusesse antud maa omandamise õigus tekib kahe aasta möödumisel kasutusvalduse seadmisest. Maareformi seaduse § 341 lõikes 2 nimetatud taotluse alusel pikendatud lepinguga seatud kasutusvalduse korral on isikul õigus taotleda maa omandamist pärast kasutusvalduse seadmist. (2) Kasutusvaldusesse antud maa omandamise õigus lõpeb kasutusvalduse lõppemisega. Tähtaegselt maa omandamise taotluse esitanud isikul säilib maa omandamise õigus maa omandamise menetluse lõpuleviimiseni, välja arvatud käesoleva seaduse § 11 lõikes 3 nimetatud juhul.",
+      "estleg:summary": {
+        "@value": "(1) Kasutusvaldusesse antud maa omandamise õigus tekib kahe aasta möödumisel kasutusvalduse seadmisest. Maareformi seaduse § 34¹ lõikes 2 nimetatud taotluse alusel pikendatud lepinguga seatud kasutusvalduse korral on isikul õigus taotleda maa omandamist pärast kasutusvalduse seadmist. (2) Kasutusvaldusesse antud maa omandamise õigus lõpeb kasutusvalduse lõppemisega. Tähtaegselt maa omandamise taotluse esitanud isikul säilib maa omandamise õigus maa omandamise menetluse lõpuleviimiseni, välja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kasutusvaldusesse antud maa omandamise õigus tekib kahe aasta möödumisel kasutusvalduse seadmisest. Maareformi seaduse § 34¹ lõikes 2 nimetatud taotluse alusel pikendatud lepinguga seatud kasutusvalduse korral on isikul õigus taotleda maa omandamist pärast kasutusvalduse seadmist. (2) Kasutusvaldusesse antud maa omandamise õigus lõpeb kasutusvalduse lõppemisega. Tähtaegselt maa omandamise taotluse esitanud isikul säilib maa omandamise õigus maa omandamise menetluse lõpuleviimiseni, välja arvatud käesoleva seaduse § 11 lõikes 3 nimetatud juhul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
       },
@@ -628,15 +784,15 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_158464_Par_21"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:references": [
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_2"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MaaRKMOS_Par_5_v13157586"
@@ -653,7 +809,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kasutusvaldusesse antud maa omandamise õigus tekib kahe aasta möödumisel kasutusvalduse seadmisest. Maareformi seaduse § 341 lõikes 2 nimetatud taotluse alusel pikendatud lepinguga seatud kasutusvalduse korral on isikul õigus taotleda maa omandamist pärast kasutusvalduse seadmist.",
+      "estleg:legalText": "(1) Kasutusvaldusesse antud maa omandamise õigus tekib kahe aasta möödumisel kasutusvalduse seadmisest. Maareformi seaduse § 34¹ lõikes 2 nimetatud taotluse alusel pikendatud lepinguga seatud kasutusvalduse korral on isikul õigus taotleda maa omandamist pärast kasutusvalduse seadmist.",
       "estleg:parentProvision": {
         "@id": "estleg:MaaRKMOS_Par_5"
       },
@@ -666,7 +822,12 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:references": [
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_2"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaRKMOS_Par_5_Lg_2",
@@ -702,22 +863,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Kasutusvaldusesse antud maa võõrandamise korraldaja",
+      "rdfs:label": {
+        "@value": "§ 6. Kasutusvaldusesse antud maa võõrandamise korraldaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse alusel maa võõrandamist korraldab Maa- ja Ruumiamet. (2) Kehtetu -",
-      "estleg:legalText": "(1) Käesoleva seaduse alusel maa võõrandamist korraldab Maa- ja Ruumiamet. (2) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse alusel maa võõrandamist korraldab Maa- ja Ruumiamet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva seaduse alusel maa võõrandamist korraldab Maa- ja Ruumiamet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
       },
       "estleg:hasSubsection": [
         {
           "@id": "estleg:MaaRKMOS_Par_6_Lg_1"
-        },
-        {
-          "@id": "estleg:MaaRKMOS_Par_6_Lg_2"
         }
       ],
       "estleg:targetGroup": [
@@ -729,6 +893,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maa_ja_ruumiamet"
+        }
+      ],
+      "estleg:competenceType": "enforcement",
       "estleg:hasVersion": [
         {
           "@id": "estleg:MaaRKMOS_Par_6_v13157586"
@@ -739,13 +909,7 @@
         {
           "@id": "estleg:MaaRKMOS_Par_6_v104122024021"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_maa_ja_ruumiamet"
-        }
-      ],
-      "estleg:competenceType": "enforcement"
+      ]
     },
     {
       "@id": "estleg:MaaRKMOS_Par_6_Lg_1",
@@ -767,32 +931,25 @@
       "estleg:competenceType": "enforcement"
     },
     {
-      "@id": "estleg:MaaRKMOS_Par_6_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MaaRKMOS_Par_6"
-      },
-      "rdfs:label": "§ 6 lg 2"
-    },
-    {
       "@id": "estleg:MaaRKMOS_Par_7",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Maa omandamise taotluse esitamine",
+      "rdfs:label": {
+        "@value": "§ 7. Maa omandamise taotluse esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "(1) Kasutusvaldusesse antud maa omandamiseks esitab kasutusvaldaja maa võõrandamise korraldajale kirjaliku taotluse pärast maa omandamise õiguse tekkimist, kuid mitte hiljem kui kolm kuud enne kasutusvalduse lõppemist. (2) Maa omandamise taotluse läbivaatamise eest tasub kasutusvaldaja enne taotluse esitamist riigilõivu. (3) Maa omandamise taotlus peab sisaldama järgmisi andmeid: füüsilise isiku puhul – taotleja ees- ja perekonnanimi, isikukood (isikukoodi puudumisel sünniaeg; välismaalase",
-      "estleg:legalText": "(1) Kasutusvaldusesse antud maa omandamiseks esitab kasutusvaldaja maa võõrandamise korraldajale kirjaliku taotluse pärast maa omandamise õiguse tekkimist, kuid mitte hiljem kui kolm kuud enne kasutusvalduse lõppemist. (2) Maa omandamise taotluse läbivaatamise eest tasub kasutusvaldaja enne taotluse esitamist riigilõivu. (3) Maa omandamise taotlus peab sisaldama järgmisi andmeid: füüsilise isiku puhul – taotleja ees- ja perekonnanimi, isikukood (isikukoodi puudumisel sünniaeg; välismaalase puhul kehtiva passi või passi asendava dokumendi andmed ja andmed elamisloa kohta), elukoht, kontaktandmed ning äriregistris registreeritud füüsilisest isikust ettevõtja puhul äriregistri registrikood; juriidilise isiku puhul – taotleja nimi, asukoht, äriregistri registrikood ja maa omandamise menetluses juriidilist isikut esindama volitatud isiku nimi, isikukood ja kontaktandmed; taotluse selgelt sõnastatud sisu; taotletava kinnisasja registriosa number; taotluse esitamise kuupäev ja taotleja allkiri.",
+      "estleg:summary": {
+        "@value": "(1) Kasutusvaldusesse antud maa omandamiseks esitab kasutusvaldaja maa võõrandamise korraldajale kirjaliku taotluse pärast maa omandamise õiguse tekkimist, kuid mitte hiljem kui kolm kuud enne kasutusvalduse lõppemist. (2) Maa omandamise taotluse läbivaatamise eest tasub kasutusvaldaja enne taotluse esitamist riigilõivu. (3) Maa omandamise taotlus peab sisaldama järgmisi andmeid: 1) füüsilise isiku puhul – taotleja ees- ja perekonnanimi, isikukood (isikukoodi puudumisel sünniaeg; välismaalase",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kasutusvaldusesse antud maa omandamiseks esitab kasutusvaldaja maa võõrandamise korraldajale kirjaliku taotluse pärast maa omandamise õiguse tekkimist, kuid mitte hiljem kui kolm kuud enne kasutusvalduse lõppemist. (2) Maa omandamise taotluse läbivaatamise eest tasub kasutusvaldaja enne taotluse esitamist riigilõivu. (3) Maa omandamise taotlus peab sisaldama järgmisi andmeid: 1) füüsilise isiku puhul – taotleja ees- ja perekonnanimi, isikukood (isikukoodi puudumisel sünniaeg; välismaalase puhul kehtiva passi või passi asendava dokumendi andmed ja andmed elamisloa kohta), elukoht, kontaktandmed ning äriregistris registreeritud füüsilisest isikust ettevõtja puhul äriregistri registrikood; 2) juriidilise isiku puhul – taotleja nimi, asukoht, äriregistri registrikood ja maa omandamise menetluses juriidilist isikut esindama volitatud isiku nimi, isikukood ja kontaktandmed; 3) taotluse selgelt sõnastatud sisu; 4) taotletava kinnisasja registriosa number; 5) taotluse esitamise kuupäev ja taotleja allkiri.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
       },
@@ -815,12 +972,12 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:hasVersion": [
         {
@@ -870,14 +1027,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Maa omandamise taotlus peab sisaldama järgmisi andmeid: füüsilise isiku puhul – taotleja ees- ja perekonnanimi, isikukood (isikukoodi puudumisel sünniaeg; välismaalase puhul kehtiva passi või passi asendava dokumendi andmed ja andmed elamisloa kohta), elukoht, kontaktandmed ning äriregistris registreeritud füüsilisest isikust ettevõtja puhul äriregistri registrikood; juriidilise isiku puhul – taotleja nimi, asukoht, äriregistri registrikood ja maa omandamise menetluses juriidilist isikut esindama volitatud isiku nimi, isikukood ja kontaktandmed; taotluse selgelt sõnastatud sisu; taotletava kinnisasja registriosa number; taotluse esitamise kuupäev ja taotleja allkiri.",
+      "estleg:legalText": "(3) Maa omandamise taotlus peab sisaldama järgmisi andmeid: 1) füüsilise isiku puhul – taotleja ees- ja perekonnanimi, isikukood (isikukoodi puudumisel sünniaeg; välismaalase puhul kehtiva passi või passi asendava dokumendi andmed ja andmed elamisloa kohta), elukoht, kontaktandmed ning äriregistris registreeritud füüsilisest isikust ettevõtja puhul äriregistri registrikood; 2) juriidilise isiku puhul – taotleja nimi, asukoht, äriregistri registrikood ja maa omandamise menetluses juriidilist isikut esindama volitatud isiku nimi, isikukood ja kontaktandmed; 3) taotluse selgelt sõnastatud sisu; 4) taotletava kinnisasja registriosa number; 5) taotluse esitamise kuupäev ja taotleja allkiri.",
       "estleg:parentProvision": {
         "@id": "estleg:MaaRKMOS_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -889,6 +1050,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -898,13 +1062,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Maa võõrandamise eeltoimingud",
+      "rdfs:label": {
+        "@value": "§ 8. Maa võõrandamise eeltoimingud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "(1) Maa võõrandamise korraldaja kontrollib pärast taotluse saamist, kas taotleja vastab käesoleva seaduse § 4 lõikes 1 nimetatud tingimustele. (2) Kui kasutusvaldaja taotleb käesoleva seaduse § 3 lõikes 2, 3, 4, 41 või 42 nimetatud maa omandamist, pöördub maa võõrandamise korraldaja maa võõrandamiseks vajaliku loa saamiseks pädeva isiku poole. Lähtudes loa andja seisukohast või kohaliku omavalitsuse huvist selgitab maa võõrandamise korraldaja välja omandamisele kuuluva maa ulatuse.",
-      "estleg:legalText": "(1) Maa võõrandamise korraldaja kontrollib pärast taotluse saamist, kas taotleja vastab käesoleva seaduse § 4 lõikes 1 nimetatud tingimustele. (2) Kui kasutusvaldaja taotleb käesoleva seaduse § 3 lõikes 2, 3, 4, 41 või 42 nimetatud maa omandamist, pöördub maa võõrandamise korraldaja maa võõrandamiseks vajaliku loa saamiseks pädeva isiku poole. Lähtudes loa andja seisukohast või kohaliku omavalitsuse huvist selgitab maa võõrandamise korraldaja välja omandamisele kuuluva maa ulatuse. (3) Kui kasutusvaldajal on käesoleva seaduse § 3 lõike 5 alusel õigus omandada osa kasutusvaldusesse antud maast, selgitab maa võõrandamise korraldaja välja kasutusvaldaja huvi lubatud ulatuses maa omandamiseks. Kui kasutusvaldaja soovib omandada osa maast, võtab maa võõrandamise korraldaja vastu otsuse maa osalise võõrandamise kohta ja korraldab kinnisasja jagamise. Kinnisasja jagamisega seotud kulud kannab maa omandaja. Kui kasutusvaldaja nimetatud osa omandada ei soovi, lõpetab maa võõrandamise korraldaja maa omandamise menetluse. (4) Kui eeltoimingute käigus selgub, et kasutusvaldusesse antud maa võib osutuda vajalikuks riigivõimu teostamiseks, kohalikule omavalitsusele või muul avalikul eesmärgil, on maa võõrandamise korraldajal õigus maa omandamise menetlus peatada kuni riigi, kohaliku omavalitsuse või avaliku huvi selgumiseni, sealhulgas planeeringu kehtestamiseni või joonehitise ehitusprojekti kinnitamiseni.",
+      "estleg:summary": {
+        "@value": "(1) Maa võõrandamise korraldaja kontrollib pärast taotluse saamist, kas taotleja vastab käesoleva seaduse § 4 lõikes 1 nimetatud tingimustele. (2) Kui kasutusvaldaja taotleb käesoleva seaduse § 3 lõikes 2, 3, 4, 4¹ või 4² nimetatud maa omandamist, pöördub maa võõrandamise korraldaja maa võõrandamiseks vajaliku loa saamiseks pädeva isiku poole. Lähtudes loa andja seisukohast või kohaliku omavalitsuse huvist selgitab maa võõrandamise korraldaja välja omandamisele kuuluva maa ulatuse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Maa võõrandamise korraldaja kontrollib pärast taotluse saamist, kas taotleja vastab käesoleva seaduse § 4 lõikes 1 nimetatud tingimustele. (2) Kui kasutusvaldaja taotleb käesoleva seaduse § 3 lõikes 2, 3, 4, 4¹ või 4² nimetatud maa omandamist, pöördub maa võõrandamise korraldaja maa võõrandamiseks vajaliku loa saamiseks pädeva isiku poole. Lähtudes loa andja seisukohast või kohaliku omavalitsuse huvist selgitab maa võõrandamise korraldaja välja omandamisele kuuluva maa ulatuse. (3) Kui kasutusvaldajal on käesoleva seaduse § 3 lõike 5 alusel õigus omandada osa kasutusvaldusesse antud maast, selgitab maa võõrandamise korraldaja välja kasutusvaldaja huvi lubatud ulatuses maa omandamiseks. Kui kasutusvaldaja soovib omandada osa maast, võtab maa võõrandamise korraldaja vastu otsuse maa osalise võõrandamise kohta ja korraldab kinnisasja jagamise. Kinnisasja jagamisega seotud kulud kannab maa omandaja. Kui kasutusvaldaja nimetatud osa omandada ei soovi, lõpetab maa võõrandamise korraldaja maa omandamise menetluse. (4) Kui eeltoimingute käigus selgub, et kasutusvaldusesse antud maa võib osutuda vajalikuks riigivõimu teostamiseks, kohalikule omavalitsusele või muul avalikul eesmärgil, on maa võõrandamise korraldajal õigus maa omandamise menetlus peatada kuni riigi, kohaliku omavalitsuse või avaliku huvi selgumiseni, sealhulgas planeeringu kehtestamiseni või joonehitise ehitusprojekti kinnitamiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
       },
@@ -942,6 +1112,14 @@
           "@id": "estleg:MaaRKMOS_Par_3_Lg_2"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MaaRKMOS_Par_8_v13157586"
@@ -951,11 +1129,6 @@
         },
         {
           "@id": "estleg:MaaRKMOS_Par_8_v104072017048"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ]
     },
@@ -996,7 +1169,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kui kasutusvaldaja taotleb käesoleva seaduse § 3 lõikes 2, 3, 4, 41 või 42 nimetatud maa omandamist, pöördub maa võõrandamise korraldaja maa võõrandamiseks vajaliku loa saamiseks pädeva isiku poole. Lähtudes loa andja seisukohast või kohaliku omavalitsuse huvist selgitab maa võõrandamise korraldaja välja omandamisele kuuluva maa ulatuse.",
+      "estleg:legalText": "(2) Kui kasutusvaldaja taotleb käesoleva seaduse § 3 lõikes 2, 3, 4, 4¹ või 4² nimetatud maa omandamist, pöördub maa võõrandamise korraldaja maa võõrandamiseks vajaliku loa saamiseks pädeva isiku poole. Lähtudes loa andja seisukohast või kohaliku omavalitsuse huvist selgitab maa võõrandamise korraldaja välja omandamisele kuuluva maa ulatuse.",
       "estleg:parentProvision": {
         "@id": "estleg:MaaRKMOS_Par_8"
       },
@@ -1045,17 +1218,20 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:MaaRKMOS_Par_3_Lg_5"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:MaaRKMOS_Par_3_Lg_5"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:MaaRKMOS_Par_3_Lg_5"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MaaRKMOS_Map"
+        },
         {
           "@id": "estleg:MaaRKMOS_Par_9"
         },
@@ -1076,9 +1252,6 @@
         "@id": "estleg:MaaRKMOS_Par_8"
       },
       "rdfs:label": "§ 8 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1090,6 +1263,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -1104,12 +1280,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Maa ostuhinna määramine",
+      "rdfs:label": {
+        "@value": "§ 9. Maa ostuhinna määramine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "(1) Kasutusvaldusesse antud maa ostuhinnaks on maa harilik väärtus. (2) Maa hariliku väärtuse määramisel juhindutakse riigivaraseaduse §-s 46 sätestatust. Maa hindamisel lähtutakse maa sihtotstarbest. Maa hindamisel ei arvestata maad koormavat kasutusvaldust. (3) Hindamisakt ei tohi riigivara võõrandamise otsuse tegemise ajal olla vanem kui kuus kuud. (4) Maa ostuhinnast arvatakse maha käesoleva seaduse § 8 lõikes 3 nimetatud dokumentaalselt tõendatud kulud.",
+      "estleg:summary": {
+        "@value": "(1) Kasutusvaldusesse antud maa ostuhinnaks on maa harilik väärtus. (2) Maa hariliku väärtuse määramisel juhindutakse riigivaraseaduse §-s 46 sätestatust. Maa hindamisel lähtutakse maa sihtotstarbest. Maa hindamisel ei arvestata maad koormavat kasutusvaldust. (3) Hindamisakt ei tohi riigivara võõrandamise otsuse tegemise ajal olla vanem kui kuus kuud. (4) Maa ostuhinnast arvatakse maha käesoleva seaduse § 8 lõikes 3 nimetatud dokumentaalselt tõendatud kulud.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kasutusvaldusesse antud maa ostuhinnaks on maa harilik väärtus. (2) Maa hariliku väärtuse määramisel juhindutakse riigivaraseaduse §-s 46 sätestatust. Maa hindamisel lähtutakse maa sihtotstarbest. Maa hindamisel ei arvestata maad koormavat kasutusvaldust. (3) Hindamisakt ei tohi riigivara võõrandamise otsuse tegemise ajal olla vanem kui kuus kuud. (4) Maa ostuhinnast arvatakse maha käesoleva seaduse § 8 lõikes 3 nimetatud dokumentaalselt tõendatud kulud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
@@ -1133,9 +1315,6 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -1148,6 +1327,9 @@
           "@id": "estleg:RIIGIV_Par_46"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:MaaRKMOS_Par_9_v13157586"
@@ -1200,9 +1382,6 @@
         "@id": "estleg:MaaRKMOS_Par_9"
       },
       "rdfs:label": "§ 9 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1211,6 +1390,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
@@ -1238,13 +1420,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Maa võõrandamise otsustamine",
+      "rdfs:label": {
+        "@value": "§ 10. Maa võõrandamise otsustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "(1) Maa võõrandamise korraldaja otsustab maa võõrandamise või sellest keeldumise kahe kuu jooksul kasutusvaldusesse antud maa omandamise taotluse esitamisest arvates. Kui kasutusvaldajal on käesoleva seaduse § 3 lõike 5 alusel õigus omandada osa kasutusvaldusesse antud maast, otsustab maa võõrandamise korraldaja maa võõrandamise kahe kuu jooksul pärast kinnisasja jagamist. (2) Maa võõrandamise otsus peab sisaldama vähemalt: maa võõrandamise õiguslikku alust; omandaja andmeid; võõrandatava",
-      "estleg:legalText": "(1) Maa võõrandamise korraldaja otsustab maa võõrandamise või sellest keeldumise kahe kuu jooksul kasutusvaldusesse antud maa omandamise taotluse esitamisest arvates. Kui kasutusvaldajal on käesoleva seaduse § 3 lõike 5 alusel õigus omandada osa kasutusvaldusesse antud maast, otsustab maa võõrandamise korraldaja maa võõrandamise kahe kuu jooksul pärast kinnisasja jagamist. (2) Maa võõrandamise otsus peab sisaldama vähemalt: maa võõrandamise õiguslikku alust; omandaja andmeid; võõrandatava kinnisasja andmeid (asukoht, suurus, katastritunnus ja kinnistu number); kasutusvalduse seadmise lepingu andmeid; võõrandatava kinnisasja ostuhinda; võõrandataval kinnisasjal lasuvate kitsenduste, kasutuspiirangute või koormatiste andmeid; müügi- ja asjaõiguslepingu sõlmimise tähtaega, mis võib olla kuni neli kuud maa võõrandamise otsuse tegemisest. (3) Otsus maa võõrandamise või sellest keeldumise kohta edastatakse kasutusvaldajale viie tööpäeva jooksul otsuse tegemisest arvates.",
+      "estleg:summary": {
+        "@value": "(1) Maa võõrandamise korraldaja otsustab maa võõrandamise või sellest keeldumise kahe kuu jooksul kasutusvaldusesse antud maa omandamise taotluse esitamisest arvates. Kui kasutusvaldajal on käesoleva seaduse § 3 lõike 5 alusel õigus omandada osa kasutusvaldusesse antud maast, otsustab maa võõrandamise korraldaja maa võõrandamise kahe kuu jooksul pärast kinnisasja jagamist. (2) Maa võõrandamise otsus peab sisaldama vähemalt: 1) maa võõrandamise õiguslikku alust; 2) omandaja andmeid; 3)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Maa võõrandamise korraldaja otsustab maa võõrandamise või sellest keeldumise kahe kuu jooksul kasutusvaldusesse antud maa omandamise taotluse esitamisest arvates. Kui kasutusvaldajal on käesoleva seaduse § 3 lõike 5 alusel õigus omandada osa kasutusvaldusesse antud maast, otsustab maa võõrandamise korraldaja maa võõrandamise kahe kuu jooksul pärast kinnisasja jagamist. (2) Maa võõrandamise otsus peab sisaldama vähemalt: 1) maa võõrandamise õiguslikku alust; 2) omandaja andmeid; 3) võõrandatava kinnisasja andmeid (asukoht, suurus, katastritunnus ja kinnistu number); 4) kasutusvalduse seadmise lepingu andmeid; 5) võõrandatava kinnisasja ostuhinda; 6) võõrandataval kinnisasjal lasuvate kitsenduste, kasutuspiirangute või koormatiste andmeid; 7) müügi- ja asjaõiguslepingu sõlmimise tähtaega, mis võib olla kuni neli kuud maa võõrandamise otsuse tegemisest. (3) Otsus maa võõrandamise või sellest keeldumise kohta edastatakse kasutusvaldajale viie tööpäeva jooksul otsuse tegemisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
       },
@@ -1264,23 +1452,23 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
-        {
-          "@id": "estleg:MaaRKMOS_Par_3_Lg_5"
-        }
-      ],
       "estleg:references": [
         {
           "@id": "estleg:MaaRKMOS_Par_3_Lg_5"
         }
       ],
+      "estleg:isLegalBasisFor": [
+        {
+          "@id": "estleg:MaaRKMOS_Par_3_Lg_5"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:MaaRKMOS_Par_10_v13157586"
@@ -1311,12 +1499,12 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:MaaRKMOS_Par_3_Lg_5"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:MaaRKMOS_Par_3_Lg_5"
         }
@@ -1329,17 +1517,26 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Maa võõrandamise otsus peab sisaldama vähemalt: maa võõrandamise õiguslikku alust; omandaja andmeid; võõrandatava kinnisasja andmeid (asukoht, suurus, katastritunnus ja kinnistu number); kasutusvalduse seadmise lepingu andmeid; võõrandatava kinnisasja ostuhinda; võõrandataval kinnisasjal lasuvate kitsenduste, kasutuspiirangute või koormatiste andmeid; müügi- ja asjaõiguslepingu sõlmimise tähtaega, mis võib olla kuni neli kuud maa võõrandamise otsuse tegemisest.",
+      "estleg:legalText": "(2) Maa võõrandamise otsus peab sisaldama vähemalt: 1) maa võõrandamise õiguslikku alust; 2) omandaja andmeid; 3) võõrandatava kinnisasja andmeid (asukoht, suurus, katastritunnus ja kinnistu number); 4) kasutusvalduse seadmise lepingu andmeid; 5) võõrandatava kinnisasja ostuhinda; 6) võõrandataval kinnisasjal lasuvate kitsenduste, kasutuspiirangute või koormatiste andmeid; 7) müügi- ja asjaõiguslepingu sõlmimise tähtaega, mis võib olla kuni neli kuud maa võõrandamise otsuse tegemisest.",
       "estleg:parentProvision": {
         "@id": "estleg:MaaRKMOS_Par_10"
       },
       "rdfs:label": "§ 10 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1362,12 +1559,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Maa müügi- ja asjaõiguslepingu sõlmimine",
+      "rdfs:label": {
+        "@value": "§ 11. Maa müügi- ja asjaõiguslepingu sõlmimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "(1) Kasutusvaldusesse antud maa müügi- ja asjaõiguslepingu sõlmib riigi nimel Maa- ja Ruumiameti peadirektor või tema volitatud isik. (2) Kasutusvaldusesse antud maa müügi- ja asjaõigusleping sõlmitakse maa võõrandamise otsuses määratud tähtaja jooksul. Põhjendatud juhtudel võib maa võõrandamise korraldaja eelnimetatud tähtaega pikendada. (3) Kui maa omandamise õigust omav isik mõjuva põhjuseta ei sõlmi maa müügilepingut käesoleva paragrahvi lõikes 2 nimetatud tähtaja jooksul, võib maa",
+      "estleg:summary": {
+        "@value": "(1) Kasutusvaldusesse antud maa müügi- ja asjaõiguslepingu sõlmib riigi nimel Maa- ja Ruumiameti peadirektor või tema volitatud isik. (2) Kasutusvaldusesse antud maa müügi- ja asjaõigusleping sõlmitakse maa võõrandamise otsuses määratud tähtaja jooksul. Põhjendatud juhtudel võib maa võõrandamise korraldaja eelnimetatud tähtaega pikendada. (3) Kui maa omandamise õigust omav isik mõjuva põhjuseta ei sõlmi maa müügilepingut käesoleva paragrahvi lõikes 2 nimetatud tähtaja jooksul, võib maa",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kasutusvaldusesse antud maa müügi- ja asjaõiguslepingu sõlmib riigi nimel Maa- ja Ruumiameti peadirektor või tema volitatud isik. (2) Kasutusvaldusesse antud maa müügi- ja asjaõigusleping sõlmitakse maa võõrandamise otsuses määratud tähtaja jooksul. Põhjendatud juhtudel võib maa võõrandamise korraldaja eelnimetatud tähtaega pikendada. (3) Kui maa omandamise õigust omav isik mõjuva põhjuseta ei sõlmi maa müügilepingut käesoleva paragrahvi lõikes 2 nimetatud tähtaja jooksul, võib maa võõrandamise korraldaja maa võõrandamise otsuse kehtetuks tunnistada. (4) Kasutusvaldaja on kohustatud hiljemalt müügi- ja asjaõiguslepingu sõlmimisele eelneval tööpäeval tasuma maa ostuhinna või esitama lepingu täitmise tagatise. Lepingu täitmise tagamiseks võib kasutada notari deposiiti. (5) Kaitstavat looduse üksikobjekti sisaldava või kaitsealal, hoiualal või püsielupaigas asuva kinnisasja omandamise korral peab müügileping sisaldama kaitstava loodusobjekti kohta looduskaitseseaduse § 16 lõikes 1 nimetatud teavet. (6) Maa müügi- ja asjaõiguslepingu notariaalse vormistamise ja kinnistusraamatusse kande tegemisega seotud kulud kannab maa omandaja.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
@@ -1394,19 +1597,24 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
+          "@id": "estleg:TargetGroup_Business"
         },
         {
-          "@id": "estleg:TargetGroup_Business"
+          "@id": "estleg:TargetGroup_Official"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_maa_ja_ruumiamet"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MaaRKMOS_Par_11_v13157586"
@@ -1416,11 +1624,6 @@
         },
         {
           "@id": "estleg:MaaRKMOS_Par_11_v104122024021"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_maa_ja_ruumiamet"
         }
       ]
     },
@@ -1463,9 +1666,6 @@
         "@id": "estleg:MaaRKMOS_Par_11"
       },
       "rdfs:label": "§ 11 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1474,6 +1674,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1488,9 +1691,6 @@
         "@id": "estleg:MaaRKMOS_Par_11"
       },
       "rdfs:label": "§ 11 lg 3",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1499,6 +1699,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:referencedBy": [
         {
@@ -1518,9 +1721,6 @@
         "@id": "estleg:MaaRKMOS_Par_11"
       },
       "rdfs:label": "§ 11 lg 4",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -1529,6 +1729,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       }
     },
     {
@@ -1543,9 +1746,6 @@
         "@id": "estleg:MaaRKMOS_Par_11"
       },
       "rdfs:label": "§ 11 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
@@ -1554,7 +1754,10 @@
         {
           "@id": "estleg:LKS_Par_16_Lg_1"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:MaaRKMOS_Par_11_Lg_6",
@@ -1585,12 +1788,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Maa võõrandamisega seotud kulud",
+      "rdfs:label": {
+        "@value": "§ 12. Maa võõrandamisega seotud kulud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "Kasutusvaldusesse antud maa võõrandamise korraldamisega otseselt seotud dokumentaalselt tõendatud kulud kaetakse maa müügist laekunud tulude arvelt.",
+      "estleg:summary": {
+        "@value": "Kasutusvaldusesse antud maa võõrandamise korraldamisega otseselt seotud dokumentaalselt tõendatud kulud kaetakse maa müügist laekunud tulude arvelt.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kasutusvaldusesse antud maa võõrandamise korraldamisega otseselt seotud dokumentaalselt tõendatud kulud kaetakse maa müügist laekunud tulude arvelt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
@@ -1612,10 +1821,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kasutusvaldusesse antud maa võõrandamise korraldamisega otseselt seotud dokumentaalselt tõendatud kulud kaetakse maa müügist laekunud tulude arvelt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kasutusvaldusesse antud maa võõrandamise korraldamisega otseselt seotud dokumentaalselt tõendatud kulud kaetakse maa müügist laekunud tulude arvelt.",
       "estleg:parentProvision": {
         "@id": "estleg:MaaRKMOS_Par_12"
-      }
+      },
+      "rdfs:label": "§ 12 lg 1"
     },
     {
       "@id": "estleg:MaaRKMOS_Par_13",
@@ -1624,19 +1835,30 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Seaduse rakendamine",
+      "rdfs:label": {
+        "@value": "§ 13. Seaduse rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "Maareformi käigus kasutusvaldusesse antud maa omandamisele maareformi seaduse § 341 lõike 3 kuni 2002. aasta 31. detsembrini kehtinud redaktsioonis sätestatud tingimustel kohaldatakse käesoleva seaduse sätteid, arvestades nimetatud redaktsioonis sätestatud tingimustest tulenevaid erisusi. Kui eelmises lauses nimetatud juhul on maa omandamise õigus tekkinud enne käesoleva seaduse jõustumist, on kasutusvaldajal õigus esitada maa omandamise taotlus pärast käesoleva seaduse jõustumist, kuid mitte",
-      "estleg:legalText": "Maareformi käigus kasutusvaldusesse antud maa omandamisele maareformi seaduse § 341 lõike 3 kuni 2002. aasta 31. detsembrini kehtinud redaktsioonis sätestatud tingimustel kohaldatakse käesoleva seaduse sätteid, arvestades nimetatud redaktsioonis sätestatud tingimustest tulenevaid erisusi. Kui eelmises lauses nimetatud juhul on maa omandamise õigus tekkinud enne käesoleva seaduse jõustumist, on kasutusvaldajal õigus esitada maa omandamise taotlus pärast käesoleva seaduse jõustumist, kuid mitte hiljem kui kolm kuud enne kasutusvalduse lõppemist.",
+      "estleg:summary": {
+        "@value": "Maareformi käigus kasutusvaldusesse antud maa omandamisele maareformi seaduse § 34¹ lõike 3 kuni 2002. aasta 31. detsembrini kehtinud redaktsioonis sätestatud tingimustel kohaldatakse käesoleva seaduse sätteid, arvestades nimetatud redaktsioonis sätestatud tingimustest tulenevaid erisusi. Kui eelmises lauses nimetatud juhul on maa omandamise õigus tekkinud enne käesoleva seaduse jõustumist, on kasutusvaldajal õigus esitada maa omandamise taotlus pärast käesoleva seaduse jõustumist, kuid mitte",
+        "@language": "et"
+      },
+      "estleg:legalText": "Maareformi käigus kasutusvaldusesse antud maa omandamisele maareformi seaduse § 34¹ lõike 3 kuni 2002. aasta 31. detsembrini kehtinud redaktsioonis sätestatud tingimustel kohaldatakse käesoleva seaduse sätteid, arvestades nimetatud redaktsioonis sätestatud tingimustest tulenevaid erisusi. Kui eelmises lauses nimetatud juhul on maa omandamise õigus tekkinud enne käesoleva seaduse jõustumist, on kasutusvaldajal õigus esitada maa omandamise taotlus pärast käesoleva seaduse jõustumist, kuid mitte hiljem kui kolm kuud enne kasutusvalduse lõppemist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
       },
       "estleg:hasSubsection": [
         {
           "@id": "estleg:MaaRKMOS_Par_13_Lg_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_3"
         }
       ],
       "estleg:hasVersion": [
@@ -1654,10 +1876,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Maareformi käigus kasutusvaldusesse antud maa omandamisele maareformi seaduse § 341 lõike 3 kuni 2002. aasta 31. detsembrini kehtinud redaktsioonis sätestatud tingimustel kohaldatakse käesoleva seaduse sätteid, arvestades nimetatud redaktsioonis sätestatud tingimustest tulenevaid erisusi. Kui eelmises lauses nimetatud juhul on maa omandamise õigus tekkinud enne käesoleva seaduse jõustumist, on kasutusvaldajal õigus esitada maa omandamise taotlus pärast käesoleva seaduse jõustumist, kuid mitte hiljem kui kolm kuud enne kasutusvalduse lõppemist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maareformi käigus kasutusvaldusesse antud maa omandamisele maareformi seaduse § 34¹ lõike 3 kuni 2002. aasta 31. detsembrini kehtinud redaktsioonis sätestatud tingimustel kohaldatakse käesoleva seaduse sätteid, arvestades nimetatud redaktsioonis sätestatud tingimustest tulenevaid erisusi. Kui eelmises lauses nimetatud juhul on maa omandamise õigus tekkinud enne käesoleva seaduse jõustumist, on kasutusvaldajal õigus esitada maa omandamise taotlus pärast käesoleva seaduse jõustumist, kuid mitte hiljem kui kolm kuud enne kasutusvalduse lõppemist.",
       "estleg:parentProvision": {
         "@id": "estleg:MaaRKMOS_Par_13"
-      }
+      },
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:references": [
+        {
+          "@id": "estleg:MaaRS_Par_34_1_Lg_3"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaRKMOS_Par_14",
@@ -1666,12 +1895,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Maareformi seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 14. Maareformi seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
@@ -1692,12 +1927,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Riigilõivuseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 15. Riigilõivuseaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maareformi käigus kasutusvaldusesse antud maa omandamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MaaRKMOS_default"
@@ -1712,112 +1953,20 @@
       ]
     },
     {
-      "@id": "estleg:Citation_MaaRKMOS_P_4_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/523122024005",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:MaaRKMOS_Par_4"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationDetail": "MaaRS",
-      "estleg:citationText": "maareformi seaduse § 341 lõike 7"
-    },
-    {
-      "@id": "estleg:Citation_MaaRKMOS_P_4_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MaaRKMOS_Par_4"
+      "eli:realizes": {
+        "@id": "estleg:MaaRKMOS_Map"
       },
-      "estleg:citationDetail": "MaaRS",
-      "estleg:citationText": "maareformi seaduse § 341 lõikes 62"
-    },
-    {
-      "@id": "estleg:Citation_MaaRKMOS_P_4_Lg_1_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MaaRKMOS_Par_4_Lg_1"
-      },
-      "estleg:citationDetail": "MaaRS",
-      "estleg:citationText": "maareformi seaduse § 341 lõike 7"
-    },
-    {
-      "@id": "estleg:Citation_MaaRKMOS_P_4_Lg_1_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MaaRKMOS_Par_4_Lg_1"
-      },
-      "estleg:citationDetail": "MaaRS",
-      "estleg:citationText": "maareformi seaduse § 341 lõikes 62"
-    },
-    {
-      "@id": "estleg:Citation_MaaRKMOS_P_4_Lg_1_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MaaRKMOS_Par_4_Lg_1"
-      },
-      "estleg:citationDetail": "MaaRS",
-      "estleg:citationText": "maareformi seaduse § 341 lõikes 31"
-    },
-    {
-      "@id": "estleg:Citation_MaaRKMOS_P_5_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MaaRKMOS_Par_5"
-      },
-      "estleg:citationDetail": "MaaRS",
-      "estleg:citationText": "Maareformi seaduse § 341 lõikes 2"
-    },
-    {
-      "@id": "estleg:Citation_MaaRKMOS_P_5_Lg_1_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MaaRKMOS_Par_5_Lg_1"
-      },
-      "estleg:citationDetail": "MaaRS",
-      "estleg:citationText": "Maareformi seaduse § 341 lõikes 2"
-    },
-    {
-      "@id": "estleg:Citation_MaaRKMOS_P_13_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MaaRKMOS_Par_13"
-      },
-      "estleg:citationDetail": "MaaRS",
-      "estleg:citationText": "maareformi seaduse § 341 lõike 3"
-    },
-    {
-      "@id": "estleg:Citation_MaaRKMOS_P_13_Lg_1_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MaaRKMOS_Par_13_Lg_1"
-      },
-      "estleg:citationDetail": "MaaRS",
-      "estleg:citationText": "maareformi seaduse § 341 lõike 3"
+      "rdfs:label": {
+        "@value": "Act on Acquisition of Land Subject to Usufruct in Land Reform",
+        "@language": "en"
+      }
     }
   ]
 }

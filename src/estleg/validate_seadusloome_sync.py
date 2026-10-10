@@ -12,8 +12,8 @@ ontology. Specifically:
    ``institutions``, ``provision_versions``, ``annotations``,
    ``harmonisation``, ``regulations``, ``analytical`` and ``eurovoc``
    (the list is ``estleg_common.PUBLIC_LOAD_SUBDIRS``).
-3. Parse all inputs into a single ``rdflib.Graph()`` via the JSON-LD
-   parser.
+3. Parse all inputs with RDFLib's JSON-LD parser into a single graph backed
+   by temporary disk storage. RDFLib still evaluates the SPARQL queries.
 4. Load every ``*.ttl`` and ``*.jsonld`` under ``shacl/`` into a
    separate shapes graph.
 5. Run ``pyshacl.validate(..., inference='none', abort_on_first=False)``
@@ -35,6 +35,7 @@ import sys
 from collections import Counter, defaultdict
 from collections.abc import Iterable
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from estleg.estleg_common import (
     COMBINED_CLOSURE_EXEMPT_PREDICATES,
@@ -296,21 +297,38 @@ def collect_shapes(shapes_dir: Path) -> list[Path]:
     return sorted(out)
 
 
-def load_graph(paths: Iterable[Path]):
+def load_graph(paths: Iterable[Path], *, store_dir: Path | None = None):
     """Load each path as JSON-LD into a single rdflib graph.
 
     Returns ``(graph, parse_failures)`` where ``parse_failures`` is a
-    list of ``(path, exception_message)`` tuples.
+    list of ``(path, exception_message)`` tuples. With ``store_dir``, create
+    a new disk store there; the caller must close the graph before removing
+    the directory. Without it, use the usual in-memory graph.
     """
     import rdflib
 
-    graph = rdflib.Graph()
+    if store_dir is None:
+        graph = rdflib.Graph()
+    else:
+        from estleg.rdf_disk_store import DiskStore
+
+        graph = rdflib.Graph(store=DiskStore())
+        # Explicit disk path: the backend's default store can use a RAM disk.
+        # create=True rejects an existing database so stale triples cannot
+        # silently leak into a later validation run.
+        graph.open(str(store_dir), create=True)
     parse_failures: list[tuple[str, str]] = []
-    for path in paths:
-        try:
-            graph.parse(str(path), format="json-ld")
-        except Exception as exc:  # noqa: BLE001 — capture and report
-            parse_failures.append((str(path), str(exc)))
+    try:
+        for index, path in enumerate(paths, start=1):
+            try:
+                graph.parse(str(path), format="json-ld")
+            except Exception as exc:  # noqa: BLE001 — capture and report
+                parse_failures.append((str(path), str(exc)))
+            if store_dir is not None and index % 1000 == 0:
+                print(f"  Loaded {index} JSON-LD files...", flush=True)
+    except BaseException:
+        graph.close()
+        raise
     return graph, parse_failures
 
 
@@ -548,13 +566,24 @@ def main(argv: list[str] | None = None) -> int:
     if closure_summary.get("total", 0):
         return 1
 
-    print(f"Loading {len(inputs)} JSON-LD inputs into a single graph...")
-    data_graph, parse_failures = load_graph(inputs)
-    if parse_failures:
-        print(f"PARSE FAILURES: {len(parse_failures)}")
-        for path, exc in parse_failures[:10]:
-            print(f"  {path}: {exc}")
-        return 2
+    print(f"Loading {len(inputs)} JSON-LD inputs into a single disk-backed graph...")
+    with TemporaryDirectory(prefix="estleg-shacl-") as temporary_dir:
+        data_graph, parse_failures = load_graph(
+            inputs, store_dir=Path(temporary_dir) / "graph"
+        )
+        try:
+            if parse_failures:
+                print(f"PARSE FAILURES: {len(parse_failures)}")
+                for path, exc in parse_failures[:10]:
+                    print(f"  {path}: {exc}")
+                return 2
+            return _validate_loaded_graph(data_graph, args)
+        finally:
+            data_graph.close()
+
+
+def _validate_loaded_graph(data_graph, args) -> int:
+    """Apply the unchanged zero-warning policy to the loaded public graph."""
 
     shapes_graph, shapes_failures, shapes_paths = load_shapes(args.shapes_dir)
     if shapes_failures:

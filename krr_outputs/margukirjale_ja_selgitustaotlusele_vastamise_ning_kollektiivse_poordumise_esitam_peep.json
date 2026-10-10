@@ -5,65 +5,58 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:MSVS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Response to Memoranda and Requests for Explanations and Submission of Collective Proposals Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/118122024006.xml"
+        "@id": "https://www.riigiteataja.ee/akt/118122024006"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/118122024006/xml"
+      },
+      "estleg:globalId": "118122024006",
+      "eli:id_local": "118122024006",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
         "@type": "xsd:date"
       },
-      "estleg:temporalStatus": "inForce",
-      "estleg:hasProposedAmendment": [
-        {
-          "@id": "estleg:AmendmentLink_Draft_JDM23_1063_MSVS"
-        }
-      ],
+      "estleg:terviktekstId": "158233",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "939d767750c8fb04ecf384aa9117d2b5d44e95681ffddc689adcf49ca53e6817",
+      "estleg:issuer": "Riigikogu",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2024-12-28",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
+        "@id": "https://www.riigiteataja.ee/en/eli/529122024003"
+      },
+      "eli:is_realized_by": {
         "@id": "https://www.riigiteataja.ee/en/eli/529122024003"
       },
       "estleg:references": [
         {
           "@id": "estleg:MSVS_Par_3"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MSVS_Par_2"
-        },
-        {
-          "@id": "estleg:MSVS_Par_2_Lg_2"
         }
       ],
       "dcterms:subject": [
@@ -88,27 +81,55 @@
           "@id": "http://eurovoc.europa.eu/523"
         }
       ],
+      "estleg:entryIntoForce": {
+        "@value": "2004-12-10",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2024-12-28",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2024-12-18",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_JDM23_1063"
         }
-      ]
-    },
-    {
-      "@id": "estleg:MSVS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus teemaskeem",
-      "skos:hasTopConcept": [
+      "estleg:amendedBy": [
         {
-          "@id": "estleg:Cluster_MSVS_1"
+          "@id": "estleg:Amendment_MSVS_910e1ff82a"
         },
         {
-          "@id": "estleg:Cluster_MSVS_2"
+          "@id": "estleg:Amendment_MSVS_3134c76518"
         },
         {
-          "@id": "estleg:Cluster_MSVS_3"
+          "@id": "estleg:Amendment_MSVS_ac13be48b2"
+        },
+        {
+          "@id": "estleg:Amendment_MSVS_face0810c2"
+        },
+        {
+          "@id": "estleg:Amendment_MSVS_4136ff6f16"
+        }
+      ],
+      "estleg:hasProposedAmendment": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_JDM23_1063_MSVS"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSVS_Map"
+        },
+        {
+          "@id": "estleg:MSVS_Par_2"
+        },
+        {
+          "@id": "estleg:MSVS_Par_2_Lg_2"
         }
       ]
     },
@@ -119,12 +140,42 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–1 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–1 ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "§1–1 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–1 ÜLDSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MSVS_TopicScheme"
       },
       "estleg:provisionCount": 1
+    },
+    {
+      "@id": "estleg:MSVS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_MSVS_1"
+        },
+        {
+          "@id": "estleg:Cluster_MSVS_2"
+        },
+        {
+          "@id": "estleg:Cluster_MSVS_3"
+        },
+        {
+          "@id": "estleg:Cluster_MSVS_Preamble"
+        }
+      ]
     },
     {
       "@id": "estleg:Chapter_MSVS_1",
@@ -132,7 +183,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
@@ -140,11 +194,6 @@
       "dcterms:subject": {
         "@id": "estleg:Cluster_MSVS_1"
       },
-      "estleg:hasPart": [
-        {
-          "@id": "estleg:MSVS_Par_2"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -157,8 +206,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§3–7 MÄRGUKIRJALE JA SELGITUSTAOTLUSELE VASTAMINE",
-      "skos:prefLabel": "§3–7 MÄRGUKIRJALE JA SELGITUSTAOTLUSELE VASTAMINE",
+      "rdfs:label": {
+        "@value": "§3–7 MÄRGUKIRJALE JA SELGITUSTAOTLUSELE VASTAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§3–7 MÄRGUKIRJALE JA SELGITUSTAOTLUSELE VASTAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MSVS_TopicScheme"
       },
@@ -170,7 +225,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – MÄRGUKIRJALE JA SELGITUSTAOTLUSELE VASTAMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – MÄRGUKIRJALE JA SELGITUSTAOTLUSELE VASTAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
@@ -178,14 +236,6 @@
       "dcterms:subject": {
         "@id": "estleg:Cluster_MSVS_2"
       },
-      "estleg:hasPart": [
-        {
-          "@id": "estleg:MSVS_Par_8"
-        },
-        {
-          "@id": "estleg:MSVS_Par_10"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -198,12 +248,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§7–7 KOLLEKTIIVSE PÖÖRDUMISE ESITAMINE",
-      "skos:prefLabel": "§7–7 KOLLEKTIIVSE PÖÖRDUMISE ESITAMINE",
+      "rdfs:label": {
+        "@value": "§7–7 KOLLEKTIIVSE PÖÖRDUMISE ESITAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§7–7 KOLLEKTIIVSE PÖÖRDUMISE ESITAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MSVS_TopicScheme"
       },
-      "estleg:provisionCount": 1
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:Chapter_MSVS_3",
@@ -211,7 +267,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – KOLLEKTIIVSE PÖÖRDUMISE ESITAMINE",
+      "rdfs:label": {
+        "@value": "3. peatükk – KOLLEKTIIVSE PÖÖRDUMISE ESITAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
@@ -225,18 +284,65 @@
       }
     },
     {
+      "@id": "estleg:Cluster_MSVS_Preamble",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "Sissejuhatavad sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Sissejuhatavad sätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:MSVS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_MSVS_Preamble",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": {
+        "@value": "Sissejuhatavad sätted",
+        "@language": "et"
+      },
+      "estleg:partOfAct": {
+        "@id": "estleg:MSVS_Map"
+      },
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_MSVS_Preamble"
+      },
+      "estleg:assertionConfidence": {
+        "@value": "0.55",
+        "@type": "xsd:decimal"
+      }
+    },
+    {
       "@id": "estleg:MSVS_Par_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus sätestab märgukirjale ja selgitustaotlusele vastamise korra niivõrd, kuivõrd see ei ole sätestatud teise seadusega, ning reguleerib kollektiivse pöördumise esitamise korda. (2) Käesolevas seaduses ettenähtud haldusmenetlus toimub haldusmenetluse seaduses sätestatud korras, kui käesolev seadus ei näe ette teisiti. (3) Kui pöördumises taotletakse avalikule teabele juurdepääsu võimaldamist, vastatakse pöördumisele avaliku teabe seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus sätestab märgukirjale ja selgitustaotlusele vastamise korra niivõrd, kuivõrd see ei ole sätestatud teise seadusega, ning reguleerib kollektiivse pöördumise esitamise korda. (2) Käesolevas seaduses ettenähtud haldusmenetlus toimub haldusmenetluse seaduses sätestatud korras, kui käesolev seadus ei näe ette teisiti. (3) Kui pöördumises taotletakse avalikule teabele juurdepääsu võimaldamist, vastatakse pöördumisele avaliku teabe seaduses sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus sätestab märgukirjale ja selgitustaotlusele vastamise korra niivõrd, kuivõrd see ei ole sätestatud teise seadusega, ning reguleerib kollektiivse pöördumise esitamise korda. (2) Käesolevas seaduses ettenähtud haldusmenetlus toimub haldusmenetluse seaduses sätestatud korras, kui käesolev seadus ei näe ette teisiti. (3) Kui pöördumises taotletakse avalikule teabele juurdepääsu võimaldamist, vastatakse pöördumisele avaliku teabe seaduses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSVS_1"
@@ -307,13 +413,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Mõisted",
+      "rdfs:label": {
+        "@value": "§ 2. Mõisted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "(1) Märgukiri käesoleva seaduse tähenduses on isiku pöördumine, millega isik: teeb adressaadile ettepanekuid asutuse või organi töö korraldamiseks või valdkonna arengu kujundamiseks; annab adressaadile avaliku elu ja riigivalitsemisega seotud teavet. (2) Selgitustaotlus käesoleva seaduse tähenduses on isiku pöördumine, milles isik: taotleb adressaadilt teavet, mis eeldab adressaadi käsutuses oleva teabe analüüsi, sünteesi või lisateabe kogumist; taotleb käesoleva seaduse §-s 3 sätestatud",
-      "estleg:legalText": "(1) Märgukiri käesoleva seaduse tähenduses on isiku pöördumine, millega isik: teeb adressaadile ettepanekuid asutuse või organi töö korraldamiseks või valdkonna arengu kujundamiseks; annab adressaadile avaliku elu ja riigivalitsemisega seotud teavet. (2) Selgitustaotlus käesoleva seaduse tähenduses on isiku pöördumine, milles isik: taotleb adressaadilt teavet, mis eeldab adressaadi käsutuses oleva teabe analüüsi, sünteesi või lisateabe kogumist; taotleb käesoleva seaduse §-s 3 sätestatud õigusalase selgituse andmist. (3) Kollektiivne pöördumine käesoleva seaduse tähenduses on Riigikogule rahvaalgatuse korras esitatav ettepanek kehtiva regulatsiooni muutmiseks või ühiskonnaelu paremaks korraldamiseks, mille teostamine on Riigikogu pädevuses. (4) Märgukirja või selgitustaotluse adressaat käesoleva seaduse tähenduses on riigi-, kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku asutus, organ, ametnik, töötaja või kollegiaalorgani liige. Adressaadiks ei ole Riigikogu liige ega kohaliku omavalitsuse volikogu liige. (5) Märgukirja või selgitustaotluse adressaat käesoleva seaduse tähenduses on ka mittetulundusühing, sihtasutus, füüsilisest isikust ettevõtja ja äriühing teabe puhul, mis puudutab riigi või kohaliku omavalitsuse eelarveliste vahendite kasutamist.",
+      "estleg:summary": {
+        "@value": "(1) Märgukiri käesoleva seaduse tähenduses on isiku pöördumine, millega isik: 1) teeb adressaadile ettepanekuid asutuse või organi töö korraldamiseks või valdkonna arengu kujundamiseks; 2) annab adressaadile avaliku elu ja riigivalitsemisega seotud teavet. (2) Selgitustaotlus käesoleva seaduse tähenduses on isiku pöördumine, milles isik: 1) taotleb adressaadilt teavet, mis eeldab adressaadi käsutuses oleva teabe analüüsi, sünteesi või lisateabe kogumist; 2) taotleb käesoleva seaduse §-s 3",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Märgukiri käesoleva seaduse tähenduses on isiku pöördumine, millega isik: 1) teeb adressaadile ettepanekuid asutuse või organi töö korraldamiseks või valdkonna arengu kujundamiseks; 2) annab adressaadile avaliku elu ja riigivalitsemisega seotud teavet. (2) Selgitustaotlus käesoleva seaduse tähenduses on isiku pöördumine, milles isik: 1) taotleb adressaadilt teavet, mis eeldab adressaadi käsutuses oleva teabe analüüsi, sünteesi või lisateabe kogumist; 2) taotleb käesoleva seaduse §-s 3 sätestatud õigusalase selgituse andmist. (3) Kollektiivne pöördumine käesoleva seaduse tähenduses on Riigikogule rahvaalgatuse korras esitatav ettepanek kehtiva regulatsiooni muutmiseks või ühiskonnaelu paremaks korraldamiseks, mille teostamine on Riigikogu pädevuses. (4) Märgukirja või selgitustaotluse adressaat käesoleva seaduse tähenduses on riigi-, kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku asutus, organ, ametnik, töötaja või kollegiaalorgani liige. Adressaadiks ei ole Riigikogu liige ega kohaliku omavalitsuse volikogu liige. (5) Märgukirja või selgitustaotluse adressaat käesoleva seaduse tähenduses on ka mittetulundusühing, sihtasutus, füüsilisest isikust ettevõtja ja äriühing teabe puhul, mis puudutab riigi või kohaliku omavalitsuse eelarveliste vahendite kasutamist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MSVS_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MSVS_Preamble"
+      },
       "estleg:hasSubsection": [
         {
           "@id": "estleg:MSVS_Par_2_Lg_1"
@@ -339,12 +457,6 @@
           "@id": "estleg:TargetGroup_Business"
         }
       ],
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MSVS_1"
-      },
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MSVS_1"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
@@ -354,17 +466,20 @@
           "@id": "estleg:MSVS_Par_3"
         }
       ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MSVS_Par_2_v101042014003"
-        }
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Definition"
+      },
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikogu"
         },
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MSVS_Par_2_v101042014003"
         }
       ]
     },
@@ -375,11 +490,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Märgukiri käesoleva seaduse tähenduses on isiku pöördumine, millega isik: teeb adressaadile ettepanekuid asutuse või organi töö korraldamiseks või valdkonna arengu kujundamiseks; annab adressaadile avaliku elu ja riigivalitsemisega seotud teavet.",
+      "estleg:legalText": "(1) Märgukiri käesoleva seaduse tähenduses on isiku pöördumine, millega isik: 1) teeb adressaadile ettepanekuid asutuse või organi töö korraldamiseks või valdkonna arengu kujundamiseks; 2) annab adressaadile avaliku elu ja riigivalitsemisega seotud teavet.",
       "estleg:parentProvision": {
         "@id": "estleg:MSVS_Par_2"
       },
       "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -397,11 +516,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Selgitustaotlus käesoleva seaduse tähenduses on isiku pöördumine, milles isik: taotleb adressaadilt teavet, mis eeldab adressaadi käsutuses oleva teabe analüüsi, sünteesi või lisateabe kogumist; taotleb käesoleva seaduse §-s 3 sätestatud õigusalase selgituse andmist.",
+      "estleg:legalText": "(2) Selgitustaotlus käesoleva seaduse tähenduses on isiku pöördumine, milles isik: 1) taotleb adressaadilt teavet, mis eeldab adressaadi käsutuses oleva teabe analüüsi, sünteesi või lisateabe kogumist; 2) taotleb käesoleva seaduse §-s 3 sätestatud õigusalase selgituse andmist.",
       "estleg:parentProvision": {
         "@id": "estleg:MSVS_Par_2"
       },
       "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -514,12 +637,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Õigusalaste selgituste andmine",
+      "rdfs:label": {
+        "@value": "§ 3. Õigusalaste selgituste andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "Riigi- ja kohaliku omavalitsuse üksuse asutus annab tasuta selgitusi tema poolt väljatöötatud õigusaktide, nende eelnõude ja asutuse tegevuse aluseks olevate õigusaktide ning asutuse pädevuse ja õigusloome tegevuse kohta.",
+      "estleg:summary": {
+        "@value": "Riigi- ja kohaliku omavalitsuse üksuse asutus annab tasuta selgitusi tema poolt väljatöötatud õigusaktide, nende eelnõude ja asutuse tegevuse aluseks olevate õigusaktide ning asutuse pädevuse ja õigusloome tegevuse kohta.",
+        "@language": "et"
+      },
       "estleg:legalText": "Riigi- ja kohaliku omavalitsuse üksuse asutus annab tasuta selgitusi tema poolt väljatöötatud õigusaktide, nende eelnõude ja asutuse tegevuse aluseks olevate õigusaktide ning asutuse pädevuse ja õigusloome tegevuse kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSVS_2"
@@ -541,7 +670,15 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:mentionsInstitution": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:MSVS_Map"
+        },
         {
           "@id": "estleg:MSVS_Par_2"
         },
@@ -553,11 +690,6 @@
         {
           "@id": "estleg:MSVS_Par_3_v101042014003"
         }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
       ]
     },
     {
@@ -566,10 +698,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigi- ja kohaliku omavalitsuse üksuse asutus annab tasuta selgitusi tema poolt väljatöötatud õigusaktide, nende eelnõude ja asutuse tegevuse aluseks olevate õigusaktide ning asutuse pädevuse ja õigusloome tegevuse kohta.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi- ja kohaliku omavalitsuse üksuse asutus annab tasuta selgitusi tema poolt väljatöötatud õigusaktide, nende eelnõude ja asutuse tegevuse aluseks olevate õigusaktide ning asutuse pädevuse ja õigusloome tegevuse kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:MSVS_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -592,13 +726,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Isiku vastuvõtmine suulise pöördumise esitamiseks",
+      "rdfs:label": {
+        "@value": "§ 4. Isiku vastuvõtmine suulise pöördumise esitamiseks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "(1) Riigi- või kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku asutuse juht korraldab isikute vastuvõtmise selleks pädeva ametniku või töötaja poolt või võtab isikud ise vastu selleks ettenähtud ja avalikult teatavaks tehtud vastuvõtuajal. Asutuses tuleb vastuvõtuaeg ette näha igal kuul vähemalt kolme tunni ulatuses. (2) Isiku vastuvõtmisest võib keelduda või vastuvõtu lõpetada, kui: isik on piiratud teovõimega ja kohus on talle määranud eestkostja ning vastuvõtul ei osale",
-      "estleg:legalText": "(1) Riigi- või kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku asutuse juht korraldab isikute vastuvõtmise selleks pädeva ametniku või töötaja poolt või võtab isikud ise vastu selleks ettenähtud ja avalikult teatavaks tehtud vastuvõtuajal. Asutuses tuleb vastuvõtuaeg ette näha igal kuul vähemalt kolme tunni ulatuses. (2) Isiku vastuvõtmisest võib keelduda või vastuvõtu lõpetada, kui: isik on piiratud teovõimega ja kohus on talle määranud eestkostja ning vastuvõtul ei osale piiratud teovõimega isiku esindaja; isik ei väljenda oma soove ning neid ei õnnestu lisaküsimuste esitamise abil välja selgitada; isik on agressiivne ning käitub heade kommete vastaselt; isik ilmselgelt kuritarvitab õigust olla ära kuulatud. (3) Isiku vastuvõtmisest keeldumisel või vastuvõtu lõpetamisel käesoleva paragrahvi lõikes 2 loetletud alustel teavitatakse isikut võimalusest pöörduda asutuse poole kirjalikult. (4) Kui ametnik või töötaja isiku vastuvõtul leiab, et esitatud seisukoha või ettepaneku arvestamine või sellele vastamine või soovitud teabe või selgituse andmine ei ole asutuse pädevuses, teatab ta sellest isikule ning nimetab asutuse või organi, kelle pädevusse küsimus kuulub.",
+      "estleg:summary": {
+        "@value": "(1) Riigi- või kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku asutuse juht korraldab isikute vastuvõtmise selleks pädeva ametniku või töötaja poolt või võtab isikud ise vastu selleks ettenähtud ja avalikult teatavaks tehtud vastuvõtuajal. Asutuses tuleb vastuvõtuaeg ette näha igal kuul vähemalt kolme tunni ulatuses. (2) Isiku vastuvõtmisest võib keelduda või vastuvõtu lõpetada, kui: 1) isik on piiratud teovõimega ja kohus on talle määranud eestkostja ning vastuvõtul ei osale",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Riigi- või kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku asutuse juht korraldab isikute vastuvõtmise selleks pädeva ametniku või töötaja poolt või võtab isikud ise vastu selleks ettenähtud ja avalikult teatavaks tehtud vastuvõtuajal. Asutuses tuleb vastuvõtuaeg ette näha igal kuul vähemalt kolme tunni ulatuses. (2) Isiku vastuvõtmisest võib keelduda või vastuvõtu lõpetada, kui: 1) isik on piiratud teovõimega ja kohus on talle määranud eestkostja ning vastuvõtul ei osale piiratud teovõimega isiku esindaja; 2) isik ei väljenda oma soove ning neid ei õnnestu lisaküsimuste esitamise abil välja selgitada; 3) isik on agressiivne ning käitub heade kommete vastaselt; 4) isik ilmselgelt kuritarvitab õigust olla ära kuulatud. (3) Isiku vastuvõtmisest keeldumisel või vastuvõtu lõpetamisel käesoleva paragrahvi lõikes 2 loetletud alustel teavitatakse isikut võimalusest pöörduda asutuse poole kirjalikult. (4) Kui ametnik või töötaja isiku vastuvõtul leiab, et esitatud seisukoha või ettepaneku arvestamine või sellele vastamine või soovitud teabe või selgituse andmine ei ole asutuse pädevuses, teatab ta sellest isikule ning nimetab asutuse või organi, kelle pädevusse küsimus kuulub.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSVS_2"
       },
@@ -624,6 +764,10 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -632,21 +776,17 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MSVS_Par_4_v101042014003"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         },
         {
           "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MSVS_Par_4_v101042014003"
         }
       ]
     },
@@ -664,16 +804,18 @@
       "rdfs:label": "§ 4 lg 1",
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_Business"
+          "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:dutyHolder": [
+        {
+          "@id": "estleg:TargetGroup_PublicBody"
+        }
+      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
@@ -687,14 +829,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Isiku vastuvõtmisest võib keelduda või vastuvõtu lõpetada, kui: isik on piiratud teovõimega ja kohus on talle määranud eestkostja ning vastuvõtul ei osale piiratud teovõimega isiku esindaja; isik ei väljenda oma soove ning neid ei õnnestu lisaküsimuste esitamise abil välja selgitada; isik on agressiivne ning käitub heade kommete vastaselt; isik ilmselgelt kuritarvitab õigust olla ära kuulatud.",
+      "estleg:legalText": "(2) Isiku vastuvõtmisest võib keelduda või vastuvõtu lõpetada, kui: 1) isik on piiratud teovõimega ja kohus on talle määranud eestkostja ning vastuvõtul ei osale piiratud teovõimega isiku esindaja; 2) isik ei väljenda oma soove ning neid ei õnnestu lisaküsimuste esitamise abil välja selgitada; 3) isik on agressiivne ning käitub heade kommete vastaselt; 4) isik ilmselgelt kuritarvitab õigust olla ära kuulatud.",
       "estleg:parentProvision": {
         "@id": "estleg:MSVS_Par_4"
       },
       "rdfs:label": "§ 4 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -706,6 +851,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:mentionsInstitution": [
         {
@@ -767,13 +915,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Vastamine",
+      "rdfs:label": {
+        "@value": "§ 5. Vastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "(1) Vastamiskohustus on adressaadil. (2) Kui märgukiri või selgitustaotlus on adresseeritud asutuse või organi ametnikule või töötajale, võib tema asemel vastata sama asutuse või organi teine pädev ametnik või töötaja. Kui märgukiri või selgitustaotlus on adresseeritud mitmele ametnikule, töötajale või kollegiaalorgani liikmele sama asutuse või organi piires, võib sellele vastata ühiselt. (3) Kui adressaat leiab, et ühtegi märgukirjas esitatud seisukohta või ettepanekut arvestada või",
-      "estleg:legalText": "(1) Vastamiskohustus on adressaadil. (2) Kui märgukiri või selgitustaotlus on adresseeritud asutuse või organi ametnikule või töötajale, võib tema asemel vastata sama asutuse või organi teine pädev ametnik või töötaja. Kui märgukiri või selgitustaotlus on adresseeritud mitmele ametnikule, töötajale või kollegiaalorgani liikmele sama asutuse või organi piires, võib sellele vastata ühiselt. (3) Kui adressaat leiab, et ühtegi märgukirjas esitatud seisukohta või ettepanekut arvestada või märgukirjale vastata või selgitustaotluses soovitud teavet või selgitust anda ei ole tema pädevuses, edastab ta märgukirja või selgitustaotluse pädevale asutusele või organile vastamiseks viivitamata, kuid mitte hiljem kui 5 tööpäeva jooksul märgukirja või selgitustaotluse registreerimisest ning teavitab sellest isikut lõikes 8 sätestatud korras. Isiku teavitamine ei ole vajalik, kui märgukiri või selgitustaotlus edastatakse sama asutuse või organi teisele ametnikule või töötajale. (4) Kui adressaat leiab, et mõnda märgukirjas esitatud seisukohta või ettepanekut arvestada või selgitustaotluses soovitud teavet või selgitust anda ei ole tema pädevuses, edastab ta märgukirja või selgitustaotluse käesoleva paragrahvi lõikes 3 ettenähtud korras. Adressaat märgib pädevale asutusele või organile saadetavas kaaskirjas, millistele märgukirjas või selgitustaotluses sisalduvatele küsimustele oodatakse vastust pädevalt asutuselt või organilt. Esialgne adressaat vastab märgukirjas või selgitustaotluses sisalduvatele küsimustele, millele vastamist ei ole jäetud teisele asutusele või organile. (5) Märgukirja või selgitustaotluse saanud asutus või organ võib edastada selle vastamiseks ka asutusele või organile, mille üle ta teostab teenistuslikku järelevalvet, kui selline edastamine ei ole vastuolus märgukirjas või selgitustaotluses väljendatuga. Edastamine toimub käesoleva paragrahvi lõikes 3 ettenähtud korras. (6) Märgukirja või selgitustaotlust ei edastata vastamiseks kohtule kohtumenetluse seaduse alusel. Sellisel juhul teavitab adressaat isikut, kuidas kohtu poole pöörduda. (7) Üheaegselt mitmel viisil samale adressaadile esitatud samasisulisele märgukirjale või selgitustaotlusele vastatakse üks kord. (8) Isikule vastatakse märgukirjas või selgitustaotluses esitatud aadressil (faksi number, posti- või elektronposti aadress) kirjalikult või kokkuleppel muul viisil. Märgukirjas esitatud seisukoha või ettepaneku mittearvestamisel selgitatakse vastuses arvestamata jätmise põhjust. Selgitustaotlusele vastamisel antakse isikule taotluses soovitud teave või õigusalane selgitus või põhjendatakse selle andmisest keeldumist. Vastuvõtul viibinud isiku pöördumisele võib vastata suuliselt vastuvõtu ajal. (9) Vastamisest võib loobuda, kui: isikut ei ole võimalik kindlaks teha; puuduvad isiku sideandmed; isik on piiratud teovõimega ja talle on kohtu poolt määratud eestkostja ning märgukiri või selgitustaotlus on esitatud esindaja eelneva nõusolekuta; isik on selgelt väljendanud seisukohta, et ta ei soovi märgukirjale vastust; märgukiri või selgitustaotlus ei ole esitatud eesti keeles ja keeleseaduse § 12 kohaselt ei ole adressaat kohustatud sellele vastama; märgukirja või selgitustaotluse sisu ei ole loetav või arusaadav; selgitustaotlusele vastamine nõuab teabe suure mahu tõttu asutuse või organi töökorralduse muutmist, takistab talle pandud avalike ülesannete täitmist või nõuab põhjendamatult suuri kulutusi; selgitustaotluse või märgukirja adressaat on sama isiku samasisulisele pöördumisele uue pöördumise esitamisele eelneva aasta jooksul vastanud ning vajadus saada teavet uuesti ei ole põhjendatud; isik ilmselgelt kuritarvitab pöördumise õigust. (10) Käesoleva paragrahvi lõike 9 punkti 3, 6 või 7 alusel vastamisest loobumisel edastatakse märgukirja või selgitustaotluse esitajale viivitamata sellekohane teade. Teates näidatakse ära, milliste puuduste kõrvaldamisel oleks võimalik märgukirjale või selgitustaotlusele vastata. (11) Käesoleva paragrahvi lõike 9 punkti 5 alusel vastamisest loobumisel nõuab adressaat keeleseaduse § 12 kohaselt märgukirja või selgitustaotluse esitajalt koheselt märgukirja või selgitustaotluse tõlget eesti keelde.",
+      "estleg:summary": {
+        "@value": "(1) Vastamiskohustus on adressaadil. (2) Kui märgukiri või selgitustaotlus on adresseeritud asutuse või organi ametnikule või töötajale, võib tema asemel vastata sama asutuse või organi teine pädev ametnik või töötaja. Kui märgukiri või selgitustaotlus on adresseeritud mitmele ametnikule, töötajale või kollegiaalorgani liikmele sama asutuse või organi piires, võib sellele vastata ühiselt. (3) Kui adressaat leiab, et ühtegi märgukirjas esitatud seisukohta või ettepanekut arvestada või",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vastamiskohustus on adressaadil. (2) Kui märgukiri või selgitustaotlus on adresseeritud asutuse või organi ametnikule või töötajale, võib tema asemel vastata sama asutuse või organi teine pädev ametnik või töötaja. Kui märgukiri või selgitustaotlus on adresseeritud mitmele ametnikule, töötajale või kollegiaalorgani liikmele sama asutuse või organi piires, võib sellele vastata ühiselt. (3) Kui adressaat leiab, et ühtegi märgukirjas esitatud seisukohta või ettepanekut arvestada või märgukirjale vastata või selgitustaotluses soovitud teavet või selgitust anda ei ole tema pädevuses, edastab ta märgukirja või selgitustaotluse pädevale asutusele või organile vastamiseks viivitamata, kuid mitte hiljem kui 5 tööpäeva jooksul märgukirja või selgitustaotluse registreerimisest ning teavitab sellest isikut lõikes 8 sätestatud korras. Isiku teavitamine ei ole vajalik, kui märgukiri või selgitustaotlus edastatakse sama asutuse või organi teisele ametnikule või töötajale. (4) Kui adressaat leiab, et mõnda märgukirjas esitatud seisukohta või ettepanekut arvestada või selgitustaotluses soovitud teavet või selgitust anda ei ole tema pädevuses, edastab ta märgukirja või selgitustaotluse käesoleva paragrahvi lõikes 3 ettenähtud korras. Adressaat märgib pädevale asutusele või organile saadetavas kaaskirjas, millistele märgukirjas või selgitustaotluses sisalduvatele küsimustele oodatakse vastust pädevalt asutuselt või organilt. Esialgne adressaat vastab märgukirjas või selgitustaotluses sisalduvatele küsimustele, millele vastamist ei ole jäetud teisele asutusele või organile. (5) Märgukirja või selgitustaotluse saanud asutus või organ võib edastada selle vastamiseks ka asutusele või organile, mille üle ta teostab teenistuslikku järelevalvet, kui selline edastamine ei ole vastuolus märgukirjas või selgitustaotluses väljendatuga. Edastamine toimub käesoleva paragrahvi lõikes 3 ettenähtud korras. (6) Märgukirja või selgitustaotlust ei edastata vastamiseks kohtule kohtumenetluse seaduse alusel. Sellisel juhul teavitab adressaat isikut, kuidas kohtu poole pöörduda. (7) Üheaegselt mitmel viisil samale adressaadile esitatud samasisulisele märgukirjale või selgitustaotlusele vastatakse üks kord. (8) Isikule vastatakse märgukirjas või selgitustaotluses esitatud aadressil (faksi number, posti- või elektronposti aadress) kirjalikult või kokkuleppel muul viisil. Märgukirjas esitatud seisukoha või ettepaneku mittearvestamisel selgitatakse vastuses arvestamata jätmise põhjust. Selgitustaotlusele vastamisel antakse isikule taotluses soovitud teave või õigusalane selgitus või põhjendatakse selle andmisest keeldumist. Vastuvõtul viibinud isiku pöördumisele võib vastata suuliselt vastuvõtu ajal. (9) Vastamisest võib loobuda, kui: 1) isikut ei ole võimalik kindlaks teha; 2) puuduvad isiku sideandmed; 3) isik on piiratud teovõimega ja talle on kohtu poolt määratud eestkostja ning märgukiri või selgitustaotlus on esitatud esindaja eelneva nõusolekuta; 4) isik on selgelt väljendanud seisukohta, et ta ei soovi märgukirjale vastust; 5) märgukiri või selgitustaotlus ei ole esitatud eesti keeles ja keeleseaduse § 12 kohaselt ei ole adressaat kohustatud sellele vastama; 6) märgukirja või selgitustaotluse sisu ei ole loetav või arusaadav; 7) selgitustaotlusele vastamine nõuab teabe suure mahu tõttu asutuse või organi töökorralduse muutmist, takistab talle pandud avalike ülesannete täitmist või nõuab põhjendamatult suuri kulutusi; 8) selgitustaotluse või märgukirja adressaat on sama isiku samasisulisele pöördumisele uue pöördumise esitamisele eelneva aasta jooksul vastanud ning vajadus saada teavet uuesti ei ole põhjendatud; 9) isik ilmselgelt kuritarvitab pöördumise õigust. (10) Käesoleva paragrahvi lõike 9 punkti 3, 6 või 7 alusel vastamisest loobumisel edastatakse märgukirja või selgitustaotluse esitajale viivitamata sellekohane teade. Teates näidatakse ära, milliste puuduste kõrvaldamisel oleks võimalik märgukirjale või selgitustaotlusele vastata. (11) Käesoleva paragrahvi lõike 9 punkti 5 alusel vastamisest loobumisel nõuab adressaat keeleseaduse § 12 kohaselt märgukirja või selgitustaotluse esitajalt koheselt märgukirja või selgitustaotluse tõlget eesti keelde.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSVS_2"
       },
@@ -823,12 +977,12 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -864,9 +1018,6 @@
         "@id": "estleg:MSVS_Par_5"
       },
       "rdfs:label": "§ 5 lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -878,6 +1029,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -939,9 +1093,6 @@
         "@id": "estleg:MSVS_Par_5"
       },
       "rdfs:label": "§ 5 lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -950,6 +1101,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -999,9 +1153,6 @@
         "@id": "estleg:MSVS_Par_5"
       },
       "rdfs:label": "§ 5 lg 8",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1010,6 +1161,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1019,14 +1173,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "9",
-      "estleg:legalText": "(9) Vastamisest võib loobuda, kui: isikut ei ole võimalik kindlaks teha; puuduvad isiku sideandmed; isik on piiratud teovõimega ja talle on kohtu poolt määratud eestkostja ning märgukiri või selgitustaotlus on esitatud esindaja eelneva nõusolekuta; isik on selgelt väljendanud seisukohta, et ta ei soovi märgukirjale vastust; märgukiri või selgitustaotlus ei ole esitatud eesti keeles ja keeleseaduse § 12 kohaselt ei ole adressaat kohustatud sellele vastama; märgukirja või selgitustaotluse sisu ei ole loetav või arusaadav; selgitustaotlusele vastamine nõuab teabe suure mahu tõttu asutuse või organi töökorralduse muutmist, takistab talle pandud avalike ülesannete täitmist või nõuab põhjendamatult suuri kulutusi; selgitustaotluse või märgukirja adressaat on sama isiku samasisulisele pöördumisele uue pöördumise esitamisele eelneva aasta jooksul vastanud ning vajadus saada teavet uuesti ei ole põhjendatud; isik ilmselgelt kuritarvitab pöördumise õigust.",
+      "estleg:legalText": "(9) Vastamisest võib loobuda, kui: 1) isikut ei ole võimalik kindlaks teha; 2) puuduvad isiku sideandmed; 3) isik on piiratud teovõimega ja talle on kohtu poolt määratud eestkostja ning märgukiri või selgitustaotlus on esitatud esindaja eelneva nõusolekuta; 4) isik on selgelt väljendanud seisukohta, et ta ei soovi märgukirjale vastust; 5) märgukiri või selgitustaotlus ei ole esitatud eesti keeles ja keeleseaduse § 12 kohaselt ei ole adressaat kohustatud sellele vastama; 6) märgukirja või selgitustaotluse sisu ei ole loetav või arusaadav; 7) selgitustaotlusele vastamine nõuab teabe suure mahu tõttu asutuse või organi töökorralduse muutmist, takistab talle pandud avalike ülesannete täitmist või nõuab põhjendamatult suuri kulutusi; 8) selgitustaotluse või märgukirja adressaat on sama isiku samasisulisele pöördumisele uue pöördumise esitamisele eelneva aasta jooksul vastanud ning vajadus saada teavet uuesti ei ole põhjendatud; 9) isik ilmselgelt kuritarvitab pöördumise õigust.",
       "estleg:parentProvision": {
         "@id": "estleg:MSVS_Par_5"
       },
       "rdfs:label": "§ 5 lg 9",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1043,7 +1205,10 @@
         {
           "@id": "estleg:Keeleseadus_Par_12"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
       "@id": "estleg:MSVS_Par_5_Lg_10",
@@ -1072,12 +1237,12 @@
       },
       "rdfs:label": "§ 5 lg 11",
       "estleg:itemNumber": "5",
-      "estleg:isLegalBasisFor": [
+      "estleg:references": [
         {
           "@id": "estleg:Keeleseadus_Par_12"
         }
       ],
-      "estleg:references": [
+      "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:Keeleseadus_Par_12"
         }
@@ -1090,12 +1255,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Vastamise tähtaeg",
+      "rdfs:label": {
+        "@value": "§ 6. Vastamise tähtaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "Märgukirjale või selgitustaotlusele vastatakse viivitamata, kuid mitte hiljem kui 15 kalendripäeva jooksul selle registreerimisest. Erilise vajaduse korral lähtuvalt vastamise keerukusest võib vastamise tähtaega pikendada kuni kahe kuuni. Isikut teavitatakse vastamise tähtaja pikendamisest ja pikendamise põhjusest.",
+      "estleg:summary": {
+        "@value": "Märgukirjale või selgitustaotlusele vastatakse viivitamata, kuid mitte hiljem kui 15 kalendripäeva jooksul selle registreerimisest. Erilise vajaduse korral lähtuvalt vastamise keerukusest võib vastamise tähtaega pikendada kuni kahe kuuni. Isikut teavitatakse vastamise tähtaja pikendamisest ja pikendamise põhjusest.",
+        "@language": "et"
+      },
       "estleg:legalText": "Märgukirjale või selgitustaotlusele vastatakse viivitamata, kuid mitte hiljem kui 15 kalendripäeva jooksul selle registreerimisest. Erilise vajaduse korral lähtuvalt vastamise keerukusest võib vastamise tähtaega pikendada kuni kahe kuuni. Isikut teavitatakse vastamise tähtaja pikendamisest ja pikendamise põhjusest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSVS_2"
@@ -1113,12 +1284,12 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -1135,13 +1306,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Märgukirjale või selgitustaotlusele vastatakse viivitamata, kuid mitte hiljem kui 15 kalendripäeva jooksul selle registreerimisest. Erilise vajaduse korral lähtuvalt vastamise keerukusest võib vastamise tähtaega pikendada kuni kahe kuuni. Isikut teavitatakse vastamise tähtaja pikendamisest ja pikendamise põhjusest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Märgukirjale või selgitustaotlusele vastatakse viivitamata, kuid mitte hiljem kui 15 kalendripäeva jooksul selle registreerimisest. Erilise vajaduse korral lähtuvalt vastamise keerukusest võib vastamise tähtaega pikendada kuni kahe kuuni. Isikut teavitatakse vastamise tähtaja pikendamisest ja pikendamise põhjusest.",
       "estleg:parentProvision": {
         "@id": "estleg:MSVS_Par_6"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
+      "rdfs:label": "§ 6 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1150,6 +1320,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1159,12 +1332,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Registreerimine",
+      "rdfs:label": {
+        "@value": "§ 7. Registreerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "(1) Riigi- või kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku asutus või organ registreerib märgukirja, selgitustaotluse ja nende vastuse ning märgukirja või selgitustaotluse saamise ja vastamise viisi hiljemalt märgukirja või selgitustaotluse saamisele või vastuse esitamisele järgneval tööpäeval. (2) Kui suulisele pöördumisele antakse vastus suuliselt, siis ei pea pöördumist registreerima.",
+      "estleg:summary": {
+        "@value": "(1) Riigi- või kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku asutus või organ registreerib märgukirja, selgitustaotluse ja nende vastuse ning märgukirja või selgitustaotluse saamise ja vastamise viisi hiljemalt märgukirja või selgitustaotluse saamisele või vastuse esitamisele järgneval tööpäeval. (2) Kui suulisele pöördumisele antakse vastus suuliselt, siis ei pea pöördumist registreerima.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigi- või kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku asutus või organ registreerib märgukirja, selgitustaotluse ja nende vastuse ning märgukirja või selgitustaotluse saamise ja vastamise viisi hiljemalt märgukirja või selgitustaotluse saamisele või vastuse esitamisele järgneval tööpäeval. (2) Kui suulisele pöördumisele antakse vastus suuliselt, siis ei pea pöördumist registreerima.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MSVS_2"
@@ -1192,14 +1371,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MSVS_Par_7_v101042014003"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MSVS_Par_7_v101042014003"
         }
       ]
     },
@@ -1253,18 +1432,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7¹.",
-      "rdfs:label": "§ 7¹. Kollektiivsele pöördumisele esitatavad nõuded",
+      "rdfs:label": {
+        "@value": "§ 7¹. Kollektiivsele pöördumisele esitatavad nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "(1) Kollektiivse pöördumise (edaspidi käesolevas peatükis pöördumine) esitamiseks on vaja koguda vähemalt 1000 toetusallkirja. (2) Pöördumises tehakse ettepanek, kuidas kehtivat regulatsiooni muuta või ühiskonnaelu paremini korraldada ning pöördumisele lisatakse kuni kolmeleheküljeline põhjendus, miks kehtiv olukord ei rahulda ning kuidas pöördumises esitatud ettepanek olukorda parandaks. (3) Pöördumisele lisatakse elektrooniline nimekiri toetusallkirja andnud isikutest, märkides isiku nime ja",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivse pöördumise (edaspidi käesolevas peatükis pöördumine) esitamiseks on vaja koguda vähemalt 1000 toetusallkirja. (2) Pöördumises tehakse ettepanek, kuidas kehtivat regulatsiooni muuta või ühiskonnaelu paremini korraldada ning pöördumisele lisatakse kuni kolmeleheküljeline põhjendus, miks kehtiv olukord ei rahulda ning kuidas pöördumises esitatud ettepanek olukorda parandaks. (3) Pöördumisele lisatakse elektrooniline nimekiri toetusallkirja andnud isikutest, märkides isiku nime ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kollektiivse pöördumise (edaspidi käesolevas peatükis pöördumine) esitamiseks on vaja koguda vähemalt 1000 toetusallkirja. (2) Pöördumises tehakse ettepanek, kuidas kehtivat regulatsiooni muuta või ühiskonnaelu paremini korraldada ning pöördumisele lisatakse kuni kolmeleheküljeline põhjendus, miks kehtiv olukord ei rahulda ning kuidas pöördumises esitatud ettepanek olukorda parandaks. (3) Pöördumisele lisatakse elektrooniline nimekiri toetusallkirja andnud isikutest, märkides isiku nime ja isikukoodi. (4) Paberil kogutud toetusallkirjale lisatakse allkirja andnud isiku nimi ja isikukood. Elektrooniliste toetusallkirjade kogumisele kohaldatakse e-identimise ja e-tehingute usaldusteenuste seaduses digitaalallkirjale sätestatud nõudeid. (5) Samasisulise pöördumise võib esitada üks kord kahe aasta jooksul.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MSVS_2"
+        "@id": "estleg:Cluster_MSVS_3"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MSVS_2"
+        "@id": "estleg:Chapter_MSVS_3"
       },
       "estleg:hasSubsection": [
         {
@@ -1291,6 +1476,9 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:hasVersion": [
         {
@@ -1325,7 +1513,18 @@
       "estleg:parentProvision": {
         "@id": "estleg:MSVS_Par_7_1"
       },
-      "rdfs:label": "§ 7¹ lg 2"
+      "rdfs:label": "§ 7¹ lg 2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:RKT_Map"
+        },
+        {
+          "@id": "estleg:RKT_Par_152_10"
+        },
+        {
+          "@id": "estleg:RKT_Par_152_10_Lg_1"
+        }
+      ]
     },
     {
       "@id": "estleg:MSVS_Par_7_1_Lg_3",
@@ -1383,12 +1582,12 @@
         "@id": "estleg:MSVS_Par_7_1"
       },
       "rdfs:label": "§ 7¹ lg 5",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1398,18 +1597,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7².",
-      "rdfs:label": "§ 7². Toetusallkirja andma õigustatud isik",
+      "rdfs:label": {
+        "@value": "§ 7². Toetusallkirja andma õigustatud isik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "(1) Toetusallkirja võib anda vähemalt 16-aastane Eesti alaline elanik. Alaline elanik käesoleva seaduse tähenduses on Eestis elav Eesti kodanik ja Eestis elav Euroopa Liidu, Euroopa Majandusühenduse liikmesriigi ja Šveitsi Konföderatsiooni kodanik, kellel on alaline elamisõigus, ning Eestis elav välismaalane, kellel on pikaajalise elaniku elamisluba või alaline elamisõigus. (2) Pöördumisele võib toetusallkirja anda üks kord.",
+      "estleg:summary": {
+        "@value": "(1) Toetusallkirja võib anda vähemalt 16-aastane Eesti alaline elanik. Alaline elanik käesoleva seaduse tähenduses on Eestis elav Eesti kodanik ja Eestis elav Euroopa Liidu, Euroopa Majandusühenduse liikmesriigi ja Šveitsi Konföderatsiooni kodanik, kellel on alaline elamisõigus, ning Eestis elav välismaalane, kellel on pikaajalise elaniku elamisluba või alaline elamisõigus. (2) Pöördumisele võib toetusallkirja anda üks kord.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Toetusallkirja võib anda vähemalt 16-aastane Eesti alaline elanik. Alaline elanik käesoleva seaduse tähenduses on Eestis elav Eesti kodanik ja Eestis elav Euroopa Liidu, Euroopa Majandusühenduse liikmesriigi ja Šveitsi Konföderatsiooni kodanik, kellel on alaline elamisõigus, ning Eestis elav välismaalane, kellel on pikaajalise elaniku elamisluba või alaline elamisõigus. (2) Pöördumisele võib toetusallkirja anda üks kord.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MSVS_2"
+        "@id": "estleg:Cluster_MSVS_3"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MSVS_2"
+        "@id": "estleg:Chapter_MSVS_3"
       },
       "estleg:hasSubsection": [
         {
@@ -1424,21 +1629,21 @@
           "@id": "estleg:TargetGroup_Citizen"
         }
       ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:RKEHKS_Par_32"
-        },
-        {
-          "@id": "estleg:VALISM_Par_5"
-        }
-      ],
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VALISM_Par_5"
+        },
+        {
+          "@id": "estleg:VSS_Par_1_1"
+        }
+      ],
       "estleg:hasVersion": [
         {
           "@id": "estleg:MSVS_Par_7_2_v101042014003"
@@ -1457,9 +1662,6 @@
         "@id": "estleg:MSVS_Par_7_2"
       },
       "rdfs:label": "§ 7² lg 1",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1468,7 +1670,21 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
-      }
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:RKT_Map"
+        },
+        {
+          "@id": "estleg:RKT_Par_152_11"
+        },
+        {
+          "@id": "estleg:RKT_Par_152_11_Lg_1"
+        }
+      ]
     },
     {
       "@id": "estleg:MSVS_Par_7_2_Lg_2",
@@ -1482,12 +1698,12 @@
         "@id": "estleg:MSVS_Par_7_2"
       },
       "rdfs:label": "§ 7² lg 2",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
       "estleg:assertionConfidence": {
         "@value": "0.70",
         "@type": "xsd:decimal"
+      },
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
     },
     {
@@ -1497,18 +1713,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7³.",
-      "rdfs:label": "§ 7³. Pöördumise esitamine",
+      "rdfs:label": {
+        "@value": "§ 7³. Pöördumise esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "(1) Nõuetele vastav pöördumine esitatakse Riigikogu juhatusele paberil või elektrooniliselt. (2) Pöördumisele märgitakse kontaktisik või -isikud ja nende kontaktandmed.",
+      "estleg:summary": {
+        "@value": "(1) Nõuetele vastav pöördumine esitatakse Riigikogu juhatusele paberil või elektrooniliselt. (2) Pöördumisele märgitakse kontaktisik või -isikud ja nende kontaktandmed.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nõuetele vastav pöördumine esitatakse Riigikogu juhatusele paberil või elektrooniliselt. (2) Pöördumisele märgitakse kontaktisik või -isikud ja nende kontaktandmed.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MSVS_2"
+        "@id": "estleg:Cluster_MSVS_3"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MSVS_2"
+        "@id": "estleg:Chapter_MSVS_3"
       },
       "estleg:hasSubsection": [
         {
@@ -1520,9 +1742,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -1530,14 +1749,14 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MSVS_Par_7_3_v101042014003"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MSVS_Par_7_3_v101042014003"
         }
       ]
     },
@@ -1597,18 +1816,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7⁴.",
-      "rdfs:label": "§ 7⁴. Pöördumise menetlemine",
+      "rdfs:label": {
+        "@value": "§ 7⁴. Pöördumise menetlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "Pöördumist menetletakse Riigikogu kodu- ja töökorra seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Pöördumist menetletakse Riigikogu kodu- ja töökorra seaduses sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Pöördumist menetletakse Riigikogu kodu- ja töökorra seaduses sätestatud korras.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MSVS_2"
+        "@id": "estleg:Cluster_MSVS_3"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MSVS_2"
+        "@id": "estleg:Chapter_MSVS_3"
       },
       "estleg:hasSubsection": [
         {
@@ -1620,6 +1845,10 @@
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
+      "estleg:assertionConfidence": {
+        "@value": "0.65",
+        "@type": "xsd:decimal"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RAHVAH_Par_5"
@@ -1628,10 +1857,6 @@
           "@id": "estleg:REELS_Par_39"
         }
       ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
       "estleg:hasVersion": [
         {
           "@id": "estleg:MSVS_Par_7_4_v101042014003"
@@ -1644,10 +1869,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Pöördumist menetletakse Riigikogu kodu- ja töökorra seaduses sätestatud korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pöördumist menetletakse Riigikogu kodu- ja töökorra seaduses sätestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:MSVS_Par_7_4"
       },
+      "rdfs:label": "§ 7⁴ lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1665,18 +1892,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7⁵.",
-      "rdfs:label": "§ 7⁵. Pöördumise menetlusse võtmisest teavitamine",
+      "rdfs:label": {
+        "@value": "§ 7⁵. Pöördumise menetlusse võtmisest teavitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "Riigikogu juhatus teavitab pöördumise esitanud kontaktisikut või -isikuid pöördumise menetlusse võtmisest või menetlusse võtmata jätmisest 30 kalendripäeva jooksul nõuetekohase pöördumise esitamisest arvates.",
+      "estleg:summary": {
+        "@value": "Riigikogu juhatus teavitab pöördumise esitanud kontaktisikut või -isikuid pöördumise menetlusse võtmisest või menetlusse võtmata jätmisest 30 kalendripäeva jooksul nõuetekohase pöördumise esitamisest arvates.",
+        "@language": "et"
+      },
       "estleg:legalText": "Riigikogu juhatus teavitab pöördumise esitanud kontaktisikut või -isikuid pöördumise menetlusse võtmisest või menetlusse võtmata jätmisest 30 kalendripäeva jooksul nõuetekohase pöördumise esitamisest arvates.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MSVS_2"
+        "@id": "estleg:Cluster_MSVS_3"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MSVS_2"
+        "@id": "estleg:Chapter_MSVS_3"
       },
       "estleg:hasSubsection": [
         {
@@ -1685,9 +1918,6 @@
       ],
       "estleg:targetGroup": [
         {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
           "@id": "estleg:TargetGroup_PublicBody"
         }
       ],
@@ -1695,14 +1925,19 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:MSVS_Par_7_5_v101042014003"
-        }
-      ],
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RKT_Par_152_11"
+        }
+      ],
+      "estleg:hasVersion": [
+        {
+          "@id": "estleg:MSVS_Par_7_5_v101042014003"
         }
       ]
     },
@@ -1712,10 +1947,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigikogu juhatus teavitab pöördumise esitanud kontaktisikut või -isikuid pöördumise menetlusse võtmisest või menetlusse võtmata jätmisest 30 kalendripäeva jooksul nõuetekohase pöördumise esitamisest arvates.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigikogu juhatus teavitab pöördumise esitanud kontaktisikut või -isikuid pöördumise menetlusse võtmisest või menetlusse võtmata jätmisest 30 kalendripäeva jooksul nõuetekohase pöördumise esitamisest arvates.",
       "estleg:parentProvision": {
         "@id": "estleg:MSVS_Par_7_5"
       },
+      "rdfs:label": "§ 7⁵ lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1738,18 +1975,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8.",
+      "rdfs:label": {
+        "@value": "§ 8. [–]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
       "estleg:summary": "§ 8.",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MSVS_2"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MSVS_2"
-      }
+        "@id": "estleg:Cluster_MSVS_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MSVS_Preamble"
+      },
+      "estleg:provisionOmitted": true
     },
     {
       "@id": "estleg:MSVS_Par_10",
@@ -1758,24 +1999,46 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 10. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Märgukirjale ja selgitustaotlusele vastamise ning kollektiivse pöördumise esitamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MSVS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
-      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_MSVS_2"
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
       },
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MSVS_2"
+        "@id": "estleg:Cluster_MSVS_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MSVS_Preamble"
       },
       "estleg:hasVersion": [
         {
           "@id": "estleg:MSVS_Par_10_v101042014003"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/529122024003",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:MSVS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Response to Memoranda and Requests for Explanations and Submission of Collective Proposals Act",
+        "@language": "en"
+      }
     }
   ]
 }

@@ -24,7 +24,9 @@ def test_committed_peeps_have_no_range_encoded_osa_ids():
 
     krr = Path(__file__).resolve().parents[1] / "krr_outputs"
     leftover = []
-    pat = re.compile(r"estleg:\w+_Osa\d+_\d+_\d+\b")
+    # Act/Part ids only: a superscripted chapter inside an osa is minted
+    # ``Chapter_<P>_Osa4_22_2`` (22²) by design and is not a § range.
+    pat = re.compile(r"estleg:(?!Chapter_|Cluster_|Division_)\w+_Osa\d+_\d+_\d+\b")
     for path in krr.glob("*_peep.json"):
         text = path.read_text(encoding="utf-8")
         hits = pat.findall(text)
